@@ -164,20 +164,20 @@
   "item.magicksaddon.gazing_omen_chain": "Beobachtendes Unheil-Anhänger",
   "item.magicksaddon.crystals_light_chain": "Leuchtender Kristall-Anhänger",
 
-  "item.magicksaddon.aqua_chaplet": "Aqua Chaplet",
+  "item.magicksaddon.aqua_chaplet": "Aqua-Kranz",
   "item.magicksaddon.heros_glove": "Heldenhandschuh",
   "item.magicksaddon.heros_belt": "Heldengürtel",
   "item.magicksaddon.master_belt": "Master Belt",
-  "item.magicksaddon.ultima_ribbon": "Ultima Ribbon",
+  "item.magicksaddon.ultima_ribbon": "Ultima Schleife",
 
 
   "item.magicksaddon.luck_of_the_draw": "Luck of The Draw",
   "item.magicksaddon.light_heart": "Herz aus Licht",
   "item.magicksaddon.dark_heart": "Herz aus Dunkelheit",
   "item.magicksaddon.raging_heart": "Herz aus Wut",
-  "item.magicksaddon.forest_clasp": "Wald Brosche",
-  "item.magicksaddon.laughter_pin": "Laughter Pin",
-  "item.magicksaddon.celestriad": "Celestriad",
+  "item.magicksaddon.forest_clasp": "Waldbrosche",
+  "item.magicksaddon.laughter_pin": "Lachplakette",
+  "item.magicksaddon.celestriad": "Dreigestirn",
   "item.magicksaddon.crystal_regalia": "Kristallornat",
   "item.magicksaddon.crystal_regalia_plus": "Kristallornat +",
   "item.magicksaddon.flanniversary_badge": "Puddiläums-Plakette",
@@ -224,7 +224,7 @@
 
   "key.categories.remind": "Kingdom Keys - Re:Mind",
 
-  "key.remind.summonspirit": "Summon Spirit",
+  "key.remind.summonspirit": "Spirit Rufen",
 
   "entity.magicksaddon.chirithy": "Chirithy"
 
