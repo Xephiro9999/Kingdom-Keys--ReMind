@@ -4,7 +4,7 @@
     "mag": 8,
     "str": 10
   },
-  "description": "A keyblade that thrives in Darkness... You can feel your dark powers swell and burst by holding this weapon...",
+  "description": "item.magicksaddon.pureblood.desc",
   "keychain": "magicksaddon:pureblood_chain",
   "levels": [
     {

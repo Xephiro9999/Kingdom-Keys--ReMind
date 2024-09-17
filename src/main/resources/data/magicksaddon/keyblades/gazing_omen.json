@@ -4,7 +4,7 @@
     "mag": 10,
     "str": 10
   },
-  "description": "A keyblade that favors magic, while boosting both Light and Darkness. Requested by RealRegen.",
+  "description": "item.magicksaddon.gazing_omen.desc",
   "keychain": "magicksaddon:gazing_omen_chain",
   "levels": [
     {

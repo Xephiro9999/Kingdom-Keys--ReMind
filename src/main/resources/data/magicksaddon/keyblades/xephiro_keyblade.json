@@ -4,7 +4,7 @@
     "mag": 5,
     "str": 13
   },
-  "description": "A keyblade belonging to Xephiro, even looking at it gives you a sense of powerful Darkness and bloodthirst... It denies any wielder that isn't Xephiro.",
+  "description": "item.magicksaddon.xephiro_keyblade.desc",
   "keychain": "magicksaddon:xephiro_keyblade_chain",
   "levels": [
     {

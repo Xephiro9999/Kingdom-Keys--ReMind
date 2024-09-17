@@ -107,7 +107,7 @@
   "ability.ability_heart_walker.desc": "Gain Hearts as you run. Equip more to increase the effect.",
   "ability.ability_mp_shield.name": "Mana Shield",
   "ability.ability_mp_shield.desc": "When you take damage, you will lose MP instead unless you're in MP Recharge.",
-  "ability.ability_vehemence.name": "Vehemence",
+  "ability.ability_vehemence.name": "Kraftschub",
   "ability.ability_vehemence.desc": "A sacrifice is made in exchange for more power. The effect differs depending on your chosen path.",
   "ability.ability_mp_boost.name": "MP-Boost",
   "ability.ability_mp_boost.desc": "Increases your Max MP. Equip more to increase the effect.",
@@ -158,6 +158,12 @@
   "item.magicksaddon.gazing_omen": "Beobachtendes Unheil",
   "item.magicksaddon.crystals_light": "Leuchtender Kristall",
 
+  "item.magicksaddon.xephiro_keyblade.desc": "Ein Schlüsselschwert getragen von Xephiro. Even looking at it gives you a sense of powerful Darkness and bloodthirst...\nEs lehnt jeden anderen Träger ab, der nicht Xephiro ist.",
+  "item.magicksaddon.pureblood.desc": "Ein Schlüsselschwert, dass nur so vor Dunkelheit überquillt... You can feel your dark powers swell and burst by holding this weapon...",
+  "item.magicksaddon.elemental_crescendo.desc": "A Playfully Musical of a Keyblade.\nVorgeschlagen von 'Goblex'.",
+  "item.magicksaddon.gazing_omen.desc": "Ein Schlüsselschwert mit einem Schwerpunkt auf Magie, die sowohl das Licht, als auch die Dunkelheit verstärkt.\nVorgeschlagen von 'RealRegen'.",
+  "item.magicksaddon.crystals_light.desc": "Ein Schlüsselschwert, welches die legendäre Waffe des Kriegers des Lichts wiederspiegelt. Dieses Schlüsselschwert wird durchströmt von Licht.",
+
   "item.magicksaddon.xephiro_keyblade_chain": "Blutrünstiger Blick-Anhänger",
   "item.magicksaddon.pureblood_chain": "Reinblüter-Anhänger",
   "item.magicksaddon.elemental_crescendo_chain": "Elementares Orchester-Anhänger",
@@ -168,10 +174,10 @@
   "item.magicksaddon.heros_glove": "Heldenhandschuh",
   "item.magicksaddon.heros_belt": "Heldengürtel",
   "item.magicksaddon.master_belt": "Meistergürtel",
-  "item.magicksaddon.ultima_ribbon": "Ultima Schleife",
+  "item.magicksaddon.ultima_ribbon": "Regenbogen-Schleife",
 
 
-  "item.magicksaddon.luck_of_the_draw": "Luck of The Draw",
+  "item.magicksaddon.luck_of_the_draw": "Lottogewinn(?)",
   "item.magicksaddon.light_heart": "Herz aus Licht",
   "item.magicksaddon.dark_heart": "Herz aus Dunkelheit",
   "item.magicksaddon.raging_heart": "Herz aus Wut",
@@ -184,15 +190,15 @@
   "item.magicksaddon.mickey_clasp": "Micky Brosche",
   "item.magicksaddon.breakthrough": "Breakthrough (Xion)",
 
-  "item.magicksaddon.exp_ring": "Erf-Ring",
-  "item.magicksaddon.focus_sash": "Fokusgurt(?)",
-  "item.magicksaddon.heart_locket": "Heart Locket",
-  "item.magicksaddon.haste_bracer": "Haste Bracer",
-  "item.magicksaddon.light_ring": "Licht-Ring",
-  "item.magicksaddon.dark_ring": "Dunkel-Ring",
-  "item.magicksaddon.sacrifice_bracer": "Sacrifice Bracer",
-  "item.magicksaddon.friendbinder": "Friend Heartbinder",
-  "item.magicksaddon.nothingness_binder": "Nothing's Heartbinder",
+  "item.magicksaddon.exp_ring": "Erfahrener Ring",
+  "item.magicksaddon.focus_sash": "Fokusgurt",
+  "item.magicksaddon.heart_locket": "Herz-Anhänger",
+  "item.magicksaddon.haste_bracer": "Armschienen der Schnelligkeit",
+  "item.magicksaddon.light_ring": "Ring des Lichts",
+  "item.magicksaddon.dark_ring": "Ring der Dunkelheit",
+  "item.magicksaddon.sacrifice_bracer": "Armschienen der Opferung",
+  "item.magicksaddon.friendbinder": "Freundes-Herzbinder",
+  "item.magicksaddon.nothingness_binder": "Niemandes-Herzbinder",
 
 
   "key.categories.magicksaddon": "Re:Mind",
@@ -226,7 +232,9 @@
 
   "key.remind.summonspirit": "Spirit Rufen",
 
-  "entity.magicksaddon.chirithy": "Chirithy"
+  "entity.magicksaddon.chirithy": "Chirithy",
+
+  "item.magicksaddon.chirithy_spawn_egg": "Chirithy-Spawn-Ei"
 
 
 }

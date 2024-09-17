@@ -122,9 +122,9 @@
   "ability.ability_friends_power.name": "Friends Are Power",
   "ability.ability_friends_power.desc": "Gain a bonus scaling with the amount of party members you have.",
   "ability.ability_renewal_block.name": "Renewal Block",
-  "ability.ability_renewal_block.desc": "Upon a successful guard, restore a small amount of HP. Requires EFM Guard Skill.",
+  "ability.ability_renewal_block.desc": "Upon a successful guard, restore a small amount of HP.\nRequires EFM Guard Skill.",
   "ability.ability_focus_block.name": "Focus Block",
-  "ability.ability_focus_block.desc": "Upon a successful guard, restore a small amount of Focus. Requires EFM Guard Skill.",
+  "ability.ability_focus_block.desc": "Upon a successful guard, restore a small amount of Focus.\nRequires EFM Guard Skill.",
   "ability.ability_counter_hammer.name": "Counter Hammer",
   "ability.ability_counter_hammer.desc": "Upon a successful guard, counter attack with a shockwave! Damage and Radius scales with Critical Boost!",
   "ability.ability_counter_blast.name": "Counter Blast",
@@ -157,6 +157,12 @@
   "item.magicksaddon.elemental_crescendo": "Elemental Crescendo",
   "item.magicksaddon.gazing_omen": "Gazing Omen",
   "item.magicksaddon.crystals_light": "Crystal's Light",
+
+  "item.magicksaddon.xephiro_keyblade.desc": "A Keyblade belonging to Xephiro. Even looking at it gives you a sense of powerful Darkness and bloodthirst...\nIt denies any wielder that isn't Xephiro.",
+  "item.magicksaddon.pureblood.desc": "A Keyblade that thrives in Darkness... You can feel your dark powers swell and burst by holding this weapon...",
+  "item.magicksaddon.elemental_crescendo.desc": "A Playfully Musical of a Keyblade.\nRequested by Goblex.",
+  "item.magicksaddon.gazing_omen.desc": "A Keyblade that favors magic, while boosting both Light and Darkness.\nRequested by RealRegen.",
+  "item.magicksaddon.crystals_light.desc": "A Keyblade that resembles a legendary weapon of the Warrior of Light. This Keyblade excels in the powers of Light.",
 
   "item.magicksaddon.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.magicksaddon.pureblood_chain": "Pureblood Chain",
@@ -226,7 +232,9 @@
 
   "key.remind.summonspirit": "Summon Spirit",
 
-  "entity.magicksaddon.chirithy": "Chirithy"
+  "entity.magicksaddon.chirithy": "Chirithy",
+
+  "item.magicksaddon.chirithy_spawn_egg": "Chirithy Spawn Egg"
 
 
 }
