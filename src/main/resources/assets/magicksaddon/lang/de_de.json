@@ -40,7 +40,7 @@
   "magic.magicksaddon.magic_warp0.name": "Teleport",
   "magic.magicksaddon.magic_esuna0.name": "Medica",
   "magic.magicksaddon.magic_dispel0.name": "Bann",
-  "magic.magicksaddon.magic_faith0.name": "Faith",
+  "magic.magicksaddon.magic_faith0.name": "Ener",
 
   "item.magicksaddon.balloon_spell": "Balloon-Element",
   "item.magicksaddon.haste_spell": "Hast-Element",
@@ -57,7 +57,7 @@
   "item.magicksaddon.esuna_spell": "Medica-Element",
   "item.magicksaddon.dispel_spell": "Bann-Element",
   "item.magicksaddon.warp_spell": "Teleport-Element",
-  "item.magicksaddon.faith_spell": "Faith-Element",
+  "item.magicksaddon.faith_spell": "Ener-Element",
 
   "ability.ability_dark_passage.name": "Dunkler Durchgang",
   "ability.ability_dark_passage.desc": "Erlaubt es dir Dunkle zu nutzen, ohne Mitglied der Organization zu sein.",
