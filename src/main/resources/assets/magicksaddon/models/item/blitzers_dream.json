@@ -1,0 +1,59 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "flip_v" : "true",
+  "model": "magicksaddon:models/item/keyblade/blitzers_dream.obj",
+  "textures": {
+    "layer0": "magicksaddon:textures/item/keyblades/blitzers_dream"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [6, 14.5, 5 ],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "thirdperson_righthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [6, 14.5, 5 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0.0, 0, 0.0 ],
+      "translation": [-6, 14.5, 5 ],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [-6, 14.5, 5 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "gui": {
+      "rotation": [0, 90.0, 0 ],
+      "translation": [0.0, 1.0, 0.0 ],
+      "scale": [0.4, 0.40, 0.40]
+    },
+    "ground": {
+      "rotation": [0, 90.0, 45.0 ],
+      "translation": [2.0, 7.0, 0.0 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "fixed": {
+      "rotation": [0.0, 90.0, 0.0 ],
+      "translation": [0.0, 0.0, 0.0 ],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  },
+  "visibility": {
+		"object_1": "hide",
+		"object_2": "default",
+		"object_3": "show"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "magicksaddon:textures/item/keyblades/blitzers_dream"
+      }
+    }
+  }
+}

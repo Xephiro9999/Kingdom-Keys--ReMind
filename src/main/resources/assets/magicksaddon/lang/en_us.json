@@ -131,6 +131,10 @@
   "ability.ability_counter_blast.desc": "Upon a successful guard, counter attack with a burst! Scales with Max MP!",
   "ability.ability_counter_rush.name": "Counter Rush",
   "ability.ability_counter_rush.desc": "Upon a successful guard, counter attack with a flurry of blows! Scales with Attack Haste!",
+  "ability.ability_tidus.name": "Zanarkand's Ace",
+  "ability.ability_tidus.desc": "The Spirit of Tidus bursts forth! Gain strength and speed when underwater, additionally you cannot drown!",
+  "ability.ability_jecht.name": "Brutal Blitzer",
+  "ability.ability_jecht.desc": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped!",
 
   "shotlock.flame_salvo.name": "Flame Salvo",
   "shotlock.bubble_blaster.name": "Bubble Blaster",
@@ -157,6 +161,8 @@
   "item.magicksaddon.elemental_crescendo": "Elemental Crescendo",
   "item.magicksaddon.gazing_omen": "Gazing Omen",
   "item.magicksaddon.crystals_light": "Crystal's Light",
+  "item.magicksaddon.blitzers_dream": "Blitzer's Dream",
+  "item.magicksaddon.legends_fang": "Legend's Fang",
 
   "item.magicksaddon.xephiro_keyblade.desc": "A Keyblade belonging to Xephiro. Even looking at it gives you a sense of powerful Darkness and bloodthirst...\nIt denies any wielder that isn't Xephiro.",
   "item.magicksaddon.pureblood.desc": "A Keyblade that thrives in Darkness... You can feel your dark powers swell and burst by holding this weapon...",
@@ -169,6 +175,8 @@
   "item.magicksaddon.elemental_crescendo_chain": "Elemental Crescendo Chain",
   "item.magicksaddon.gazing_omen_chain": "Gazing Omen Chain",
   "item.magicksaddon.crystals_light_chain": "Crystal's Light Chain",
+  "item.magicksaddon.blitzers_dream_chain": "Blitzer's Dream Chain",
+  "item.magicksaddon.legends_fang_chain": "Legend's Fang Chain",
 
   "item.magicksaddon.aqua_chaplet": "Aqua Chaplet",
   "item.magicksaddon.heros_glove": "Hero's Glove",
@@ -212,6 +220,12 @@
   "menu_button.dreamEater.desc": "A WIP MENU! Will crash you!",
   "menu_button.creditsScreen": "Credits (Re:Mind)",
   "Ability Links.desc": "THIS BUTTON WILL CRASH YOU!",
+
+  "menu_button.panel": "Panel System",
+  "menu_button.panel.desc": "ORGANIZATION XIII ONLY! Boost your stats further at the cost of Hearts!",
+  "Reset.desc": "Will reset your panel boost, but will give you SOME hearts back!",
+  "menu_button.wiki": "Journal - Re:Mind",
+  "menu_button.wiki.desc": "{WIP} A Section that informs you about what Re:Mind has to offer!",
 
   "reactioncommand.rc_riskcharge.name": "Riskcharge",
   "reactioncommand.rc_raging_burst.name": "Raging Burst",

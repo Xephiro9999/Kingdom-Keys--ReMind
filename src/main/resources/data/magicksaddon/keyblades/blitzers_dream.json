@@ -1,0 +1,273 @@
+{
+  "ability": "magicksaddon:ability_tidus",
+  "base_stats": {
+    "mag": 13,
+    "str": 13
+  },
+  "description": "Tidus' Brotherhood turned into a keyblade! This keyblade excels in fast strikes and has a special effect when underwater!",
+  "keychain": "magicksaddon:blitzers_dream_chain",
+  "levels": [
+    {
+      "mag": 14,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 2
+        }
+      ],
+      "str": 13,
+      "ability": "magicksaddon:ability_attack_haste"
+    },
+    {
+      "mag": 14,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 3
+        }
+      ],
+      "str": 14,
+      "ability": "kingdomkeys:ability_critical_boost"
+    },
+    {
+      "mag": 14,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 4
+        }
+      ],
+      "str": 15
+    },
+    {
+      "mag": 15,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 1
+        }
+      ],
+      "str": 15,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 15,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 16
+    },
+    {
+      "mag": 16,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 16,
+      "ability": "kingdomkeys:ability_mp_hastega"
+    },
+    {
+      "mag": 16,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 17
+    },
+    {
+      "mag": 17,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 17
+    },
+    {
+      "mag": 18,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 17
+    },
+    {
+      "mag": 18,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 1
+        }
+      ],
+      "str": 18,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 20,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 20,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 21,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 21
+    },
+    {
+      "mag": 22,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 22
+    },
+    {
+      "mag": 23,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 4
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 23
+    },
+    {
+      "mag": 24,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 5
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 24,
+      "ability": "kingdomkeys:ability_mp_thrift"
+    }
+  ],
+  "reach": 6.0
+}

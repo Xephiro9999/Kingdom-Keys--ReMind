@@ -61,7 +61,11 @@ public class ModAbilitiesRM extends ModAbilities{
         HEART_WALKER = ABILITIES.register(StringsRM.ABMA_Prefix+"heart_walker", () -> new Ability(new ResourceLocation(StringsRM.heartWalker),10,Ability.AbilityType.SUPPORT, order++)),
         EXP_WALKER = ABILITIES.register(StringsRM.ABMA_Prefix+"exp_walker", () -> new Ability(new ResourceLocation(StringsRM.expWalker),10,Ability.AbilityType.SUPPORT, order++)),
 
-        ATTACK_HASTE = ABILITIES.register(StringsRM.ABMA_Prefix+"attack_haste", () -> new Ability(new ResourceLocation(StringsRM.attackHaste),3,Ability.AbilityType.SUPPORT, order++));
+        ATTACK_HASTE = ABILITIES.register(StringsRM.ABMA_Prefix+"attack_haste", () -> new Ability(new ResourceLocation(StringsRM.attackHaste),3,Ability.AbilityType.SUPPORT, order++)),
+
+    // Weapon Exclusive Abilities
+        TIDUS = ABILITIES.register(StringsRM.ABMA_Prefix+"tidus", () -> new Ability(new ResourceLocation(StringsRM.Tidus),3,Ability.AbilityType.SUPPORT, order++)),
+        JECHT = ABILITIES.register(StringsRM.ABMA_Prefix+"jecht", () -> new Ability(new ResourceLocation(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++));
 
 
     // Twilight (Double) Form Exclusive Abilities

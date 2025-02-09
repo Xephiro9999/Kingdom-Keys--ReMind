@@ -49,13 +49,18 @@ public class ModItemsRM{
         elemental_crescendo = ITEMS.register("elemental_crescendo", () -> new KeybladeItem(new Item.Properties())),
         gazing_omen = ITEMS.register("gazing_omen", () -> new KeybladeItem(new Item.Properties())),
         crystalsLight = ITEMS.register("crystals_light", () -> new KeybladeItem(new Item.Properties())),
+        blitzersDream = ITEMS.register("blitzers_dream", () -> new KeybladeItem(new Item.Properties())),
+        legendsFang = ITEMS.register("legends_fang", () -> new KeybladeItem(new Item.Properties())),
 
-            // Keychains
+
+    // Keychains
         xephiroKeybladeChain = ITEMS.register("xephiro_keyblade_chain", () -> new KeychainItem()),
         purebloodChain = ITEMS.register("pureblood_chain", () -> new KeychainItem()),
         elementalCrescendoChain = ITEMS.register("elemental_crescendo_chain", () -> new KeychainItem()),
         gazingOmenChain = ITEMS.register("gazing_omen_chain", () -> new KeychainItem()),
         crystalsLightChain = ITEMS.register("crystals_light_chain", () -> new KeychainItem()),
+        blitzersDreamChain = ITEMS.register("blitzers_dream_chain", () -> new KeychainItem()),
+        legendsFangChain = ITEMS.register("legends_fang_chain", () -> new KeychainItem()),
 
             // Org Weapons
 

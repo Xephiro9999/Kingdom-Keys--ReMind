@@ -74,9 +74,25 @@ public interface IGlobalCapabilitiesRM extends INBTSerializable<CompoundTag> {
     void addNGPMysticCount(int i);
     void addNGPGuardianCount(int i);
 
+    void addSTRPanel(int i);
+    void addMAGPanel(int i);
+    void addDEFPanel(int i);
+
+
+    int getSTRPanel();
+    int getMAGPanel();
+    int getDEFPanel();
+
+    void setSTRPanel(int i);
+    void setMAGPanel(int i);
+    void setDEFPanel(int i);
+
     int getRCCooldownTicks();
     void setRCCooldownTicks(int ticks);
     void remRCCooldownTicks(int ticks);
+    String getPanelChoice();
+
+    void setPanelChoice(String choice);
 
     double getMPOG();
     void setMPOG(int i);

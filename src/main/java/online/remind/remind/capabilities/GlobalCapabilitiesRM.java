@@ -6,7 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 
 public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
-	@Override
+
+
+    @Override
     public CompoundTag serializeNBT() {
         CompoundTag storage = new CompoundTag();
         storage.putInt("haste_ticks", this.getHasteTicks());
@@ -28,6 +30,12 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putInt("NGPlus_Warrior", this.getNGPWarriorCount());
         storage.putInt("NGPlus_Mystic", this.getNGPMysticCount());
         storage.putInt("NGPlus_Guardian", this.getNGPGuardianCount());
+
+        storage.putInt("Panels_STR", this.getSTRPanel());
+        storage.putInt("Panels_DEF", this.getDEFPanel());
+        storage.putInt("Panels_MAG", this.getMAGPanel());
+
+        //storage.putString("Panels_Choice",this.getPanelChoice().toString());
 
         storage.putInt("riskcharge_count", this.getRiskchargeCount());
 
@@ -56,10 +64,17 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         this.setNGPWarriorCount(properties.getInt("NGPlus_Warrior"));
         this.setNGPMysticCount(properties.getInt("NGPlus_Mystic"));
         this.setNGPGuardianCount(properties.getInt("NGPlus_Guardian"));
-        
+
+        this.setSTRPanel(properties.getInt("Panels_STR"));
+        this.setMAGPanel(properties.getInt("Panels_MAG"));
+        this.setDEFPanel(properties.getInt("Panels_DEF"));
+
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
+
+        this.setPanelChoice(properties.getString("Panels_Choice"));
+
     }
 
     private int hasteTicks;
@@ -76,6 +91,11 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     private int NGPlusWarriorCount;
     private int NGPlusMysticCount;
     private int NGPlusGuardianCount;
+
+    private int strPanel;
+    private int magPanel;
+    private int defPanel;
+    private String panelChoice;
 
     private int darkModeEXP;
     private int lightFormEXP;
@@ -352,6 +372,67 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         this.RCCooldown = Math.max(RCCooldown - ticks, 0);
 
     }
+
+
+    @Override
+    public int getSTRPanel() {
+        return strPanel;
+    }
+
+    @Override
+    public int getMAGPanel() {
+        return magPanel;
+    }
+
+    @Override
+    public int getDEFPanel() {
+        return defPanel;
+    }
+
+    @Override
+    public void setSTRPanel(int i) {
+        strPanel = i;
+    }
+
+    @Override
+    public void setMAGPanel(int i) {
+        magPanel = i;
+    }
+
+    @Override
+    public void setDEFPanel(int i) {
+        defPanel = i;
+    }
+
+    @Override
+    public void addSTRPanel(int i) {
+        strPanel += i;
+    }
+
+    @Override
+    public void addMAGPanel(int i) {
+        magPanel += i;
+    }
+
+    @Override
+    public void addDEFPanel(int i) {
+        defPanel += i;
+    }
+
+
+    @Override
+    public void setPanelChoice(String choice){
+        panelChoice = choice;
+    }
+    @Override
+    public String getPanelChoice(){
+        return panelChoice;
+    }
+
+
+
+
+
 
     @Override
     public double getMPOG() {

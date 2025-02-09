@@ -15,6 +15,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 

@@ -61,6 +61,10 @@ public class StringsRM {
         renewalBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"renewal_block",
         focusBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"focus_block",
 
+        // FF Keyblade Abilities
+        Tidus = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"tidus",
+        Jecht = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"jecht",
+
         // Reprisals
 
         counterHammer = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_hammer",
@@ -116,5 +120,7 @@ public class StringsRM {
         Gui_Menu_Button_PrestigeLevel = StringsRM.MENU_Prefix + ".prestigeLevel",
         Gui_Menu_Button_PrestigeConfirm = StringsRM.MENU_Prefix +".prestigeConfirm",
         Gui_Menu_Button_DreamEater = StringsRM.MENU_Prefix + ".dreamEater",
+        Gui_Menu_Button_Panel = StringsRM.MENU_Prefix + ".panel",
+        Gui_Menu_Button_Wiki = StringsRM.MENU_Prefix + ".wiki",
         Gui_Menu_Button_Credits = StringsRM.MENU_Prefix + ".creditsScreen";
 }

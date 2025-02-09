@@ -66,7 +66,7 @@ public class CSPrestigePacket {
         playerData.setEquippedShotlock("");
 
         //Utils.restartLevel(playerData, player);
-        Utils.restartLevel2(playerData, player);
+        //Utils.restartLevel2(playerData, player);
 
 
         playerData.setSoAState(SoAState.NONE);

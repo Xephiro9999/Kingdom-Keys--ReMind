@@ -36,4 +36,9 @@ public class DriveFormTwilight extends DriveForm {
 		}
     	return false;
     }
+
+	@Override
+	public boolean displayInCommandMenu(Player player) {
+		return false;
+	}
 }

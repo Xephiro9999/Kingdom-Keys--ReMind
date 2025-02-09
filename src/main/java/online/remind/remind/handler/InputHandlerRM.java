@@ -149,34 +149,6 @@ public class InputHandlerRM {
                 //return;
             }
 			event.setCanceled(true);
-		} else if (event.getKeybind() == InputHandler.Keybinds.ENTER){
-			Minecraft mc = Minecraft.getInstance();
-			Level world = mc.level;
-			Player player = mc.player;
-
-			IWorldCapabilities worldData = ModCapabilities.getWorld(world);
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			event.getHandler().portalCommands = worldData.getAllPortalsFromOwnerID(mc.player.getUUID());
-
-			switch (CommandMenuGui.selected) {
-				case CommandMenuGui.ATTACK:
-					if (playerData.getAlignment() != Utils.OrgMember.NONE || playerData.isAbilityEquipped(StringsRM.darkPassage)) {
-						// Submenu of the portals
-						if (CommandMenuGui.submenu == CommandMenuGui.SUB_MAIN) {
-							if (!event.getHandler().portalCommands.isEmpty() && !playerData.getRecharge()) {
-								CommandMenuGui.submenu = CommandMenuGui.SUB_PORTALS;
-								CommandMenuGui.portalSelected = 0;
-								world.playSound(player, player.blockPosition(), ModSounds.menu_in.get(), SoundSource.MASTER, 1.0f, 1.0f);
-							} else {
-								CommandMenuGui.selected = CommandMenuGui.ATTACK;
-								world.playSound(player, player.blockPosition(), ModSounds.error.get(), SoundSource.MASTER, 1.0f, 1.0f);
-							}
-							event.setCanceled(true);
-						}
-					}
-
-					break;
-			}
 		}
 	}
 

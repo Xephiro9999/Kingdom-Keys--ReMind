@@ -11,10 +11,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.network.cts.CSPrestigePacket;
-import online.remind.remind.network.cts.CSSetStepTicksPacket;
-import online.remind.remind.network.cts.CSSummonSpiritPacket;
-import online.remind.remind.network.cts.CSSyncAllClientDataPacketRM;
+import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
 public class PacketHandlerRM {
@@ -33,6 +30,7 @@ public class PacketHandlerRM {
         HANDLER.registerMessage(packetID++, CSSyncAllClientDataPacketRM.class, CSSyncAllClientDataPacketRM::encode, CSSyncAllClientDataPacketRM::decode, CSSyncAllClientDataPacketRM::handle);
         HANDLER.registerMessage(packetID++, CSSetStepTicksPacket.class,CSSetStepTicksPacket::encode,CSSetStepTicksPacket::decode,CSSetStepTicksPacket::handle);
         HANDLER.registerMessage(packetID++, CSSummonSpiritPacket.class,CSSummonSpiritPacket::encode,CSSummonSpiritPacket::decode,CSSummonSpiritPacket::handle);
+        HANDLER.registerMessage(packetID++, CSPanelPacket.class,CSPanelPacket::encode,CSPanelPacket::decode, CSPanelPacket::handle);
     }
 
         public static <MSG> void sendToServer(MSG msg) {

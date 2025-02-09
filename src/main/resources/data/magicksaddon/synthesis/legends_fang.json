@@ -1,0 +1,27 @@
+{
+  "cost": 10000,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_blazing_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_orichalcum",
+      "quantity": "1"
+    },
+    {
+      "material": "kingdomkeys:mat_illusory_crystal",
+      "quantity": "1"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "magicksaddon:legends_fang_chain",
+    "quantity": 1
+  },
+  "tier": 6
+}

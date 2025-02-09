@@ -48,6 +48,7 @@ public class EntityEventsRM {
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
 		Player player = e.getEntity();
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
 
 		if (playerData != null){
 			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
@@ -69,6 +70,8 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
+
+			globalData.setPanelChoice("0");
 		}
 	}
 
@@ -432,6 +435,31 @@ public class EntityEventsRM {
 				} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
 					player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
 				}
+
+				// Tidus Keyblade
+				if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
+					if (player.isUnderWater()){
+						playerData.getStrengthStat().addModifier("Tidus", 5, false, false);
+						player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 10, 1));
+						player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 10, 0));
+					}
+					else if (!player.isUnderWater()){
+						playerData.getStrengthStat().removeModifier("Tidus");
+					}
+				} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)){
+					playerData.getStrengthStat().removeModifier("Tidus");
+				}
+
+				// Panel System
+				if (!player.level().isClientSide && playerData.getAlignment() != Utils.OrgMember.NONE){
+					playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
+					playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
+					playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
+				} else {
+					playerData.getStrengthStat().removeModifier("Panel");
+					playerData.getMagicStat().removeModifier("Panel");
+					playerData.getDefenseStat().removeModifier("Panel");
+				}
 			}
 
 		}
@@ -629,7 +657,7 @@ public class EntityEventsRM {
 			}
 		}
 
-		// Life Steal Test
+		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if(playerData != null) {
@@ -642,6 +670,14 @@ public class EntityEventsRM {
 					player.heal((int) LifeStealAmount);
 				}
 				 */
+
+				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
+				float addDmg = (float) (crtBoosts * 3);
+				if (playerData.isAbilityEquipped(StringsRM.Jecht)){
+					System.out.println(addDmg);
+					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
+					event.getEntity().invulnerableTime = 0;
+				}
 
 			}
 		}
