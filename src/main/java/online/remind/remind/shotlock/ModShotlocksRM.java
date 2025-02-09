@@ -1,12 +1,14 @@
 package online.remind.remind.shotlock;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
+
+import java.util.function.Supplier;
 
 public class ModShotlocksRM {
 
@@ -15,7 +17,7 @@ public class ModShotlocksRM {
 
     static int order = 100;
 
-    public static final RegistryObject<Shotlock>
+    public static final Supplier<Shotlock>
             // BBS Shotlocks
     	FLAME_SALVO = SHOTLOCKS.register(StringsRM.flameSalvo, () -> new ShotlockFlameSalvo(KingdomKeysReMind.MODID + ":" + StringsRM.flameSalvo, order++, 2, 15)),
         BUBBLE_BLASTER = SHOTLOCKS.register(StringsRM.bubbleBlaster, () -> new ShotlockBubbleBlaster(KingdomKeysReMind.MODID + ":" + StringsRM.bubbleBlaster, order++, 2, 15)),

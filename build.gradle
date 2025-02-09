@@ -37,6 +37,9 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
+    flatDir{
+        dir'libs'
+    }
 }
 
 base {
@@ -78,6 +81,7 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    implementation 'kingdomkeys:kingdomkeys:1.21.1-2.6.0'
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -141,6 +145,9 @@ idea {
 java {
     withSourcesJar()
 }
+
+
+
 
 idea {
     module {
