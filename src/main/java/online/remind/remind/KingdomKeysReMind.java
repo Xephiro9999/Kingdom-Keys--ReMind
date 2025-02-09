@@ -116,7 +116,7 @@ public class KingdomKeysReMind {
     private void setup(final FMLCommonSetupEvent event){
         // Some common setup code
 		event.enqueueWork(PacketHandlerRM::register);
-        event.enqueueWork(ModEntitiesRM::registerPlacements);
+        //event.enqueueWork(ModEntitiesRM::registerPlacements);
 
 
         // Org Weapons
