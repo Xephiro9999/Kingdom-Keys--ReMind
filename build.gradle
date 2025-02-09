@@ -1,206 +1,154 @@
+
 plugins {
+    id 'java-library'
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.180'
 }
 
-version = '1.20.1-0.8.5.3.1'
-group = 'online.xephiro.magicksaddon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'KK-ReMind'
-
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // official   MCVersion             Official field/method names from Mojang mapping files
-    // parchment  YYYY.MM.DD-MCVersion  Open community-sourced parameter names and javadocs layered on top of official
-    //
-    // You must be aware of the Mojang license when using the 'official' or 'parchment' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Parchment is an unofficial project maintained by ParchmentMC, separate from MinecraftForge
-    // Additional setup is needed to use their mappings: https://github.com/ParchmentMC/Parchment/wiki/Getting-Started
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-	mappings channel: 'parchment', version: '2023.09.03-1.20.1'
-
-    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            taskName '[Remind]Client'
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            mods {
-                ReMind {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-       		taskName '[Remind]Server'
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            mods {
-                ReMind {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        // This run config launches GameTestServer and runs all registered gametests, then exits.
-        // By default, the server will crash when no gametests are provided.
-        // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
-        	taskName '[Remind]TestServer'
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-        	taskName '[Remind]Datagen'
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
 }
 
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+version = minecraft_version
+group = mod_group_id
 
 repositories {
+    mavenLocal()
     maven {
-        url "https://cursemaven.com/"
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        url = "https://maven.architectury.dev"
         content {
-            includeGroup "curse.maven"
+            includeGroup "dev.architectury"
         }
     }
 
-    flatDir {
-        dir'libs'
+    maven {
+        // saps.dev Maven (KubeJS and Rhino)
+        url = "https://maven.saps.dev/minecraft"
+        content {
+            includeGroup "dev.latvian.mods"
+        }
     }
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    //minecraft 'net.minecraftforge:forge:1.20.1-47.3.7'
-    minecraft 'net.minecraftforge:forge:1.20.1-47.2.30'
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
-    // KK Implementation
-    implementation fg.deobf("curse.maven:kingdomkeys-242862:5694721")
-
-    //implementation fg.deobf("kingdomkeys:kingdomkeys:1.20.1-2.5.4")
-
-    // EFM
-    implementation fg.deobf("curse.maven:epic-fight-mod-405076:5655318")
-
-    // GeckoLib Implementation
-    implementation fg.deobf("curse.maven:geckolib-388172:5188427")
-
-   
-    
+    implementation "net.neoforged:neoforge:${neo_version}"
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 }
 
-// Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "Kingdom Keys - Re:Mind",
-                "Specification-Vendor"    : "Xephiro",
-                "Specification-Version"   : "1.20.1-0.8.5.1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "Xephiro",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
     }
 }
 
-// Example configuration to allow publishing using the maven-publish plugin
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar')
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// publish.dependsOn('reobfJar')
-
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifact jar
+        register('mavenJava', MavenPublication) {
+            from components.java
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/repo"
         }
     }
 }
 
-mixin {
-    add sourceSets.main, "magicksaddon.refmap.json"
-    config "remind.mixins.json"
-}
-
-
-
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
 }
+jar {
+    sourceSets {
+        main {
+            java {
+                exclude '**/integration/epicfight/**'
+                exclude '**/integration/kubejs/**'
+                exclude '**/integration/jer/**'
+            }
+        }
+    }
+}
+java {
+    withSourcesJar()
+}
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
