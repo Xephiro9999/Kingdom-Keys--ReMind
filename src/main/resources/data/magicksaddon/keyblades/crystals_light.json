@@ -4,7 +4,7 @@
     "mag": 13,
     "str": 13
   },
-  "description": "A Keyblade that resembles a legendary weapon of the Warrior of Light. This Keyblade excels in the powers of Light.",
+  "description": "item.magicksaddon.crystals_light.desc",
   "keychain": "magicksaddon:crystals_light_chain",
   "levels": [
     {

@@ -4,7 +4,7 @@
     "mag": 12,
     "str": -3
   },
-  "description": "A Playfully Musical of a Keyblade, requested by Goblex.",
+  "description": "item.magicksaddon.elemental_crescendo.desc",
   "keychain": "magicksaddon:elemental_crescendo_chain",
   "levels": [
     {
