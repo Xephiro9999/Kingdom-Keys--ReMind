@@ -13,9 +13,10 @@ import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.client.ClientPacketHandler;
 import online.kingdomkeys.kingdomkeys.network.Packet;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.network.PacketHandlerRM;
 
 public record SCOpenAddonMenu(CompoundTag playerData, boolean open) implements Packet {
-    public static final Type<SCOpenAddonMenu> ADDON_TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "sc_open_addon_menu"));
+    public static final Type<SCOpenAddonMenu> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "sc_open_addon_menu"));
     public static final StreamCodec<FriendlyByteBuf, SCOpenAddonMenu> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.COMPOUND_TAG,
             SCOpenAddonMenu::playerData,
@@ -26,11 +27,11 @@ public record SCOpenAddonMenu(CompoundTag playerData, boolean open) implements P
     @Override
     public void handle(IPayloadContext context) {
         if (FMLEnvironment.dist.isClient()) {
-            ClientPacketHandler.openMenu(this);
+            PacketHandlerRM.openMenu(this);
         }
     }
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ADDON_TYPE;
+        return TYPE;
     }
 }

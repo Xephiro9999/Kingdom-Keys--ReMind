@@ -65,7 +65,7 @@ public class CreditsScreen extends MenuBackground {
 
         addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Special Thanks to: "),"", 0xe3ce44));
         addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("My loving Fiancee, Ayame."),"", 0x9900cb));
-        addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Toby"),"For helping teach me coding.", 0xfe8600));
+        addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Estelle"),"For helping teach me coding.", 0xfe8600));
         addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Nathan"),"For dealing with my BS", 0x00d18a));
         addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Abelatox"),"For dealing with me and being patient.", 0x1b8621));
         addRenderableWidget(specialThanks = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("PROJECT: Keyblade Community"),"", 0xf7514f));

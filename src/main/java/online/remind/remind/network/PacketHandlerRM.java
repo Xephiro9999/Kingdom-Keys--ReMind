@@ -1,5 +1,6 @@
 package online.remind.remind.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,9 +11,14 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import online.kingdomkeys.kingdomkeys.client.gui.IPlayerDataRequester;
+import online.kingdomkeys.kingdomkeys.client.gui.menu.NoChoiceMenuPopup;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.Packet;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSendPlayerDataToClient;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.client.gui.AddonMenu;
 import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCOpenAddonMenu;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
@@ -25,7 +31,7 @@ public class PacketHandlerRM {
         PayloadRegistrar registrar = event.registrar(KingdomKeysReMind.MODID);
         KingdomKeysReMind.LOGGER.info("REGISTERING PACKETS");
         //ServerToClient
-        registrar.playToClient(SCOpenAddonMenu.ADDON_TYPE, SCOpenAddonMenu.STREAM_CODEC, (payload, context) -> {
+        registrar.playToClient(SCOpenAddonMenu.TYPE, SCOpenAddonMenu.STREAM_CODEC, (payload, context) -> {
             context.enqueueWork(() -> ((SCOpenAddonMenu) payload).handle(context));
         });
         registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
@@ -36,7 +42,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSSetStepTicksPacket.TYPE, CSSetStepTicksPacket.STREAM_CODEC, CSSetStepTicksPacket::handle);
         registrar.playToServer(CSSummonSpiritPacket.TYPE, CSSummonSpiritPacket.STREAM_CODEC, CSSummonSpiritPacket::handle);
         registrar.playToServer(CSPanelPacket.TYPE, CSPanelPacket.STREAM_CODEC, CSPanelPacket::handle);
-        registrar.playToServer(CSOpenAddonMenu.TYPE),CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle)
+        registrar.playToServer(CSOpenAddonMenu.TYPE,CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle);
     }
 
         public static void sendToServer(CustomPacketPayload msg) {
@@ -47,11 +53,25 @@ public class PacketHandlerRM {
             PacketDistributor.sendToPlayer(player, msg);
         }
 
+    public static void sendPlayerDataToClient(SCSendPlayerDataToClient message) {
+        if (Minecraft.getInstance().screen instanceof IPlayerDataRequester gui) {
+            PlayerData data = PlayerData.get(message.playerData(), Minecraft.getInstance().player);
+            gui.updatePlayerData(data);
+        }
+    }
+    public static void openMenu(SCOpenAddonMenu message) {
+        if (message.open()) {
+            Minecraft.getInstance().setScreen(new AddonMenu(PlayerData.get(message.playerData(), Minecraft.getInstance().player)));
+        } else {
+            Minecraft.getInstance().setScreen(new NoChoiceMenuPopup());
+        }
+    }
+
 
         public static void sendToAllPlayers(CustomPacketPayload msg) {
             PacketDistributor.sendToAllPlayers(msg);
         }
-        
+
 
         public static void syncGlobalToAllAround(LivingEntity entity, IGlobalDataRM globalData) {
             if (!entity.level().isClientSide) {

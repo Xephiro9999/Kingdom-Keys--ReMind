@@ -103,7 +103,9 @@ public class EntityEventsRM {
 	public void equipAbility(AbilityEvent.Equip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
-		WorldData worldData = WorldData.get(event.getPlayer().getServer());
+		if (event.getPlayer().getServer() != null) {
+			WorldData worldData = WorldData.get(event.getPlayer().getServer());
+		}
 
 
 		playerData2.setMPOG((int) playerData.getMaxMP());
@@ -122,11 +124,14 @@ public class EntityEventsRM {
 			}
 
 			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
+				if (event.getPlayer().getServer() != null) {
+					WorldData worldData = WorldData.get(event.getPlayer().getServer());
+					Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
 
-				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
-				if (party != null){
-					float friendBoost = party.getMembers().size() - 1;
-					System.out.println(friendBoost);
+					if (party != null){
+						float friendBoost = party.getMembers().size() - 1;
+						System.out.println(friendBoost);
+					}
 				}
 			}
 
