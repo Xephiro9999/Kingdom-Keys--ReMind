@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.common.Mod;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.damagesource.DarknessDamageSource;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -59,7 +59,8 @@ public class RagingBurstRC extends ReactionCommand {
             //System.out.println("Spell Damage - Splash (After Mult): "+ dmg*dmgMult);
             List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((player), player, radius, radius, radius);
             for (LivingEntity e : targetList) {
-                e.hurt(DarknessDamageSource.getDarknessDamage(e, player), dmg);
+                //e.hurt(DarknessDamageSource.getDarknessDamage(e, player), dmg);
+                e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS,player, e), dmg);
                 playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1)));
                 player.level().addParticle(new DustParticleOptions(new Vector3f(0.1F,0F,0F),1F),e.getX() + e.level().random.nextDouble() - 0.55D, e.getY()+ e.level().random.nextDouble() *2D, e.getZ() + e.level().random.nextDouble() - 0.55D, 0, 0, 0);
                 player.heal(dmg * 0.01F);

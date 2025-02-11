@@ -14,7 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.damagesource.DarknessDamageSource;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -101,7 +101,7 @@ public class CometEntity extends ThrowableProjectile {
                                                 if(this.getOwner() instanceof Player) {
                                                         List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((Player) this.getOwner(), this, radius,radius,radius);
                                                         for(LivingEntity e : targetList) {
-                                                                e.hurt(DarknessDamageSource.getDarknessDamage(this, this.getOwner()), dmg * dmgMult);
+                                                                e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS,this, this.getOwner()), dmg);
                                                                 e.invulnerableTime = 0;
                                                         }
                                                 }
@@ -119,7 +119,7 @@ public class CometEntity extends ThrowableProjectile {
                                         //System.out.println("Spell Damage - Splash (After Mult): "+ dmg*dmgMult);
                                         List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((Player) this.getOwner(), this, radius + 1, radius + 1, radius + 1);
                                         for (LivingEntity e : targetList) {
-                                                e.hurt(DarknessDamageSource.getDarknessDamage(this, this.getOwner()), dmg * dmgMult);
+                                                e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS,this, this.getOwner()), dmg);
                                                 e.invulnerableTime = 0;
                                         }
                                 }

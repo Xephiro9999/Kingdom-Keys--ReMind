@@ -15,7 +15,7 @@ A magic mod that adds on to what Kingdom Keys has with elements from other KH ti
 [[dependencies.magicksaddon]]
 modId="kingdomkeys"
 mandatory=true
-versionRange="[1.20.1-2.5.1,)"
+versionRange="[1.20.1-2.5.5a,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.magicksaddon]]
