@@ -5,24 +5,21 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
-import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.reactioncommand.DarkFiragaEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DarkFiragaRC extends ReactionCommand {
 
 	public DarkFiragaRC(ResourceLocation registryName, boolean constantCheck) {
@@ -31,9 +28,9 @@ public class DarkFiragaRC extends ReactionCommand {
 
 	@Override
 	public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-		float dmgMult = (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.3F) + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.3F);
+		PlayerData playerData = PlayerData.get(player);
+		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		float dmgMult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.3F) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.3F);
 		globalData.setRCCooldownTicks(60);
 		//System.out.println(globalData.getRCCooldownTicks());
 		playerData.remFocus(15);
@@ -48,8 +45,8 @@ public class DarkFiragaRC extends ReactionCommand {
 
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+		PlayerData playerData = PlayerData.get(player);
+		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 		if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 			if(playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
 				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() && globalData.getRCCooldownTicks() == 0) {

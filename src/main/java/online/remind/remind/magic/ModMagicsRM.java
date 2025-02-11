@@ -14,7 +14,7 @@ public class ModMagicsRM {
     static int order = 11;
 
     //The Command
-    public static DeferredRegister<Magic> MAGIC = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "magics"), "magicksaddon");
+    public static DeferredRegister<Magic> MAGIC = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "magics"), KingdomKeysReMind.MODID);
 
     //Normal Spells
     public static final Supplier<Magic>

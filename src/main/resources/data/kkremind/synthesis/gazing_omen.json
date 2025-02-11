@@ -1,0 +1,39 @@
+{
+  "cost": 10000,
+  "tier": 6,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_twilight_crystal",
+      "quantity": "7"
+    },
+    {
+      "material": "kingdomkeys:mat_twilight_gem",
+      "quantity": "10"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_gem",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_mythril_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_frost_gem",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_writhing_crystal",
+      "quantity": "7"
+    },
+    {
+      "material": "kingdomkeys:mat_writhing_gem",
+      "quantity": "10"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:gazing_omen_chain",
+    "quantity": 1
+  }
+}

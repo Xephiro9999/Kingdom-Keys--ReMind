@@ -8,8 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -24,8 +23,8 @@ public class ShotlockOrbItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        Shotlock shotlockInstance = ModShotlocks.registry.get().getValue(new ResourceLocation(shotlocks));
+        PlayerData playerData = PlayerData.get(player);
+        Shotlock shotlockInstance = ModShotlocks.registry.get(ResourceLocation.parse(shotlocks));
 
         if(!world.isClientSide){
             if (!playerData.getShotlockList().contains(shotlocks)){

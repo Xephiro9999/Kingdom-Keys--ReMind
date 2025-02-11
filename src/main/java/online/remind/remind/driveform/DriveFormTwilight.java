@@ -2,15 +2,13 @@ package online.remind.remind.driveform;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DriveFormTwilight extends DriveForm {
     public DriveFormTwilight(String registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
@@ -22,7 +20,7 @@ public class DriveFormTwilight extends DriveForm {
 
     @Override
     public boolean isSlotVisible(Player player) {
-    	IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+    	PlayerData playerData = PlayerData.get(player);
     	if (playerData != null) {
 			if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
 				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm))

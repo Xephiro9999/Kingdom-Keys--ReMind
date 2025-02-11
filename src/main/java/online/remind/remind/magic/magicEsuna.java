@@ -9,12 +9,11 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -29,8 +28,8 @@ public class magicEsuna extends Magic {
 
 	@Override
 	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-		IGlobalCapabilities globalData2 = ModCapabilities.getGlobal(player);
+		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalData globalData2 = GlobalData.get(player);
 
 		if (globalData != null) {
 			caster.swing(InteractionHand.MAIN_HAND);
@@ -38,12 +37,13 @@ public class magicEsuna extends Magic {
 
 			List<MobEffectInstance> effectsList = new ArrayList<>();
 			for (MobEffectInstance e : player.getActiveEffects()) {
-				if (e.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+				if (e.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
 					effectsList.add(e);
 				}
 			}
 
 			for(MobEffectInstance badEffect: effectsList){
+				//TODO take a look at EffectCure and removeEffectsCuredBy
 				player.removeEffect(badEffect.getEffect());
 			}
 

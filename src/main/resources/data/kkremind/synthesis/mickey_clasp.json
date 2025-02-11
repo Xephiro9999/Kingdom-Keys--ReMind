@@ -1,0 +1,23 @@
+{
+  "cost": 1500,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_hungry_shard",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_soothing_stone",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_crystal",
+      "quantity": "5"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:mickey_clasp",
+    "quantity": 1
+  },
+  "tier": 5
+}

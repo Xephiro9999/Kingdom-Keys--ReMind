@@ -14,8 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.entity.shotlock.VolleyShotEntity;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -39,10 +37,6 @@ public class FlameSalvoCoreEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public FlameSalvoCoreEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super((EntityType<? extends ThrowableProjectile>) ModEntitiesRM.TYPE_SHOTLOCK_FLAME_SALVO.get(), world);
-    }
-
     public FlameSalvoCoreEntity(Level world) {
         super(ModEntitiesRM.TYPE_SHOTLOCK_FLAME_SALVO.get(), world);
         this.blocksBuilding = true;
@@ -61,13 +55,8 @@ public class FlameSalvoCoreEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0F;
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     int i = 0;
@@ -164,8 +153,8 @@ public class FlameSalvoCoreEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER, Optional.of(new UUID(0L, 0L)));
-        this.entityData.define(TARGETS, "");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, Optional.of(new UUID(0L, 0L)));
+        builder.define(TARGETS, "");
     }
 }

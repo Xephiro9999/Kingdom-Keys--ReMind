@@ -3,28 +3,23 @@ package online.remind.remind.reactioncommands;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import org.joml.Vector3f;
-import yesman.epicfight.gameasset.EpicFightSounds;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class CounterBlastRC extends ReactionCommand {
     public CounterBlastRC(ResourceLocation registryName, boolean constantCheck) {
         super(registryName, constantCheck);
@@ -32,8 +27,8 @@ public class CounterBlastRC extends ReactionCommand {
 
     @Override
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = DamageCalculation.getMagicDamage(player);
         float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.025F));
         float radius = (float) (0.075F * playerData.getMaxMP());
@@ -46,7 +41,7 @@ public class CounterBlastRC extends ReactionCommand {
         player.swing(InteractionHand.MAIN_HAND);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-        target.level().playSound(null, target.blockPosition(), EpicFightSounds.LASER_BLAST.get(), SoundSource.PLAYERS, 1F, 1F);
+        //target.level().playSound(null, target.blockPosition(), EpicFightSounds.LASER_BLAST.get(), SoundSource.PLAYERS, 1F, 1F); TODO: No EFM 1.21
 
 
         List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((player), player, radius, radius, radius);
@@ -68,8 +63,8 @@ public class CounterBlastRC extends ReactionCommand {
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
            if (playerData.isAbilityEquipped(StringsRM.counterBlast) && globalData.getCanCounter() == 1) {
                return true;

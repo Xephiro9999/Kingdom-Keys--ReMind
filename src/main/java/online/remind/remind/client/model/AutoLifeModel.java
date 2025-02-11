@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import online.remind.remind.KingdomKeysReMind;
 
 public class AutoLifeModel<T extends Entity> extends EntityModel<T> {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(KingdomKeysReMind.MODID, "autolife"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "autolife"), "main");
 	private final ModelPart Base;
 
 	public AutoLifeModel(ModelPart root) {
@@ -47,7 +47,7 @@ public class AutoLifeModel<T extends Entity> extends EntityModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		Base.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+		Base.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
 	}
 }

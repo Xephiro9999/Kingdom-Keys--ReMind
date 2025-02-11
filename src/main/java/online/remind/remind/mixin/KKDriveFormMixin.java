@@ -2,9 +2,7 @@ package online.remind.remind.mixin;
 
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.KingdomKeysReMind;
@@ -20,7 +18,7 @@ public class KKDriveFormMixin {
 
     @Inject(method = "initDrive", at = @At("TAIL"), remap = false)
     public void initDriveInject(Player player, CallbackInfo ci) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+        PlayerData playerData = PlayerData.get(player);
         if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
             if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
                 if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.keybladeOfPeoplesHeartsChain.get()) {

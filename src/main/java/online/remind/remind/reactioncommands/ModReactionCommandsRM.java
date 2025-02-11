@@ -5,12 +5,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.function.Supplier;
 
 public class ModReactionCommandsRM {
-    public static Supplier<ReactionCommand> REACTION_COMMANDS = (Supplier<ReactionCommand>) DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "reactioncommands"), "magicksaddon");
+    public static DeferredRegister<ReactionCommand> REACTION_COMMANDS = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "reactioncommands"), KingdomKeysReMind.MODID);
 
 
     public static final Supplier<ReactionCommand>

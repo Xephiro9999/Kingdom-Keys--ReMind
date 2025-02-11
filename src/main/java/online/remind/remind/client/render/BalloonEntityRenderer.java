@@ -13,10 +13,11 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.model.BalloonModel;
 
+import java.awt.*;
 import javax.annotation.Nullable;
 
 public class BalloonEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/balloon.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/balloon.png");
     BalloonModel<Entity> balloonModel;
 
     public BalloonEntityRenderer(EntityRendererProvider.Context context){
@@ -32,7 +33,7 @@ public class BalloonEntityRenderer extends EntityRenderer<ThrowableProjectile> {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
             matrixStackIn.translate(0, -0.7, 0);
-            this.balloonModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this.balloonModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

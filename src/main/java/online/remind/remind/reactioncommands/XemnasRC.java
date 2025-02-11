@@ -3,15 +3,13 @@ package online.remind.remind.reactioncommands;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class XemnasRC extends ReactionCommand {
 
 
@@ -23,7 +21,7 @@ public class XemnasRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
         if (conditionsToAppear(player, player)) {
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+            PlayerData playerData = PlayerData.get(player);
 
         }
     }
@@ -31,7 +29,7 @@ public class XemnasRC extends ReactionCommand {
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+        PlayerData playerData = PlayerData.get(player);
 
         if (playerData != null) {
             if (player.getMainHandItem().getItem() instanceof IOrgWeapon) {

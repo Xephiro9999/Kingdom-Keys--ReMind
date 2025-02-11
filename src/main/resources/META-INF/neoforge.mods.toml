@@ -20,13 +20,13 @@ ordering="NONE"
 side="BOTH"
 [[dependencies.${mod_id}]]
 modId="kingdomkeys"
-mandatory=true
+type="required"
 versionRange="[1.21.1-2.6.0,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.${mod_id}]]
 modId="epicfight"
-mandatory=false
+type="optional"
 versionRange="[20.8,)"
 ordering="AFTER"
 side="BOTH"

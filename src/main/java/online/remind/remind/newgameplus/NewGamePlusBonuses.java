@@ -2,17 +2,16 @@ package online.remind.remind.newgameplus;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 
 public class NewGamePlusBonuses {
 
     public void NGPlusBonus() {
         Player player = Minecraft.getInstance().player;
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         /*
         switch(globalData.getPrestigeLvl()){
             case 1:

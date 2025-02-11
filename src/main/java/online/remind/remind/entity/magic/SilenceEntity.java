@@ -3,6 +3,7 @@ package online.remind.remind.entity.magic;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,14 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.ModEntitiesRM;
@@ -31,17 +29,13 @@ public class SilenceEntity extends ThrowableProjectile {
     int maxTicks = 100, radius = 2;
     float timeMult;
 
-    IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+    WorldData worldData = WorldData.get(level().getServer());
 
     LivingEntity lockOnEntity;
 
     public SilenceEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
         this.blocksBuilding = true;
-    }
-
-    public SilenceEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_SILENCE.get(), world);
     }
 
     public SilenceEntity(Level world) {
@@ -56,17 +50,12 @@ public class SilenceEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
-    protected float getGravity() {
-        return 0F;
-    }
-
-    @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
@@ -101,13 +90,13 @@ public class SilenceEntity extends ThrowableProjectile {
 
             if (ertResult != null && ertResult.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) ertResult.getEntity();
-                IPlayerCapabilities casterData = ModCapabilities.getPlayer((Player) getOwner());
+                PlayerData casterData = PlayerData.get((Player) getOwner());
                 if (ertResult != null && ertResult.getEntity() instanceof Player) {
-                    IPlayerCapabilities targetData = ModCapabilities.getPlayer((Player) target);
+                    PlayerData targetData = PlayerData.get((Player) target);
                     if (target != getOwner()) {
                         Party p = null;
                         if (getOwner() != null) {
-                            p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                            p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                         }
                         if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                             double time = (timeMult * (casterData.getMaxMP()/2));
@@ -120,7 +109,7 @@ public class SilenceEntity extends ThrowableProjectile {
                                 targetData.setMagicCooldownTicks((int) time);
                                 targetData.setLimitCooldownTicks((int) time);
                                 playSound(ModSoundsRM.SILENCEHIT.get(),1F,1F);
-                                PacketHandler.sendTo(new SCSyncCapabilityPacket(targetData), (ServerPlayer) target);
+                                PacketHandler.sendTo(new SCSyncPlayerData((Player) target), (ServerPlayer) target);
                                 }
                             }
                         }

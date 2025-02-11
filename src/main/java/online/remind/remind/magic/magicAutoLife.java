@@ -6,8 +6,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -20,7 +20,7 @@ public class magicAutoLife extends Magic {
 
     @Override
 	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (globalData != null) {
             caster.swing(InteractionHand.MAIN_HAND);
             globalData.setAutoLifeActive(1);

@@ -1,19 +1,21 @@
 package online.remind.remind.network.stc;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkEvent;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class SCSyncGlobalCapabilityToAllPacketRM {
+public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload {
+    public static final Type<SCSyncGlobalCapabilityToAllPacketRM> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "sc_sync_global_capability_to_all"));
+    public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel;
@@ -23,7 +25,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
 
     }
 
-    public SCSyncGlobalCapabilityToAllPacketRM(int id, IGlobalCapabilitiesRM capability) {
+    public SCSyncGlobalCapabilityToAllPacketRM(int id, IGlobalDataRM capability) {
         this.id = id;
         this.berserkLvl= capability.getBerserkLevel();
         this.berserkTicks = capability.getBerserkTicks();
@@ -46,26 +48,26 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         this.defPanel = capability.getDEFPanel();
     }
 
-    public void encode(FriendlyByteBuf buffer){
-        buffer.writeInt(id);
-        buffer.writeInt(this.berserkLvl);
-        buffer.writeInt(this.berserkTicks);
-        buffer.writeInt(this.prestige);
-        buffer.writeInt(this.strBonus);
-        buffer.writeInt(this.magBonus);
-        buffer.writeInt(this.defBonus);
-        buffer.writeInt(this.NGPlusWarriorCount);
-        buffer.writeInt(this.NGPlusMysticCount);
-        buffer.writeInt(this.NGPlusGuardianCount);
-        buffer.writeInt(this.stepTicks);
-        buffer.writeByte(this.stepType);
-        buffer.writeInt(this.riskchargeCount);
-        buffer.writeInt(this.autoLife);
-        buffer.writeInt(this.rcCooldown);
-        buffer.writeInt(this.CanCounter);
-        buffer.writeInt(this.strPanel);
-        buffer.writeInt(this.magPanel);
-        buffer.writeInt(this.defPanel);
+    public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
+        buffer.writeInt(message.id);
+        buffer.writeInt(message.berserkLvl);
+        buffer.writeInt(message.berserkTicks);
+        buffer.writeInt(message.prestige);
+        buffer.writeInt(message.strBonus);
+        buffer.writeInt(message.magBonus);
+        buffer.writeInt(message.defBonus);
+        buffer.writeInt(message.NGPlusWarriorCount);
+        buffer.writeInt(message.NGPlusMysticCount);
+        buffer.writeInt(message.NGPlusGuardianCount);
+        buffer.writeInt(message.stepTicks);
+        buffer.writeByte(message.stepType);
+        buffer.writeInt(message.riskchargeCount);
+        buffer.writeInt(message.autoLife);
+        buffer.writeInt(message.rcCooldown);
+        buffer.writeInt(message.CanCounter);
+        buffer.writeInt(message.strPanel);
+        buffer.writeInt(message.magPanel);
+        buffer.writeInt(message.defPanel);
 
     }
 
@@ -96,36 +98,35 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         return msg;
     }
 
-    public static void handle(final SCSyncGlobalCapabilityToAllPacketRM message, Supplier<NetworkEvent.Context> ctx) {
-    	ctx.get().enqueueWork(() -> {
+    public static void handle(final SCSyncGlobalCapabilityToAllPacketRM message, IPayloadContext ctx) {
+    	ctx.enqueueWork(() -> {
 			LivingEntity entity = (LivingEntity) Minecraft.getInstance().level.getEntity(message.id);
 			
 			if (entity != null) {
-				LazyOptional<IGlobalCapabilitiesRM> globalData = entity.getCapability(ModCapabilitiesRM.GLOBAL_CAPABILITIES);
-				globalData.ifPresent(cap -> {
-					cap.setBerserkTicks(message.berserkTicks, message.berserkLvl);
-					cap.setPrestigeLvl(message.prestige);
-                    cap.setSTRBonus(message.strBonus);
-                    cap.setMAGBonus(message.magBonus);
-                    cap.setDEFBonus(message.defBonus);
-                    cap.setNGPWarriorCount(message.NGPlusWarriorCount);
-                    cap.setNGPMysticCount(message.NGPlusMysticCount);
-                    cap.setNGPGuardianCount(message.NGPlusGuardianCount);
-                    cap.setStepTicks(message.stepTicks, message.stepType);
-                    cap.setRiskchargeCount(message.riskchargeCount);
-                    cap.setAutoLifeActive(message.autoLife);
-                    cap.setRCCooldownTicks(message.rcCooldown);
-                    cap.setCanCounter(message.CanCounter);
+                IGlobalDataRM globalData = ModDataRM.getGlobal(entity);
+                globalData.setBerserkTicks(message.berserkTicks, message.berserkLvl);
+                globalData.setPrestigeLvl(message.prestige);
+                globalData.setSTRBonus(message.strBonus);
+                globalData.setMAGBonus(message.magBonus);
+                globalData.setDEFBonus(message.defBonus);
+                globalData.setNGPWarriorCount(message.NGPlusWarriorCount);
+                globalData.setNGPMysticCount(message.NGPlusMysticCount);
+                globalData.setNGPGuardianCount(message.NGPlusGuardianCount);
+                globalData.setStepTicks(message.stepTicks, message.stepType);
+                globalData.setRiskchargeCount(message.riskchargeCount);
+                globalData.setAutoLifeActive(message.autoLife);
+                globalData.setRCCooldownTicks(message.rcCooldown);
+                globalData.setCanCounter(message.CanCounter);
 
-                    cap.setSTRPanel(message.strPanel);
-                    cap.setMAGPanel(message.magPanel);
-                    cap.setDEFPanel(message.defPanel);
-
-
-				});
+                globalData.setSTRPanel(message.strPanel);
+                globalData.setMAGPanel(message.magPanel);
+                globalData.setDEFPanel(message.defPanel);
 			}
 		});
-		ctx.get().setPacketHandled(true);
     }
 
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 }

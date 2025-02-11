@@ -1,0 +1,152 @@
+{
+  "haste": {
+    "sounds": [
+      "kkremind:haste"
+    ]
+  },
+    "slow": {
+      "sounds": [
+        "kkremind:slow"
+      ]
+    },
+      "holy": {
+        "sounds": [
+          "kkremind:holy"
+        ]
+      },
+        "ruin": {
+        "sounds": [
+          "kkremind:ruin"
+        ]
+      },
+        "balloon": {
+          "sounds": [
+            "kkremind:balloon"
+          ]
+      },
+        "balloon_bounce": {
+          "sounds": [
+            "kkremind:balloon_bounce"
+          ]
+      },
+        "player_cast": {
+          "sounds": [
+            "kkremind:player_cast"
+          ]
+      },
+        "ultima_cast": {
+          "sounds": [
+            "kkremind:ultima_cast"
+          ]
+      },
+        "ultima_explosion": {
+          "sounds": [
+            "kkremind:ultima_explosion"
+          ]
+      },
+        "berserk": {
+          "sounds": [
+            "kkremind:berserk"
+          ]
+        },
+        "auto_life": {
+          "sounds": [
+            "kkremind:auto_life"
+          ]
+        },
+        "berserk2": {
+          "sounds": [
+            "kkremind:berserk2"
+          ]
+      },
+      "darkstep1":{
+        "sounds": [
+          "kkremind:darkstep1"
+        ]
+      },
+      "darkstep2":{
+        "sounds": [
+          "kkremind:darkstep2"
+        ]
+      },
+      "lightstep1":{
+        "sounds": [
+          "kkremind:lightstep1"
+        ]
+      },
+      "lightstep2":{
+        "sounds": [
+          "kkremind:lightstep2"
+        ]
+      },
+      "riskcharge": {
+        "sounds": [
+          "kkremind:riskcharge"
+        ]
+      },
+      "drain": {
+        "sounds": [
+          "kkremind:drain"
+        ]
+      },
+      "osmose": {
+        "sounds": [
+          "kkremind:osmose"
+        ]
+      },
+      "silencehit": {
+        "sounds": [
+          "kkremind:silencehit"
+        ]
+      },
+      "warp_hit_player": {
+        "sounds": [
+          "kkremind:warp_hit_player"
+        ]
+      },
+      "esuna": {
+        "sounds":[
+          "kkremind:esuna"
+        ]
+      },
+      "dispel": {
+        "sounds": [
+          "kkremind:dispel"
+        ]
+      },
+      "light_beam": {
+        "sounds": [
+          "kkremind:light_beam"
+        ]
+      },
+      "dark_mine": {
+        "sounds": [
+          "kkremind:dark_mine"
+        ]
+      },
+      "dark_mine_alive": {
+        "sounds": [
+          "kkremind:dark_mine_alive"
+          ]
+      },
+      "twilight_step": {
+        "sounds": [
+          "kkremind:twilight_step"
+        ]
+      },
+      "dual_shot": {
+        "sounds": [
+          "kkremind:dual_shot"
+        ]
+      },
+      "heartless_angel": {
+        "sounds": [
+          "kkremind:heartless_angel"
+        ]
+      },
+      "darkness": {
+        "sounds": [
+          "kkremind:darkness"
+        ]
+      }
+  }

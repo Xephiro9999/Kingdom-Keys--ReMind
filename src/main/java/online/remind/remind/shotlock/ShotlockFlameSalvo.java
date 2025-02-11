@@ -2,8 +2,8 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.KingdomKeysReMind;
@@ -11,7 +11,6 @@ import online.remind.remind.entity.shotlock.FlameSalvoCoreEntity;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class ShotlockFlameSalvo extends Shotlock {
 
     public ShotlockFlameSalvo(String registeryName, int order, int cooldown, int max){
@@ -21,7 +20,7 @@ public class ShotlockFlameSalvo extends Shotlock {
     @Override
     public void onUse(Player player, List<Entity> targetList) {
 
-        float damage = getDamage(player) + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F);
+        float damage = getDamage(player) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F);
         FlameSalvoCoreEntity core = new FlameSalvoCoreEntity(player.level(), player, targetList, damage);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);

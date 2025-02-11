@@ -3,20 +3,17 @@ package online.remind.remind.client.gui;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
-import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSPanelPacket;
-import online.remind.remind.network.cts.CSPrestigePacket;
 
 import java.awt.*;
 
@@ -38,8 +35,8 @@ public class PanelsMenu extends MenuBackground {
     }
 
     protected void action(String string) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(minecraft.player);
+        PlayerData playerData = PlayerData.get(minecraft.player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(minecraft.player);
 
         if (string.equals("back"))
             GUIHelperRM.openAddonMenu();
@@ -128,8 +125,8 @@ public class PanelsMenu extends MenuBackground {
     public void init() {
 
         Player player;
-        final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
-        IGlobalCapabilitiesRM addedData = ModCapabilitiesRM.getGlobal(minecraft.player);
+        final PlayerData playerData = PlayerData.get(minecraft.player);
+        IGlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
 
         super.init();
         this.renderables.clear();

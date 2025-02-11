@@ -21,7 +21,7 @@ import online.remind.remind.entity.mob.ChirithyEntity;
 
 public class chirithyModel<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(KingdomKeysReMind.MODID, "chirithy"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "chirithy"), "main");
 	private final ModelPart chirithy;
 	private final ModelPart head;
 
@@ -98,12 +98,13 @@ public class chirithyModel<T extends Entity> extends EntityModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		chirithy.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+		chirithy.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
 	}
 
 
 	public ModelPart root(){
 		return chirithy;
 	}
+
 }

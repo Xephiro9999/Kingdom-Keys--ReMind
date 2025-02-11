@@ -4,6 +4,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -17,10 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.entity.mob.MarluxiaEntity;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -39,10 +37,6 @@ public class WarpEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public WarpEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_WARP.get(), world);
-    }
-
     public WarpEntity(Level world) {
         super(ModEntitiesRM.TYPE_WARP.get(), world);
         this.blocksBuilding = true;
@@ -54,17 +48,12 @@ public class WarpEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
-    protected float getGravity() {
-        return 0F;
-    }
-
-    @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
@@ -108,7 +97,7 @@ public class WarpEntity extends ThrowableProjectile {
                 }
             }
 
-            IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+            WorldData worldData = WorldData.get(level().getServer());
             if (getOwner() != null && worldData != null) {
                 List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(radius));
                 Party casterParty = worldData.getPartyFromMember(getOwner().getUUID());

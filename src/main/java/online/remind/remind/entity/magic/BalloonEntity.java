@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,11 +15,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Party.Member;
@@ -37,10 +35,6 @@ public class BalloonEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public BalloonEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_BALLOON.get(), world);
-    }
-
     public BalloonEntity(Level world) {
         super(ModEntitiesRM.TYPE_BALLOON.get(), world);
         this.blocksBuilding = true;
@@ -57,15 +51,9 @@ public class BalloonEntity extends ThrowableProjectile {
         this.level().explode(this, this.blockPosition().getX(), this.blockPosition().getY() + (double)(this.getBbHeight() / 1.0F), this.blockPosition().getZ(), explosionSize, false, Level.ExplosionInteraction.NONE);
     }
 
-
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0.125F;
+    protected double getDefaultGravity() {
+        return 0.125;
     }
 
     @Override
@@ -101,7 +89,7 @@ public class BalloonEntity extends ThrowableProjectile {
                 if (target != getOwner()) {
                     Party p = null;
                     if (getOwner() != null) {
-                        p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                     }
                     if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                         float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2F : 2;
@@ -127,7 +115,7 @@ public class BalloonEntity extends ThrowableProjectile {
                 double y = mot.y();
                 double z = mot.z();
 
-                LivingEntity target = this.tickCount > 30 ? getNearbyEntity(ModCapabilities.getWorld(level())) : null;
+                LivingEntity target = this.tickCount > 30 ? getNearbyEntity(WorldData.get(level().getServer())) : null;
                 if(brtResult.getDirection() == Direction.UP || brtResult.getDirection() == Direction.DOWN){
                 	if(target != null) {
                 		this.shoot(target.getX() - this.getX(), -y, target.getZ() - this.getZ(), 0.5f, 0);
@@ -149,7 +137,7 @@ public class BalloonEntity extends ThrowableProjectile {
 
     }
 
-    private LivingEntity getNearbyEntity(IWorldCapabilities worldData) {
+    private LivingEntity getNearbyEntity(WorldData worldData) {
     	List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(3));
     	if(worldData == null)
     		return null;
@@ -181,11 +169,8 @@ public class BalloonEntity extends ThrowableProjectile {
         this.maxTicks = maxTicks;
     }
 
-
-
     @Override
-    protected void defineSynchedData() {
-        // TODO Auto-generated method stub
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 }

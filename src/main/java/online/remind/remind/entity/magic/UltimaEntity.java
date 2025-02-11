@@ -19,10 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.entity.magic.MagnegaEntity;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -45,10 +42,6 @@ public class UltimaEntity extends ThrowableProjectile {
 		this.blocksBuilding = true;
 	}
 
-	public UltimaEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-		super(ModEntitiesRM.TYPE_ULTIMA.get(), world);
-	}
-
 	public UltimaEntity(Level world) {
 		super(ModEntitiesRM.TYPE_ULTIMA.get(), world);
 		this.blocksBuilding = true;
@@ -60,13 +53,8 @@ public class UltimaEntity extends ThrowableProjectile {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-	}
-
-	@Override
-	protected float getGravity() {
-		return 0F;
+	protected double getDefaultGravity() {
+		return 0;
 	}
 
 	double a = 0;
@@ -79,7 +67,7 @@ public class UltimaEntity extends ThrowableProjectile {
 				this.remove(RemovalReason.KILLED);
 			}
 
-			IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+			WorldData worldData = WorldData.get(level().getServer());
 			if (worldData == null || getOwner() == null) {
 				this.remove(RemovalReason.KILLED);
 				return;
@@ -167,7 +155,7 @@ public class UltimaEntity extends ThrowableProjectile {
 					if (target != getOwner()) {
 						Party p = null;
 						if (getOwner() != null) {
-							p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+							p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
 						}
 						if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { // If caster is not in a party || the party doesn't have the target in it || the
 																											// party has FF on
@@ -213,7 +201,7 @@ public class UltimaEntity extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(STARTING_TICKS, -1);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(STARTING_TICKS, -1);
 	}
 }

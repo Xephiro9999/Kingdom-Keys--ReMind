@@ -1,0 +1,27 @@
+{
+  "cost": 2500,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_soothing_gem",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_gem",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:mat_hungry_gem",
+      "quantity": "6"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_crystal",
+      "quantity": "4"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:breakthrough",
+    "quantity": 1
+  },
+  "tier": 6
+}

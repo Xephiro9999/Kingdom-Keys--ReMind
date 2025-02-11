@@ -1,0 +1,59 @@
+{
+  "parent": "neoforge:item/default",
+  "loader": "neoforge:obj",
+  "flip_v" : "true",
+  "model": "kkremind:models/item/keyblade/xephiro_keyblade.obj",
+  "textures": {
+    "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0.0, 180.0, 0.0 ],
+      "translation": [0.0, -12.5, 0.0 ],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "thirdperson_righthand": {
+      "rotation": [0.0, 180.0, 0.0 ],
+      "translation": [-1.5, -15, -1.5 ],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0.0, 180.0, 0.0 ],
+      "translation": [0.0, -12.5, 0.0 ],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0.0, -180.0, 0.0 ],
+      "translation": [1.5, -15, -1.5 ],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "gui": {
+      "rotation": [0, 90.0, 45.0 ],
+      "translation": [0.0, -10.0, 0.0 ],
+      "scale": [0.20, 0.20, 0.20]
+    },
+    "ground": {
+      "rotation": [0, 90.0, 45.0 ],
+      "translation": [0.0, 0.0, 0.0 ],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "rotation": [0.0, 90.0, 0.0 ],
+      "translation": [0.0, 0.0, 0.0 ],
+      "scale": [0.25, 0.25, 0.25]
+    }
+  },
+  "visibility": {
+		"object_1": "hide",
+		"object_2": "default",
+		"object_3": "show"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+      }
+    }
+  }
+}

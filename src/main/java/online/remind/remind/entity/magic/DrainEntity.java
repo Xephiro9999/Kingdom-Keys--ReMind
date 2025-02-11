@@ -3,6 +3,7 @@ package online.remind.remind.entity.magic;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,21 +13,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.entity.ModEntitiesRM;
 import org.joml.Vector3f;
 
 public class DrainEntity extends ThrowableProjectile {
 
-    IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+    WorldData worldData = WorldData.get(level().getServer());
 
     int maxTicks = 100;
     float dmgMult = 1;
@@ -35,10 +33,6 @@ public class DrainEntity extends ThrowableProjectile {
     public DrainEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
         this.blocksBuilding = true;
-    }
-
-    public DrainEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_DRAIN.get(), world);
     }
 
     public DrainEntity(Level world) {
@@ -53,17 +47,12 @@ public class DrainEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
-    protected float getGravity() {
-        return 0F;
-    }
-
-    @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
@@ -100,13 +89,13 @@ public class DrainEntity extends ThrowableProjectile {
 
             if (ertResult != null && ertResult.getEntity() instanceof LivingEntity) {
                 LivingEntity target = (LivingEntity) ertResult.getEntity();
-                IPlayerCapabilities casterData = ModCapabilities.getPlayer((Player) getOwner());
+                PlayerData casterData = PlayerData.get((Player) getOwner());
                 if (ertResult != null && ertResult.getEntity() instanceof Player) {
-                IPlayerCapabilities targetData = ModCapabilities.getPlayer((Player) target);
+                PlayerData targetData = PlayerData.get((Player) target);
                 if (target != getOwner()) {
                     Party p = null;
                     if (getOwner() != null) {
-                        p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                     }
                     if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                         float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2.5F : 2;
@@ -120,7 +109,7 @@ public class DrainEntity extends ThrowableProjectile {
                             // HP & Hunger Give to Caster
                             ((Player) getOwner()).heal(dmg);
                             ((Player) getOwner()).getFoodData().eat(5,5);
-                            PacketHandler.sendTo(new SCSyncCapabilityPacket(casterData), (ServerPlayer) getOwner());
+                            PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
                         }
                     }
                 }
@@ -132,7 +121,7 @@ public class DrainEntity extends ThrowableProjectile {
                             target.hurt(damageSources().indirectMagic(this, this.getOwner()), dmg);
                             ((Player) getOwner()).heal(dmg);
                             ((Player) getOwner()).getFoodData().eat(5,5);
-                            PacketHandler.sendTo(new SCSyncCapabilityPacket(casterData), (ServerPlayer) getOwner());
+                            PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
                         }
                 }
                 remove(RemovalReason.KILLED);

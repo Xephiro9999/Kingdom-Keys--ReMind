@@ -1,0 +1,27 @@
+{
+  "cost": 1600,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_writhing_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_blazing_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_illusory_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_sinister_crystal",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:raging_heart",
+    "quantity": 1
+  },
+  "tier": 6
+}

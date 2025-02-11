@@ -1,21 +1,17 @@
 package online.remind.remind.handler;
 
-import com.ibm.icu.text.MessagePattern;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 
@@ -27,8 +23,8 @@ public class ClientEventsRM {
 		if (event.getEntity() != null){
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
-				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-				IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
+				PlayerData playerData = PlayerData.get(player);
+				IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 				if (playerData != null){
 					// Light and Dark Step SFX
 					if(globalData.getStepTicks() > 0) {

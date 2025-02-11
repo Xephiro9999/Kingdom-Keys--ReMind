@@ -1,0 +1,27 @@
+{
+  "cost": 1500,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_evanescent_crystal",
+      "quantity": "1"
+    },
+    {
+      "material": "kingdomkeys:mat_mythril_stone",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_remembrance_gem",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_twilight_gem",
+      "quantity": "4"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:nothingness_binder",
+    "quantity": 1
+  },
+  "tier": 4
+}

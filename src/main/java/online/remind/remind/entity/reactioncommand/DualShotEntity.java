@@ -3,6 +3,7 @@ package online.remind.remind.entity.reactioncommand;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,10 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -36,10 +34,6 @@ public class DualShotEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public DualShotEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_DUAL_SHOT.get(), world);
-    }
-
     public DualShotEntity(Level world) {
         super(ModEntitiesRM.TYPE_DUAL_SHOT.get(), world);
         this.blocksBuilding = true;
@@ -52,17 +46,12 @@ public class DualShotEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
-    protected float getGravity() {
-        return 0F;
-    }
-
-    @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     @Override
@@ -136,7 +125,7 @@ public class DualShotEntity extends ThrowableProjectile {
                 }
             }
 
-            IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+            WorldData worldData = WorldData.get(level().getServer());
             if (rtRes instanceof EntityHitResult) {
                 ertResult = (EntityHitResult) rtRes;
             }
@@ -151,7 +140,7 @@ public class DualShotEntity extends ThrowableProjectile {
                 if (target != getOwner()) {
                     Party p = null;
                     if (getOwner() != null) {
-                        p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                     }
                     if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                         float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 1.25F : 2;

@@ -15,7 +15,7 @@ import online.remind.remind.client.model.HolyModel;
 import javax.annotation.Nullable;
 
 public class HolyEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/holy.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/holy.png");
     HolyModel holyModel;
 
     public HolyEntityRenderer(EntityRendererProvider.Context context){
@@ -34,7 +34,7 @@ public class HolyEntityRenderer extends EntityRenderer<ThrowableProjectile> {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(1.5F, 1.5F, 1.5F);
             matrixStackIn.translate(0, 0.08, 0.08);
-            this.holyModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this.holyModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

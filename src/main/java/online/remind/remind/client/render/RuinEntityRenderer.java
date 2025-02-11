@@ -16,7 +16,7 @@ import online.remind.remind.client.model.RuinModel;
 import javax.annotation.Nullable;
 
 public class RuinEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/ruin.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/ruin.png");
     RuinModel<Entity> ruinModel;
 
     public RuinEntityRenderer(EntityRendererProvider.Context context){
@@ -34,7 +34,7 @@ public class RuinEntityRenderer extends EntityRenderer<ThrowableProjectile> {
         {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
-            this.ruinModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this.ruinModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

@@ -4,9 +4,9 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 
 @OnlyIn(Dist.CLIENT)
@@ -37,8 +37,8 @@ public class BerserkAuraSoundInstance extends AbstractTickableSoundInstance {
         if(ent.isRemoved()) {
             this.stop();
         } else {
-            if (ModCapabilitiesRM.getGlobal(ent) != null) {
-                if(ModCapabilitiesRM.getGlobal(ent).getBerserkTicks() <= 0) {
+            if (ModDataRM.getGlobal(ent) != null) {
+                if(ModDataRM.getGlobal(ent).getBerserkTicks() <= 0) {
                     this.volume = 0;
                 } else {
                     this.x = (double)((float)this.ent.getX());

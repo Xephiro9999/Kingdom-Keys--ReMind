@@ -1,3 +1,4 @@
+/* TODO No EFM 1.21
 package online.remind.remind.integration.epicfight.skills;
 
 import net.minecraft.resources.ResourceLocation;
@@ -17,3 +18,4 @@ public class KKRMSkills {
     //public static final RegistryObject<Skill> renewalBlock = SKILLS.register("renewal_block", () -> new BlockAbilities(GuardSkill.createGuardBuilder()));
     //public static final RegistryObject<Skill> focusBlock = SKILLS.register("focus_block", () -> new BlockAbilities(GuardSkill.createGuardBuilder()));
 }
+ */

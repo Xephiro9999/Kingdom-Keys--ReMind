@@ -10,44 +10,28 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.init.EpicKKWeapons;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.skills.KKSkills;
-import online.kingdomkeys.kingdomkeys.lib.Lists;
 import online.remind.remind.ability.ModAbilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModEffects;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
-import online.remind.remind.integration.epicfight.EpicFightEvents;
-import online.remind.remind.integration.epicfight.skills.KKRMSkills;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
 import online.remind.remind.magic.ModMagicsRM;
-import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.particle.ReMindParticles;
 import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
@@ -59,9 +43,9 @@ import java.util.function.Supplier;
 
 @Mod(KingdomKeysReMind.MODID)
 public class KingdomKeysReMind {
-    public static final String MODID = "magicksaddon";
+    public static final String MODID = "kkremind";
     public static final String MODNAME = "Kingdom Keys - Re:Mind";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(KingdomKeysReMind.MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(KingdomKeysReMind.MODID);
 
@@ -78,7 +62,6 @@ public class KingdomKeysReMind {
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EntityEventsRM());
         ModMagicsRM.MAGIC.register(modEventBus);
-        NeoForge.EVENT_BUS.register(new ModCapabilitiesRM());
         ModSoundsRM.SOUNDS.register(modEventBus);
         ModItemsRM.ITEMS.register(modEventBus);
         ModEntitiesRM.ENTITIES.register(modEventBus);
@@ -88,6 +71,7 @@ public class KingdomKeysReMind {
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ReMindParticles.PARTICLE_TYPES.register(modEventBus);
         ModReactionCommandsRM.REACTION_COMMANDS.register(modEventBus);
+        ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
 
@@ -105,8 +89,8 @@ public class KingdomKeysReMind {
 
     public static final Supplier<CreativeModeTab>
 
-            misc_tab = TABS.register("magicksaddontab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.magicksaddontab"))
+            misc_tab = TABS.register("kkremindtab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.kkremindtab"))
             .icon(() -> new ItemStack(ModItemsRM.hasteSpell.get()))
             .displayItems(((params, output) -> {
                 maItems.get().forEach(output::accept);
@@ -115,7 +99,6 @@ public class KingdomKeysReMind {
 
     private void setup(final FMLCommonSetupEvent event){
         // Some common setup code
-		event.enqueueWork(PacketHandlerRM::register);
         //event.enqueueWork(ModEntitiesRM::registerPlacements);
 
 
@@ -132,7 +115,7 @@ public class KingdomKeysReMind {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

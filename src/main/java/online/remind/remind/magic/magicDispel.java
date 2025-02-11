@@ -2,19 +2,18 @@ package online.remind.remind.magic;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -31,18 +30,19 @@ public class magicDispel extends Magic {
 	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
 
 		if (lockOnEntity != null) {
-			IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(lockOnEntity);
-			IGlobalCapabilities globalData2 = ModCapabilities.getGlobal(lockOnEntity);
+			IGlobalDataRM globalData = ModDataRM.getGlobal(lockOnEntity);
+			GlobalData globalData2 = GlobalData.get(lockOnEntity);
 
 			// If target is locked and magic lock on ability is on
 			List<MobEffectInstance> effectsList = new ArrayList<>();
 			for (MobEffectInstance e : lockOnEntity.getActiveEffects()) {
-				if (e.getEffect().getCategory() == MobEffectCategory.BENEFICIAL) {
+				if (e.getEffect().value().isBeneficial()) {
 					effectsList.add(e);
 				}
 			}
 
 			for(MobEffectInstance goodEffect: effectsList){
+				//TODO take a look at EffectCure and removeEffectsCuredBy
 				lockOnEntity.removeEffect(goodEffect.getEffect());
 			}
 
@@ -58,7 +58,7 @@ public class magicDispel extends Magic {
 			// IDK do some area of effect or something like slow or haste
 			float radius = 16;
 			List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(radius));
-			Party casterParty = ModCapabilities.getWorld(player.level()).getPartyFromMember(player.getUUID());
+			Party casterParty = WorldData.get(player.getServer()).getPartyFromMember(player.getUUID());
 
 			if (casterParty != null && !casterParty.getFriendlyFire()) {
 				for (Party.Member m : casterParty.getMembers()) {
@@ -70,8 +70,8 @@ public class magicDispel extends Magic {
 				for (int i = 0; i < list.size(); i++) {
 					Entity e = list.get(i);
 					if (e instanceof LivingEntity lEntity) {
-						IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(lEntity);
-						IGlobalCapabilities globalData2 = ModCapabilities.getGlobal(lEntity);
+						IGlobalDataRM globalData = ModDataRM.getGlobal(lEntity);
+						GlobalData globalData2 = GlobalData.get(lEntity);
 						lEntity.removeEffect(MobEffects.DAMAGE_BOOST);
 						lEntity.removeEffect(MobEffects.MOVEMENT_SPEED);
 						lEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);

@@ -2,7 +2,7 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.entity.shotlock.DarkDivideCoreEntity;
@@ -19,7 +19,7 @@ public class ShotlockDarkDivide extends Shotlock {
 
     @Override
     public void doPartialShotlock(Player player, List<Entity> targetList) {
-        float damage = getDamage(player) + ((ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F)  + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F));
+        float damage = getDamage(player) + ((PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F)  + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F));
         DarkFiragaCoreEntity core = new DarkFiragaCoreEntity(player.level(), player, targetList, getDamage(player));
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);
@@ -27,7 +27,7 @@ public class ShotlockDarkDivide extends Shotlock {
 
     @Override
     public void doFullShotlock(Player player, List<Entity> targetList) {
-        float damage = getDamage(player) +  ((ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.35F) + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.35F));
+        float damage = getDamage(player) +  ((PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.35F) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.35F));
         DarkDivideCoreEntity core = new DarkDivideCoreEntity(player.level(), player, targetList, getDamage(player));
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);
