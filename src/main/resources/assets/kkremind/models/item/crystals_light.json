@@ -1,0 +1,54 @@
+{
+  "parent": "neoforge:item/default",
+  "loader": "neoforge:obj",
+  "flip_v" : "true",
+  "model": "kkremind:models/item/keyblade/crystals_light.obj",
+  "textures": {
+    "layer0": "kkremind:textures/item/keyblades/crystals_light"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0.0, 0, 0.0 ],
+      "translation": [6, 14, 5 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "thirdperson_righthand": {
+      "rotation": [0.0, 0, 0.0 ],
+      "translation": [6, 14, 5],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [-6, 14, 5 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [-6, 14, 5],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "gui": {
+      "rotation": [0, 90.0, 0.0 ],
+      "translation": [0.0, 0, 0.0 ],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "ground": {
+      "rotation": [0, 90.0, 0.0 ],
+      "translation": [2.0, 7.0, 0.0 ],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "fixed": {
+      "rotation": [0.0, 90.0, 0.0 ],
+      "translation": [0.0, 0.0, 0.0 ],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+      }
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "ability": "kkremind:ability_darkness_boost",
+  "base_stats": {
+    "mag": 5,
+    "str": 13
+  },
+  "description": "A keyblade belonging to Xephiro, even looking at it gives you a sense of powerful Darkness and bloodthirst... It denies any wielder that isn't Xephiro.",
+  "keychain": "kkremind:xephiro_keyblade_chain",
+  "levels": [
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 2
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 3
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_shard",
+          "quantity": 4
+        }
+      ],
+      "str": 15,
+      "ability": "kkremind:ability_darkness_boost"
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 1
+        }
+      ],
+      "str": 15
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 16,
+      "ability": "kingdomkeys:ability_hp_gain"
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 16
+    },
+    {
+      "mag": 6,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 17,
+      "ability": "kkremind:ability_dark_power"
+    },
+    {
+      "mag": 8,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 18,
+      "ability": "kkremind:ability_attack_haste"
+    },
+    {
+      "mag": 9,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_gem",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 20
+    },
+    {
+      "mag": 10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 1
+        }
+      ],
+      "str": 23,
+      "ability": "kingdomkeys:ability_critical_boost"
+    },
+    {
+      "str": 24,
+      "mag": 10,
+      "ability": "kkremind:ability_attack_haste",
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcumplus",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "str": 24,
+      "mag": 11,
+      "ability": "kkremind:ability_darkness_boost",
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcumplus",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "str": 24,
+      "mag": 11,
+      "ability": "kkremind:ability_attack_haste",
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcumplus",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "str": 24,
+      "mag": 12,
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcumplus",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "str": 25,
+      "mag": 12,
+      "ability": "kingdomkeys:ability_lucky_lucky",
+      "recipe": [
+        {
+          "material": "kingdomkeys:mat_electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_orichalcumplus",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:mat_writhing_crystal",
+          "quantity": 2
+        }
+      ]
+    }
+  ],
+  "reach": 6.0
+}

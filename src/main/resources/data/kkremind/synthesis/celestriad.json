@@ -1,0 +1,27 @@
+{
+  "cost": 900,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_lightning_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_blazing_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_frost_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_pulsing_crystal",
+      "quantity": "4"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:celestriad",
+    "quantity": 1
+  },
+  "tier": 4
+}

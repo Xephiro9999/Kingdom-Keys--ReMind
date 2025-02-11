@@ -1,0 +1,27 @@
+{
+  "cost": 500,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_soothing_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_mythril_stone",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_twilight_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_remembrance_gem",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:autolife_spell",
+    "quantity": 1
+  },
+  "tier": 5
+}

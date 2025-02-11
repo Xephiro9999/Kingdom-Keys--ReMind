@@ -1,0 +1,15 @@
+{
+  "cost": 0,
+  "ap": 100,
+  "can_go_anti": false,
+  "can_use_magic": true,
+  "str_mult": 1,
+  "mag_mult": 1,
+  "speed_mult": 1.2,
+  "level_up":[ 0, 150, 300, 450, 600, 750, 900 ],
+  "abilities": [
+    "kingdomkeys:ability_scan","kkremind:ability_darkness_boost","kkremind:ability_darkness_boost","kkremind:ability_darkness_boost","kkremind:ability_light_boost","kkremind:ability_light_boost","kkremind:ability_light_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kkremind:ability_light_within","kkremind:ability_darkness_within"
+  ],
+  "base_levelup_abilities":[ "", "", "", "", "", "", "" ],
+  "driveform_levelup_abilities":[ "kkremind:ability_darkness_boost", "", "kkremind:ability_darkness_boost", "","kkremind:ability_darkness_boost","","kkremind:ability_darkness_boost" ]
+}

@@ -1,0 +1,27 @@
+{
+  "cost": 500,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mat_twilight_shard",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_betwixt_shard",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mat_soothing_gem",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:mat_lightning_gem",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:luck_of_the_draw",
+    "quantity": 1
+  },
+  "tier": 3
+}
