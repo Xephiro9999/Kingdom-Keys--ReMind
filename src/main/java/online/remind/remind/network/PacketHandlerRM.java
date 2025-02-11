@@ -10,9 +10,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import online.kingdomkeys.kingdomkeys.network.Packet;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.network.cts.*;
+import online.remind.remind.network.stc.SCOpenAddonMenu;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
 @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
@@ -23,7 +25,10 @@ public class PacketHandlerRM {
         PayloadRegistrar registrar = event.registrar(KingdomKeysReMind.MODID);
         KingdomKeysReMind.LOGGER.info("REGISTERING PACKETS");
         //ServerToClient
-		registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
+        registrar.playToClient(SCOpenAddonMenu.ADDON_TYPE, SCOpenAddonMenu.STREAM_CODEC, (payload, context) -> {
+            context.enqueueWork(() -> ((SCOpenAddonMenu) payload).handle(context));
+        });
+        registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
 
         // ClientToServer
         registrar.playToServer(CSPrestigePacket.TYPE, CSPrestigePacket.STREAM_CODEC, CSPrestigePacket::handle);
@@ -31,6 +36,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSSetStepTicksPacket.TYPE, CSSetStepTicksPacket.STREAM_CODEC, CSSetStepTicksPacket::handle);
         registrar.playToServer(CSSummonSpiritPacket.TYPE, CSSummonSpiritPacket.STREAM_CODEC, CSSummonSpiritPacket::handle);
         registrar.playToServer(CSPanelPacket.TYPE, CSPanelPacket.STREAM_CODEC, CSPanelPacket::handle);
+        registrar.playToServer(CSOpenAddonMenu.TYPE),CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle)
     }
 
         public static void sendToServer(CustomPacketPayload msg) {
@@ -45,6 +51,7 @@ public class PacketHandlerRM {
         public static void sendToAllPlayers(CustomPacketPayload msg) {
             PacketDistributor.sendToAllPlayers(msg);
         }
+        
 
         public static void syncGlobalToAllAround(LivingEntity entity, IGlobalDataRM globalData) {
             if (!entity.level().isClientSide) {
