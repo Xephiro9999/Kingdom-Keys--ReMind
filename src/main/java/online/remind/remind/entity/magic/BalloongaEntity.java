@@ -19,6 +19,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Party.Member;
@@ -111,7 +112,7 @@ public class BalloongaEntity extends ThrowableProjectile {
                         System.out.println("Spell Damage (Before Mult): "+ dmg);
                         System.out.println("Spell Damage (After Mult): "+ dmg*dmgMult);
                          */
-                        target.hurt(damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);
+                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER,this, this.getOwner()), dmg * dmgMult);
                         target.invulnerableTime = 0;
                         explodeBalloonga();
                     }

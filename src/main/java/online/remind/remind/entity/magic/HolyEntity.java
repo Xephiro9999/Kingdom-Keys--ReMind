@@ -19,6 +19,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.entity.EntityHelper;
 import online.kingdomkeys.kingdomkeys.entity.magic.MagnetEntity;
 import online.kingdomkeys.kingdomkeys.entity.mob.IKHMob;
@@ -121,18 +122,18 @@ public class HolyEntity extends ThrowableProjectile {
 						float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 5.75F : 2;
 
 						if (target.getMobType() == MobType.UNDEAD) {
-							target.hurt(damageSources().indirectMagic(this, this.getOwner()), (dmg * dmgMult)*1.15F);
-							System.out.println((dmg * dmgMult)*1.15F);
+							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), (dmg * dmgMult)*1.15F);
+							//System.out.println((dmg * dmgMult)*1.15F);
 						} else if (target instanceof IKHMob ikhMob) {
 							if(ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_PUREBLOOD || ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_EMBLEM){
-								target.hurt(damageSources().indirectMagic(this, this.getOwner()), (dmg * dmgMult)*1.15F);
-								System.out.println((dmg * dmgMult)*1.15F);
+								target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), (dmg * dmgMult)*1.15F);
+								//System.out.println((dmg * dmgMult)*1.15F);
 							} else {
 								target.hurt(damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);
-								System.out.println((dmg * dmgMult));
+								//System.out.println((dmg * dmgMult));
 							}
 						} else {
-							target.hurt(damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);
+							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), dmg * dmgMult);
 							System.out.println(dmg * dmgMult);
 						}
 						target.invulnerableTime = 0;
