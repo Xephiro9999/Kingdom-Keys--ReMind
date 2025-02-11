@@ -4,6 +4,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,12 +15,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-//import net.minecraftforge.network.NetworkHooks;
-//import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Party.Member;
@@ -36,17 +34,13 @@ public class DarkMineEntity extends ThrowableProjectile {
 	LivingEntity closest = null;
 
     @Override
-    protected float getGravity() {
-        return tickCount > 8 && closest == null ? 0.25F : 0F;
+    protected double getDefaultGravity() {
+        return tickCount > 8 && closest == null ? 0.25 : 0;
     }
 
     public DarkMineEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
         this.blocksBuilding = true;
-    }
-
-    public DarkMineEntity(PlayMessages.SpawnEntity spawnEntity, Level world){
-        super(ModEntitiesRM.TYPE_DARK_MINE.get(), world);
     }
 
     public DarkMineEntity(Level world, LivingEntity player, float damage, double x, double y, double z) {
@@ -62,11 +56,6 @@ public class DarkMineEntity extends ThrowableProjectile {
     public DarkMineEntity(Level world, LivingEntity player, float damage) {
         super(ModEntitiesRM.TYPE_DARK_MINE.get(), player, world);
         this.dmg = damage;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -89,7 +78,7 @@ public class DarkMineEntity extends ThrowableProjectile {
         }
         if(tickCount > 16){
         	
-        	IWorldCapabilities worldData = ModCapabilities.getWorld(level());
+        	WorldData worldData = WorldData.get(level().getServer());
         	if(worldData == null || getOwner() == null)
         		return;
         	
@@ -157,7 +146,7 @@ public class DarkMineEntity extends ThrowableProjectile {
                 if (target != getOwner()) {
                     Party p = null;
                     if (getOwner() != null) {
-                        p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                     }
                     if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                         float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) : 2;
@@ -171,7 +160,7 @@ public class DarkMineEntity extends ThrowableProjectile {
                             }
                         }
                         level().explode(this.getOwner(), this.blockPosition().getX(), this.blockPosition().getY() + (double)(this.getBbHeight() / 16.0F), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
-                        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+                        PlayerData playerData = PlayerData.get(player);
                         playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), playerData.getDriveFormExp(playerData.getActiveDriveForm()) + 20);
                         remove(RemovalReason.KILLED);
 
@@ -186,7 +175,7 @@ public class DarkMineEntity extends ThrowableProjectile {
 
     }
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 }

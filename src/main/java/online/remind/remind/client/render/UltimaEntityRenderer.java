@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.model.UltimaModel;
 import online.remind.remind.entity.magic.UltimaEntity;
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class UltimaEntityRenderer extends EntityRenderer<UltimaEntity> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/ultima.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/ultima.png");
 
 	UltimaModel<Entity> model;
 
@@ -43,11 +43,11 @@ public class UltimaEntityRenderer extends EntityRenderer<UltimaEntity> {
 			float radius = (ticks-entity.getStartingTicks()) * 0.2f;
 			 if(entity.getStartingTicks() > -1) { // Grow alongside hitbox, it no grow
 				matrixStackIn.scale(radius, radius, radius);
-	            model.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+	            model.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
 			} else if (ticks > 25) {
 				matrixStackIn.scale(0.5F,2,0.5F);
 	            matrixStackIn.translate(0, -1, 0);
-	            model.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+	            model.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
 
 			}
 

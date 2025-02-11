@@ -1,34 +1,22 @@
 package online.remind.remind.reactioncommands;
 
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.damagesource.KeybladeDamageSource;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.reactioncommand.CounterRushCore;
-import online.remind.remind.entity.shotlock.BioBarrageCoreEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import org.joml.Vector3f;
-import yesman.epicfight.client.particle.HitCutParticle;
-import yesman.epicfight.client.particle.HitParticle;
-import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.particle.HitParticleType;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class CounterRushRC extends ReactionCommand {
     public CounterRushRC(ResourceLocation registryName, boolean constantCheck) {
         super(registryName, constantCheck);
@@ -38,11 +26,11 @@ public class CounterRushRC extends ReactionCommand {
 
     @Override
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) (playerData.getStrengthStat().get() * 0.015f);
         //float dmg = 1 * 0.5f;
-        int hits = 2 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste));
+        int hits = 2 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste));
         //float dmgMult = 1 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
         float radius = 3;
 
@@ -85,8 +73,8 @@ public class CounterRushRC extends ReactionCommand {
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
            if (playerData.isAbilityEquipped(StringsRM.counterRush) && globalData.getCanCounter() >= 1) {
                return true;

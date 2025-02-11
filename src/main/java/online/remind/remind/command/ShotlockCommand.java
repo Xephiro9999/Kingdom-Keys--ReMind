@@ -17,7 +17,7 @@ public class ShotlockCommand extends AddonCommand {
     //shotlock <give/take> <shotlock> [player]
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_MAGICS = (p_198296_0_, p_198296_1_) -> {
         List<String> list = new ArrayList<>();
-        for (ResourceLocation location : ModShotlocks.registry.get().getKeys()) {
+        for (ResourceLocation location : ModShotlocks.registry.keySet()) {
             list.add(location.toString());
         }
         return SharedSuggestionProvider.suggest(list.stream().map(StringArgumentType::escapeIfRequired), p_198296_1_);

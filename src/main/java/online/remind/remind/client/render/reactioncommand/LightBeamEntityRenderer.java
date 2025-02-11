@@ -16,7 +16,7 @@ import online.remind.remind.client.model.reactioncommand.LightBeamModel;
 import javax.annotation.Nullable;
 
 public class LightBeamEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/reactioncommand/light_pillar.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/reactioncommand/light_pillar.png");
     LightBeamModel<Entity> lightBeamModel;
 
     public LightBeamEntityRenderer(EntityRendererProvider.Context context){
@@ -34,7 +34,7 @@ public class LightBeamEntityRenderer extends EntityRenderer<ThrowableProjectile>
         {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
-            this.lightBeamModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this.lightBeamModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

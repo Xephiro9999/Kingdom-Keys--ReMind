@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "online.remind.remind.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "kkremind.refmap.json",
+  "plugin": "online.remind.remind.mixin.KKRMMixinPlugin",
+  "mixins": [
+    //"GuardSkillMixin",
+    "KKDriveFormMixin"
+  ],
+  "client": [],
+  "minVersion": "0.8"
+}

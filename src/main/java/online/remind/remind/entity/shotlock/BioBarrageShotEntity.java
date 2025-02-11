@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.entity.shotlock.BaseShotlockShotEntity;
 import online.remind.remind.entity.ModEntitiesRM;
 import org.joml.Vector3f;
@@ -22,10 +21,6 @@ public class BioBarrageShotEntity extends BaseShotlockShotEntity {
     public BioBarrageShotEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
         this.blocksBuilding = true;
-    }
-
-    public BioBarrageShotEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_BIO_SHOT.get(), world);
     }
 
     public BioBarrageShotEntity(Level world) {

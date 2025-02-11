@@ -1,25 +1,27 @@
 package online.remind.remind.entity.magic;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.neoforge.common.Tags;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.entity.EntityHelper;
 import online.kingdomkeys.kingdomkeys.entity.magic.MagnetEntity;
 import online.kingdomkeys.kingdomkeys.entity.mob.IKHMob;
@@ -40,10 +42,6 @@ public class HolyEntity extends ThrowableProjectile {
 		this.blocksBuilding = true;
 	}
 
-	public HolyEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-		super(ModEntitiesRM.TYPE_HOLY.get(), world);
-	}
-
 	public HolyEntity(Level world) {
 		super(ModEntitiesRM.TYPE_HOLY.get(), world);
 		this.blocksBuilding = true;
@@ -57,14 +55,8 @@ public class HolyEntity extends ThrowableProjectile {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-	}
-
-	@Override
-	protected float getGravity() {
-
-		return 0F;
+	protected double getDefaultGravity() {
+		return 0;
 	}
 
 	double a = 0;
@@ -115,13 +107,13 @@ public class HolyEntity extends ThrowableProjectile {
 				if (target != getOwner()) {
 					Party p = null;
 					if (getOwner() != null) {
-						p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+						p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
 					}
 					if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { // If caster is not in a party || the party doesn't have the target in it || the
 																										// party has FF on
 						float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 5.75F : 2;
 
-						if (target.getMobType() == MobType.UNDEAD) {
+						if (target.getType().is(TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.withDefaultNamespace("undead")))) {
 							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), (dmg * dmgMult)*1.15F);
 							//System.out.println((dmg * dmgMult)*1.15F);
 						} else if (target instanceof IKHMob ikhMob) {
@@ -182,8 +174,8 @@ public class HolyEntity extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(CASTER, "");
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(CASTER, "");
 	}
 
 	public String getCasterDataManager() {

@@ -3,6 +3,7 @@ package online.remind.remind.entity.magic;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,11 +13,8 @@ import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.damagesource.DarknessDamageSource;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -35,10 +33,6 @@ public class RuinEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public RuinEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_RUIN.get(), world);
-    }
-
     public RuinEntity(Level world) {
         super(ModEntitiesRM.TYPE_RUIN.get(), world);
         this.blocksBuilding = true;
@@ -51,13 +45,8 @@ public class RuinEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0F;
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
@@ -93,7 +82,7 @@ public class RuinEntity extends ThrowableProjectile {
                 if (target != getOwner()) {
                     Party p = null;
                     if (getOwner() != null) {
-                        p = ModCapabilities.getWorld(getOwner().level()).getPartyFromMember(getOwner().getUUID());
+                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
                     }
                     if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                         float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 4F : 2;
@@ -149,8 +138,7 @@ public class RuinEntity extends ThrowableProjectile {
 
 
     @Override
-    protected void defineSynchedData() {
-        // TODO Auto-generated method stub
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 }

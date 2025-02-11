@@ -1,9 +1,0 @@
-{
-  "0": {
-    "cost": 50,
-    "cooldown": 100,
-    "casttime": 20,
-    "dmg_mult": 3.0,
-	"magic_lock_on":true
-  }
-}

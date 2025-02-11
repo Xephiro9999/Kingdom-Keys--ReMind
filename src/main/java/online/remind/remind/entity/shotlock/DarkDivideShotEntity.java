@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.entity.ModEntities;
 import online.kingdomkeys.kingdomkeys.entity.shotlock.BaseShotlockShotEntity;
 import org.joml.Vector3f;
@@ -23,10 +22,6 @@ public class DarkDivideShotEntity extends BaseShotlockShotEntity {
     public DarkDivideShotEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
         this.blocksBuilding = true;
-    }
-
-    public DarkDivideShotEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntities.TYPE_VOLLEY_SHOTLOCK_SHOT.get(), world);
     }
 
     public DarkDivideShotEntity(Level world) {

@@ -11,23 +11,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.lib.StringsRM;
-import yesman.epicfight.gameasset.EpicFightSounds;
-import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.particle.HitParticleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +39,6 @@ public class CounterRushCore extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public CounterRushCore(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super((EntityType<? extends ThrowableProjectile>) ModEntitiesRM.TYPE_COUNTER_RUSH.get(), world);
-    }
-
     public CounterRushCore(Player player, Level world, List<LivingEntity> targets, float dmg) {
         super(ModEntitiesRM.TYPE_COUNTER_RUSH.get(), player, world);
         setCaster(player.getUUID());
@@ -65,13 +52,8 @@ public class CounterRushCore extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0F;
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     float hits = 0;
@@ -86,11 +68,11 @@ public class CounterRushCore extends ThrowableProjectile {
         //Since this is a temporary entity we can do the hits as a field here, otherwise we would need a capability for it
         if(hits <= 0 && getCaster() != null) //This is to prevent in every tick to refill the hits before it finishes
 
-            hits = 4 + (ModCapabilities.getPlayer(getCaster()).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5f);
+            hits = 4 + (PlayerData.get(getCaster()).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5f);
 
 
         if (getCaster() != null && targetList != null && !targetList.isEmpty() && hits > 0) {
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(getCaster());
+            PlayerData playerData = PlayerData.get(getCaster());
             if (tickCount % 5 == 0 && hits > 0) { //Every 0.25s deal a hit if there are hits available
                 int index = Utils.randomWithRange(0,targetList.size()-1); //Get a random mob from the list
                 Entity target = targetList.get(index);
@@ -98,8 +80,9 @@ public class CounterRushCore extends ThrowableProjectile {
                     float dmg = (float) (playerData.getStrengthStat().get() * 1.5f);
                     target.invulnerableTime = 0;
                     target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
-                    target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+                    //TODO No EFM 1.21
+                    //EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
+                    //target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
 
                     hits--; //Marks as that single hit being performed
                 }
@@ -170,8 +153,8 @@ public class CounterRushCore extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER, Optional.of(new UUID(0L, 0L)));
-        this.entityData.define(TARGETS, "");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, Optional.of(new UUID(0L, 0L)));
+        builder.define(TARGETS, "");
     }
 }

@@ -2,17 +2,16 @@ package online.remind.remind.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.lib.StringsRM;
 
 public class AddonMenu extends MenuScreen {
 
-    public AddonMenu(){
-        super();
+    public AddonMenu(PlayerData playerData){
+        super(playerData);
         minecraft = Minecraft.getInstance();
     }
 
@@ -37,7 +36,7 @@ public class AddonMenu extends MenuScreen {
     public void init(){
 
         Player player;
-        final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
+        final PlayerData playerData = PlayerData.get(minecraft.player);
 
         super.width = width;
         super.height = height;

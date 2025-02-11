@@ -16,7 +16,7 @@ import online.remind.remind.client.model.BalloongaModel;
 import javax.annotation.Nullable;
 
 public class BalloongaEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/balloonga.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/balloonga.png");
     BalloongaModel balloongaModel;
 
     public BalloongaEntityRenderer(EntityRendererProvider.Context context){
@@ -36,7 +36,7 @@ public class BalloongaEntityRenderer extends EntityRenderer<ThrowableProjectile>
             matrixStackIn.scale(3, 3, 3);
             matrixStackIn.translate(0, -0.65, 0);
 
-            this.balloongaModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this.balloongaModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

@@ -16,17 +16,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import online.kingdomkeys.kingdomkeys.util.IDisabledAnimations;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.model.AutoLifeModel;
 
 @OnlyIn(Dist.CLIENT)
 public class AutoLifeLayerRenderer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID, "textures/entity/models/auto-life.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/entity/models/auto-life.png");
     public static final String BOX = "box";
     private final ModelPart box;
 
@@ -48,8 +48,8 @@ public class AutoLifeLayerRenderer<T extends LivingEntity> extends RenderLayer<T
     }
 
     public void renderEntity(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (ModCapabilitiesRM.getGlobal(entitylivingbaseIn) != null) {
-            IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(entitylivingbaseIn);
+        if (ModDataRM.getGlobal(entitylivingbaseIn) != null) {
+            IGlobalDataRM globalData = ModDataRM.getGlobal(entitylivingbaseIn);
             if (globalData.getAutoLifeActive() > 0) {
                 VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
 

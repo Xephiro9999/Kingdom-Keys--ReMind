@@ -1,5 +1,6 @@
 package online.remind.remind.entity.mob;
 
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -10,11 +11,9 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PlayMessages;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.ModEntitiesRM;
 
 import java.util.UUID;
@@ -28,15 +27,12 @@ public class ChirithyEntity extends PathfinderMob{
         super(type, worldIn);
 
     }
-    public ChirithyEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_CHIRITHY.get(), world);
-    }
 
     public ChirithyEntity(Level worldIn, Player owner){
         this(ModEntitiesRM.TYPE_CHIRITHY.get(),worldIn);
         if (owner != null) {
             this.owner = owner;
-            IPlayerCapabilities ownerData = ModCapabilities.getPlayer(owner);
+            PlayerData ownerData = PlayerData.get(owner);
 
             // Attribute Scaling
             double hp = 20 + (ownerData.getMaxHP() / 2D);
@@ -78,7 +74,7 @@ public class ChirithyEntity extends PathfinderMob{
     }
 
     protected void update(int i){
-        IGlobalCapabilitiesRM playerData = ModCapabilitiesRM.getGlobal(owner);
+        IGlobalDataRM playerData = ModDataRM.getGlobal(owner);
         if (playerData.getDreamEaterSummonedID() == -1){
             this.remove(RemovalReason.KILLED);
         }
@@ -134,8 +130,8 @@ public class ChirithyEntity extends PathfinderMob{
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
     }
 
     public void setOwnerUUID(UUID uuid) {

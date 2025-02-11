@@ -6,16 +6,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.KKInputEvent;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.NoChoiceMenuPopup;
-import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
-import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
@@ -23,8 +18,8 @@ import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.kingdomkeys.kingdomkeys.world.dimension.ModDimensions;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.GUIHelperRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
@@ -41,8 +36,8 @@ public class InputHandlerRM {
 	public void kkInputEvent(KKInputEvent.Pre event) {
 		if (event.getKeybind() == InputHandler.Keybinds.ACTION) {
 			Player player = event.getHandler().player;
-			IPlayerCapabilities playerData = event.getHandler().playerData;
-			IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+			PlayerData playerData = event.getHandler().playerData;
+			IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 			// Light/Dark Step Abilities
 			if (InputHandler.qrCooldown <= 0 && (player.getDeltaMovement().x != 0 && player.getDeltaMovement().z != 0)) {
@@ -140,7 +135,7 @@ public class InputHandlerRM {
             PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
             PacketHandlerRM.sendToServer(new CSSyncAllClientDataPacketRM());
             LocalPlayer player = Minecraft.getInstance().player;
-            if (ModCapabilities.getPlayer(player).getSoAState() != SoAState.COMPLETE) {
+            if (PlayerData.get(player).getSoAState() != SoAState.COMPLETE) {
                 if (player.level().dimension() != ModDimensions.DIVE_TO_THE_HEART) {
                     Minecraft.getInstance().setScreen(new NoChoiceMenuPopup());
                 }

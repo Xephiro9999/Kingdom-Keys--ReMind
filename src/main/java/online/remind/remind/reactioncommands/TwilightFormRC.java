@@ -3,9 +3,8 @@ package online.remind.remind.reactioncommands;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
@@ -14,7 +13,6 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class TwilightFormRC extends ReactionCommand {
 
 	public TwilightFormRC(ResourceLocation registryName, boolean constantCheck) {
@@ -24,14 +22,14 @@ public class TwilightFormRC extends ReactionCommand {
 	@Override
 	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 		if (conditionsToAppear(player, player)) {
-			DriveForm twilightForm = ModDriveForms.registry.get().getValue(new ResourceLocation(KingdomKeysReMind.MODID + ":" + StringsRM.twilight));
+			DriveForm twilightForm = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.twilight));
 			twilightForm.initDrive(player);
 		}
 	}
 
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+		PlayerData playerData = PlayerData.get(player);
 		if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null && playerData.getEquippedKeychain(ModDriveFormsRM.TWILIGHT.get().getRegistryName()) != null) {
 			if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
 				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm))

@@ -14,8 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.remind.remind.entity.ModEntitiesRM;
 
@@ -37,10 +35,6 @@ public class BioBarrageCoreEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public BioBarrageCoreEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_SHOTLOCK_BIO_BARRAGE.get(), world);
-    }
-
     public BioBarrageCoreEntity(Level world) {
         super(ModEntitiesRM.TYPE_SHOTLOCK_BIO_BARRAGE.get(), world);
         this.blocksBuilding = true;
@@ -58,14 +52,10 @@ public class BioBarrageCoreEntity extends ThrowableProjectile {
         this.dmg = dmg;
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
 
     @Override
-    protected float getGravity() {
-        return 0F;
+    protected double getDefaultGravity() {
+        return 0;
     }
 
     @Override
@@ -179,8 +169,8 @@ public class BioBarrageCoreEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER, Optional.of(new UUID(0L, 0L)));
-        this.entityData.define(TARGETS, "");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, Optional.of(new UUID(0L, 0L)));
+        builder.define(TARGETS, "");
     }
 }

@@ -16,7 +16,7 @@ import online.remind.remind.client.model.CometModel;
 import javax.annotation.Nullable;
 
 public class CometEntityRenderer extends EntityRenderer<ThrowableProjectile> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(KingdomKeysReMind.MODID,"textures/entity/models/comet.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"textures/entity/models/comet.png");
     CometModel<Entity> cometModel;
 
     public CometEntityRenderer(EntityRendererProvider.Context context){
@@ -34,7 +34,7 @@ public class CometEntityRenderer extends EntityRenderer<ThrowableProjectile> {
         {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
-            this. cometModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1,1,1,1);
+            this. cometModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
         matrixStackIn.popPose();

@@ -5,19 +5,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraftforge.fml.common.Mod;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import net.neoforged.fml.common.EventBusSubscriber;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.reactioncommand.DarkMineEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
-@Mod.EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DarkMineRC extends ReactionCommand {
 
 
@@ -29,9 +27,9 @@ public class DarkMineRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
         if (conditionsToAppear(player, player)) {
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-            IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-            float dmgmult = ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
+            PlayerData playerData = PlayerData.get(player);
+            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
             globalData.setRCCooldownTicks(40);
             playerData.setFP(playerData.getFP() - 40);
             player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MINE.get(), SoundSource.PLAYERS, 1F, 1F);
@@ -52,8 +50,8 @@ public class DarkMineRC extends ReactionCommand {
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(playerData != null){
             if(playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && globalData.getRCCooldownTicks() == 0){
                 return true;

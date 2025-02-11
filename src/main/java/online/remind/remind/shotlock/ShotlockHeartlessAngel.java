@@ -4,8 +4,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.client.sound.ModSoundsRM;
 
@@ -28,7 +27,7 @@ public class ShotlockHeartlessAngel extends Shotlock {
     public void doFullShotlock(Player player, List<Entity> list) {
         Entity target = list.get(0);
         if (target instanceof Player){
-            IPlayerCapabilities targetData = ModCapabilities.getPlayer((Player) target);
+            PlayerData targetData = PlayerData.get((Player) target);
 
             targetData.remMP(targetData.getMaxMP());
             targetData.remFocus(100);

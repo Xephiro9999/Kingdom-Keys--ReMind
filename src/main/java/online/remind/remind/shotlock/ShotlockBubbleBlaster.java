@@ -2,7 +2,7 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.entity.shotlock.BubbleBlasterCoreEntity;
@@ -18,7 +18,7 @@ public class ShotlockBubbleBlaster extends Shotlock {
     @Override
     public void onUse(Player player, List<Entity> targetList) {
 
-        float damage = getDamage(player) + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.2F);
+        float damage = getDamage(player) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.2F);
         BubbleBlasterCoreEntity core = new BubbleBlasterCoreEntity(player.level(), player, targetList, damage);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);

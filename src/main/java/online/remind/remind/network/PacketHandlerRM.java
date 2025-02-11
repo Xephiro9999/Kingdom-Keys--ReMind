@@ -1,57 +1,55 @@
 package online.remind.remind.network;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class PacketHandlerRM {
-    private static final String PROTOCOL_VERSION = Integer.toString(1);
 
-	private static final SimpleChannel HANDLER = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(KingdomKeysReMind.MODID, "main_channel")).clientAcceptedVersions(PROTOCOL_VERSION::equals).serverAcceptedVersions(PROTOCOL_VERSION::equals).networkProtocolVersion(() -> PROTOCOL_VERSION).simpleChannel();
-
-    public static void register() {
-        int packetID = 0;
-        System.out.println("REGISTERING PACKETS");
+    @SubscribeEvent
+    public static void register(final RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(KingdomKeysReMind.MODID);
+        KingdomKeysReMind.LOGGER.info("REGISTERING PACKETS");
         //ServerToClient
-		HANDLER.registerMessage(packetID++, SCSyncGlobalCapabilityToAllPacketRM.class, SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode, SCSyncGlobalCapabilityToAllPacketRM::handle);
+		registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
 
         // ClientToServer
-        HANDLER.registerMessage(packetID++, CSPrestigePacket.class, CSPrestigePacket::encode, CSPrestigePacket::decode, CSPrestigePacket::handle);
-        HANDLER.registerMessage(packetID++, CSSyncAllClientDataPacketRM.class, CSSyncAllClientDataPacketRM::encode, CSSyncAllClientDataPacketRM::decode, CSSyncAllClientDataPacketRM::handle);
-        HANDLER.registerMessage(packetID++, CSSetStepTicksPacket.class,CSSetStepTicksPacket::encode,CSSetStepTicksPacket::decode,CSSetStepTicksPacket::handle);
-        HANDLER.registerMessage(packetID++, CSSummonSpiritPacket.class,CSSummonSpiritPacket::encode,CSSummonSpiritPacket::decode,CSSummonSpiritPacket::handle);
-        HANDLER.registerMessage(packetID++, CSPanelPacket.class,CSPanelPacket::encode,CSPanelPacket::decode, CSPanelPacket::handle);
+        registrar.playToServer(CSPrestigePacket.TYPE, CSPrestigePacket.STREAM_CODEC, CSPrestigePacket::handle);
+        registrar.playToServer(CSSyncAllClientDataPacketRM.TYPE, CSSyncAllClientDataPacketRM.STREAM_CODEC, CSSyncAllClientDataPacketRM::handle);
+        registrar.playToServer(CSSetStepTicksPacket.TYPE, CSSetStepTicksPacket.STREAM_CODEC, CSSetStepTicksPacket::handle);
+        registrar.playToServer(CSSummonSpiritPacket.TYPE, CSSummonSpiritPacket.STREAM_CODEC, CSSummonSpiritPacket::handle);
+        registrar.playToServer(CSPanelPacket.TYPE, CSPanelPacket.STREAM_CODEC, CSPanelPacket::handle);
     }
 
-        public static <MSG> void sendToServer(MSG msg) {
-            HANDLER.sendToServer(msg);
+        public static void sendToServer(CustomPacketPayload msg) {
+            PacketDistributor.sendToServer(msg);
         }
 
-        public static <MSG> void sendTo(MSG msg, ServerPlayer player) {
-            if (!(player instanceof FakePlayer)) {
-                HANDLER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-            }
+        public static void sendTo(CustomPacketPayload msg, ServerPlayer player) {
+            PacketDistributor.sendToPlayer(player, msg);
         }
 
 
-        public static <MSG> void sendToAllPlayers(MSG msg) {
-            HANDLER.send(PacketDistributor.ALL.noArg(), msg);
+        public static void sendToAllPlayers(CustomPacketPayload msg) {
+            PacketDistributor.sendToAllPlayers(msg);
         }
 
-        public static void syncGlobalToAllAround(LivingEntity entity, IGlobalCapabilitiesRM globalData) {
+        public static void syncGlobalToAllAround(LivingEntity entity, IGlobalDataRM globalData) {
             if (!entity.level().isClientSide) {
                 for (Player playerFromList : entity.level().players()) {
-                    sendTo(new SCSyncGlobalCapabilityToAllPacketRM(entity.getId(), (IGlobalCapabilitiesRM) globalData), (ServerPlayer) playerFromList);
+                    sendTo(new SCSyncGlobalCapabilityToAllPacketRM(entity.getId(), (IGlobalDataRM) globalData), (ServerPlayer) playerFromList);
                 }
             }
         }
