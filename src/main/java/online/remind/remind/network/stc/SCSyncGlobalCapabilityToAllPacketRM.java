@@ -1,6 +1,5 @@
 package online.remind.remind.network.stc;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -100,7 +99,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
     public static void handle(final SCSyncGlobalCapabilityToAllPacketRM message, IPayloadContext ctx) {
     	ctx.enqueueWork(() -> {
-			LivingEntity entity = (LivingEntity) Minecraft.getInstance().level.getEntity(message.id);
+			LivingEntity entity = (LivingEntity) ctx.player().level().getEntity(message.id);
 			
 			if (entity != null) {
                 IGlobalDataRM globalData = ModDataRM.getGlobal(entity);

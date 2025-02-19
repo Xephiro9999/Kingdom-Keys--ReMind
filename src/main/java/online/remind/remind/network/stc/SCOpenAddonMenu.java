@@ -13,6 +13,7 @@ import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.client.ClientPacketHandler;
 import online.kingdomkeys.kingdomkeys.network.Packet;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.network.ClientPacketHandlerRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 public record SCOpenAddonMenu(CompoundTag playerData, boolean open) implements Packet {
@@ -27,7 +28,7 @@ public record SCOpenAddonMenu(CompoundTag playerData, boolean open) implements P
     @Override
     public void handle(IPayloadContext context) {
         if (FMLEnvironment.dist.isClient()) {
-            PacketHandlerRM.openMenu(this);
+            ClientPacketHandlerRM.openMenu(this);
         }
     }
     @Override

@@ -1,6 +1,5 @@
 package online.remind.remind.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +22,7 @@ import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCOpenAddonMenu;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class PacketHandlerRM {
 
     @SubscribeEvent
@@ -52,20 +51,6 @@ public class PacketHandlerRM {
         public static void sendTo(CustomPacketPayload msg, ServerPlayer player) {
             PacketDistributor.sendToPlayer(player, msg);
         }
-
-    public static void sendPlayerDataToClient(SCSendPlayerDataToClient message) {
-        if (Minecraft.getInstance().screen instanceof IPlayerDataRequester gui) {
-            PlayerData data = PlayerData.get(message.playerData(), Minecraft.getInstance().player);
-            gui.updatePlayerData(data);
-        }
-    }
-    public static void openMenu(SCOpenAddonMenu message) {
-        if (message.open()) {
-            Minecraft.getInstance().setScreen(new AddonMenu(PlayerData.get(message.playerData(), Minecraft.getInstance().player)));
-        } else {
-            Minecraft.getInstance().setScreen(new NoChoiceMenuPopup());
-        }
-    }
 
 
         public static void sendToAllPlayers(CustomPacketPayload msg) {
