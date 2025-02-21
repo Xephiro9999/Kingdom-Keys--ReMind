@@ -21,7 +21,7 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="kingdomkeys"
 type="required"
-versionRange="[1.21.1-2.6.0,)"
+versionRange="[1.21.1-2.6.1,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.${mod_id}]]
