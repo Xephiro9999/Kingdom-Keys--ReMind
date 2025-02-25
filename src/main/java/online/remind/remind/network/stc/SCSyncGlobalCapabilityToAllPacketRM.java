@@ -40,7 +40,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         this.autoLife = capability.getAutoLifeActive();
         this.rcCooldown = capability.getRCCooldownTicks();
         this.CanCounter = capability.getCanCounter();
-        this.panelChoice = Integer.parseInt(capability.getPanelChoice());
+        //this.panelChoice = Integer.parseInt(capability.getPanelChoice());
         this.strPanel = capability.getSTRPanel();
         this.magPanel = capability.getMAGPanel();
         this.defPanel = capability.getDEFPanel();
