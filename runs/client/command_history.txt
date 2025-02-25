@@ -1,0 +1,3 @@
+/kingdomkeys level set 20
+/gamemode creative
+/kingdomkeys magiclevel set "kingdomkeys:magic_fire" 2

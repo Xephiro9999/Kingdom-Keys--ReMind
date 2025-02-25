@@ -1,0 +1,158 @@
+[general]
+	#Summon both Keyblade and Armor with Summon Keyblade key
+	summonTogether = false
+
+	[general.gui]
+		#Toggle HUD visibility, weapon option will show only while holding a Keyblade or Organization weapon
+		#Allowed Values: SHOW, HIDE, WEAPON
+		showGuiToggle = "SHOW"
+		#Drive Forms Visibility
+		showDriveForms = true
+
+		[general.gui.command_menu]
+			#The Magic to display in the Magic menu within the Command Menu
+			magicDisplayedInCommandMenu = ["kingdomkeys:magic_fire", "kingdomkeys:magic_blizzard", "kingdomkeys:magic_water", "kingdomkeys:magic_thunder", "kingdomkeys:magic_cure", "kingdomkeys:magic_aero", "kingdomkeys:magic_magnet", "kingdomkeys:magic_reflect", "kingdomkeys:magic_gravity", "kingdomkeys:magic_stop"]
+			#Command Menu Text X Offset
+			# Default: 0
+			# Range: -1000 ~ 1000
+			cmTextXOffset = 0
+			#Command Menu Header Text Visibility
+			cmHeaderTextVisibility = true
+			#Command Menu classic color scheme
+			cmClassicColors = false
+			#Command Menu X Scale %
+			# Default: 100
+			# Range: -1000 ~ 1000
+			cmXScale = 100
+			#Command Menu X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			cmXPos = 0
+			#Command Menu Selected X Offset
+			# Default: 5
+			# Range: -1000 ~ 1000
+			cmSelectedXOffset = 5
+			#Command Menu Submenu X Offset %
+			# Default: 100
+			# Range: -1000 ~ 1000
+			cmSubXOffset = 100
+
+		[general.gui.hp_bar]
+			#Health Bar X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			hpXPos = 0
+			#Health Bar Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			hpYPos = 0
+			#Show Hearts
+			hpShowHearts = true
+			#Low HP Alarm Volume
+			# Default: 10
+			# Range: 0 ~ 10
+			hpAlarmVolume = 10
+			#Health Bar X Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			hpXScale = 100
+
+		[general.gui.mp_bar]
+			#Magic Bar X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			mpXPos = 0
+			#Magic Bar Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			mpYPos = 0
+			#Magic Bar X Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			mpXScale = 100
+
+		[general.gui.dp_bar]
+			#Drive Bar X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			dpXPos = 0
+			#Drive Bar Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			dpYPos = 0
+			#Drive Bar X Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			dpXScale = 100
+			#Drive Bar Y Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			dpYScale = 100
+
+		[general.gui.player_skin]
+			#Player Skin X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			playerSkinXPos = 0
+			#Player Skin Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			playerSkinYPos = 0
+
+		[general.gui.lock_on]
+			#Lock On HP X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			lockOnXPos = 0
+			#Lock On HP Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			lockOnYPos = 0
+			#Lock On HP Bar Scale
+			# Default: 70
+			# Range: -1000 ~ 1000
+			lockOnHPScale = 70
+			#Lock On Icon Scale
+			# Default: 75
+			# Range: -1000 ~ 1000
+			lockOnIconScale = 75
+			#Lock On Icon Rotation Speed
+			# Default: 16
+			# Range: -1000 ~ 1000
+			lockOnIconRotation = 16
+			#Lock On HP per bar
+			# Default: 40
+			# Range: 10 ~ 100
+			lockOnHpPerBar = 40
+
+		[general.gui.party]
+			#Party HUD X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			partyXPos = 0
+			#Party HUD Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			partyYPos = 0
+			#Party HUD Y Offset
+			# Default: 60
+			# Range: -1000 ~ 1000
+			partyYOffset = 60
+
+		[general.gui.focus]
+			#Focus HUD X Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			focusXPos = 0
+			#Focus HUD Y Pos
+			# Default: 0
+			# Range: -1000 ~ 1000
+			focusYPos = 0
+			#Focus Bar X Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			focusXScale = 100
+			#Focus Bar Y Scale
+			# Default: 100
+			# Range: -1000 ~ 1000
+			focusYScale = 100

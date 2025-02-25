@@ -1,0 +1,90 @@
+[general]
+	#Enable debug console output
+	debugConsoleOutput = false
+	#Allow Bomb heartless to explode when lit on fire
+	bombExplodeWithfire = true
+	#Allow Blizzard to turn lava into obsidian and freeze water
+	blizzardChangeBlocks = true
+	#Allow keyblades to open iron doors with right click
+	keybladeOpenDoors = true
+	#Health % restored when using a drive form
+	# Default: 50
+	# Range: 0 ~ 100
+	driveHeal = 50
+	#Drive Points Drop Multiplier
+	# Default: 1.0
+	# Range: 0.0 ~ 100.0
+	drivePointsMultiplier = 1.0
+	#Focus Points Drop Multiplier
+	# Default: 1.0
+	# Range: 0.0 ~ 100.0
+	focusPointsMultiplier = 1.0
+	#Critic Damage Multiplier
+	# Default: 1.5
+	# Range: 0.0 ~ 100.0
+	critMult = 1.5
+	#Force the player to need a Keyblade or an Organization weapon to hurt Heartless, and Nobodies
+	needKeybladeForHeartless = false
+	#Stats restored when using a normal savepoint (Allowed values: HP,HUNGER,MP,FOCUS,DRIVE)
+	normalSavePointRestoreList = "HP,MP"
+	#Stats restored when using a linked savepoint (Allowed values: HP,HUNGER,MP,FOCUS,DRIVE)
+	fullSavePointRestoreList = "HP,HUNGER,MP,FOCUS"
+	#Stats restored when using a warp point (Allowed values: HP,HUNGER,MP,FOCUS,DRIVE)
+	warpPointRestoreList = "HP,HUNGER,MP,FOCUS,DRIVE"
+
+[spawning]
+	#Heartless spawning mode: NEVER, ALWAYS, AFTER_KEYCHAIN (after the first keychain is synthesized), AFTER_DRAGON (after the Ender Dragon is defeated)
+	#Allowed Values: NEVER, ALWAYS, AFTER_KEYCHAIN, AFTER_DRAGON
+	heartlessSpawningMode = "AFTER_KEYCHAIN"
+	#Mob Spawn chance in percentage [type, chance] (if the chance doesn't add up to 100, enemies will not spawn)
+	mobSpawn = ["Pureblood,35", "Emblem,35", "Nobody,30"]
+	#Allow a heartless and a nobody to spawn when a player gets killed by a heartless
+	playerSpawnHeartless = true
+	#Allow heartless and nobodies to spawn with levels according to players
+	mobLevelingUp = true
+	#Heartless spawning in the ROD will increase 1 level every X blocks
+	# Default: 10
+	# Range: 1 ~ 1000
+	rodHeartlessLevelScale = 10
+	#Max level for heartless spawning in ROD
+	# Default: 200
+	# Range: 1 ~ 10000
+	rodHeartlessMaxLevel = 200
+	#Heartless and nobody stats: name, hp (% of the player's), strength (% of the player's)
+	playerSpawnHeartlessData = ["Heartless,100,100", "Nobody,100,100"]
+	#Force players who die in the Realm of Darkness to respawn there
+	respawnROD = false
+	#Mob base stats multiplier out of 100% (default 10)
+	# Default: 10
+	# Range: 0 ~ 100
+	mobLevelStats = 10
+	#Make bosses despawn once his target disappears
+	bossDespawnIfNoTarget = true
+
+[drops]
+	#HP Drops Probability
+	# Default: 80
+	# Range: 0 ~ 100
+	hpDropProbability = 80
+	#MP Drops Probability
+	# Default: 80
+	# Range: 0 ~ 100
+	mpDropProbability = 80
+	#Munny Drops Probability
+	# Default: 80
+	# Range: 0 ~ 100
+	munnyDropProbability = 80
+	#Drive Drops Probability
+	# Default: 80
+	# Range: 0 ~ 100
+	driveDropProbability = 80
+	#Focus Drops Probability
+	# Default: 80
+	# Range: 0 ~ 100
+	focusDropProbability = 80
+
+[shotlock]
+	#Shotlock Damage Multiplier (magic * multiplier)
+	# Default: 0.4
+	# Range: 0.0 ~ 100.0
+	shotlockMult = 0.4
