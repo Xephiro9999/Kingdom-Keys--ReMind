@@ -2,19 +2,19 @@
   "cost": 500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_soothing_gem",
+      "material": "kingdomkeys:soothing_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_mythril_stone",
+      "material": "kingdomkeys:mythril_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_twilight_crystal",
+      "material": "kingdomkeys:twilight_crystal",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_remembrance_gem",
+      "material": "kingdomkeys:remembrance_gem",
       "quantity": "3"
     }
   ],

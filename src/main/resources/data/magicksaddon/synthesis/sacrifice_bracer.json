@@ -2,19 +2,19 @@
   "cost": 900,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_sinister_gem",
+      "material": "kingdomkeys:sinister_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_lucid_gem",
+      "material": "kingdomkeys:lucid_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_sinister_stone",
+      "material": "kingdomkeys:sinister_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "1"
     }
   ],

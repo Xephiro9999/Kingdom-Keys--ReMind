@@ -2,27 +2,27 @@
   "cost": 0,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "2"
     },
     {
-      "material": "kingdomkeys:mat_illusory_crystal",
+      "material": "kingdomkeys:illusory_crystal",
       "quantity": "1"
     },
     {
-      "material": "kingdomkeys:mat_sinister_stone",
+      "material": "kingdomkeys:sinister_stone",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_sinister_gem",
+      "material": "kingdomkeys:sinister_gem",
       "quantity": "6"
     },
     {
-      "material": "kingdomkeys:mat_orichalcum",
+      "material": "kingdomkeys:orichalcum",
       "quantity": "5"
     },
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "2"
     }
   ],

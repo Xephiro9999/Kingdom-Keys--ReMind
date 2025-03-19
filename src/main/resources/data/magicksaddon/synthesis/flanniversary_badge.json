@@ -2,19 +2,19 @@
   "cost": 1500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_orichalcumplus",
+      "material": "kingdomkeys:orichalcumplus",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_hungry_gem",
+      "material": "kingdomkeys:hungry_gem",
       "quantity": "5"
     },
     {
-      "material": "kingdomkeys:mat_soothing_crystal",
+      "material": "kingdomkeys:soothing_crystal",
       "quantity": "5"
     },
     {
-      "material": "kingdomkeys:mat_hungry_crystal",
+      "material": "kingdomkeys:hungry_crystal",
       "quantity": "3"
     }
   ],

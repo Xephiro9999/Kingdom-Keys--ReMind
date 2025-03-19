@@ -2,11 +2,11 @@
   "cost": 500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_soothing_shard",
+      "material": "kingdomkeys:soothing_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_pulsing_stone",
+      "material": "kingdomkeys:pulsing_stone",
       "quantity": "3"
     }
   ],

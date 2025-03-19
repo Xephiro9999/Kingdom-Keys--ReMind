@@ -2,19 +2,19 @@
   "cost": 2500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_sinister_stone",
+      "material": "kingdomkeys:sinister_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_writhing_gem",
+      "material": "kingdomkeys:writhing_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_blazing_gem",
+      "material": "kingdomkeys:blazing_gem",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_pulsing_crystal",
+      "material": "kingdomkeys:pulsing_crystal",
       "quantity": "3"
     }
   ],

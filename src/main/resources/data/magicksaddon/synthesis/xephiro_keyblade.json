@@ -2,47 +2,47 @@
   "cost": 100000,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "8"
     },
     {
-      "material": "kingdomkeys:mat_hungry_crystal",
+      "material": "kingdomkeys:hungry_crystal",
       "quantity": "8"
     },
     {
-      "material": "kingdomkeys:mat_blazing_crystal",
+      "material": "kingdomkeys:blazing_crystal",
       "quantity": "8"
     },
     {
-      "material": "kingdomkeys:mat_sinister_shard",
+      "material": "kingdomkeys:sinister_shard",
       "quantity": "6"
     },
     {
-      "material": "kingdomkeys:mat_sinister_stone",
+      "material": "kingdomkeys:sinister_stone",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_sinister_crystal",
+      "material": "kingdomkeys:sinister_crystal",
       "quantity": "8"
     },
     {
-      "material": "kingdomkeys:mat_sinister_gem",
+      "material": "kingdomkeys:sinister_gem",
       "quantity": "6"
     },
     {
-      "material": "kingdomkeys:mat_mythril_crystal",
+      "material": "kingdomkeys:mythril_crystal",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_orichalcumplus",
+      "material": "kingdomkeys:orichalcumplus",
       "quantity": "5"
     },
     {
-      "material": "kingdomkeys:mat_betwixt_crystal",
+      "material": "kingdomkeys:betwixt_crystal",
       "quantity": "8"
     },
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "4"
     }
   ],

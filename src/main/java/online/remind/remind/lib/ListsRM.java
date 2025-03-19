@@ -1,6 +1,6 @@
 package online.remind.remind.lib;
 
-import online.kingdomkeys.kingdomkeys.lib.Lists;
+import online.kingdomkeys.kingdomkeys.lib.Tags;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 
@@ -12,10 +12,12 @@ public class ListsRM{
             // Custom Org Weapons
 
             // Custom Keyblades
-            Lists.Roxas.add(27, pureblood.get());
-            Lists.Roxas.add(28, gazing_omen.get());
-            Lists.Roxas.add(29, elemental_crescendo.get());
-            Lists.Roxas.add(30, xephiroKeyblade.get());
+            /*
+            Tags.ROXAS.add(27, pureblood.get());
+            Tags.ROXAS.add(28, gazing_omen.get());
+            Tags.ROXAS.add(29, elemental_crescendo.get());
+            Tags.ROXAS.add(30, xephiroKeyblade.get());
+             */
         }
 
 

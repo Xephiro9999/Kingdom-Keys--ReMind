@@ -2,19 +2,19 @@
   "cost": 900,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_lucid_gem",
+      "material": "kingdomkeys:lucid_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_writhing_gem",
+      "material": "kingdomkeys:writhing_gem",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_writhing_stone",
+      "material": "kingdomkeys:writhing_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_lucid_crystal",
+      "material": "kingdomkeys:lucid_crystal",
       "quantity": "1"
     }
   ],
