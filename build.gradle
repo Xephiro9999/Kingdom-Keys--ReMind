@@ -92,7 +92,8 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-    implementation "curse.maven:kingdom-keys-re-coded-242862:6211750-sources-6211751"
+    //implementation "curse.maven:kingdom-keys-re-coded-242862:6211750-sources-6211751"
+    implementation "curse.maven:kingdom-keys-re-coded-242862:6319988"
 }
 
 tasks.withType(ProcessResources).configureEach {

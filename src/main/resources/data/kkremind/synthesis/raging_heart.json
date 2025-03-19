@@ -2,19 +2,19 @@
   "cost": 1600,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_writhing_crystal",
+      "material": "kingdomkeys:writhing_crystal",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_blazing_crystal",
+      "material": "kingdomkeys:blazing_crystal",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_illusory_crystal",
+      "material": "kingdomkeys:illusory_crystal",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_sinister_crystal",
+      "material": "kingdomkeys:sinister_crystal",
       "quantity": "3"
     }
   ],

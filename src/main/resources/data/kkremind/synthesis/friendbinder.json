@@ -2,19 +2,19 @@
   "cost": 1500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_remembrance_shard",
+      "material": "kingdomkeys:remembrance_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_mythril_stone",
+      "material": "kingdomkeys:mythril_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_remembrance_gem",
+      "material": "kingdomkeys:remembrance_gem",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_remembrance_stone",
+      "material": "kingdomkeys:remembrance_stone",
       "quantity": "3"
     }
   ],

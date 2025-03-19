@@ -2,15 +2,15 @@
   "cost": 750,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_blazing_shard",
+      "material": "kingdomkeys:blazing_shard",
       "quantity": "5"
     },
     {
-      "material": "kingdomkeys:mat_pulsing_shard",
+      "material": "kingdomkeys:pulsing_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_soothing_gem",
+      "material": "kingdomkeys:soothing_gem",
       "quantity": "1"
     }
   ],

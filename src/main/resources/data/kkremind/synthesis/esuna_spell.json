@@ -2,19 +2,19 @@
   "cost": 250,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_soothing_shard",
+      "material": "kingdomkeys:soothing_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_remembrance_shard",
+      "material": "kingdomkeys:remembrance_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_soothing_gem",
+      "material": "kingdomkeys:soothing_gem",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_betwixt_stone",
+      "material": "kingdomkeys:betwixt_stone",
       "quantity": "3"
     }
   ],

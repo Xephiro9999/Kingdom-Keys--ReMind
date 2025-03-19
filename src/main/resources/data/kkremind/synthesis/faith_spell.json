@@ -2,19 +2,19 @@
   "cost": 1750,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_betwixt_stone",
+      "material": "kingdomkeys:betwixt_stone",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_evanescent_crystal",
+      "material": "kingdomkeys:evanescent_crystal",
       "quantity": "2"
     },
     {
-      "material": "kingdomkeys:mat_twilight_crystal",
+      "material": "kingdomkeys:twilight_crystal",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_pulsing_gem",
+      "material": "kingdomkeys:pulsing_gem",
       "quantity": "5"
     }
   ],

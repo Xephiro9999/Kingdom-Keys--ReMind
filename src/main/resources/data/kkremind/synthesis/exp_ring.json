@@ -2,11 +2,11 @@
   "cost": 1000,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_mythril_shard",
+      "material": "kingdomkeys:mythril_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_pulsing_shard",
+      "material": "kingdomkeys:pulsing_shard",
       "quantity": "3"
     }
   ],

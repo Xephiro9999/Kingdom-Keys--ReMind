@@ -37,7 +37,8 @@ public class DriveFormDark extends DriveForm {
                 IGlobalDataRM formData = ModDataRM.getGlobal(player);
 
                 if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
-                    double mult = Double.parseDouble(ModConfigs.driveFormXPMultiplier.get(1).split(",")[1]);
+                    double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);
+                    //double mult = 1;
                     playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
 
                     PacketHandlerRM.syncGlobalToAllAround(player, formData);

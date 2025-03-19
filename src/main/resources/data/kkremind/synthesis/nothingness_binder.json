@@ -2,19 +2,19 @@
   "cost": 1500,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_evanescent_crystal",
+      "material": "kingdomkeys:evanescent_crystal",
       "quantity": "1"
     },
     {
-      "material": "kingdomkeys:mat_mythril_stone",
+      "material": "kingdomkeys:mythril_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_remembrance_gem",
+      "material": "kingdomkeys:remembrance_gem",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_twilight_gem",
+      "material": "kingdomkeys:twilight_gem",
       "quantity": "4"
     }
   ],

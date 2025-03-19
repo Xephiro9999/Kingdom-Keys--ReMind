@@ -2,19 +2,19 @@
   "cost": 1600,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_twilight_crystal",
+      "material": "kingdomkeys:twilight_crystal",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_betwixt_crystal",
+      "material": "kingdomkeys:betwixt_crystal",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_evanescent_crystal",
+      "material": "kingdomkeys:evanescent_crystal",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_orichalcumplus",
+      "material": "kingdomkeys:orichalcumplus",
       "quantity": "3"
     }
   ],

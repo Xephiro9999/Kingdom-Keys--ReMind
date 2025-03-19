@@ -2,19 +2,19 @@
   "cost": 250,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_writhing_shard",
+      "material": "kingdomkeys:writhing_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_lucid_shard",
+      "material": "kingdomkeys:lucid_shard",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:mat_writhing_gem",
+      "material": "kingdomkeys:writhing_gem",
       "quantity": "4"
     },
     {
-      "material": "kingdomkeys:mat_betwixt_stone",
+      "material": "kingdomkeys:betwixt_stone",
       "quantity": "3"
     }
   ],

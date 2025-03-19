@@ -29,11 +29,11 @@ public class TestReaction extends ReactionCommand {
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
-		if (playerData != null) {
-			if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
-				return true;
-			}
-		}
+//		if (playerData != null) {
+//			if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
+//				return true;
+//			}
+//		}
 		return false;
 	}
 }

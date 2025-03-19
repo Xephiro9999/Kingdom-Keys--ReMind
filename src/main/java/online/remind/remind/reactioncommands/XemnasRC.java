@@ -35,13 +35,11 @@ public class XemnasRC extends ReactionCommand {
             if (player.getMainHandItem().getItem() instanceof IOrgWeapon) {
                 IOrgWeapon weapon = (IOrgWeapon) player.getMainHandItem().getItem();
                 /*
-                System.out.println(weapon);
-                System.out.println(weapon.getMember());
-                System.out.println(playerData.getAlignment());
-                */
+
                 if (weapon.getMember() == playerData.getAlignment() && playerData.getAlignment() == Utils.OrgMember.XEMNAS) {
                     return true;
                 }
+                */
             }
         }
         return false;

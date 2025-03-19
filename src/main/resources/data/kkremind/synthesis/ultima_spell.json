@@ -2,35 +2,35 @@
   "cost": 50000,
   "ingredients": [
     {
-      "material": "kingdomkeys:mat_lucid_crystal",
+      "material": "kingdomkeys:lucid_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_twilight_crystal",
+      "material": "kingdomkeys:twilight_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_frost_crystal",
+      "material": "kingdomkeys:frost_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_lightning_crystal",
+      "material": "kingdomkeys:lightning_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_blazing_crystal",
+      "material": "kingdomkeys:blazing_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_evanescent_crystal",
+      "material": "kingdomkeys:evanescent_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_illusory_crystal",
+      "material": "kingdomkeys:illusory_crystal",
       "quantity": "9"
     },
     {
-      "material": "kingdomkeys:mat_orichalcumplus",
+      "material": "kingdomkeys:orichalcumplus",
       "quantity": "10"
     }
   ],

@@ -57,7 +57,7 @@ public class magicHaste extends Magic {
 						List<Party.Member> list = party.getMembers();
 						if (!list.isEmpty()) { // Haste everyone in the party within reach
 							for (int i = 0; i < list.size(); i++) {
-								if (player.level().getPlayerByUUID(list.get(i).getUUID()) != null && player.distanceTo(player.level().getPlayerByUUID(list.get(i).getUUID())) < ModConfigs.partyRangeLimit) {
+								if (player.level().getPlayerByUUID(list.get(i).getUUID()) != null && player.distanceTo(player.level().getPlayerByUUID(list.get(i).getUUID())) < ModConfigs.SERVER.partyRangeLimit.get()) {
 									LivingEntity e = player.level().getPlayerByUUID(list.get(i).getUUID());
 									if (e != null && Utils.isEntityInParty(party, e) && e != player) {
 										IGlobalDataRM globalData2 = ModDataRM.getGlobal(e);
