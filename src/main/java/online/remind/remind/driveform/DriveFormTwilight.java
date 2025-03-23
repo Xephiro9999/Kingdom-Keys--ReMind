@@ -23,13 +23,18 @@ public class DriveFormTwilight extends DriveForm {
     @Override
     public boolean isSlotVisible(Player player) {
     	IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+		System.out.println("Light Form Level: "+ playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm));
+		System.out.println("Light Form Level: "+ playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm));
     	if (playerData != null) {
 			if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
+				System.out.println("Level Requirement met!");
 				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm))
 					return playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oblivionChain.get();
+					System.out.println("Equipped:" + playerData.getEquippedKeychain(DriveForm.NONE).getItem());
 				
 				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm))
 					return playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oathkeeperChain.get();
+					System.out.println("Equipped:" + playerData.getEquippedKeychain(DriveForm.NONE).getItem());
 				
 				return playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight);
 			}
