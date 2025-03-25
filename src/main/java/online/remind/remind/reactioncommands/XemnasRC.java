@@ -41,9 +41,9 @@ public class XemnasRC extends ReactionCommand {
                 System.out.println(weapon.getMember());
                 System.out.println(playerData.getAlignment());
                 */
-                if (weapon.getMember() == playerData.getAlignment() && playerData.getAlignment() == Utils.OrgMember.XEMNAS) {
-                    return true;
-                }
+//                if (weapon.getMember() == playerData.getAlignment() && playerData.getAlignment() == Utils.OrgMember.XEMNAS) {
+//                    return true;
+//                }
             }
         }
         return false;
