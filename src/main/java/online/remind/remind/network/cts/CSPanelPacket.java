@@ -85,41 +85,78 @@ public class CSPanelPacket {
                 break;
             case 5:
                 level = playerData.getDriveFormLevel(Strings.Form_Valor);
-                xpGain = level * 10;
+                DriveForm drive = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Valor));
+                if (level == 0){
+                    playerData.setDriveFormLevel(Strings.Form_Valor, 1);
+                    playerData.addVisibleDriveForm(Strings.Form_Valor);
+                } else {
+                    while (playerData.getDriveFormLevel(Strings.Form_Valor) < level + 1) {
+                        int cost = drive.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Valor) + 1);
+                        playerData.setDriveFormExp(player, Strings.Form_Valor, cost);
+                    }
+                }
 
-                playerData.addDriveFormExperience(Strings.Form_Valor, player, xpGain);
                 playerData.addHearts(-5000);
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
             case 6:
                 level = playerData.getDriveFormLevel(Strings.Form_Wisdom);
-                xpGain = level * 4;
-
-                playerData.addDriveFormExperience(Strings.Form_Wisdom, player, xpGain);
+                DriveForm drive1 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Wisdom));
+                if (level == 0){
+                    playerData.setDriveFormLevel(Strings.Form_Wisdom, 1);
+                    playerData.addVisibleDriveForm(Strings.Form_Wisdom);
+                } else {
+                    while (playerData.getDriveFormLevel(Strings.Form_Wisdom) < level + 1) {
+                        int cost = drive1.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Wisdom) + 1);
+                        playerData.setDriveFormExp(player, Strings.Form_Wisdom, cost);
+                    }
+                }
                 playerData.addHearts(-5000);
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
             case 7:
                 level = playerData.getDriveFormLevel(Strings.Form_Limit);
-                xpGain = level * 2;
+                DriveForm drive2 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Wisdom));
+                if (level == 0){
+                    playerData.setDriveFormLevel(Strings.Form_Limit, 1);
+                    playerData.addVisibleDriveForm(Strings.Form_Limit);
+                } else {
+                    while (playerData.getDriveFormLevel(Strings.Form_Limit) < level + 1) {
+                        int cost = drive2.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Limit) + 1);
+                        playerData.setDriveFormExp(player, Strings.Form_Limit, cost);
+                    }
+                }
 
-                playerData.addDriveFormExperience(Strings.Form_Limit, player, xpGain);
                 playerData.addHearts(-5000);
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
             case 8:
                 level = playerData.getDriveFormLevel(Strings.Form_Master);
-                xpGain = level * 8;
-
-                playerData.addDriveFormExperience(Strings.Form_Master, player, xpGain);
+                DriveForm drive3 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Master));
+                if (level == 0){
+                    playerData.setDriveFormLevel(Strings.Form_Master, 1);
+                    playerData.addVisibleDriveForm(Strings.Form_Master);
+                } else {
+                    while (playerData.getDriveFormLevel(Strings.Form_Master) < level + 1) {
+                        int cost = drive3.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Master) + 1);
+                        playerData.setDriveFormExp(player, Strings.Form_Master, cost);
+                    }
+                }
                 playerData.addHearts(-5000);
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
             case 9:
                 level = playerData.getDriveFormLevel(Strings.Form_Final);
-                xpGain = level * 4;
-
-                playerData.addDriveFormExperience(Strings.Form_Final, player, xpGain);
+                DriveForm drive4 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Final));
+                if (level == 0){
+                    playerData.setDriveFormLevel(Strings.Form_Final, 1);
+                    playerData.addVisibleDriveForm(Strings.Form_Final);
+                } else {
+                    while (playerData.getDriveFormLevel(Strings.Form_Final) < level + 1) {
+                        int cost = drive4.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Final) + 1);
+                        playerData.setDriveFormExp(player, Strings.Form_Final, cost);
+                    }
+                }
                 playerData.addHearts(-5000);
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
