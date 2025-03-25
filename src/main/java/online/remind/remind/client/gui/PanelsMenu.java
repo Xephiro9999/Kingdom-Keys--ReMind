@@ -195,12 +195,12 @@ public class PanelsMenu extends MenuBackground {
                 action("valorUp");
             }));
         } else if (playerData.getDriveFormLevel(Strings.Form_Valor) < 7 && playerData.getHearts() < 5000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, ChatFormatting.RED + "Valor EXP Up, Cost: 5000", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(valorUp = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, (ChatFormatting.DARK_RED + "Valor " + ChatFormatting.WHITE + "EXP Up, Cost: " + ChatFormatting.DARK_RED + "5000"), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
         else if ((playerData.getDriveFormLevel(Strings.Form_Valor) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, ChatFormatting.RED + "Valor Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, ChatFormatting.GOLD + "Valor Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -211,12 +211,12 @@ public class PanelsMenu extends MenuBackground {
             }));
 
         } else if (playerData.getDriveFormLevel(Strings.Form_Wisdom) < 7 && playerData.getHearts() < 5000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, ChatFormatting.RED + "Wisdom EXP Up, Cost: 5000", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(wisdomUp = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, (ChatFormatting.BLUE + "Wisdom " + ChatFormatting.WHITE + "EXP Up, Cost: " + ChatFormatting.DARK_RED + "5000"), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
             else if ((playerData.getDriveFormLevel(Strings.Form_Wisdom) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, ChatFormatting.RED + "Wisdom Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, ChatFormatting.GOLD + "Wisdom Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -225,11 +225,11 @@ public class PanelsMenu extends MenuBackground {
                 action("limitUp");
             }));
         } else if (playerData.getDriveFormLevel(Strings.Form_Limit) < 7 && playerData.getHearts() < 5000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, ChatFormatting.RED + "Limit EXP Up, Cost: 5000", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(limitUp = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, (ChatFormatting.LIGHT_PURPLE + "Limit " + ChatFormatting.WHITE + "EXP Up, Cost: " + ChatFormatting.DARK_RED + "5000"), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Limit) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, ChatFormatting.RED + "Limit Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, ChatFormatting.GOLD + "Limit Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -238,11 +238,11 @@ public class PanelsMenu extends MenuBackground {
                 action("masterUp");
             }));
         } else if (playerData.getDriveFormLevel(Strings.Form_Master) < 7 && playerData.getHearts() < 5000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, ChatFormatting.RED + "Master EXP Up, Cost: 5000", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(masterUp = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, (ChatFormatting.YELLOW + "Master " + ChatFormatting.WHITE + "EXP Up, Cost: " + ChatFormatting.DARK_RED + "5000"), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Master) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, ChatFormatting.RED + "Master Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, ChatFormatting.GOLD + "Master Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -251,11 +251,11 @@ public class PanelsMenu extends MenuBackground {
                 action("finalUp");
             }));
         } else if (playerData.getDriveFormLevel(Strings.Form_Final) < 7 && playerData.getHearts() < 5000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, ChatFormatting.RED + "Final EXP Up, Cost: 5000", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(finalUp = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, (ChatFormatting.GRAY + "Final " + ChatFormatting.WHITE + "EXP Up, Cost: " + ChatFormatting.DARK_RED + "5000"), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Final) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, ChatFormatting.RED + "Final Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, ChatFormatting.GOLD + "Final Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -268,7 +268,7 @@ public class PanelsMenu extends MenuBackground {
                 action("req");
             }));
         } else if (playerData.getLevel() == 100) {
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ChatFormatting.RED + "Max Level", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ChatFormatting.GOLD + "Max Level", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }

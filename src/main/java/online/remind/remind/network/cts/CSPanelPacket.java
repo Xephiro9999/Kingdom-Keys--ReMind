@@ -69,15 +69,19 @@ public class CSPanelPacket {
                 playerData.addHearts(-1000 * globalData.getSTRPanel());
                 globalData.addSTRPanel(1);
                 System.out.println(globalData.getSTRPanel());
+                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 2:
                 playerData.addHearts(-1000 * globalData.getMAGPanel());
                 globalData.addMAGPanel(1);
+                System.out.println(globalData.getMAGPanel());
+                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 3:
                 playerData.addHearts(-1000 * globalData.getDEFPanel());
                 globalData.addDEFPanel(1);
                 System.out.println(globalData.getDEFPanel());
+                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 4:
                 playerData.addMaxAP(2);
