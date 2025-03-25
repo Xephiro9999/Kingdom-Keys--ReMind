@@ -68,19 +68,19 @@ public class CSPanelPacket {
             case 1:
                 playerData.addHearts(-1000 * globalData.getSTRPanel());
                 globalData.addSTRPanel(1);
-                System.out.println(globalData.getSTRPanel());
+                //System.out.println(globalData.getSTRPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 2:
                 playerData.addHearts(-1000 * globalData.getMAGPanel());
                 globalData.addMAGPanel(1);
-                System.out.println(globalData.getMAGPanel());
+                //System.out.println(globalData.getMAGPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 3:
                 playerData.addHearts(-1000 * globalData.getDEFPanel());
                 globalData.addDEFPanel(1);
-                System.out.println(globalData.getDEFPanel());
+                //System.out.println(globalData.getDEFPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 break;
             case 4:
@@ -186,8 +186,8 @@ public class CSPanelPacket {
 
                 playerData.addHearts((int)heartsRegained);
 
-                System.out.println(totalBoost);
-                System.out.println(heartsRegained);
+                //System.out.println(totalBoost);
+                //System.out.println(heartsRegained);
                 break;
         }
 

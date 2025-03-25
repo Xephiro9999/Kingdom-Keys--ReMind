@@ -248,8 +248,8 @@ public class EntityEventsRM {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
 				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-					System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
-					System.out.println(player.getUUID());
+					//System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
+					//System.out.println(player.getUUID());
 					//playerData.getStrengthStat().addModifier("Not Xephiro", -25, false, true);
 					//playerData.getMagicStat().addModifier("Not Xephiro", -25, false, true);
 					//playerData.getDefenseStat().addModifier("Not Xephiro", -25, false, true);
@@ -451,15 +451,19 @@ public class EntityEventsRM {
 				}
 
 				// Panel System
-				if (!player.level().isClientSide && playerData.getAlignment() != Utils.OrgMember.NONE){
-					playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
-					playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
-					playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
-					//System.out.println("Panel Buff Added");
+				if (!player.level().isClientSide){
+					if (playerData.getAlignment() != Utils.OrgMember.NONE) {
+						playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
+						playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
+						playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
+						//System.out.println("Panel Buff Added");
+						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+					}
 				} else {
 					playerData.getStrengthStat().removeModifier("Panel");
 					playerData.getMagicStat().removeModifier("Panel");
 					playerData.getDefenseStat().removeModifier("Panel");
+					//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
 			}
 
