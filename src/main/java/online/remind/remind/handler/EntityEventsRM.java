@@ -70,8 +70,6 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
-
-			globalData.setPanelChoice("0");
 		}
 	}
 

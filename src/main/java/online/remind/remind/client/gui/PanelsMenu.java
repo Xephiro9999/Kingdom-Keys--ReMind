@@ -41,93 +41,76 @@ public class PanelsMenu extends MenuBackground {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(minecraft.player);
 
-        if (string.equals("back"))
-            GUIHelperRM.openAddonMenu();
+        switch(string){
+            case "back" -> GUIHelperRM.openAddonMenu();
+            case "reg" -> {
+                minecraft.setScreen(new PanelsMenu());
+                minecraft.player.playSound(ModSounds.error.get());
+            }
+            case "strUp" -> {
+               // globalData.setPanelChoice("STR");
+                PacketHandlerRM.sendToServer(new CSPanelPacket(1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "magUp" -> {
+               // globalData.setPanelChoice("MAG");
+                PacketHandlerRM.sendToServer(new CSPanelPacket(2));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "defUp" -> {
+              //  globalData.setPanelChoice("DEF");
+                PacketHandlerRM.sendToServer(new CSPanelPacket(3));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "apUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(4));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "valorUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(5));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "wisdomUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(6));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "limitUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(7));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "masterUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(8));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "finalUp" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(9));
+                minecraft.player.playSound(ModSounds.itemget.get());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "lvl" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(10));
+                GUIHelperRM.openAddonMenu();
+            }
+            case "reset" -> {
+                PacketHandlerRM.sendToServer(new CSPanelPacket(11));
+                GUIHelperRM.openAddonMenu();
+            }
 
-        if (string.equals("req")) {
-            minecraft.setScreen(new PanelsMenu());
-            minecraft.player.playSound(ModSounds.error.get());
         }
 
-        //Stat Boosts
-        if (string.equals("strUp")) {
-            //playerData.getStrengthStat().addModifier("Panel", 1, true, false);
-            globalData.setPanelChoice("STR");
-            PacketHandlerRM.sendToServer(new CSPanelPacket(1));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-            //minecraft.setScreen(new PanelsMenu());
-        }
-        if (string.equals("defUp")) {
-
-            //playerData.getDefenseStat().addModifier("Panel", 1, true, false);
-            globalData.setPanelChoice("DEF");
-            PacketHandlerRM.sendToServer(new CSPanelPacket(3));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-            //minecraft.setScreen(new PanelsMenu());
-
-        }
-        if (string.equals("magUp")) {
-
-            //playerData.getMagicStat().addModifier("Panel", 1, true, false);
-            globalData.setPanelChoice("MAG");
-            PacketHandlerRM.sendToServer(new CSPanelPacket(2));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-            //minecraft.setScreen(new PanelsMenu());
-        }
-        if (string.equals("apUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(4));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-            //minecraft.setScreen(new PanelsMenu());
-        }
-        if (string.equals("valorUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(5));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("wisdomUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(6));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("limitUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(7));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("masterUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(8));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("finalUp")) {
-            //
-            PacketHandlerRM.sendToServer(new CSPanelPacket(9));
-            minecraft.player.playSound(ModSounds.itemget.get());
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("lvl")){
-            PacketHandlerRM.sendToServer(new CSPanelPacket(10));
-            GUIHelperRM.openAddonMenu();
-        }
-        if (string.equals("reset")){
-            PacketHandlerRM.sendToServer(new CSPanelPacket(11));
-            GUIHelperRM.openAddonMenu();
-        }
     }
 
     @Override
     public void init() {
 
-        Player player;
         final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
         IGlobalCapabilitiesRM addedData = ModCapabilitiesRM.getGlobal(minecraft.player);
 

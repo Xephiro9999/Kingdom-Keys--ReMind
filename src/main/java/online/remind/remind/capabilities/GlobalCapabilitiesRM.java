@@ -35,8 +35,6 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putInt("Panels_DEF", this.getDEFPanel());
         storage.putInt("Panels_MAG", this.getMAGPanel());
 
-        //storage.putString("Panels_Choice",this.getPanelChoice().toString());
-
         storage.putInt("riskcharge_count", this.getRiskchargeCount());
 
         // Dream Eater
@@ -73,8 +71,6 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
         this.setCanCounter(properties.getInt("can_counter"));
 
-        this.setPanelChoice(properties.getString("Panels_Choice"));
-
     }
 
     private int hasteTicks;
@@ -95,7 +91,6 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     private int strPanel;
     private int magPanel;
     private int defPanel;
-    private String panelChoice;
 
     private int darkModeEXP;
     private int lightFormEXP;
@@ -421,20 +416,6 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
 
     @Override
-    public void setPanelChoice(String choice){
-        panelChoice = choice;
-    }
-    @Override
-    public String getPanelChoice(){
-        return panelChoice;
-    }
-
-
-
-
-
-
-    @Override
     public double getMPOG() {
         return MPOG;
     }
@@ -470,7 +451,6 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
     @Override
     public int getDreamEaterSummonedID() {
-
         return dreamEaterSummonedID;
     }
 

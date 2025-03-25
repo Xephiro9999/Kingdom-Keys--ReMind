@@ -90,9 +90,6 @@ public interface IGlobalCapabilitiesRM extends INBTSerializable<CompoundTag> {
     int getRCCooldownTicks();
     void setRCCooldownTicks(int ticks);
     void remRCCooldownTicks(int ticks);
-    String getPanelChoice();
-
-    void setPanelChoice(String choice);
 
     double getMPOG();
     void setMPOG(int i);

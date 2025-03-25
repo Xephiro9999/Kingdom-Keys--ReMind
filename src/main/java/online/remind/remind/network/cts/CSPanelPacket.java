@@ -50,11 +50,8 @@ public class CSPanelPacket {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
 
-
-        //
         int level;
         int xpGain;
-        int i;
         int totalBoost;
         float heartsRegained;
 
@@ -70,18 +67,21 @@ public class CSPanelPacket {
                 globalData.addSTRPanel(1);
                 //System.out.println(globalData.getSTRPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+                playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                 break;
             case 2:
                 playerData.addHearts(-1000 * globalData.getMAGPanel());
                 globalData.addMAGPanel(1);
                 //System.out.println(globalData.getMAGPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+                playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
                 break;
             case 3:
                 playerData.addHearts(-1000 * globalData.getDEFPanel());
                 globalData.addDEFPanel(1);
                 //System.out.println(globalData.getDEFPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+                playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
                 break;
             case 4:
                 playerData.addMaxAP(2);
