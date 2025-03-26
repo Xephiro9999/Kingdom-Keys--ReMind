@@ -51,53 +51,64 @@ public class PanelsMenu extends MenuBackground {
                // globalData.setPanelChoice("STR");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(1));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
+
             }
             case "magUp" -> {
                // globalData.setPanelChoice("MAG");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(2));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "defUp" -> {
               //  globalData.setPanelChoice("DEF");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(3));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "apUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(4));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "valorUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(5));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "wisdomUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(6));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "limitUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(7));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "masterUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(8));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "finalUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(9));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "lvl" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(10));
-                GUIHelperRM.openAddonMenu();
+                //GUIHelperRM.openAddonMenu();
+                GUIHelperRM.openPanelMenu();
             }
             case "reset" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(11));
@@ -113,6 +124,7 @@ public class PanelsMenu extends MenuBackground {
 
         final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
         IGlobalCapabilitiesRM addedData = ModCapabilitiesRM.getGlobal(minecraft.player);
+
 
         super.init();
         this.renderables.clear();
@@ -133,34 +145,49 @@ public class PanelsMenu extends MenuBackground {
         int col1X = (int) (subButtonPosX + buttonWidth + 10), col2X = (int) (col1X + dataWidth * 2) + 5;
 
         int i = 0;
-
-        if (playerData.getHearts() >= 1000 * addedData.getSTRPanel()) {
+        // STR
+        if (playerData.getHearts() >= 1000 * addedData.getSTRPanel() && addedData.getSTRPanel() < 50) {
             addRenderableWidget(strUp = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth,("STR +  -  Cost: "+ ChatFormatting.GREEN + (1000 * (addedData.getSTRPanel()+1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("strUp");
             }));
-        } else {
+        } else if (playerData.getHearts() < 1000 * addedData.getSTRPanel() && addedData.getSTRPanel() < 50){
             addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "STR +  -  Cost: "+ ChatFormatting.DARK_RED + (1000 * (addedData.getSTRPanel()+1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
+        } else if (addedData.getSTRPanel() == 50){
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, ChatFormatting.GOLD + "☆ STR MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
+                action("req");
+            }));
         }
-        if (playerData.getHearts() >= 1000 * addedData.getMAGPanel()) {
+        // MAG
+        if (playerData.getHearts() >= 1000 * addedData.getMAGPanel() && addedData.getMAGPanel() < 50) {
             addRenderableWidget(magUp = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, ("MAG +  -  Cost: "+ ChatFormatting.GREEN +  (1000 * (addedData.getMAGPanel() +1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("magUp");
             }));
-        } else {
+        } else if (playerData.getHearts() < 1000 * addedData.getMAGPanel() && addedData.getMAGPanel() < 50){
             addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, "MAG +  -  Cost: " + ChatFormatting.DARK_RED +  (1000 * (addedData.getMAGPanel()+1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
-        }
-        if (playerData.getHearts() >= 1000 * addedData.getMAGPanel()) {
-                addRenderableWidget(defUp = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, ("DEF +  -  Cost: "+ ChatFormatting.GREEN + (1000 * (addedData.getDEFPanel()+1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
-                    action("defUp");
-                }));
-        } else {
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, "DEF +  -  Cost: "+ ChatFormatting.DARK_RED + (1000 * (addedData.getDEFPanel() +1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        }else if (addedData.getMAGPanel() == 50){
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY+ 20, (int) buttonWidth, ChatFormatting.GOLD + "☆ MAG MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
+        // DEF
+        if (playerData.getHearts() >= 1000 * addedData.getDEFPanel() && addedData.getDEFPanel() < 50) {
+                addRenderableWidget(defUp = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, ("DEF +  -  Cost: "+ ChatFormatting.GREEN + (1000 * (addedData.getDEFPanel()+1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
+                    action("defUp");
+                }));
+        } else if  (playerData.getHearts() < 1000 * addedData.getDEFPanel() && addedData.getDEFPanel() < 50){
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, "DEF +  -  Cost: "+ ChatFormatting.DARK_RED + (1000 * (addedData.getDEFPanel() +1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
+                action("req");
+            }));
+        } else if (addedData.getDEFPanel() == 50){
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY+ 40, (int) buttonWidth, ChatFormatting.GOLD + "☆ DEF MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
+                action("req");
+            }));
+        }
+        // AP
         if (playerData.getHearts() >= 1000) {
             addRenderableWidget(apUp = new MenuButton((int) buttonPosX, button_statsY + 60, (int) buttonWidth, "AP +  -  Cost: " + ChatFormatting.GREEN + "1000", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("apUp");
@@ -183,7 +210,7 @@ public class PanelsMenu extends MenuBackground {
             }));
         }
         else if ((playerData.getDriveFormLevel(Strings.Form_Valor) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, ChatFormatting.GOLD + "Valor Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, ChatFormatting.GOLD + "☆ Valor Form MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -199,7 +226,7 @@ public class PanelsMenu extends MenuBackground {
             }));
         }
             else if ((playerData.getDriveFormLevel(Strings.Form_Wisdom) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, ChatFormatting.GOLD + "Wisdom Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, ChatFormatting.GOLD + "☆ Wisdom Form MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -212,7 +239,7 @@ public class PanelsMenu extends MenuBackground {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Limit) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, ChatFormatting.GOLD + "Limit Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, ChatFormatting.GOLD + "☆ Limit Form MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -225,7 +252,7 @@ public class PanelsMenu extends MenuBackground {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Master) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, ChatFormatting.GOLD + "Master Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, ChatFormatting.GOLD + "☆ Master Form MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -238,7 +265,7 @@ public class PanelsMenu extends MenuBackground {
                 action("req");
             }));
         } else if ((playerData.getDriveFormLevel(Strings.Form_Final) == 7)){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, ChatFormatting.GOLD + "Final Form MAXED", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, ChatFormatting.GOLD + "☆ Final Form MAXED ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }
@@ -251,7 +278,7 @@ public class PanelsMenu extends MenuBackground {
                 action("req");
             }));
         } else if (playerData.getLevel() == 100) {
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ChatFormatting.GOLD + "Max Level", MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ChatFormatting.GOLD + "☆ MAX LEVEL! ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
         }

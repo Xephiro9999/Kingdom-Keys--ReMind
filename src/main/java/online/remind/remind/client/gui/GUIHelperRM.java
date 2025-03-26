@@ -13,4 +13,10 @@ public class GUIHelperRM {
         mc.level.playSound(mc.player, mc.player.blockPosition(), ModSounds.menu_in.get(), SoundSource.MASTER, 1.0f, 1.0f);
         mc.setScreen(new AddonMenu());
     }
+
+    public static void openPanelMenu(){
+        Minecraft mc = Minecraft.getInstance();
+        mc.setScreen(new PanelsMenu());
+    }
+
 }

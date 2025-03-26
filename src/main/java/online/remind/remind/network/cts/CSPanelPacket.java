@@ -63,22 +63,34 @@ public class CSPanelPacket {
                 System.out.println("This shouldn't happen");
                 break;
             case 1:
-                playerData.addHearts(-1000 * globalData.getSTRPanel());
+                playerData.addHearts(-1000 * globalData.getSTRPanel() + 1);
                 globalData.addSTRPanel(1);
-                //System.out.println(globalData.getSTRPanel());
+                if (globalData.getSTRPanel() > 50){
+                    globalData.setSTRPanel(50);
+                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getSTRPanel());
+                }
+                System.out.println(globalData.getSTRPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                 break;
             case 2:
-                playerData.addHearts(-1000 * globalData.getMAGPanel());
+                playerData.addHearts(-1000 * globalData.getMAGPanel() + 1);
                 globalData.addMAGPanel(1);
-                //System.out.println(globalData.getMAGPanel());
+                if (globalData.getMAGPanel() > 50){
+                    globalData.setMAGPanel(50);
+                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getMAGPanel());
+                }
+                System.out.println(globalData.getMAGPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
                 break;
             case 3:
-                playerData.addHearts(-1000 * globalData.getDEFPanel());
+                playerData.addHearts(-1000 * globalData.getDEFPanel() + 1);
                 globalData.addDEFPanel(1);
+                if (globalData.getDEFPanel() > 50){
+                    globalData.setDEFPanel(50);
+                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getDEFPanel());
+                }
                 //System.out.println(globalData.getDEFPanel());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
