@@ -177,7 +177,7 @@ public class CSPanelPacket {
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
             case 10:
-                playerData.addHearts(-10000 * playerData.getLevel());
+                playerData.addHearts(-1000 * playerData.getLevel());
                 xpGain = playerData.getExpNeeded(playerData.getLevel(), 0) - playerData.getExperience();
                 //System.out.println(playerData.getExpNeeded(playerData.getLevel(),0)- playerData.getExperience());
                 playerData.addExperience(player, xpGain, false, true);
@@ -200,6 +200,21 @@ public class CSPanelPacket {
 
                 //System.out.println(totalBoost);
                 //System.out.println(heartsRegained);
+                break;
+            case 12:
+                playerData.addMaxArmors(1);
+                playerData.addHearts(-10000);
+                PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
+                break;
+            case 13:
+                playerData.addMaxAccessories(1);
+                playerData.addHearts(-10000);
+                PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
+                break;
+            case 14:
+                playerData.setAlignment(0);
+                playerData.addHearts(-13000);
+                PacketHandler.sendTo(new SCSyncCapabilityPacket(ModCapabilities.getPlayer(player)), (ServerPlayer) player);
                 break;
         }
 

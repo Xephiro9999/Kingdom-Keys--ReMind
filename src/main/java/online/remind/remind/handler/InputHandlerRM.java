@@ -3,6 +3,7 @@ package online.remind.remind.handler;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -16,8 +17,11 @@ import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.NoChoiceMenuPopup;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
+import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -43,6 +47,7 @@ public class InputHandlerRM {
 			Player player = event.getHandler().player;
 			IPlayerCapabilities playerData = event.getHandler().playerData;
 			IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+			DriveForm form = ModDriveForms.registry.get().getValue(new ResourceLocation(playerData.getActiveDriveForm()));
 
 			// Light/Dark Step Abilities
 			if (InputHandler.qrCooldown <= 0 && (player.getDeltaMovement().x != 0 && player.getDeltaMovement().z != 0)) {
@@ -51,16 +56,73 @@ public class InputHandlerRM {
 					int darkLevel = playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString());
 
 					//Org Quick Step
-					if (playerData.getAlignment() != Utils.OrgMember.NONE){
+					if ((playerData.getAlignment() != Utils.OrgMember.NONE) && playerData.isAbilityEquipped(Strings.quickRun)){
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
-						double power = 8;
+						double power = 1;
 
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(15, StringsRM.orgStepType));
 
+						switch(playerData.getAlignment()){
+							case XEMNAS -> {
+								power = 7;
+								InputHandler.qrCooldown = 20;
+							}
+							case XIGBAR -> {
+								power = 8;
+								InputHandler.qrCooldown = 15;
+							}
+							case XALDIN -> {
+								power = 7.5;
+								InputHandler.qrCooldown = 10;
+							}
+							case VEXEN -> {
+								power = 3.5;
+								InputHandler.qrCooldown = 25;
+							}
+							case LEXAEUS -> {
+								power = 1.5;
+								InputHandler.qrCooldown = 30;
+							}
+							case ZEXION -> {
+								power = 4;
+								InputHandler.qrCooldown = 25;
+							}
+							case SAIX -> {
+								power = 4;
+								InputHandler.qrCooldown = 20;
+							}
+							case AXEL -> {
+								power = 5;
+								InputHandler.qrCooldown = 20;
+							}
+							case DEMYX -> {
+								power = 4.5;
+								InputHandler.qrCooldown = 20;
+							}
+							case LUXORD -> {
+								power = 0.5;
+								InputHandler.qrCooldown = 20;
+							}
+							case MARLUXIA -> {
+								power = 5.5;
+								InputHandler.qrCooldown = 20;
+							}
+							case LARXENE -> {
+								power = 12;
+								InputHandler.qrCooldown = 10;
+							}
+							case ROXAS -> {
+								power = 6.5;
+								InputHandler.qrCooldown = 20;
+							}
+						}
+
+
 						player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
-						InputHandler.qrCooldown = 15;
+						System.out.println(power);
+
 
 						event.setCanceled(true);
 					}

@@ -134,12 +134,9 @@ public class EntityEventsRM {
 		IWorldCapabilities worldData = ModCapabilities.getWorld(event.getPlayer().level());
 
 
-		playerData2.setMPOG((int) playerData.getMaxMP());
+
 		float mpBoost = (float) playerData.getMagicStat().get();
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-				//System.out.println("Original MP: "+playerData2.getMPOG());
-				//System.out.println("Boost: " + mpBoost);
-				//playerData.addMaxMP(mpBoost);
 				playerData.addMaxMP(12.5);
 			}
 
@@ -154,7 +151,7 @@ public class EntityEventsRM {
 				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
 				if (party != null){
 					float friendBoost = party.getMembers().size() - 1;
-					System.out.println(friendBoost);
+					//System.out.println(friendBoost);
 				}
 			}
 
@@ -201,7 +198,6 @@ public class EntityEventsRM {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
 		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-			//playerData.setMaxMP(playerData2.getMPOG());
 			playerData.addMaxMP(-12.5);
 
 		}
@@ -386,9 +382,9 @@ public class EntityEventsRM {
 
 				if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE){
 					float heartsBoost = (playerData.getHearts() * 0.0002f);
-					System.out.println(playerData.getHearts() + " > " + heartsBoost);
+					//System.out.println(playerData.getHearts() + " > " + heartsBoost);
 					float overBoost = heartsBoost * 0.025f;
-					System.out.println(overBoost);
+					//System.out.println(overBoost);
 					if (heartsBoost >= 50){
 						playerData.getStrengthStat().addModifier("Hearts Are Power",50 + overBoost,false,true);
 						playerData.getMagicStat().addModifier("Hearts Are Power",50 + overBoost,false,true);
@@ -518,7 +514,7 @@ public class EntityEventsRM {
 			if (event.getEntity() instanceof Player player){
 				if (globalData.getHasteTicks() > 0) {
 					globalData.remHasteTicks(1);
-					System.out.println(globalData.getHasteTicks());
+					//System.out.println(globalData.getHasteTicks());
 					if (globalData.getHasteTicks() <= 0) {
 						player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
 						player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
@@ -613,7 +609,7 @@ public class EntityEventsRM {
 				return;
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
-			System.out.println(missingHP);
+			//System.out.println(missingHP);
 
 			// Adrenaline
 			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
@@ -641,15 +637,15 @@ public class EntityEventsRM {
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()){
 				float DMGTaken = event.getAmount();
 
-				//System.out.println(DMGTaken);
+				//System.out.println("Damage Dealt: "+DMGTaken);
+				//System.out.println("MP Taken: "+ 1.5 * DMGTaken);
 
 				event.setCanceled(true);
-				playerData.remMP(DMGTaken);
+				playerData.remMP(DMGTaken * 1.5);
 				float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 10){
-					//playerData.addMP(DMGTaken / (1+ playerData.getNumberOfAbilitiesEquipped(Strings.mpRage)));
+				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11){
 					playerData.addMP(mpRageModifier);
-					//System.out.println(mpRageModifier);
+					//System.out.println("MP Restored via Mana Shield: " + mpRageModifier);
 					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
 				if (playerData.isAbilityEquipped(Strings.damageDrive)){
@@ -677,7 +673,7 @@ public class EntityEventsRM {
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
 				if (playerData.isAbilityEquipped(StringsRM.Jecht)){
-					System.out.println(addDmg);
+					//System.out.println(addDmg);
 					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
 					event.getEntity().invulnerableTime = 0;
 				}

@@ -20,9 +20,9 @@ public class ModAbilitiesRM extends ModAbilities{
     public static final RegistryObject<Ability>
             // Action
     	DARK_PASSAGE = ABILITIES.register(StringsRM.ABMA_Prefix+"dark_passage", () -> new Ability(new ResourceLocation(StringsRM.darkPassage), 3, Ability.AbilityType.ACTION, order++)),
-        RAGE_AWAKENED = ABILITIES.register(StringsRM.ABMA_Prefix+"rage_awakened", () -> new Ability(new ResourceLocation(StringsRM.rageAwakened), 5,Ability.AbilityType.ACTION, order++)),
-        WAY_TO_LIGHT = ABILITIES.register(StringsRM.ABMA_Prefix+"way_to_light", () -> new Ability(new ResourceLocation(StringsRM.wayToLight), 5, Ability.AbilityType.ACTION, order++)),
-        DARK_POWER = ABILITIES.register(StringsRM.ABMA_Prefix+"dark_power", () -> new Ability(new ResourceLocation(StringsRM.darkPower), 5, Ability.AbilityType.ACTION, order++)),
+        RAGE_AWAKENED = ABILITIES.register(StringsRM.ABMA_Prefix+"rage_awakened", () -> new Ability(new ResourceLocation(StringsRM.rageAwakened), 3,Ability.AbilityType.ACTION, order++)),
+        WAY_TO_LIGHT = ABILITIES.register(StringsRM.ABMA_Prefix+"way_to_light", () -> new Ability(new ResourceLocation(StringsRM.wayToLight), 3, Ability.AbilityType.ACTION, order++)),
+        DARK_POWER = ABILITIES.register(StringsRM.ABMA_Prefix+"dark_power", () -> new Ability(new ResourceLocation(StringsRM.darkPower), 3, Ability.AbilityType.ACTION, order++)),
         RISKCHARGE = ABILITIES.register(StringsRM.ABMA_Prefix+"riskcharge", () -> new Ability(new ResourceLocation(StringsRM.riskCharge), 0, Ability.AbilityType.ACTION, order++)),
 
             // Action - EFM
@@ -34,8 +34,8 @@ public class ModAbilitiesRM extends ModAbilities{
 
 
             // Growth
-        LIGHT_STEP = ABILITIES.register(StringsRM.ABMA_Prefix+"light_step", () -> new Ability(new ResourceLocation(StringsRM.lightStep), 3, Ability.AbilityType.GROWTH, order++)),
-        DARK_STEP = ABILITIES.register(StringsRM.ABMA_Prefix+"dark_step", () -> new Ability(new ResourceLocation(StringsRM.darkStep), 3, Ability.AbilityType.GROWTH, order++)),
+        LIGHT_STEP = ABILITIES.register(StringsRM.ABMA_Prefix+"light_step", () -> new Ability(new ResourceLocation(StringsRM.lightStep), 0, Ability.AbilityType.GROWTH, order++)),
+        DARK_STEP = ABILITIES.register(StringsRM.ABMA_Prefix+"dark_step", () -> new Ability(new ResourceLocation(StringsRM.darkStep), 0, Ability.AbilityType.GROWTH, order++)),
 
             // Support
         DARKNESS_BOOST = ABILITIES.register(StringsRM.ABMA_Prefix+"darkness_boost", () -> new Ability(new ResourceLocation(StringsRM.darknessBoost), 3, Ability.AbilityType.SUPPORT, order++)),

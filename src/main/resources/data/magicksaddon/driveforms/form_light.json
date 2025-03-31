@@ -8,9 +8,9 @@
   "speed_mult": 1,
   "level_up":[ 0, 150, 300, 450, 600, 750, 900 ],
   "abilities": [
-    "magicksaddon:ability_light_boost","magicksaddon:ability_light_boost","magicksaddon:ability_light_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","magicksaddon:ability_light_step","magicksaddon:ability_light_within"
+    "magicksaddon:ability_light_boost","magicksaddon:ability_light_boost","magicksaddon:ability_light_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","magicksaddon:ability_light_step","magicksaddon:ability_light_within", "magicksaddon:ability_friends_power"
   ],
-  "base_levelup_abilities":[ "magicksaddon:ability_light_step", "kingdomkeys:ability_form_boost", "magicksaddon:ability_light_step", "magicksaddon:ability_light_boost", "", "magicksaddon:ability_light_boost", "magicksaddon:ability_way_to_light" ],
+  "base_levelup_abilities":[ "magicksaddon:ability_light_step", "kingdomkeys:ability_form_boost", "magicksaddon:ability_light_step", "magicksaddon:ability_light_boost", "kingdomkeys:ability_form_boost", "magicksaddon:ability_light_boost", "magicksaddon:ability_way_to_light" ],
   "driveform_levelup_abilities":[ "magicksaddon:ability_light_boost", "", "magicksaddon:ability_light_boost", "","magicksaddon:ability_light_boost","","magicksaddon:ability_light_boost" ]
 
 }
