@@ -128,7 +128,7 @@ public class InputHandlerRM {
 					}
 
 					// Twilight Step
-					 if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight)){
+					 if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight) && playerData.isAbilityEquipped(Strings.quickRun)){
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
@@ -138,7 +138,7 @@ public class InputHandlerRM {
 						InputHandler.qrCooldown = 10;
 						 player.level().playSound(player, player.blockPosition(), ModSoundsRM.TWILIGHT_STEP.get(), SoundSource.PLAYERS, 1F, 1F);
 						event.setCanceled(true);
-					} else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm)) {
+					} else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm) && playerData.isAbilityEquipped(Strings.quickRun)) {
 						 // Rage Run
 						 float yaw = player.getYRot();
 						 float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
@@ -152,7 +152,7 @@ public class InputHandlerRM {
 						 event.setCanceled(true);
 					}
 					// Light Step
-					else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) || playerData.isAbilityEquipped(StringsRM.lightStep)  && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && !playerData.isAbilityEquipped(StringsRM.darkStep)) {
+					else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) || playerData.isAbilityEquipped(StringsRM.lightStep) && playerData.isAbilityEquipped(Strings.quickRun)  && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && !playerData.isAbilityEquipped(StringsRM.darkStep)) {
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
@@ -172,7 +172,7 @@ public class InputHandlerRM {
 							}
 						}
 						event.setCanceled(true);
-					} else if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID+":form_dark")) {
+					} else if (playerData.isAbilityEquipped(StringsRM.darkStep) && playerData.isAbilityEquipped(Strings.quickRun) || playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID+":form_dark") && playerData.isAbilityEquipped(Strings.quickRun)) {
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
