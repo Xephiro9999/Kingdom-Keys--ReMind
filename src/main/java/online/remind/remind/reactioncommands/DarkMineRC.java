@@ -31,7 +31,7 @@ public class DarkMineRC extends ReactionCommand {
         if (conditionsToAppear(player, player)) {
             IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
             IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-            float dmgmult = ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
+            float dmgmult = ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.25F;
             globalData.setRCCooldownTicks(40);
             playerData.setFP(playerData.getFP() - 40);
             player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MINE.get(), SoundSource.PLAYERS, 1F, 1F);

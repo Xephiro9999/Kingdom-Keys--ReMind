@@ -34,7 +34,7 @@ public class LightBeamRC extends ReactionCommand {
         if (conditionsToAppear(player, player)) {
             IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
             IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-            float dmgmult = ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+            float dmgmult = ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.25F;
 
 
             playerData.setFP(playerData.getFP() - 40);
