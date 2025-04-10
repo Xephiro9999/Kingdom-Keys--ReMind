@@ -74,13 +74,13 @@ public class PrestigeMenu extends MenuBackground{
         addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
-        if (playerData.getLevel() >= 90) {
+        if (playerData.getLevel() == 100) {
             addRenderableWidget(prestige = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, (StringsRM.Gui_Menu_Button_PrestigeConfirm), MenuButton.ButtonType.BUTTON, true, (e) -> {
                 action("confirm");
 
             }));
         } else {
-            addRenderableWidget(levelReq = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Levels Until NG+: " + (90 - playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
+            addRenderableWidget(levelReq = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Levels Until NG+: " + (100 - playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("prestige");
             }));
         }
