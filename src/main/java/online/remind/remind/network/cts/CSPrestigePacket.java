@@ -61,12 +61,12 @@ public class CSPrestigePacket {
         playerData.setMaxArmors(0);
 
         playerData.clearAbilities();
-        SoAState.applyStatsForChoices(player, playerData, false);
-
         playerData.setEquippedShotlock("");
 
         //Utils.restartLevel(playerData, player);
-        //Utils.restartLevel2(playerData, player);
+        Utils.restartLevel2(playerData, player); // Keep this for Drive Bonuses
+
+
 
 
         playerData.setSoAState(SoAState.NONE);
@@ -110,6 +110,8 @@ public class CSPrestigePacket {
         playerData.getDefenseStat().addModifier("NG+ Bonus",globalData.getDEFBonus(), true, false);
         playerData.addMaxHP(2 * globalData.getPrestigeLvl());
         playerData.addMaxMP(2 * globalData.getPrestigeLvl());
+        player.heal(playerData.getMaxHP());
+        playerData.setMP(playerData.getMaxMP());
 
         // NG+ Bonus Abilities
 

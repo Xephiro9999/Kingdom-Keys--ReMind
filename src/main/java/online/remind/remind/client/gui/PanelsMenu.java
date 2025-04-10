@@ -9,6 +9,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
@@ -50,83 +52,86 @@ public class PanelsMenu extends MenuBackground {
             case "strUp" -> {
                // globalData.setPanelChoice("STR");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
 
             }
             case "magUp" -> {
                // globalData.setPanelChoice("MAG");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(2));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "defUp" -> {
               //  globalData.setPanelChoice("DEF");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(3));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "apUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(4));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "valorUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(5));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "wisdomUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(6));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "limitUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(7));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "masterUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(8));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "finalUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(9));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                init();
             }
             case "lvl" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(10));
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                init();
+
             }
             case "armorUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(12));
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                init();
             }
             case "accessoryUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(13));
-                //GUIHelperRM.openAddonMenu();
-                GUIHelperRM.openPanelMenu();
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                init();
             }
             case "rejectOrg" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(14));
+                //PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 GUIHelperRM.openAddonMenu();
             }
             case "reset" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(11));
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                init();
             }
 
         }
