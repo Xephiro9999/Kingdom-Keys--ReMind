@@ -55,6 +55,7 @@ public class ModEntitiesRM {
     public static final RegistryObject<EntityType<SilenceEntity>> TYPE_SILENCE = createEntityType(SilenceEntity::new, SilenceEntity::new, MobCategory.MISC,"entity_silence", 0.5F, 0.5F);
     public static final RegistryObject<EntityType<WarpEntity>> TYPE_WARP = createEntityType(WarpEntity::new, WarpEntity::new, MobCategory.MISC,"entity_warp", 0.5F, 0.5F);
     public static final RegistryObject<EntityType<FaithEntity>> TYPE_FAITH = createEntityType(FaithEntity::new, FaithEntity::new, MobCategory.MISC,"entity_faith", 1.5F, 1.5F);
+    public static final RegistryObject<EntityType<MeteorEntity>> TYPE_METEOR = createEntityType(MeteorEntity::new, MeteorEntity::new, MobCategory.MISC,"entity_meteor", 1.5F, 1.5F);
 
     // Shotlocks
     public static final RegistryObject<EntityType<BioBarrageShotEntity>> TYPE_BIO_SHOT = createEntityType(BioBarrageShotEntity::new, BioBarrageShotEntity::new, MobCategory.MISC, "entity_bio_shot", 0.5F, 0.5F);
@@ -131,6 +132,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_SILENCE.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_WARP.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_FAITH.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_METEOR.get(),InvisibleEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_BIO_SHOT.get(), BioShotEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SHOTLOCK_DARK_FIRAGA_SHOT.get(), BioShotEntityRenderer::new);
