@@ -1,12 +1,15 @@
 package online.remind.remind.network.cts;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
@@ -17,7 +20,10 @@ import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.function.Supplier;
+import java.util.Map.Entry;
 
 public class CSPrestigePacket {
 
@@ -63,11 +69,25 @@ public class CSPrestigePacket {
         playerData.clearAbilities();
         playerData.setEquippedShotlock("");
 
+        LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
+        Iterator<Entry<String, int[]>> it = driveForms.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, int[]> entry = it.next();
+            int dfLevel = entry.getValue()[0];
+            DriveForm form = ModDriveForms.registry.get().getValue(new ResourceLocation(entry.getKey()));
+            if (!form.getRegistryName().equals(DriveForm.NONE) && !form.getRegistryName().equals(DriveForm.SYNCH_BLADE)) {
+                for (int i = 1; i <= dfLevel; i++) {
+                    String baseAbility = form.getBaseAbilityForLevel(i);
+                    if (baseAbility != null && !baseAbility.equals("")) {
+                        playerData.addAbility(baseAbility, false);
+                    }
+                }
+            }
+        }
+
+
         //Utils.restartLevel(playerData, player);
-        Utils.restartLevel2(playerData, player); // Keep this for Drive Bonuses
-
-
-
+        //Utils.restartLevel2(playerData, player); // Keep this for Drive Bonuses
 
         playerData.setSoAState(SoAState.NONE);
         globalData.addPrestigeLvl(+1);
@@ -110,8 +130,8 @@ public class CSPrestigePacket {
         playerData.getDefenseStat().addModifier("NG+ Bonus",globalData.getDEFBonus(), true, false);
         playerData.addMaxHP(2 * globalData.getPrestigeLvl());
         playerData.addMaxMP(2 * globalData.getPrestigeLvl());
-        player.heal(playerData.getMaxHP());
-        playerData.setMP(playerData.getMaxMP());
+        //player.heal(playerData.getMaxHP()); <--- Arclight don't like this
+        //playerData.setMP(playerData.getMaxMP());
 
         // NG+ Bonus Abilities
 
