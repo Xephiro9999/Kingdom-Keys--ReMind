@@ -128,21 +128,6 @@ public class CSPrestigePacket {
         playerData.addAbility(Strings.luckyLucky, true);
         playerData.addAbility(StringsRM.dedication, true);
 
-        if (globalData.getNGPGuardianCount() >= 1) {
-            playerData.addAbility(Strings.damageControl, true);
-            if (globalData.getNGPGuardianCount() >= 2) {
-                playerData.addAbility(Strings.damageDrive, true);
-            }
-            if (globalData.getNGPGuardianCount() >= 3) {
-                playerData.addAbility(StringsRM.mpWalker, true);
-            }
-            if (globalData.getNGPGuardianCount() >= 4){
-                playerData.addAbility(StringsRM.hpWalker, true);
-            }
-            if (globalData.getNGPGuardianCount() >= 5){
-                playerData.addAbility(StringsRM.hpBoost, true);
-            }
-        }
 
         switch (globalData.getNGPWarriorCount()){
             case 0:
