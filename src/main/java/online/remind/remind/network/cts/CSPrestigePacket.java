@@ -117,60 +117,16 @@ public class CSPrestigePacket {
         System.out.println("NG+ Counts: " + globalData.getNGPWarriorCount() + ", " + globalData.getNGPMysticCount() + ", " + globalData.getNGPGuardianCount());
         System.out.println("Bonus Stats: " + globalData.getSTRBonus() + ", " + globalData.getMAGBonus() + ", " + globalData.getDEFBonus());
 
-        playerData.getStrengthStat().removeModifier("NG+ Bonus");
-        playerData.getMagicStat().removeModifier("NG+ Bonus");
-        playerData.getDefenseStat().removeModifier("NG+ Bonus");
-        playerData.getStrengthStat().removeModifier("sacrifice");
-        playerData.getMagicStat().removeModifier("sacrifice");
-        playerData.getDefenseStat().removeModifier("sacrifice");
 
+        player.heal(playerData.getMaxHP()); 
+        playerData.setMP(playerData.getMaxMP());
 
-        playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
-        playerData.getMagicStat().addModifier("NG+ Bonus",globalData.getMAGBonus(), true, false);
-        playerData.getDefenseStat().addModifier("NG+ Bonus",globalData.getDEFBonus(), true, false);
-        playerData.addMaxHP(2 * globalData.getPrestigeLvl());
-        playerData.addMaxMP(2 * globalData.getPrestigeLvl());
-        //player.heal(playerData.getMaxHP()); <--- Arclight don't like this
-        //playerData.setMP(playerData.getMaxMP());
 
         // NG+ Bonus Abilities
 
         playerData.addAbility(Strings.experienceBoost, true);
         playerData.addAbility(Strings.luckyLucky, true);
         playerData.addAbility(StringsRM.dedication, true);
-
-
-        if (globalData.getNGPWarriorCount() >= 1) {
-            playerData.addAbility(StringsRM.adrenaline, true);
-            if (globalData.getNGPWarriorCount() >= 2) {
-                playerData.addAbility(Strings.formBoost, true);
-            }
-            if (globalData.getNGPWarriorCount() >= 3) {
-                playerData.addAbility(Strings.criticalBoost, true);
-            }
-            if (globalData.getNGPWarriorCount() >= 4) {
-                playerData.addAbility(Strings.driveBoost, true);
-            }
-            if (globalData.getNGPWarriorCount() >= 5){
-                playerData.addAbility(StringsRM.attackHaste, true);
-            }
-        }
-
-        if (globalData.getNGPMysticCount() >= 1) {
-            playerData.addAbility(StringsRM.critical_surge, true);
-            if (globalData.getNGPMysticCount() >= 2) {
-                playerData.addAbility(Strings.mpHastega, true);
-            }
-            if (globalData.getNGPMysticCount() >= 3) {
-                playerData.addAbility(Strings.mpThrift, true);
-            }
-            if (globalData.getNGPMysticCount() >= 4){
-                playerData.addAbility(Strings.grandMagicHaste, true);
-            }
-            if (globalData.getNGPMysticCount() >= 5){
-                playerData.addAbility(StringsRM.mpBoost, true);
-            }
-        }
 
         if (globalData.getNGPGuardianCount() >= 1) {
             playerData.addAbility(Strings.damageControl, true);
@@ -187,6 +143,145 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.hpBoost, true);
             }
         }
+
+        switch (globalData.getNGPWarriorCount()){
+            case 0:
+                break;
+            case 1:
+                playerData.addAbility(StringsRM.adrenaline, true);
+                break;
+            case 2:
+                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.formBoost, true);
+                break;
+            case 3:
+                playerData.addAbility(Strings.criticalBoost, true);
+                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.formBoost, true);
+                break;
+            case 4:
+                playerData.addAbility(Strings.criticalBoost, true);
+                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.formBoost, true);
+                playerData.addAbility(Strings.driveBoost, true);
+                break;
+            case 5:
+                playerData.addAbility(StringsRM.attackHaste, true);
+                playerData.addAbility(Strings.criticalBoost, true);
+                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.formBoost, true);
+                playerData.addAbility(Strings.driveBoost, true);
+                break;
+            default:
+                playerData.addAbility(StringsRM.attackHaste, true);
+                playerData.addAbility(Strings.criticalBoost, true);
+                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.formBoost, true);
+                playerData.addAbility(Strings.driveBoost, true);
+                globalData.addSTRBonus(+1);
+                break;
+
+        }
+
+        switch (globalData.getNGPMysticCount()){
+            case 0:
+                break;
+            case 1:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                break;
+            case 2:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                break;
+            case 3:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                playerData.addAbility(Strings.mpThrift, true);
+                break;
+            case 4:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                playerData.addAbility(Strings.mpThrift, true);
+                playerData.addAbility(Strings.grandMagicHaste, true);
+                break;
+            case 5:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                playerData.addAbility(Strings.mpThrift, true);
+                playerData.addAbility(Strings.grandMagicHaste, true);
+                playerData.addAbility(StringsRM.mpBoost, true);
+                break;
+            default:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                playerData.addAbility(Strings.mpThrift, true);
+                playerData.addAbility(Strings.grandMagicHaste, true);
+                playerData.addAbility(StringsRM.mpBoost, true);
+                globalData.addMAGBonus(+1);
+                break;
+        }
+
+        switch (globalData.getNGPGuardianCount()){
+            case 0:
+                break;
+            case 1:
+                playerData.addAbility(Strings.damageControl, true);
+                break;
+            case 2:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                break;
+            case 3:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                playerData.addAbility(StringsRM.mpWalker, true);
+                break;
+            case 4:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                playerData.addAbility(StringsRM.mpWalker, true);
+                playerData.addAbility(StringsRM.hpWalker, true);
+                break;
+            case 5:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                playerData.addAbility(StringsRM.mpWalker, true);
+                playerData.addAbility(StringsRM.hpWalker, true);
+                playerData.addAbility(StringsRM.hpBoost, true);
+                break;
+            default:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                playerData.addAbility(StringsRM.mpWalker, true);
+                playerData.addAbility(StringsRM.hpWalker, true);
+                playerData.addAbility(StringsRM.hpBoost, true);
+                globalData.addDEFBonus(+1);
+                break;
+        }
+
+
+
+
+
+        playerData.getStrengthStat().removeModifier("NG+ Bonus");
+        playerData.getMagicStat().removeModifier("NG+ Bonus");
+        playerData.getDefenseStat().removeModifier("NG+ Bonus");
+        playerData.getStrengthStat().removeModifier("sacrifice");
+        playerData.getMagicStat().removeModifier("sacrifice");
+        playerData.getDefenseStat().removeModifier("sacrifice");
+
+
+        playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
+        playerData.getMagicStat().addModifier("NG+ Bonus",globalData.getMAGBonus(), true, false);
+        playerData.getDefenseStat().addModifier("NG+ Bonus",globalData.getDEFBonus(), true, false);
+        playerData.addMaxHP(2 * globalData.getPrestigeLvl());
+        playerData.addMaxMP(2 * globalData.getPrestigeLvl());
+
+
+
+
+
+
 
         PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
         //System.out.println("Prestige Level: " + globalData.getPrestigeLvl());

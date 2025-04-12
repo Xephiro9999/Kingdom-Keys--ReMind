@@ -23,9 +23,9 @@ public class PrestigeMenu extends MenuBackground{
 
     private MenuButton backButton, prestige, levelReq;
 
-    MenuColourBox level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath;
+    MenuColourBox level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath;
 
-    MenuColourBox[] playerWidgets = {level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath};
+    MenuColourBox[] playerWidgets = {level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath};
 
 
 
@@ -96,6 +96,9 @@ public class PrestigeMenu extends MenuBackground{
         addRenderableWidget(level = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal(Strings.Gui_Menu_Status_Level),"" + playerData.getLevel(), 0x000088));
         addRenderableWidget(prestigeLevel = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal(StringsRM.Gui_Menu_Button_PrestigeLevel),"" + addedData.getPrestigeLvl(), 0xe3ce44));
         addRenderableWidget(currentPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("Current Path: "),"" + playerData.getChosen(), 0xe3ce44));
+        addRenderableWidget(warriorPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("NG+ \uD83D\uDDE1 Count: "),"" + addedData.getNGPWarriorCount(), 0xe3ce44));
+        addRenderableWidget(mysticPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("NG+ ⚚ Count: "),"" + addedData.getNGPMysticCount(), 0xe3ce44));
+        addRenderableWidget(guardianPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("NG+ \uD83D\uDEE1 Count: "),"" + addedData.getNGPGuardianCount(), 0xe3ce44));
 
         // Stats Column
         addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
