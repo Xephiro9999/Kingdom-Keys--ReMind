@@ -6,6 +6,7 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.lib.StringsRM;
 
 import java.awt.*;
 
@@ -18,11 +19,11 @@ public class WikiMenu extends MenuBackground {
     int accessoryHelp;
     int shotlockHelp;
 
-    private MenuButton backButton, magic, forms, armor, accessory, shotlock, keyblades;
+    private MenuButton backButton, magic, forms, armor, accessory, shotlock, keyblades, ability;
 
-    MenuColourBox addedKeyblades, magics, def, ap;
+    MenuColourBox addedKeyblades, magics, def, acc;
 
-    MenuColourBox[] playerWidgets = {addedKeyblades, magics, def, ap};
+    MenuColourBox[] playerWidgets = {addedKeyblades, magics, def, acc};
 
     public WikiMenu(String name, Color rgb) {
         super(name, rgb);
@@ -34,24 +35,20 @@ public class WikiMenu extends MenuBackground {
     }
 
     protected void action(String string) {
-        if (string.equals("back"))
-            GUIHelperRM.openAddonMenu();
+        switch(string) {
+            case "back" -> GUIHelperRM.openAddonMenu();
+            case "keyblades" -> {
 
-        if (string.equals(keyblades)){
-            keybladeHelp = 1;
-            magicHelp = 0;
-            formHelp = 0;
-            armorHelp = 0;
-            accessoryHelp = 0;
-            shotlockHelp = 0;
-        }
-        if (string.equals(magic)){
-            keybladeHelp = 0;
-            magicHelp = 1;
-            formHelp = 0;
-            armorHelp = 0;
-            accessoryHelp = 0;
-            shotlockHelp = 0;
+            }
+            case "magic" -> {
+
+            }
+            case "forms" -> {
+
+            }
+            case "ability" -> {
+
+            }
         }
     }
 
@@ -83,23 +80,26 @@ public class WikiMenu extends MenuBackground {
             action("back");
         }));
 
-        addRenderableWidget(keyblades = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, "Keyblades", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(keyblades = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Keyblades), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("keyblades");
         }));
 
-        addRenderableWidget(magic = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, "Magic", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(magic = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Magic), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("magic");
         }));
-        addRenderableWidget(forms = new MenuButton((int) buttonPosX, button_statsY + 60, (int) buttonWidth, "Forms", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(ability = new MenuButton((int) buttonPosX, button_statsY + 60, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Ability), MenuButton.ButtonType.BUTTON, true, (e) -> {
+            action("ability");
+        }));
+        addRenderableWidget(forms = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Forms), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("forms");
         }));
-        addRenderableWidget(armor = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, "Armor", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(armor = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Armor), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("armor");
         }));
-        addRenderableWidget(accessory = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, "Accessories", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(accessory = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Accessories), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("accessory");
         }));
-        addRenderableWidget(shotlock = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, "Shotlocks", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(shotlock = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Shotlocks), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("shotlock");
         }));
 

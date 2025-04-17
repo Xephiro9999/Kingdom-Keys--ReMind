@@ -398,13 +398,13 @@ public class EntityEventsRM {
 					float overBoost = heartsBoost * 0.025f;
 					//System.out.println(overBoost);
 					if (heartsBoost >= 50){
-						playerData.getStrengthStat().addModifier("Hearts Are Power",50 + overBoost,false,true);
-						playerData.getMagicStat().addModifier("Hearts Are Power",50 + overBoost,false,true);
-						playerData.getDefenseStat().addModifier("Hearts Are Power",50 + overBoost,false,true);
+						playerData.getStrengthStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
+						playerData.getMagicStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
+						playerData.getDefenseStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
 					} else {
-					playerData.getStrengthStat().addModifier("Hearts Are Power",heartsBoost,false,true);
-					playerData.getMagicStat().addModifier("Hearts Are Power",heartsBoost,false,true);
-					playerData.getDefenseStat().addModifier("Hearts Are Power",heartsBoost,false,true);
+					playerData.getStrengthStat().addModifier("Hearts Are Power",heartsBoost,false,false);
+					playerData.getMagicStat().addModifier("Hearts Are Power",heartsBoost,false,false);
+					playerData.getDefenseStat().addModifier("Hearts Are Power",heartsBoost,false,false);
 					}
 				}
 				else {
@@ -669,44 +669,7 @@ public class EntityEventsRM {
 
 			}
 
-			// Light/Dark Boost downsides
-			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
-					float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
-					float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
-					float damage = event.getAmount();
 
-					/*
-					System.out.println("Dark Bonus Res? "+darkBoosts);
-					System.out.println("Light Bonus Res? "+lightBoosts);
-					 */
-					//System.out.println("Before Negation: "+damage);
-
-
-				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
-					System.out.println("Darkness");
-					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
-						damage += (damage * lightBoosts);
-					}
-				}
-				if (!event.getSource().getMsgId().equals(DamageTypes.PLAYER_EXPLOSION.toString())){
-					System.out.println("Explosion");
-					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
-						damage += (damage * lightBoosts);
-					}
-				}
-
-				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
-					System.out.println("Light");
-					damage -= (damage * lightBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
-						damage += (damage * darkBoosts);
-					}
-				}
-				//System.out.println("After Negation: "+damage);
-				event.setAmount(damage);
-			}
 		}
 
 		// On Hit Effects
@@ -731,6 +694,55 @@ public class EntityEventsRM {
 					event.getEntity().invulnerableTime = 0;
 				}
 
+			}
+		}
+	}
+
+	public void hitEntity(LivingHurtEvent event){
+		if(event.getEntity() instanceof Player player) {
+			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+			if(playerData == null)
+				return;
+
+			// Light/Dark Boost downsides
+			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
+				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
+				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
+				float damage = event.getAmount();
+
+					/*
+					System.out.println("Dark Bonus Res? "+darkBoosts);
+					System.out.println("Light Bonus Res? "+lightBoosts);
+					 */
+				//System.out.println("Before Negation: "+damage);
+
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
+					System.out.println("Darkness");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+						damage += (damage * lightBoosts);
+					}
+				}
+				/*
+				if (!event.getSource().getMsgId().equals(DamageTypes.PLAYER_EXPLOSION.toString())){
+					System.out.println("Explosion");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+						damage += (damage * lightBoosts);
+					}
+				}
+				 */
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
+					System.out.println("Light");
+					damage -= (damage * lightBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
+						damage += (damage * darkBoosts);
+					}
+				}
+				//System.out.println("After Negation: "+damage);
+				event.setAmount(damage);
 			}
 		}
 	}

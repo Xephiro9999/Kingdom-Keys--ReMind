@@ -95,6 +95,9 @@ public class CSPrestigePacket {
         if (oldChoice == "WARRIOR"){
             globalData.addNGPWarriorCount(+1);
             globalData.addSTRBonus(+2);
+            if (globalData.getSTRBonus() > 50){
+                globalData.setSTRBonus(50);
+            }
             System.out.println("Strength Bonus: " + globalData.getSTRBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         }
@@ -102,6 +105,9 @@ public class CSPrestigePacket {
         if (oldChoice == "MYSTIC"){
             globalData.addNGPMysticCount(+1);
             globalData.addMAGBonus(+2);
+            if (globalData.getMAGBonus() > 50){
+                globalData.setMAGBonus(50);
+            }
             System.out.println("Magic Bonus: " + globalData.getMAGBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         }
@@ -109,6 +115,9 @@ public class CSPrestigePacket {
         if (oldChoice == "GUARDIAN"){
             globalData.addNGPGuardianCount(+1);
             globalData.addDEFBonus(+2);
+            if (globalData.getDEFBonus() > 50){
+                globalData.setDEFBonus(50);
+            }
             System.out.println("Defense Bonus: " + globalData.getDEFBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         }
@@ -133,34 +142,43 @@ public class CSPrestigePacket {
             case 0:
                 break;
             case 1:
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.synchBlade, true);
                 break;
             case 2:
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.synchBlade, true);
                 playerData.addAbility(Strings.formBoost, true);
                 break;
             case 3:
                 playerData.addAbility(Strings.criticalBoost, true);
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.synchBlade, true);
                 playerData.addAbility(Strings.formBoost, true);
                 break;
             case 4:
                 playerData.addAbility(Strings.criticalBoost, true);
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.synchBlade, true);
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
                 break;
             case 5:
                 playerData.addAbility(StringsRM.attackHaste, true);
                 playerData.addAbility(Strings.criticalBoost, true);
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.synchBlade, true);
+                playerData.addAbility(Strings.formBoost, true);
+                playerData.addAbility(Strings.driveBoost, true);
+                break;
+            case 6:
+                playerData.addAbility(Strings.synchBlade, true);
+                playerData.addAbility(StringsRM.attackHaste, true);
+                playerData.addAbility(Strings.criticalBoost, true);
+                playerData.addAbility(Strings.criticalBoost, true);
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
                 break;
             default:
+                playerData.addAbility(Strings.synchBlade, true);
                 playerData.addAbility(StringsRM.attackHaste, true);
                 playerData.addAbility(Strings.criticalBoost, true);
-                playerData.addAbility(StringsRM.adrenaline, true);
+                playerData.addAbility(Strings.criticalBoost, true);
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
                 globalData.addSTRBonus(+1);
@@ -196,12 +214,21 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.grandMagicHaste, true);
                 playerData.addAbility(StringsRM.mpBoost, true);
                 break;
+            case 6:
+                playerData.addAbility(StringsRM.critical_surge, true);
+                playerData.addAbility(Strings.mpHastega, true);
+                playerData.addAbility(Strings.mpThrift, true);
+                playerData.addAbility(Strings.grandMagicHaste, true);
+                playerData.addAbility(StringsRM.mpBoost, true);
+                playerData.addAbility(StringsRM.mpShield, true);
+                break;
             default:
                 playerData.addAbility(StringsRM.critical_surge, true);
                 playerData.addAbility(Strings.mpHastega, true);
                 playerData.addAbility(Strings.mpThrift, true);
                 playerData.addAbility(Strings.grandMagicHaste, true);
                 playerData.addAbility(StringsRM.mpBoost, true);
+                playerData.addAbility(StringsRM.mpShield, true);
                 globalData.addMAGBonus(+1);
                 break;
         }
@@ -234,12 +261,21 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.hpWalker, true);
                 playerData.addAbility(StringsRM.hpBoost, true);
                 break;
+            case 6:
+                playerData.addAbility(Strings.damageControl, true);
+                playerData.addAbility(Strings.damageDrive, true);
+                playerData.addAbility(StringsRM.mpWalker, true);
+                playerData.addAbility(StringsRM.hpWalker, true);
+                playerData.addAbility(StringsRM.hpBoost, true);
+                playerData.addAbility(Strings.protect, true);
+                break;
             default:
                 playerData.addAbility(Strings.damageControl, true);
                 playerData.addAbility(Strings.damageDrive, true);
                 playerData.addAbility(StringsRM.mpWalker, true);
                 playerData.addAbility(StringsRM.hpWalker, true);
                 playerData.addAbility(StringsRM.hpBoost, true);
+                playerData.addAbility(Strings.protect, true);
                 globalData.addDEFBonus(+1);
                 break;
         }

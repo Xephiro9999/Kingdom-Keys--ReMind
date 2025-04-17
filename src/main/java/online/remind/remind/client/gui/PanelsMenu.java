@@ -2,7 +2,6 @@ package online.remind.remind.client.gui;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
@@ -15,20 +14,21 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
-import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSPanelPacket;
-import online.remind.remind.network.cts.CSPrestigePacket;
 
 import java.awt.*;
 
 public class PanelsMenu extends MenuBackground {
+
+    int ticks = 0;
 
     private MenuButton backButton, strUp, magUp, defUp, apUp, giveAbility, lvl, req0, valorUp, wisdomUp, limitUp, masterUp, finalUp, reqV, reqW, reqL, reqM, reqF, armorUp, accessoryUp, rejectOrg, reset;
 
     MenuColourBox str, mag, def, ap;
 
     MenuColourBox[] playerWidgets = {str, mag, def, ap};
+
 
     public PanelsMenu(String name, Color rgb) {
         super(name, rgb);
@@ -37,6 +37,10 @@ public class PanelsMenu extends MenuBackground {
     public PanelsMenu() {
         super("Panel System", new Color(154, 154, 154));
         minecraft = Minecraft.getInstance();
+    }
+
+    public void reloadMenu(){
+        GUIHelperRM.openPanelMenu();
     }
 
     protected void action(String string) {
@@ -54,7 +58,8 @@ public class PanelsMenu extends MenuBackground {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(1));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                //init();
+                this.reloadMenu();
 
             }
             case "magUp" -> {
@@ -131,10 +136,18 @@ public class PanelsMenu extends MenuBackground {
             case "reset" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(11));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                init();
+                GUIHelperRM.openAddonMenu();
             }
 
         }
+
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        ticks++;
+        init();
 
     }
 
@@ -143,9 +156,8 @@ public class PanelsMenu extends MenuBackground {
 
         final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
         IGlobalCapabilitiesRM addedData = ModCapabilitiesRM.getGlobal(minecraft.player);
+        ticks = 0;
 
-
-        super.init();
         this.renderables.clear();
 
         float topBarHeight = (float) height * 0.17F;
@@ -350,6 +362,8 @@ public class PanelsMenu extends MenuBackground {
             action("back");
         }));
 
+
+
         // 2.0 Ability Planning.
 
 
@@ -367,5 +381,7 @@ public class PanelsMenu extends MenuBackground {
         addRenderableWidget(mag = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel MAG: "), "" + addedData.getMAGPanel() + " ["+ playerData.getMagic(true) + "]", 0xaa190f));
         addRenderableWidget(def = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel DEF: "), "" + addedData.getDEFPanel() + " ["+ playerData.getDefense(true) + "]", 0xaa190f));
         addRenderableWidget(ap = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("AP: "), "" + (int) playerData.getMaxAPStat().getStat(), 0xaa190f));
+
+        super.init();
     }
 }

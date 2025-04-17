@@ -163,6 +163,7 @@
   "item.magicksaddon.crystals_light": "Crystal's Light",
   "item.magicksaddon.blitzers_dream": "Blitzer's Dream",
   "item.magicksaddon.legends_fang": "Legend's Fang",
+  "item.magicksaddon.fierce_deity_key": "Fierce Deity Key",
 
   "item.magicksaddon.xephiro_keyblade.desc": "A Keyblade belonging to Xephiro. Even looking at it gives you a sense of powerful Darkness and bloodthirst...\nIt denies any wielder that isn't Xephiro.",
   "item.magicksaddon.pureblood.desc": "A Keyblade that thrives in Darkness... You can feel your dark powers swell and burst by holding this weapon...",
@@ -177,6 +178,7 @@
   "item.magicksaddon.crystals_light_chain": "Crystal's Light Chain",
   "item.magicksaddon.blitzers_dream_chain": "Blitzer's Dream Chain",
   "item.magicksaddon.legends_fang_chain": "Legend's Fang Chain",
+  "item.magicksaddon.fierce_deity_key_chain": "Fierce Deity Key Chain",
 
   "item.magicksaddon.aqua_chaplet": "Aqua Chaplet",
   "item.magicksaddon.heros_glove": "Hero's Glove",
@@ -225,8 +227,21 @@
   "menu_button.panel": "Panel System",
   "menu_button.panel.desc": "ORGANIZATION XIII ONLY! Boost your stats further at the cost of Hearts!",
   "Reset.desc": "Will reset your panel boost, but will give you SOME hearts back!",
+
   "menu_button.wiki": "Journal - Re:Mind",
   "menu_button.wiki.desc": "{WIP} A Section that informs you about what Re:Mind has to offer!",
+  "menu_button.keyblades": "Keyblades",
+  "menu_button.keyblades.desc": "Tells you about Keyblades found in Re:Mind.",
+  "menu_button.magic": "Magic",
+  "menu_button.magic.desc": "Tells you about Magic from both Kingdom Keys AND Re:Mind.",
+  "menu_button.forms": "Addon Forms",
+  "menu_button.forms.desc": "Tells you about new Forms added with Re:Mind.",
+  "menu_button.armor": "Armor",
+  "menu_button.accessory": "Accessories",
+  "menu_button.shotlock": "Shotlocks",
+  "menu_button.shotlock.desc": "Tells you about the new Shotlocks added with Re:Mind.",
+  "menu_button.ability": "Abilities",
+  "menu_button.ability.desc": "Tells you about the new Abilities added with Re:Mind.",
 
   "reactioncommand.rc_riskcharge.name": "Riskcharge",
   "reactioncommand.rc_raging_burst.name": "Raging Burst",

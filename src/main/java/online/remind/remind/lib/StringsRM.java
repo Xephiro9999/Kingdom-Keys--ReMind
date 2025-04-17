@@ -122,5 +122,12 @@ public class StringsRM {
         Gui_Menu_Button_DreamEater = StringsRM.MENU_Prefix + ".dreamEater",
         Gui_Menu_Button_Panel = StringsRM.MENU_Prefix + ".panel",
         Gui_Menu_Button_Wiki = StringsRM.MENU_Prefix + ".wiki",
+        Gui_Menu_Button_Keyblades = StringsRM.MENU_Prefix + ".keyblades",
+        Gui_Menu_Button_Magic = StringsRM.MENU_Prefix + ".magic",
+        Gui_Menu_Button_Ability = StringsRM.MENU_Prefix + ".ability",
+        Gui_Menu_Button_Forms = StringsRM.MENU_Prefix + ".forms",
+        Gui_Menu_Button_Armor = StringsRM.MENU_Prefix + ".armor",
+        Gui_Menu_Button_Accessories = StringsRM.MENU_Prefix + ".accessory",
+        Gui_Menu_Button_Shotlocks = StringsRM.MENU_Prefix + ".shotlock",
         Gui_Menu_Button_Credits = StringsRM.MENU_Prefix + ".creditsScreen";
 }
