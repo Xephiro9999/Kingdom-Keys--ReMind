@@ -127,7 +127,7 @@ public class CSPrestigePacket {
         System.out.println("Bonus Stats: " + globalData.getSTRBonus() + ", " + globalData.getMAGBonus() + ", " + globalData.getDEFBonus());
 
 
-        player.heal(playerData.getMaxHP()); 
+        //player.heal(playerData.getMaxHP()); // <--- Arclight still hates this
         playerData.setMP(playerData.getMaxMP());
 
 
