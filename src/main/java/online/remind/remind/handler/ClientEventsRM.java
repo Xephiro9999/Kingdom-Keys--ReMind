@@ -3,13 +3,20 @@ package online.remind.remind.handler;
 import com.ibm.icu.text.MessagePattern;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
@@ -19,6 +26,8 @@ import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
+
+import java.util.Map;
 
 public class ClientEventsRM {
 	
@@ -122,10 +131,10 @@ public class ClientEventsRM {
 					// Rage Form Active and Walk particles
 					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.1F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
-	
+
 						if (player.onGround()){
 							player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.2F,0F,0F),1F),player.getX(), player.getY(), player.getZ(), 0, 0, 0);
-	
+
 						}
 					}
 
@@ -143,19 +152,74 @@ public class ClientEventsRM {
 
 					// Spellblade Visual Effects
 
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.0f,0.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.95f,1F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) >= 4){
-						player.level().addAlwaysVisibleParticle(ParticleTypes.BUBBLE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
-					}
+					int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+					int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
+					int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
+					int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
+					int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+					int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
 
+					Vec3 look = player.getLookAngle();
+					double x = player.getX() + look.x * 0.4;
+					double y = player.getY() + player.getEyeHeight() - 0.2;
+					double z = player.getZ() + look.z * 0.4;
+
+					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
+						Map<String, Integer> boosts = Map.of(
+								"thunder", thundBoosts,
+								"fire", fireBoosts,
+								"blizzard", blizBoosts,
+								"water", waterBoosts,
+								"dark", darkBoosts,
+								"light", lightBoosts
+						);
+						int maxBoost = boosts.values().stream().max(Integer::compare).orElse(0);
+
+						long count = boosts.values().stream().filter(v -> v == maxBoost).count();
+
+						if (count == 1 && maxBoost >= 4){
+							for (Map.Entry<String, Integer> entry : boosts.entrySet()) {
+								if (entry.getValue() == maxBoost) {
+									String elementBlade = entry.getKey();
+
+									switch (elementBlade){
+										case "fire":
+											// Fire Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.0f,0.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(1F,25.0f,0.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+
+										case "blizzard":
+											// Blizzard Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.95f,1F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.95F,0.95f,0.95F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+										case "thunder":
+											// Thunder Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0.5F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+										case "water":
+											// Water Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.75f,1.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,1.0f,1.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+										case "light":
+											// Light Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0.5F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,1F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+										case "dark":
+											// Dark Blade - VFX
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.0f,0f),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											player.level().addParticle(new DustParticleOptions(new Vector3f(0.5F,0.0f,1f),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+											break;
+									}
+								}
+							}
+
+						}
+					}
 				}
 			}
 		}
