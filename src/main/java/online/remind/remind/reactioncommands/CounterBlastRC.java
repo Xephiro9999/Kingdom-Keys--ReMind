@@ -34,9 +34,10 @@ public class CounterBlastRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-        float dmg = DamageCalculation.getMagicDamage(player);
-        float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.025F));
+        float dmg = DamageCalculation.getMagicDamage(player) * 0.5f;
+        float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.010F));
         float radius = (float) (0.075F * playerData.getMaxMP());
+        globalData.setRCCooldownTicks(60);
 
         double X = player.getX();
         double Y = player.getY();
@@ -71,7 +72,7 @@ public class CounterBlastRC extends ReactionCommand {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterBlast) && globalData.getCanCounter() == 1) {
+           if (playerData.isAbilityEquipped(StringsRM.counterBlast) && globalData.getCanCounter() == 1 && globalData.getRCCooldownTicks() == 0) {
                return true;
             }
         }

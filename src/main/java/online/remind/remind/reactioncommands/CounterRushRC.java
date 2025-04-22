@@ -40,9 +40,9 @@ public class CounterRushRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-        float dmg = (float) (playerData.getStrengthStat().get() * 0.015f);
+        float dmg = (float) (playerData.getStrengthStat().get() * 0.25f);
         //float dmg = 1 * 0.5f;
-        int hits = 2 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste));
+        int hits = (int) (4 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5));
         //float dmgMult = 1 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
         float radius = 3;
 
@@ -55,6 +55,7 @@ public class CounterRushRC extends ReactionCommand {
         double Z = player.getZ();
 
         globalData.remCanCounter(1);
+        globalData.setRCCooldownTicks(60);
         player.swing(InteractionHand.MAIN_HAND);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
@@ -88,7 +89,7 @@ public class CounterRushRC extends ReactionCommand {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterRush) && globalData.getCanCounter() >= 1) {
+           if (playerData.isAbilityEquipped(StringsRM.counterRush) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
                return true;
             }
         }

@@ -37,9 +37,10 @@ public class CounterHammerRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
-        float dmg = (float) playerData.getStrengthStat().get();
-        float dmgMult = 1 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
+        float dmg = (float) playerData.getStrengthStat().get() * 0.5f;
+        float dmgMult = 1 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.10F);
         float radius = 3 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.5F);
+        globalData.setRCCooldownTicks(60);
 
         double X = player.getX();
         double Z = player.getZ();
@@ -70,7 +71,7 @@ public class CounterHammerRC extends ReactionCommand {
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterHammer) && globalData.getCanCounter() >= 1) {
+           if (playerData.isAbilityEquipped(StringsRM.counterHammer) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
                return true;
             }
         }

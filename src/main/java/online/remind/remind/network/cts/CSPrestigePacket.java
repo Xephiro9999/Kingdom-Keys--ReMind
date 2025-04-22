@@ -281,8 +281,16 @@ public class CSPrestigePacket {
         }
 
 
-
-
+        // Make sure the cap is in place.
+        if(globalData.getSTRBonus() > 50){
+            globalData.setSTRBonus(50);
+        }
+        if(globalData.getMAGBonus() > 50){
+            globalData.setMAGBonus(50);
+        }
+        if(globalData.getDEFBonus() > 50){
+            globalData.setDEFBonus(50);
+        }
 
         playerData.getStrengthStat().removeModifier("NG+ Bonus");
         playerData.getMagicStat().removeModifier("NG+ Bonus");
