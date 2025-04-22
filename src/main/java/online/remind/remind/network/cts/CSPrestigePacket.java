@@ -138,6 +138,7 @@ public class CSPrestigePacket {
         playerData.addAbility(StringsRM.dedication, true);
 
 
+
         switch (globalData.getNGPWarriorCount()){
             case 0:
                 break;
@@ -182,6 +183,7 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
                 globalData.addSTRBonus(+1);
+                playerData.addMaxAP(2);
                 break;
 
         }
@@ -230,6 +232,7 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.mpBoost, true);
                 playerData.addAbility(StringsRM.mpShield, true);
                 globalData.addMAGBonus(+1);
+                playerData.addMaxAP(2);
                 break;
         }
 
@@ -277,6 +280,7 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.hpBoost, true);
                 playerData.addAbility(Strings.protect, true);
                 globalData.addDEFBonus(+1);
+                playerData.addMaxAP(2);
                 break;
         }
 
