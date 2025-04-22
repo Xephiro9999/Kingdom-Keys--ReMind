@@ -136,6 +136,9 @@
   "ability.ability_jecht.name": "Brutal Blitzer",
   "ability.ability_jecht.desc": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped!",
 
+  "ability.ability_spellblade.name": "Spellblade",
+  "ability.ability_spellblade.desc": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary!",
+
   "shotlock.flame_salvo.name": "Flame Salvo",
   "shotlock.bubble_blaster.name": "Bubble Blaster",
   "shotlock.thunderstorm.name": "Thunderstorm",

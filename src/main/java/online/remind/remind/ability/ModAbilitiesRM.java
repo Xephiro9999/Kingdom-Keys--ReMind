@@ -52,6 +52,8 @@ public class ModAbilitiesRM extends ModAbilities{
         HEARTS_POWER = ABILITIES.register(StringsRM.ABMA_Prefix+"hearts_power", () -> new Ability(new ResourceLocation(StringsRM.heartsPower), 0, Ability.AbilityType.SUPPORT, order++)),
         FRIEND_POWER = ABILITIES.register(StringsRM.ABMA_Prefix+"friends_power", () -> new Ability(new ResourceLocation(StringsRM.friendsPower), 3, Ability.AbilityType.SUPPORT, order++)),
 
+        SPELLBLADE = ABILITIES.register(StringsRM.ABMA_Prefix+"spellblade", () -> new Ability(new ResourceLocation(StringsRM.spellblade), 0, Ability.AbilityType.SUPPORT, order++)),
+
 
 
 

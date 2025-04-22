@@ -1,6 +1,8 @@
 package online.remind.remind.handler;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,10 +11,13 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -24,6 +29,7 @@ import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
@@ -243,6 +249,8 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void onLivingUpdate(LivingEvent.LivingTickEvent event) {
 		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
+
+		// Spellblade Visual Effects
 
 		// Xephiro Keyblade Debuff
 
@@ -699,6 +707,66 @@ public class EntityEventsRM {
 					event.getEntity().invulnerableTime = 0;
 				}
 
+				// Spellblade Ability
+				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
+				int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
+				int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
+				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
+
+				if (playerData.isAbilityEquipped(StringsRM.spellblade)){
+
+					// Fire Blade
+					if (fireBoosts >= 4 && fireBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) (fireBoosts * 2.5));
+						event.getEntity().setSecondsOnFire(2 * fireBoosts);
+						event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY()+ event.getEntity().level().random.nextDouble() *2D, event.getEntity().getZ()  + event.getEntity().level().random.nextDouble() - 0.5D, 0,0,0);
+						event.getEntity().invulnerableTime = 0;
+					}
+					// Blizzard Blade
+					if (blizBoosts >= 4 && blizBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) (blizBoosts * 2.5));
+						event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, blizBoosts * 20, blizBoosts + 2));
+						event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.SNOWFLAKE, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY()+ event.getEntity().level().random.nextDouble() *2D, event.getEntity().getZ()  + event.getEntity().level().random.nextDouble() - 0.5D, 0,0,0);
+					}
+					// Thunder Blade
+					if (thundBoosts >= 4 && thundBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) (thundBoosts * 2.5));
+						event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, thundBoosts * 10, thundBoosts));
+						event.getEntity().invulnerableTime = 0;
+						LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT,event.getEntity().level());
+						lightningBolt.moveTo(Vec3.atBottomCenterOf(event.getEntity().getOnPos()));
+						event.getEntity().level().addFreshEntity(lightningBolt);
+					}
+					// Water Blade
+					if (waterBoosts >= 4 && waterBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) (waterBoosts * 2.5));
+						event.getEntity().setAirSupply(0);
+						if (event.getEntity().getAirSupply() == 0){
+							event.getEntity().invulnerableTime = 0;
+							event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) (waterBoosts * 3));
+						}
+					}
+					// Light Blade
+					if (lightBoosts >= 4 && lightBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) (lightBoosts * 2.5));
+
+					}
+					if (darkBoosts >= 4 && darkBoosts == Math.max(thundBoosts, Math.max(fireBoosts, Math.max(blizBoosts, Math.max(waterBoosts, Math.max(darkBoosts, lightBoosts)))))) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) (darkBoosts * 2.5));
+
+					}
+
+
+
+
+
+
+
+
+					}
+
 			}
 		}
 	}
@@ -749,6 +817,8 @@ public class EntityEventsRM {
 				//System.out.println("After Negation: "+damage);
 				event.setAmount(damage);
 			}
+
+
 		}
 	}
 
