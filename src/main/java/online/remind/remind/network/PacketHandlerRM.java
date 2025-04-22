@@ -31,6 +31,8 @@ public class PacketHandlerRM {
         HANDLER.registerMessage(packetID++, CSSetStepTicksPacket.class,CSSetStepTicksPacket::encode,CSSetStepTicksPacket::decode,CSSetStepTicksPacket::handle);
         HANDLER.registerMessage(packetID++, CSSummonSpiritPacket.class,CSSummonSpiritPacket::encode,CSSummonSpiritPacket::decode,CSSummonSpiritPacket::handle);
         HANDLER.registerMessage(packetID++, CSPanelPacket.class,CSPanelPacket::encode,CSPanelPacket::decode, CSPanelPacket::handle);
+        HANDLER.registerMessage(packetID++, CSBoostPacket.class, CSBoostPacket::encode, CSBoostPacket::decode, CSBoostPacket::handle);
+
     }
 
         public static <MSG> void sendToServer(MSG msg) {

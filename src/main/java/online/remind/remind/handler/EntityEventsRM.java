@@ -75,6 +75,10 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
+
+				// To initialize the toggle feature
+			globalData.setPanelsEnabled(1);
+			globalData.setNGPEnabled(1);
 		}
 	}
 
@@ -458,10 +462,11 @@ public class EntityEventsRM {
 
 				// Panel System
 				if (!player.level().isClientSide){
-					if (playerData.getAlignment() != Utils.OrgMember.NONE) {
+					if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
 						playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
 						playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
 						playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
+
 						//System.out.println("Panel Buff Added");
 						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 					}

@@ -35,6 +35,9 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putInt("Panels_DEF", this.getDEFPanel());
         storage.putInt("Panels_MAG", this.getMAGPanel());
 
+        storage.putInt("Panels_Enabled", this.getPanelsEnabled());
+        storage.putInt("NGPlus_Enabled", this.getNGPEnabled());
+
         storage.putInt("riskcharge_count", this.getRiskchargeCount());
 
         // Dream Eater
@@ -67,6 +70,9 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         this.setMAGPanel(properties.getInt("Panels_MAG"));
         this.setDEFPanel(properties.getInt("Panels_DEF"));
 
+        this.setPanelsEnabled(properties.getInt("Panels_Enabled"));
+        this.setNGPEnabled(properties.getInt("NG+_Enabled"));
+
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
@@ -91,6 +97,9 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     private int strPanel;
     private int magPanel;
     private int defPanel;
+
+    private int panelsStatus;
+    private int ngpStatus;
 
     private int darkModeEXP;
     private int lightFormEXP;
@@ -413,6 +422,15 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     public void addDEFPanel(int i) {
         defPanel += i;
     }
+
+    @Override
+    public void setPanelsEnabled(int i){panelsStatus = i;}
+    @Override
+    public void setNGPEnabled(int i){ngpStatus = i;}
+    @Override
+    public int getPanelsEnabled(){return panelsStatus;}
+    @Override
+    public int getNGPEnabled(){return ngpStatus;}
 
 
     @Override

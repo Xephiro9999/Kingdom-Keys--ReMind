@@ -13,6 +13,7 @@ import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPrestigePacket;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class PrestigeMenu extends MenuBackground{
 
 
 
-    private MenuButton backButton, prestige, levelReq;
+    private MenuButton backButton, prestige, levelReq, toggleOff, toggleOn;
 
     MenuColourBox level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath;
 
@@ -40,6 +41,14 @@ public class PrestigeMenu extends MenuBackground{
         if (string.equals("confirm")){
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
+        }
+        if (string.equals("toggleOff")){
+            PacketHandlerRM.sendToServer(new CSBoostPacket(1));
+            GUIHelperRM.openAddonMenu();
+        }
+        if (string.equals("toggleOn")){
+            PacketHandlerRM.sendToServer(new CSBoostPacket(3));
+            GUIHelperRM.openAddonMenu();
         }
 
     }
@@ -71,7 +80,7 @@ public class PrestigeMenu extends MenuBackground{
 
         int i = 0;
 
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
         if (playerData.getLevel() == 100) {
@@ -82,6 +91,15 @@ public class PrestigeMenu extends MenuBackground{
         } else {
             addRenderableWidget(levelReq = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Levels Until NG+: " + (100 - playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("prestige");
+            }));
+        }
+        if(addedData.getNGPEnabled() == 1) {
+            addRenderableWidget(toggleOff = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, ("Toggle OFF"), MenuButton.ButtonType.BUTTON, false, (e) -> {
+                action("toggleOff");
+            }));
+        } else if (addedData.getNGPEnabled() == 0){
+            addRenderableWidget(toggleOn = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, ("Toggle ON"), MenuButton.ButtonType.BUTTON, false, (e) -> {
+                action("toggleOn");
             }));
         }
 

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class SCSyncGlobalCapabilityToAllPacketRM {
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -44,6 +44,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         this.strPanel = capability.getSTRPanel();
         this.magPanel = capability.getMAGPanel();
         this.defPanel = capability.getDEFPanel();
+        this.panelsStatus = capability.getPanelsEnabled();
+        this.ngpStatus = capability.getNGPEnabled();
     }
 
     public void encode(FriendlyByteBuf buffer){
@@ -66,6 +68,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         buffer.writeInt(this.strPanel);
         buffer.writeInt(this.magPanel);
         buffer.writeInt(this.defPanel);
+        buffer.writeInt(this.panelsStatus);
+        buffer.writeInt(this.ngpStatus);
 
     }
 
@@ -90,6 +94,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         msg.strPanel = buffer.readInt();
         msg.magPanel = buffer.readInt();
         msg.defPanel = buffer.readInt();
+        msg.panelsStatus = buffer.readInt();
+        msg.ngpStatus = buffer.readInt();
 
 
 
@@ -120,6 +126,9 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
                     cap.setSTRPanel(message.strPanel);
                     cap.setMAGPanel(message.magPanel);
                     cap.setDEFPanel(message.defPanel);
+
+                    cap.setPanelsEnabled(message.panelsStatus);
+                    cap.setNGPEnabled(message.ngpStatus);
 
 
 				});
