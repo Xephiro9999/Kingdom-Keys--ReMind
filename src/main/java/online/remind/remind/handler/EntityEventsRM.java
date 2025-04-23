@@ -85,7 +85,9 @@ public class EntityEventsRM {
 			}
 
 				// To initialize the toggle feature
-			globalData.setPanelsEnabled(1);
+			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
+				globalData.setPanelsEnabled(0);
+			}
 			globalData.setNGPEnabled(1);
 		}
 	}
@@ -307,7 +309,6 @@ public class EntityEventsRM {
 		if(event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if(playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE){
-				//playerData.addAbility(StringsRM.darknessBoost,true);
 				playerData.getStrengthStat().addModifier("Organization",5,false,true);
 				playerData.getMagicStat().addModifier("Organization",5,false,true);
 				playerData.getDefenseStat().addModifier("Organization",5,false,true);
@@ -721,9 +722,11 @@ public class EntityEventsRM {
 
 				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
 				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
+//player
 
+				if (event.getSource().type().msgId().equals("player")) {
 
-				if (playerData.isAbilityEquipped(StringsRM.spellblade)){
+					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
 						Map<String, Integer> boosts = Map.of(
 								"thunder", thundBoosts,
 								"fire", fireBoosts,
@@ -737,63 +740,64 @@ public class EntityEventsRM {
 						// Only continue if ONE boost has the highest value AND it’s >= 4
 						long count = boosts.values().stream().filter(v -> v == maxBoost).count();
 						// Find which one is the winner
-						if (count == 1 && maxBoost >= 4){
+						if (count == 1 && maxBoost >= 4) {
 							for (Map.Entry<String, Integer> entry : boosts.entrySet()) {
 								if (entry.getValue() == maxBoost) {
 									String elementBlade = entry.getKey();
 
-									switch (elementBlade){
+									switch (elementBlade) {
 										case "fire":
 											// Fire Blade
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts / 2) * dmg));
 											event.getEntity().setSecondsOnFire(2 * fireBoosts);
-											event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY()+ event.getEntity().level().random.nextDouble() *2D, event.getEntity().getZ()  + event.getEntity().level().random.nextDouble() - 0.5D, 0,0,0);
+											event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY() + event.getEntity().level().random.nextDouble() * 2D, event.getEntity().getZ() + event.getEntity().level().random.nextDouble() - 0.5D, 0, 0, 0);
 											break;
 
 										case "blizzard":
 											// Blizzard Blade
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((blizBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((blizBoosts / 2) * dmg));
 											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, blizBoosts * 20, blizBoosts + 2));
 											break;
 										case "thunder":
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) ((thundBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) ((thundBoosts / 2) * dmg));
 											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, thundBoosts * 10, thundBoosts));
 											event.getEntity().invulnerableTime = 0;
-											LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT,event.getEntity().level());
+											LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, event.getEntity().level());
 											lightningBolt.moveTo(Vec3.atBottomCenterOf(event.getEntity().getOnPos()));
 											event.getEntity().level().addFreshEntity(lightningBolt);
 											break;
 										case "water":
 											// Water Blade TODO: Change KKDamageTypes.ICE to KKDamageTypes.WATER when I port to 1.21.1 NeoForge
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
 											event.getEntity().setAirSupply(0);
-											if (event.getEntity().getAirSupply() == 0){
+											if (event.getEntity().getAirSupply() == 0) {
 												event.getEntity().invulnerableTime = 0;
-												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts/2) * dmg));
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
 											}
 											break;
 										case "light":
 											// Light Blade
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) ((lightBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) ((lightBoosts / 2) * dmg));
 											event.getEntity().addEffect(new MobEffectInstance(MobEffects.GLOWING, 20 * lightBoosts, 3));
 											break;
 										case "dark":
 											// Dark Blade
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) ((darkBoosts/2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) ((darkBoosts / 2) * dmg));
 											event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20 * darkBoosts, 3));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * darkBoosts,darkBoosts));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * darkBoosts, darkBoosts));
 											break;
 									}
 								}
 							}
 
 						}
+					}
 				}
 			}
 		}
