@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
@@ -27,7 +28,7 @@ import java.util.Map.Entry;
 
 public class CSPrestigePacket {
 
-
+    public int slot = -1;
 
     public CSPrestigePacket(){}
 
@@ -84,6 +85,9 @@ public class CSPrestigePacket {
                 }
             }
         }
+
+        // Auto-Remove Accessory/Armors
+
 
 
         //Utils.restartLevel(playerData, player);

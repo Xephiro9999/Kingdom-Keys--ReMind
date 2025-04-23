@@ -2,12 +2,17 @@ package online.remind.remind.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.item.KKArmorItem;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSEquipAccessories;
+import online.kingdomkeys.kingdomkeys.network.cts.CSEquipArmor;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
@@ -17,10 +22,15 @@ import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPrestigePacket;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PrestigeMenu extends MenuBackground{
+public class PrestigeMenu extends MenuBackground {
 
 
+    public int slot = -1;
+
+    public Map<KKArmorItem, Integer> addedArmorList = new HashMap<KKArmorItem, Integer>();
 
     private MenuButton backButton, prestige, levelReq, toggleOff, toggleOn;
 
@@ -29,29 +39,57 @@ public class PrestigeMenu extends MenuBackground{
     MenuColourBox[] playerWidgets = {level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath};
 
 
-
     public PrestigeMenu() {
         super("New Game +", new Color(248, 225, 81));
         minecraft = Minecraft.getInstance();
+        this.slot = slot;
     }
 
     protected void action(String string) {
         if (string.equals("back"))
             GUIHelperRM.openAddonMenu();
-        if (string.equals("confirm")){
+        if (string.equals("confirm")) {
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
+
+            IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
+            ItemStack equippedArmor = playerData.getEquippedArmor(slot);
+
+            // Armor
+            if (slot >= 0) {
+
+                if (!ItemStack.matches(equippedArmor, ItemStack.EMPTY)) {
+
+                }
+
+                for (int i = 0; i < minecraft.player.getInventory().getContainerSize(); i++) {
+                    if (!ItemStack.matches(minecraft.player.getInventory().getItem(i), ItemStack.EMPTY)) {
+                        if (minecraft.player.getInventory().getItem(i).getItem() instanceof KKArmorItem) {
+                            KKArmorItem armor = (KKArmorItem) minecraft.player.getInventory().getItem(i).getItem();
+                            if (addedArmorList.containsKey(armor)) {
+                                int amount = addedArmorList.get(armor);
+                                addedArmorList.remove(armor, amount + 1);
+                            }
+                        }
+
+                    }
+                }
+            }
+            // packets go here ig
+            PacketHandler.sendToServer(new CSEquipArmor());
+            PacketHandler.sendToServer(new CSEquipAccessories());
         }
-        if (string.equals("toggleOff")){
+        if (string.equals("toggleOff")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(1));
             GUIHelperRM.openAddonMenu();
         }
-        if (string.equals("toggleOn")){
+        if (string.equals("toggleOn")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(3));
             GUIHelperRM.openAddonMenu();
         }
-
     }
+
+
 
     @Override
     public void init() {
