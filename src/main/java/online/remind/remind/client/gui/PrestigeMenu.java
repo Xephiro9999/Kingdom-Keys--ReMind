@@ -8,6 +8,7 @@ import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.item.KKAccessoryItem;
 import online.kingdomkeys.kingdomkeys.item.KKArmorItem;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
@@ -31,6 +32,7 @@ public class PrestigeMenu extends MenuBackground {
     public int slot = -1;
 
     public Map<KKArmorItem, Integer> addedArmorList = new HashMap<KKArmorItem, Integer>();
+    public Map<KKAccessoryItem, Integer> addedAccessoryList = new HashMap<KKAccessoryItem, Integer>();
 
     private MenuButton backButton, prestige, levelReq, toggleOff, toggleOn;
 
@@ -52,32 +54,9 @@ public class PrestigeMenu extends MenuBackground {
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
 
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
-            ItemStack equippedArmor = playerData.getEquippedArmor(slot);
-
-            // Armor
-            if (slot >= 0) {
-
-                if (!ItemStack.matches(equippedArmor, ItemStack.EMPTY)) {
-
-                }
-
-                for (int i = 0; i < minecraft.player.getInventory().getContainerSize(); i++) {
-                    if (!ItemStack.matches(minecraft.player.getInventory().getItem(i), ItemStack.EMPTY)) {
-                        if (minecraft.player.getInventory().getItem(i).getItem() instanceof KKArmorItem) {
-                            KKArmorItem armor = (KKArmorItem) minecraft.player.getInventory().getItem(i).getItem();
-                            if (addedArmorList.containsKey(armor)) {
-                                int amount = addedArmorList.get(armor);
-                                addedArmorList.remove(armor, amount + 1);
-                            }
-                        }
-
-                    }
-                }
-            }
             // packets go here ig
-            PacketHandler.sendToServer(new CSEquipArmor());
-            PacketHandler.sendToServer(new CSEquipAccessories());
+            //PacketHandler.sendToServer(new CSEquipArmor());
+
         }
         if (string.equals("toggleOff")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(1));

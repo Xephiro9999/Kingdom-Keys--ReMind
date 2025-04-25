@@ -219,7 +219,7 @@
   "key.magicksaddon.openmenu": "Open Menu",
   "menu_button.prestige": "New Game +",
   "menu_button.prestigeConfirm": "New Game +",
-  "menu_button.prestigeConfirm.desc": "Resets your level and choice. WARNING!!! You cannot undo this!!!",
+  "menu_button.prestigeConfirm.desc": "Resets your level and choice. WARNING!!! You cannot undo this!!! MAKE SURE YOU HAVE INVENTORY SPACE!",
   "menu_button.prestige.desc": "Allows you to reset your level if you meet the requirements.",
   "menu_button.prestigeLevel": "NG+ Counter",
   "menu_button.dreamEater": "Dream Eaters",

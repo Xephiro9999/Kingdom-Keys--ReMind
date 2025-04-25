@@ -1,5 +1,6 @@
 package online.remind.remind.network.cts;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +15,8 @@ import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSEquipAccessories;
+import online.kingdomkeys.kingdomkeys.network.cts.CSEquipArmor;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
@@ -23,12 +26,13 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.Map.Entry;
 
 public class CSPrestigePacket {
 
-    public int slot = -1;
+    public int slot;
 
     public CSPrestigePacket(){}
 
@@ -86,7 +90,30 @@ public class CSPrestigePacket {
             }
         }
 
-        // Auto-Remove Accessory/Armors
+        if (playerData.getEquippedAccessories().size() <= Utils.getFreeSlotsForPlayer(player)){
+            playerData.getEquippedAccessories().forEach((integer, itemStack) -> {
+                System.out.println(playerData.getEquippedAccessory(integer));
+                ItemStack unequippedAccessory = playerData.equipAccessory(integer, ItemStack.EMPTY);
+                if (!unequippedAccessory.isEmpty()){
+                    player.addItem(unequippedAccessory);
+                }
+            });
+
+
+        }
+        PacketHandler.sendToServer(new CSEquipAccessories());
+        // Armor
+        if (playerData.getEquippedArmors().size() <= Utils.getFreeSlotsForPlayer(player)){
+            playerData.getEquippedArmors().forEach((integer, itemStack) -> {
+                ItemStack unequippedArmor = playerData.equipArmor(integer, ItemStack.EMPTY);
+                if (!unequippedArmor.isEmpty()){
+                    player.addItem(unequippedArmor);
+                }
+            });
+
+
+        }
+        PacketHandler.sendToServer(new CSEquipArmor());
 
 
 
@@ -323,6 +350,7 @@ public class CSPrestigePacket {
 
 
         PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+
         //System.out.println("Prestige Level: " + globalData.getPrestigeLvl());
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         ctx.get().setPacketHandled(true);
