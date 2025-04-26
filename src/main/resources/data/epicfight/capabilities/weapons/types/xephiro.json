@@ -24,7 +24,7 @@
   },
   "livingmotion_modifier": {
     "common": {
-      "idle": "kingdomkeys:biped/livingwisdom_idle",
+      "idle": "kingdomkeys:biped/living/wisdom_idle",
       "run": "epicfight:biped/living/run_spear",
       "block": "epicfight:biped/skill/guard_longsword",
       "walk": "epicfight:biped/living/walk_spear"

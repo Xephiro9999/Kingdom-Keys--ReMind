@@ -89,19 +89,17 @@ public class CSPrestigePacket {
                 }
             }
         }
-
+        PacketHandler.sendToServer(new CSEquipAccessories());
         if (playerData.getEquippedAccessories().size() <= Utils.getFreeSlotsForPlayer(player)){
             playerData.getEquippedAccessories().forEach((integer, itemStack) -> {
-                System.out.println(playerData.getEquippedAccessory(integer));
                 ItemStack unequippedAccessory = playerData.equipAccessory(integer, ItemStack.EMPTY);
                 if (!unequippedAccessory.isEmpty()){
                     player.addItem(unequippedAccessory);
                 }
             });
-
-
         }
-        PacketHandler.sendToServer(new CSEquipAccessories());
+
+        PacketHandler.sendToServer(new CSEquipArmor());
         // Armor
         if (playerData.getEquippedArmors().size() <= Utils.getFreeSlotsForPlayer(player)){
             playerData.getEquippedArmors().forEach((integer, itemStack) -> {
@@ -110,10 +108,8 @@ public class CSPrestigePacket {
                     player.addItem(unequippedArmor);
                 }
             });
-
-
         }
-        PacketHandler.sendToServer(new CSEquipArmor());
+
 
 
 
