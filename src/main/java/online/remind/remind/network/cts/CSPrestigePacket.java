@@ -1,6 +1,5 @@
 package online.remind.remind.network.cts;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -74,6 +73,11 @@ public class CSPrestigePacket {
         playerData.clearAbilities();
         playerData.setEquippedShotlock("");
 
+        playerData.setSoAState(SoAState.NONE);
+        System.out.println("SoA State: "+playerData.getSoAState());
+        globalData.addPrestigeLvl(+1);
+        System.out.println("Prestige Level: "+globalData.getPrestigeLvl());
+
         LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
         Iterator<Entry<String, int[]>> it = driveForms.entrySet().iterator();
         while (it.hasNext()) {
@@ -89,7 +93,11 @@ public class CSPrestigePacket {
                 }
             }
         }
-        PacketHandler.sendToServer(new CSEquipAccessories());
+        System.out.println("Drive Form Abilities Added!");
+
+
+
+        //PacketHandler.sendToServer(new CSEquipAccessories());
         if (playerData.getEquippedAccessories().size() <= Utils.getFreeSlotsForPlayer(player)){
             playerData.getEquippedAccessories().forEach((integer, itemStack) -> {
                 ItemStack unequippedAccessory = playerData.equipAccessory(integer, ItemStack.EMPTY);
@@ -98,8 +106,9 @@ public class CSPrestigePacket {
                 }
             });
         }
+        System.out.println("Accessories Yeet'd into Inventory");
 
-        PacketHandler.sendToServer(new CSEquipArmor());
+        //PacketHandler.sendToServer(new CSEquipArmor());
         // Armor
         if (playerData.getEquippedArmors().size() <= Utils.getFreeSlotsForPlayer(player)){
             playerData.getEquippedArmors().forEach((integer, itemStack) -> {
@@ -109,6 +118,7 @@ public class CSPrestigePacket {
                 }
             });
         }
+        System.out.println("Armor Yeet'd into Inventory");
 
 
 
@@ -116,8 +126,7 @@ public class CSPrestigePacket {
         //Utils.restartLevel(playerData, player);
         //Utils.restartLevel2(playerData, player); // Keep this for Drive Bonuses
 
-        playerData.setSoAState(SoAState.NONE);
-        globalData.addPrestigeLvl(+1);
+
 
         if (oldChoice == "WARRIOR"){
             globalData.addNGPWarriorCount(+1);

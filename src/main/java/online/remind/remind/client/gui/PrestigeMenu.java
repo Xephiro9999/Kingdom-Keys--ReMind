@@ -11,9 +11,6 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.item.KKAccessoryItem;
 import online.kingdomkeys.kingdomkeys.item.KKArmorItem;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipAccessories;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipArmor;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
@@ -53,9 +50,6 @@ public class PrestigeMenu extends MenuBackground {
         if (string.equals("confirm")) {
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
-
-            // packets go here ig
-            //PacketHandler.sendToServer(new CSEquipArmor());
 
         }
         if (string.equals("toggleOff")) {
