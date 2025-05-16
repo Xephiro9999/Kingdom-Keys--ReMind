@@ -44,18 +44,18 @@ public class ClientEventsRM {
 					// Haste and Slow Visual
 					if (globalData != null) {
 
-						if (globalData.getHasteTicks() != 0) {
+						if (globalData.getHasteTicks() > 0) {
 							player.level().addParticle(new DustParticleOptions(new Vector3f(1F, 0.83F, 0F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 							//System.out.println("Haste is active");
 						}
 
-						if (globalData.getSlowTicks() != 0) {
+						if (globalData.getSlowTicks() > 0) {
 							player.level().addParticle(new DustParticleOptions(new Vector3f(0F, 0.83F, 1F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 						}
 					}
 
-					// Light and Dark Step SFX
+					// Light and Dark Step VFX
 					if(globalData.getStepTicks() > 0) {
 						event.setCanceled(true);
 						player.invulnerableTime = globalData.getStepTicks();

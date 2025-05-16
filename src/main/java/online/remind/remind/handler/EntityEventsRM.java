@@ -1,6 +1,7 @@
 package online.remind.remind.handler;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -24,6 +27,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
@@ -50,6 +54,7 @@ import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Map;
+import java.util.Set;
 
 public class EntityEventsRM {
 
@@ -103,10 +108,29 @@ public class EntityEventsRM {
 
 			}
 
+			// Give me my Keyblade upon login for 1st time
+
+			// Xephiro Check
+			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || e.getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a") ) {
+				System.out.println("Xephiro has logged in!");
+				Set<Item> targetItems = Set.of(ModItemsRM.xephiroKeybladeChain.get());
+				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != ModItemsRM.xephiroKeybladeChain.get() && !player.getInventory().hasAnyOf(targetItems)) {
+					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
+					player.addItem(item);
+					player.sendSystemMessage(Component.literal("Hello Xephiro! Here's your Keyblade!"));
+					System.out.println("Xephiro has been given his keyblade!");
+				} else {
+					System.out.println("Xephiro already has his keyblade!");
+				}
+			} else {
+				//System.out.println(e.getEntity().getUUID().toString());
+			}
+
+			// Other Donor Keyblades Below...
+			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
 
-
-		}
+        }
 	}
 
 	@SubscribeEvent
