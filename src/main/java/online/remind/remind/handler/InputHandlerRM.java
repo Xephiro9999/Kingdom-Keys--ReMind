@@ -121,7 +121,7 @@ public class InputHandlerRM {
 
 
 						player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
-						System.out.println(power);
+						//System.out.println(power);
 
 
 						event.setCanceled(true);

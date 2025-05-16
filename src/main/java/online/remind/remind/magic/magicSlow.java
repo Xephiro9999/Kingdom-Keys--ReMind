@@ -49,8 +49,8 @@ public class magicSlow extends Magic {
 						if (lEntity.getAttribute(Attributes.MOVEMENT_SPEED) != null && lEntity.getAttribute(Attributes.ATTACK_SPEED) != null) {
 							//lEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, time, level + 1));
 							//lEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,time, level + 1));
-							lEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.25 + (0.25 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-							lEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.25 + (0.25 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+							lEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+							lEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
 
 							globalData.setSlowTicks(time, level); // Slow Time
 							globalData.setSlowCaster(player.getDisplayName().getString());

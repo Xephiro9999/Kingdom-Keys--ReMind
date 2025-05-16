@@ -44,5 +44,7 @@
       }
     ]
   },
+  "hit_sound": "epicfight:entity.hit.blade",
+  "swing_sound": "epicfight:entity.weapon.whoosh",
   "category": "greatsword"
 }

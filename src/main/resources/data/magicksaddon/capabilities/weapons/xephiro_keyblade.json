@@ -20,5 +20,7 @@
       "speed_bonus": -0.90
     }
   },
+  "hit_sound": "epicfight:entity.hit.blade",
+  "swing_sound": "epicfight:entity.weapon.whoosh_sharp",
   "type": "epicfight:xephiro"
 }

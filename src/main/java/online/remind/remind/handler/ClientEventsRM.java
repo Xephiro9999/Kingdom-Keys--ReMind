@@ -40,6 +40,21 @@ public class ClientEventsRM {
 				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 				IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
 				if (playerData != null){
+
+					// Haste and Slow Visual
+					if (globalData != null) {
+
+						if (globalData.getHasteTicks() != 0) {
+							player.level().addParticle(new DustParticleOptions(new Vector3f(1F, 0.83F, 0F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+							//System.out.println("Haste is active");
+						}
+
+						if (globalData.getSlowTicks() != 0) {
+							player.level().addParticle(new DustParticleOptions(new Vector3f(0F, 0.83F, 1F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+
+						}
+					}
+
 					// Light and Dark Step SFX
 					if(globalData.getStepTicks() > 0) {
 						event.setCanceled(true);
@@ -144,6 +159,8 @@ public class ClientEventsRM {
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.55F,0.55F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
+
+
 
 					// When I can get particles in other hand
 					//if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())){

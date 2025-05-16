@@ -89,6 +89,23 @@ public class EntityEventsRM {
 				globalData.setPanelsEnabled(0);
 			}
 			globalData.setNGPEnabled(1);
+
+			// If player was inflicted with slow/haste before logging out
+
+			if (globalData.getHasteTicks() > 0) {
+				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+
+			}
+			if (globalData.getSlowTicks() > 0) {
+				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+
+			}
+
+
+
+
 		}
 	}
 
@@ -451,7 +468,7 @@ public class EntityEventsRM {
 
 				// Attack Haste Ability
 				if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.attackHaste)) {
-					double attackSpeedBonus = 1.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
+					double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
 					player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
 				} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
 					player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
@@ -535,8 +552,8 @@ public class EntityEventsRM {
 
 				}
 				if (globalData.getSlowTicks() <= 0) {
-					event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.25 + (0.25 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
-					event.getEntity().getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.25 + (0.25 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
+					event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
+					event.getEntity().getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
 				}
 			}
 
@@ -546,8 +563,8 @@ public class EntityEventsRM {
 					globalData.remHasteTicks(1);
 					//System.out.println(globalData.getHasteTicks());
 					if (globalData.getHasteTicks() <= 0) {
-						player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-						player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+						player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+						player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
 
 					}
 				}
@@ -664,24 +681,31 @@ public class EntityEventsRM {
 			//Protect Abilities
 
 			// MP Shield
-			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()){
+			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
 				float DMGTaken = event.getAmount();
 
 				//System.out.println("Damage Dealt: "+DMGTaken);
 				//System.out.println("MP Taken: "+ 1.5 * DMGTaken);
 
 				event.setCanceled(true);
-				playerData.remMP(DMGTaken * 1.5);
-				float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11){
-					playerData.addMP(mpRageModifier);
-					//System.out.println("MP Restored via Mana Shield: " + mpRageModifier);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+				if (DMGTaken > playerData.getMP()) {
+					float overflowDMG = (float) (DMGTaken - playerData.getMP());
+					event.getEntity().hurt(event.getEntity().damageSources().indirectMagic(event.getEntity(), null), overflowDMG);
+
+				} else {
+					playerData.remMP(DMGTaken * 1.5);
+					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
+					if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
+						playerData.addMP(mpRageModifier);
+						//System.out.println("MP Restored via Mana Shield: " + mpRageModifier);
+						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+					}
+					if (playerData.isAbilityEquipped(Strings.damageDrive)) {
+						playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
+						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+					}
 				}
-				if (playerData.isAbilityEquipped(Strings.damageDrive)){
-					playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
-				}
+
 
 			}
 
