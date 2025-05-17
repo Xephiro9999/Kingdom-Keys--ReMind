@@ -52,15 +52,28 @@ import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class EntityEventsRM {
 
 	public int ticks;
 
 	int maxTicks;
+
+	private static final Set<UUID> ALLOWED_UUIDS = Set.of(
+			UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), // Xephiro
+			UUID.fromString("380df991-f603-344c-a090-369bad2a924a") // Test - Dev Account
+
+
+			);
 
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
@@ -108,28 +121,42 @@ public class EntityEventsRM {
 
 			}
 
-			// Give me my Keyblade upon login for 1st time
 
-			// Xephiro Check
-			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || e.getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a") ) {
-				System.out.println("Xephiro has logged in!");
+			// Xephiro Check -- gives me my keyblade upon 1st join
+			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
+				//System.out.println("Xephiro has logged in!");
 				Set<Item> targetItems = Set.of(ModItemsRM.xephiroKeybladeChain.get());
 				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != ModItemsRM.xephiroKeybladeChain.get() && !player.getInventory().hasAnyOf(targetItems)) {
 					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
 					player.addItem(item);
 					player.sendSystemMessage(Component.literal("Hello Xephiro! Here's your Keyblade!"));
-					System.out.println("Xephiro has been given his keyblade!");
+					//System.out.println("Xephiro has been given his keyblade!");
 				} else {
-					System.out.println("Xephiro already has his keyblade!");
+					//System.out.println("Xephiro already has his keyblade!");
 				}
 			} else {
 				//System.out.println(e.getEntity().getUUID().toString());
 			}
 
-			// Other Donor Keyblades Below...
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
+			System.out.println(globalData.getDonorGiven());
+			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())){
+				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+				UUID uuid = player.getUUID();
+					// Donator 'If' statements below...
+				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0){ // Dev
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
+					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					// Give Respective Keyblade
+
+
+					System.out.println(globalData.getDonorGiven());
+				}
+			}
         }
 	}
 
@@ -187,11 +214,13 @@ public class EntityEventsRM {
 
 	}
 
+
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
 		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
 		IWorldCapabilities worldData = ModCapabilities.getWorld(event.getPlayer().level());
+
 
 
 
@@ -247,11 +276,20 @@ public class EntityEventsRM {
 			}
 		}
 
+		if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)){
+			// TODO: Force Guard or Parry equip
+
+		}
+
 
 
 
 			
 	}
+
+
+
+
 
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event){
@@ -303,7 +341,7 @@ public class EntityEventsRM {
 		if(event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
+				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
 					//System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
 					//System.out.println(player.getUUID());
 					//playerData.getStrengthStat().addModifier("Not Xephiro", -25, false, true);
@@ -897,6 +935,9 @@ public class EntityEventsRM {
 				//System.out.println("After Negation: "+damage);
 				event.setAmount(damage);
 			}
+
+			// Xephiro Keyblade Buff
+
 
 
 		}

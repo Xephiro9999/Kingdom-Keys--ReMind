@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class SCSyncGlobalCapabilityToAllPacketRM {
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus, donorGiven;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -40,12 +40,12 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         this.autoLife = capability.getAutoLifeActive();
         this.rcCooldown = capability.getRCCooldownTicks();
         this.CanCounter = capability.getCanCounter();
-        //this.panelChoice = Integer.parseInt(capability.getPanelChoice());
         this.strPanel = capability.getSTRPanel();
         this.magPanel = capability.getMAGPanel();
         this.defPanel = capability.getDEFPanel();
         this.panelsStatus = capability.getPanelsEnabled();
         this.ngpStatus = capability.getNGPEnabled();
+        this.donorGiven = capability.getDonorGiven();
     }
 
     public void encode(FriendlyByteBuf buffer){
@@ -70,6 +70,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         buffer.writeInt(this.defPanel);
         buffer.writeInt(this.panelsStatus);
         buffer.writeInt(this.ngpStatus);
+        buffer.writeInt(this.donorGiven);
+
 
     }
 
@@ -96,6 +98,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
         msg.defPanel = buffer.readInt();
         msg.panelsStatus = buffer.readInt();
         msg.ngpStatus = buffer.readInt();
+        msg.donorGiven = buffer.readInt();
 
 
 
@@ -129,6 +132,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM {
 
                     cap.setPanelsEnabled(message.panelsStatus);
                     cap.setNGPEnabled(message.ngpStatus);
+
+                    cap.setDonorGiven(message.donorGiven);
 
 
 				});

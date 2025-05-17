@@ -24,14 +24,20 @@
   },
   "livingmotion_modifier": {
     "common": {
-      "idle": "kingdomkeys:biped/living/wisdom_idle",
+      "idle": "epicfight:biped/living/hold_longsword",
+      "run": "epicfight:biped/living/run_spear",
+      "block": "epicfight:biped/skill/guard_longsword",
+      "walk": "epicfight:biped/living/walk_spear"
+    },
+    "two_hand": {
+      "idle": "epicfight:biped/living/hold_longsword",
       "run": "epicfight:biped/living/run_spear",
       "block": "epicfight:biped/skill/guard_longsword",
       "walk": "epicfight:biped/living/walk_spear"
     }
   },
   "styles": {
-    "default": "two_hand",
+    "default": "one_hand",
     "cases": [
       {
         "style": "two_hand",
@@ -41,10 +47,14 @@
             "category": "kk_keyblade"
           }
         ]
+      },
+      {
+      "style": "one_hand",
+      "conditions": []
       }
     ]
   },
   "hit_sound": "epicfight:entity.hit.blade",
   "swing_sound": "epicfight:entity.weapon.whoosh",
-  "category": "greatsword"
+  "category": "kk_keyblade"
 }

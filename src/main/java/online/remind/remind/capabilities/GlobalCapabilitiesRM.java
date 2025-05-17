@@ -45,6 +45,9 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putBoolean("dreamEaterSummoned", this.hasDreamEaterSummoned());
         storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
 
+        // Donor Grant
+        storage.putInt("donorGrant", this.getDonorGiven());
+
 
         return storage;
     }
@@ -76,6 +79,8 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
+
+        this.setDonorGiven(properties.getInt("donor_grant"));
 
     }
 
@@ -120,6 +125,8 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
     private boolean dreamEaterSummoned = false;
     private int dreamEaterSummonedID;
+
+    private int donorGiven;
 
     //Haste
     public int getHasteLevel() {
@@ -475,6 +482,16 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     @Override
     public void setDreamEaterSummonedID(int i) {
 
+    }
+
+    @Override
+    public int getDonorGiven(){
+        return donorGiven;
+    }
+
+    @Override
+    public void setDonorGiven(int i){
+        donorGiven = i;
     }
 
 
