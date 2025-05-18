@@ -176,7 +176,7 @@ public class UltimaEntity extends ThrowableProjectile {
 
 	}
 
-	private static final EntityDataAccessor<Integer> STARTING_TICKS = SynchedEntityData.defineId(MagnegaEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> STARTING_TICKS = SynchedEntityData.defineId(UltimaEntity.class, EntityDataSerializers.INT);
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {

@@ -122,8 +122,8 @@ public class DarkFiragaCoreEntity extends ThrowableProjectile {
         this.entityData.set(TARGETS, compound.getString("TargetUUID"));
     }
 
-    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(FlameSalvoCoreEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<String> TARGETS = SynchedEntityData.defineId(FlameSalvoCoreEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(DarkFiragaCoreEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<String> TARGETS = SynchedEntityData.defineId(DarkFiragaCoreEntity.class, EntityDataSerializers.STRING);
 
     public Player getCaster() {
         return this.getEntityData().get(OWNER).isPresent() ? this.level().getPlayerByUUID(this.getEntityData().get(OWNER).get()) : null;

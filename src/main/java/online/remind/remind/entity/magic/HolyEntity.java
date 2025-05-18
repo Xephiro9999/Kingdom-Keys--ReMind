@@ -155,7 +155,7 @@ public class HolyEntity extends ThrowableProjectile {
 		this.setCaster(compound.getString("caster"));
 	}
 
-	private static final EntityDataAccessor<String> CASTER = SynchedEntityData.defineId(MagnetEntity.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<String> CASTER = SynchedEntityData.defineId(HolyEntity.class, EntityDataSerializers.STRING);
 
 	public String getCaster() {
 		return caster;
