@@ -139,7 +139,7 @@ public class EntityEventsRM {
 
 			}
 
-
+			/*
 			// Xephiro Check -- gives me my keyblade upon 1st join
 			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
 				//System.out.println("Xephiro has logged in!");
@@ -155,6 +155,7 @@ public class EntityEventsRM {
 			} else {
 				//System.out.println(e.getEntity().getUUID().toString());
 			}
+			 */
 
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
@@ -163,6 +164,16 @@ public class EntityEventsRM {
 					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 					UUID uuid = player.getUUID();
 					// Donator 'If' statements below...
+					if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+
+						// Code to set the donor trigger to not set off again
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+						// Give Respective Keyblade
+						ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
+						player.addItem(item);
+					}
 					if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
 						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
