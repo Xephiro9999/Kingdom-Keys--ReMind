@@ -15,7 +15,9 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -29,12 +31,14 @@ import online.kingdomkeys.kingdomkeys.lib.Tags;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModEffects;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 import online.remind.remind.integration.epicfight.EpicFightEvents;
+import online.remind.remind.integration.epicfight.init.EpicRMWeapons;
 import online.remind.remind.integration.epicfight.skills.KKRMSkills;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
@@ -43,6 +47,7 @@ import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.particle.ReMindParticles;
 import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
+import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -54,7 +59,7 @@ public class KingdomKeysReMind {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "magicksaddon";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
@@ -64,6 +69,7 @@ public class KingdomKeysReMind {
 
     
     public KingdomKeysReMind(){
+        final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
@@ -94,8 +100,11 @@ public class KingdomKeysReMind {
         if (ModList.get().isLoaded("epicfight")) {
             efmLoaded = true;
             KKRMSkills.SKILLS.register(modEventBus);
+            modEventBus.addListener(EpicRMWeapons::register);
             MinecraftForge.EVENT_BUS.register(new EpicFightEvents());
         }
+
+        modLoadingContext.registerConfig(ModConfig.Type.COMMON, ModConfigs.COMMON_SPEC);
     }
 
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);

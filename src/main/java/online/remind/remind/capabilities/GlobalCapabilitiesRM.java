@@ -46,7 +46,7 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
 
         // Donor Grant
-        storage.putInt("donorGrant", this.getDonorGiven());
+        storage.putInt("donor_grant", this.getDonorGiven());
 
 
         return storage;

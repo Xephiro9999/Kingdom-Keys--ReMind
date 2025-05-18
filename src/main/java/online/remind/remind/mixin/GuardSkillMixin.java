@@ -8,8 +8,12 @@ import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,31 +51,52 @@ public class GuardSkillMixin {
         // Block Abilities Auto-give parry?
 
 
-
-
         // Block Abilities Effects
 
 
-        if(playerCapabilities.isAbilityEquipped(StringsRM.renewalBlock)) {
+        if (playerCapabilities.isAbilityEquipped(StringsRM.renewalBlock)) {
             player.heal(player.getMaxHealth() * 0.05F);
-            player.getFoodData().eat(3,3);
+            player.getFoodData().eat(3, 3);
             //System.out.println("Healed for "+ player.getMaxHealth() * 0.05F +" on Block!");
         }
 
-        if(playerCapabilities.isAbilityEquipped(StringsRM.focusBlock)) {
+        if (playerCapabilities.isAbilityEquipped(StringsRM.focusBlock)) {
             playerCapabilities.addFocus(10);
             //System.out.println("Focus Restored on Block!");
             //System.out.println(event.getDamageSource().getEntity());
         }
 
         // Stop Block Code? :)
-        if(playerCapabilities.isAbilityEquipped(StringsRM.stopBlock)){
-
-            System.out.println(attackerData);
-            event.getDamageSource().getEntity().level().playSound(player, event.getDamageSource().getEntity().position().x(),event.getDamageSource().getEntity().position().y(),event.getDamageSource().getEntity().position().z(), ModSounds.stop.get(), SoundSource.MASTER, 1.0f, 1.0f);
-            attackerData.setStoppedTicks(40);
-
+        if (playerCapabilities.isAbilityEquipped(StringsRM.stopBlock)) {
+            if (event.isParried()) {
+                if (playerCapabilities.getMP() >= 10) {
+                    event.getPlayerPatch().playSound(ModSounds.stop.get(), 1f, 1f);
+                    attackerData.setStoppedTicks(40);
+                    playerCapabilities.remMP(10);
+                }
+            }
         }
+        // Royal Guard
+        if (playerCapabilities.isAbilityEquipped(StringsRM.royalGuard)) {
+            if (event.isParried()) {
+                if (!playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                    playerCapabilities.addFP(50);
+                } else if (playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                    playerCapabilities.addDP(50);
+                }
+                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
+            } else if (!event.isParried()){
+                if (!playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                    playerCapabilities.addFP(10);
+                } else if (playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                    playerCapabilities.addDP(10);
+                }
+                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
+            }
+            PacketHandler.syncToAllAround(player, playerCapabilities);
+        }
+
+
 
 
 

@@ -37,6 +37,7 @@ import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
+import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -48,12 +49,14 @@ import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
-import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.server.commands.PlayerSkillCommand;
+import yesman.epicfight.skill.*;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -70,7 +73,11 @@ public class EntityEventsRM {
 
 	private static final Set<UUID> ALLOWED_UUIDS = Set.of(
 			UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), // Xephiro
-			UUID.fromString("380df991-f603-344c-a090-369bad2a924a") // Test - Dev Account
+			UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), // Test - Dev Account
+			UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), // RealRegen
+			UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), // Goblex
+			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a") // NolValue
+
 
 
 			);
@@ -90,6 +97,15 @@ public class EntityEventsRM {
 				playerData.addAbility(StringsRM.focusBlock, true);
 			}
 
+			if (!playerData.getAbilityMap().containsKey(StringsRM.royalGuard)) {
+				playerData.addAbility(StringsRM.royalGuard, true);
+			}
+
+			if (!playerData.getAbilityMap().containsKey(StringsRM.stopBlock)) {
+				playerData.addAbility(StringsRM.stopBlock, true);
+			}
+
+
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterHammer)) {
 				playerData.addAbility(StringsRM.counterHammer, true);
 			}
@@ -101,6 +117,8 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
+
+
 
 				// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
@@ -140,21 +158,43 @@ public class EntityEventsRM {
 
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
-			System.out.println(globalData.getDonorGiven());
-			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())){
-				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
-				UUID uuid = player.getUUID();
+			if (ModConfigs.donorKeybladeGrant){
+				if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
+					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+					UUID uuid = player.getUUID();
 					// Donator 'If' statements below...
-				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0){ // Dev
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
-					// Code to set the donor trigger to not set off again
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-					// Give Respective Keyblade
+						// Code to set the donor trigger to not set off again
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+						// Give Respective Keyblade
+						ItemStack item = new ItemStack(ModItems.kibladeChain.get());
+						player.addItem(item);
 
-
-					System.out.println(globalData.getDonorGiven());
+					}
+					if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+						ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
+						player.addItem(item);
+						}
+					if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+						ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
+						player.addItem(item);
+						}
+					if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+						ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
+						player.addItem(item);
+					}
 				}
 			}
         }
@@ -220,9 +260,7 @@ public class EntityEventsRM {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
 		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
 		IWorldCapabilities worldData = ModCapabilities.getWorld(event.getPlayer().level());
-
-
-
+		//Player player = event.getPlayer();
 
 		float mpBoost = (float) playerData.getMagicStat().get();
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
@@ -244,13 +282,30 @@ public class EntityEventsRM {
 				}
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.focusBlock)){
+			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
+				playerData.unequipAbility(StringsRM.focusBlock,0);
+				playerData.unequipAbility(StringsRM.stopBlock,0);
+				playerData.unequipAbility(StringsRM.royalGuard,0);
+			}
+
+			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
+				playerData.unequipAbility(StringsRM.renewalBlock,0);
+				playerData.unequipAbility(StringsRM.stopBlock,0);
+				playerData.unequipAbility(StringsRM.royalGuard,0);
+			}
+
+			if(event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
+				playerData.unequipAbility(StringsRM.renewalBlock,0);
+				playerData.unequipAbility(StringsRM.focusBlock,0);
+				playerData.unequipAbility(StringsRM.royalGuard,0);
+			}
+
+			if(event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)){
+				playerData.unequipAbility(StringsRM.renewalBlock,0);
+				playerData.unequipAbility(StringsRM.stopBlock,0);
 				playerData.unequipAbility(StringsRM.focusBlock,0);
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)){
-				playerData.unequipAbility(StringsRM.renewalBlock,0);
-			}
 
 			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
 				if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
@@ -884,6 +939,18 @@ public class EntityEventsRM {
 
 						}
 					}
+
+					// Xephiro Keyblade Buff - Me Exclusive
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get()){
+					if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a") ) {
+
+						float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
+						System.out.println("Life Steal for " + vamp + "HP.");
+
+						player.heal(vamp);
+
+						}
+					}
 				}
 			}
 		}
@@ -936,7 +1003,6 @@ public class EntityEventsRM {
 				event.setAmount(damage);
 			}
 
-			// Xephiro Keyblade Buff
 
 
 

@@ -62,6 +62,7 @@ public class StringsRM {
         focusBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"focus_block",
         stopBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"stop_block",
         poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
+        royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
 
 
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",

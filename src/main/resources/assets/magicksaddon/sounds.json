@@ -148,5 +148,16 @@
         "sounds": [
           "magicksaddon:darkness"
         ]
+      },
+      "royal_guard": {
+        "sounds": [
+          "magicksaddon:royal_guard"
+        ]
+      },
+      "royal_parry": {
+        "sounds": [
+          "magicksaddon:royal_parry"
+        ]
       }
+
   }
