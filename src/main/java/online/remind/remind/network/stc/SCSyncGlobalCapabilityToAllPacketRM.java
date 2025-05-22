@@ -69,8 +69,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.strPanel);
         buffer.writeInt(message.magPanel);
         buffer.writeInt(message.defPanel);
-        buffer.writeInt(this.panelsStatus);
-        buffer.writeInt(this.ngpStatus);
+        buffer.writeInt(message.panelsStatus);
+        buffer.writeInt(message.ngpStatus);
 
     }
 
