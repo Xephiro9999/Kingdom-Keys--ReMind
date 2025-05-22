@@ -77,7 +77,7 @@ public class CounterRushCore extends ThrowableProjectile {
                 int index = Utils.randomWithRange(0,targetList.size()-1); //Get a random mob from the list
                 Entity target = targetList.get(index);
                 if (target != null) {
-                    float dmg = (float) (playerData.getStrengthStat().get() * 1.5f);
+                    float dmg = (float) (playerData.getStrengthStat().get() * 0.25f);
                     target.invulnerableTime = 0;
                     target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);
                     //TODO No EFM 1.21

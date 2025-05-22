@@ -32,6 +32,7 @@ public class CounterHammerRC extends ReactionCommand {
         float dmg = (float) playerData.getStrengthStat().get();
         float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
         float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.5F);
+        globalData.setRCCooldownTicks(60);
 
         double X = player.getX();
         double Z = player.getZ();
@@ -62,7 +63,7 @@ public class CounterHammerRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterHammer) && globalData.getCanCounter() >= 1) {
+           if (playerData.isAbilityEquipped(StringsRM.counterHammer) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
                return true;
             }
         }

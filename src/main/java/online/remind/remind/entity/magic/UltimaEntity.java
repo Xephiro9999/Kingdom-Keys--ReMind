@@ -93,7 +93,7 @@ public class UltimaEntity extends ThrowableProjectile {
 							double x = X + (radius * Math.cos(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
 							double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
 							double y = Y + (radius * Math.cos(Math.toRadians(t)));
-							((ServerLevel) level()).sendParticles(ParticleTypes.EXPLOSION, x, y+1, z, 1, 0,0,0, 0);
+							((ServerLevel) level()).sendParticles(ParticleTypes.ENCHANT, x, y+1, z, 1, 0,0,0, 0);
 						}
 
 					}
@@ -121,7 +121,7 @@ public class UltimaEntity extends ThrowableProjectile {
 							Entity e = (Entity) list.get(i);
 							if (e instanceof LivingEntity) {
 								if (Utils.isHostile(e) || e instanceof Slime) {
-									float dmg = this.getOwner() instanceof Player ? (DamageCalculation.getMagicDamage((Player) this.getOwner()) / 5F) : 2;
+									float dmg = this.getOwner() instanceof Player ? (DamageCalculation.getMagicDamage((Player) this.getOwner()) / 4F) : 2;
 									dmg = Math.min(dmg, 99);
 									e.hurt(e.damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);
 								}
