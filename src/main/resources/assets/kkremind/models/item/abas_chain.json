@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/abas_chain"
+    "layer0": "magicksaddon:item/abas_chain"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/elven_bandanna"
+    "layer0": "magicksaddon:item/elven_bandanna"
   }
 }

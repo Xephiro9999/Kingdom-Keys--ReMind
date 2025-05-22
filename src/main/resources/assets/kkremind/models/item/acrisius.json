@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/acrisius"
+    "layer0": "magicksaddon:item/acrisius"
   }
 }

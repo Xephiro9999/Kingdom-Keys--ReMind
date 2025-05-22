@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/spelldrain"
+    "layer0": "magicksaddon:item/spelldrain"
   }
 }

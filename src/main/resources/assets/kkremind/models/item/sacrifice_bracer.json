@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/sacrifice_bracer"
+    "layer0": "magicksaddon:item/sacrifice_bracer"
   }
 }

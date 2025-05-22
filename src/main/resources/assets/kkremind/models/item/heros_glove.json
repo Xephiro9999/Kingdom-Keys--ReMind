@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/heros_glove"
+    "layer0": "magicksaddon:item/heros_glove"
   }
 }

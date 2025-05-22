@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/master_belt"
+    "layer0": "magicksaddon:item/master_belt"
   }
 }

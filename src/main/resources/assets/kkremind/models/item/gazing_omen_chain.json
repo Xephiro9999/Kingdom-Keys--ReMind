@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/gazing_omen_chain"
+    "layer0": "magicksaddon:item/gazing_omen_chain"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/dark_anklet"
+    "layer0": "magicksaddon:item/dark_anklet"
   }
 }

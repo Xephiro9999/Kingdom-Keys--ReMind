@@ -44,9 +44,9 @@
     }
   },
   "visibility": {
-    "object_1": "hide",
-    "object_2": "default",
-    "object_3": "show"
+		"object_1": "hide",
+		"object_2": "default",
+		"object_3": "show"
   },
   "perspectives": {
     "gui": {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/spellruin"
+    "layer0": "magicksaddon:item/spellruin"
   }
 }

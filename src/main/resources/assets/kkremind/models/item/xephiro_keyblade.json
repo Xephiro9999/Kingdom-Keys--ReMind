@@ -1,10 +1,10 @@
 {
-  "parent": "neoforge:item/default",
-  "loader": "neoforge:obj",
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
   "flip_v" : "true",
-  "model": "kkremind:models/item/keyblade/xephiro_keyblade.obj",
+  "model": "magicksaddon:models/item/keyblade/xephiro_keyblade.obj",
   "textures": {
-    "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+    "layer0": "magicksaddon:textures/item/keyblades/xephiro_keyblade"
   },
   "display": {
     "firstperson_righthand": {
@@ -28,9 +28,9 @@
       "scale": [0.25, 0.25, 0.25]
     },
     "gui": {
-      "rotation": [0, 90.0, 45.0 ],
+      "rotation": [0, 90.0, 0.0 ],
       "translation": [0.0, -10.0, 0.0 ],
-      "scale": [0.20, 0.20, 0.20]
+      "scale": [0.125, 0.125, 0.125]
     },
     "ground": {
       "rotation": [0, 90.0, 45.0 ],
@@ -52,7 +52,7 @@
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+        "layer0": "magicksaddon:textures/item/keyblades/xephiro_keyblade"
       }
     }
   }

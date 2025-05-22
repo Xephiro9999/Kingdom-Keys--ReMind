@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/xephiro_keyblade_chain"
+    "layer0": "magicksaddon:item/xephiro_keyblade_chain"
   }
 }

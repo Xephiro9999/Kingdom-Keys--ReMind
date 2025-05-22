@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/crystal_regalia_plus"
+    "layer0": "magicksaddon:item/crystal_regalia_plus"
   }
 }

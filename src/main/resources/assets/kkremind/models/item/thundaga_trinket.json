@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "kkremind:item/thundaga_trinket"
+    "layer0": "magicksaddon:item/thundaga_trinket"
   }
 }

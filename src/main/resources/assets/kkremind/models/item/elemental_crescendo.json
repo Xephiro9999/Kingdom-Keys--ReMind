@@ -1,10 +1,10 @@
 {
-  "parent": "neoforge:item/default",
-  "loader": "neoforge:obj",
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
   "flip_v" : "true",
-  "model": "kkremind:models/item/keyblade/elemental_crescendo.obj",
+  "model": "magicksaddon:models/item/keyblade/elemental_crescendo.obj",
   "textures": {
-    "layer0": "kkremind:textures/item/keyblades/elemental_crescendo"
+    "layer0": "magicksaddon:textures/item/keyblades/elemental_crescendo"
   },
   "display": {
     "firstperson_righthand": {
@@ -47,7 +47,7 @@
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "kkremind:textures/item/keyblades/xephiro_keyblade"
+        "layer0": "magicksaddon:textures/item/keyblades/xephiro_keyblade"
       }
     }
   }

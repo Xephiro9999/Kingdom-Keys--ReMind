@@ -1,10 +1,10 @@
 {
-  "parent": "neoforge:item/default",
-  "loader": "neoforge:obj",
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
   "flip_v" : "true",
-  "model": "kkremind:models/item/keyblade/pureblood.obj",
+  "model": "magicksaddon:models/item/keyblade/pureblood.obj",
   "textures": {
-    "layer0": "kkremind:textures/item/keyblades/pureblood"
+    "layer0": "magicksaddon:textures/item/keyblades/pureblood"
   },
   "display": {
     "firstperson_righthand": {
@@ -52,7 +52,7 @@
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "kkremind:textures/item/pureblood"
+        "layer0": "magicksaddon:textures/item/pureblood"
       }
     }
   }
