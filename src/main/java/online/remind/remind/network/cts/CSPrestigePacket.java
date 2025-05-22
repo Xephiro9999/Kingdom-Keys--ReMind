@@ -162,10 +162,11 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.getMagicStat().removeModifier("sacrifice");
             playerData.getDefenseStat().removeModifier("sacrifice");
 
-
-            playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
-            playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
-            playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
+            if (globalData.getNGPEnabled() == 1) {
+                playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
+                playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
+                playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
+            }
             playerData.addMaxHP(2 * globalData.getPrestigeLvl());
             playerData.addMaxMP(2 * globalData.getPrestigeLvl());
             //player.heal(playerData.getMaxHP());

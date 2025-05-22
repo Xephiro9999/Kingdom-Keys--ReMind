@@ -34,6 +34,9 @@ public class GlobalDataRM implements IGlobalDataRM {
         storage.putInt("Panels_DEF", this.getDEFPanel());
         storage.putInt("Panels_MAG", this.getMAGPanel());
 
+        storage.putInt("Panels_Enabled", this.getPanelsEnabled());
+        storage.putInt("NGPlus_Enabled", this.getNGPEnabled());
+
         //storage.putString("Panels_Choice",this.getPanelChoice().toString());
 
         storage.putInt("riskcharge_count", this.getRiskchargeCount());
@@ -68,6 +71,9 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.setMAGPanel(properties.getInt("Panels_MAG"));
         this.setDEFPanel(properties.getInt("Panels_DEF"));
 
+        this.setPanelsEnabled(properties.getInt("Panels_Enabled"));
+        this.setNGPEnabled(properties.getInt("NG+_Enabled"));
+
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
@@ -95,6 +101,9 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int magPanel;
     private int defPanel;
     private String panelChoice;
+
+    private int panelsStatus;
+    private int ngpStatus;
 
     private int darkModeEXP;
     private int lightFormEXP;
@@ -417,6 +426,15 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void addDEFPanel(int i) {
         defPanel += i;
     }
+
+    @Override
+    public void setPanelsEnabled(int i){panelsStatus = i;}
+    @Override
+    public void setNGPEnabled(int i){ngpStatus = i;}
+    @Override
+    public int getPanelsEnabled(){return panelsStatus;}
+    @Override
+    public int getNGPEnabled(){return ngpStatus;}
 
 
     @Override

@@ -17,7 +17,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -45,6 +45,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.strPanel = capability.getSTRPanel();
         this.magPanel = capability.getMAGPanel();
         this.defPanel = capability.getDEFPanel();
+        this.panelsStatus = capability.getPanelsEnabled();
+        this.ngpStatus = capability.getNGPEnabled();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -67,6 +69,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.strPanel);
         buffer.writeInt(message.magPanel);
         buffer.writeInt(message.defPanel);
+        buffer.writeInt(this.panelsStatus);
+        buffer.writeInt(this.ngpStatus);
 
     }
 
@@ -91,7 +95,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.strPanel = buffer.readInt();
         msg.magPanel = buffer.readInt();
         msg.defPanel = buffer.readInt();
-
+        msg.panelsStatus = buffer.readInt();
+        msg.ngpStatus = buffer.readInt();
 
 
         return msg;
@@ -120,6 +125,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setSTRPanel(message.strPanel);
                 globalData.setMAGPanel(message.magPanel);
                 globalData.setDEFPanel(message.defPanel);
+                globalData.setPanelsEnabled(message.panelsStatus);
+                globalData.setNGPEnabled(message.ngpStatus);
 			}
 		});
     }

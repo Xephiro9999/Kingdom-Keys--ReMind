@@ -85,6 +85,12 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void setMAGPanel(int i);
     void setDEFPanel(int i);
 
+    void setPanelsEnabled(int i);
+    void setNGPEnabled(int i);
+
+    int getPanelsEnabled();
+    int getNGPEnabled();
+
     int getRCCooldownTicks();
     void setRCCooldownTicks(int ticks);
     void remRCCooldownTicks(int ticks);

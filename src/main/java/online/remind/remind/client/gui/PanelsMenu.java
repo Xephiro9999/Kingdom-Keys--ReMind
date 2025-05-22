@@ -15,6 +15,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class PanelsMenu extends MenuBackground {
 
     int ticks = 0;
 
-    private MenuButton backButton, strUp, magUp, defUp, apUp, giveAbility, lvl, req0, valorUp, wisdomUp, limitUp, masterUp, finalUp, reqV, reqW, reqL, reqM, reqF, rejectOrg, reset;
+    private MenuButton backButton, strUp, magUp, defUp, apUp, giveAbility, lvl, req0, valorUp, wisdomUp, limitUp, masterUp, finalUp, reqV, reqW, reqL, reqM, reqF, rejectOrg, reset, toggleOff, toggleOn;
 
     MenuColourBox str, mag, def, ap;
 
@@ -122,6 +123,16 @@ public class PanelsMenu extends MenuBackground {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(11));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 init();
+            }
+            case "toggleOff" -> {
+                PacketHandlerRM.sendToServer(new CSBoostPacket(2));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                GUIHelperRM.openAddonMenu();
+            }
+            case "toggleOn" -> {
+                PacketHandlerRM.sendToServer(new CSBoostPacket(4));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+                GUIHelperRM.openAddonMenu();
             }
         }
     }
@@ -302,11 +313,22 @@ public class PanelsMenu extends MenuBackground {
                         action("req");
                     }));
                 }
-                addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 200, (int) buttonWidth, "Reset", MenuButton.ButtonType.BUTTON, true, (e) -> {
+
+                if (addedData.getPanelsEnabled() == 1){
+                    addRenderableWidget(toggleOff = new MenuButton((int) buttonPosX, button_statsY + 200, (int) buttonWidth, "Boost OFF", MenuButton.ButtonType.BUTTON, false, (e) -> {
+                        action("toggleOff");
+                    }));
+                } else if (addedData.getPanelsEnabled() == 0){
+                    addRenderableWidget(toggleOn = new MenuButton((int) buttonPosX, button_statsY + 200, (int) buttonWidth, "Boost ON", MenuButton.ButtonType.BUTTON, false, (e) -> {
+                        action("toggleOn");
+                    }));
+                }
+
+                addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 220, (int) buttonWidth, "Reset", MenuButton.ButtonType.BUTTON, true, (e) -> {
                     action("reset");
                 }));
 
-                addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 220, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
+                addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 240, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
                     action("back");
                 }));
 
