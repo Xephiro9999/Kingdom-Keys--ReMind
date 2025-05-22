@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/firagun_bangle"
+    "layer0": "kkremind:item/firagun_bangle"
   }
 }

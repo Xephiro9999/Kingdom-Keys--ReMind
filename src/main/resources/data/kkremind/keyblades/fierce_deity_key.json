@@ -1,0 +1,272 @@
+{
+  "ability": "kingdomkeys:ability_berserk_charge",
+  "base_stats": {
+    "mag": 0,
+    "str": 10
+  },
+  "description": "This keyblade proves a great boost in Strength and helps you unleash your rage.",
+  "keychain": "kkremind:fierce_deity_key_chain",
+  "levels": [
+    {
+      "mag": 0,
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 2
+        }
+      ],
+      "str": 11
+    },
+    {
+      "mag": -1,
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 3
+        }
+      ],
+      "str": 11,
+      "ability": "kingdomkeys:ability_critical_boost"
+    },
+    {
+      "mag": -1,
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 4
+        }
+      ],
+      "str": 12
+    },
+    {
+      "mag": -2,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 1
+        }
+      ],
+      "str": 12,
+      "ability": "kkremind:ability_darkness_boost"
+    },
+    {
+      "mag": -2,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 13
+    },
+    {
+      "mag": -3,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 13,
+      "ability": "kkremind:ability_darkness_boost"
+    },
+    {
+      "mag": -3,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": -4,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": -4,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 15
+    },
+    {
+      "mag": -5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 1
+        }
+      ],
+      "str": 15,
+      "ability": "kingdomkeys:ability_berserk_charge"
+    },
+    {
+      "mag": -6,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 16,
+      "ability": "kingdomkeys:ability_damage_drive"
+    },
+    {
+      "mag": -7,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 17
+    },
+    {
+      "mag": -8,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 18
+    },
+    {
+      "mag": -9,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 4
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 19
+    },
+    {
+      "mag": -10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 5
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 20,
+      "ability": "kkremind:ability_rage_awakened"
+    }
+  ],
+  "reach": 6.0
+}

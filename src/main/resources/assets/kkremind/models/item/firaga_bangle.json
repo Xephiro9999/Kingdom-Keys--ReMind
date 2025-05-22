@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/firaga_bangle"
+    "layer0": "kkremind:item/firaga_bangle"
   }
 }

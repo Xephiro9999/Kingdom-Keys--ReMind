@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/nothingness_binder"
+    "layer0": "kkremind:item/nothingness_binder"
   }
 }

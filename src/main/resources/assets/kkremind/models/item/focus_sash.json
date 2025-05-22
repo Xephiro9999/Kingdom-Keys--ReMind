@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/focus_sash"
+    "layer0": "kkremind:item/focus_sash"
   }
 }

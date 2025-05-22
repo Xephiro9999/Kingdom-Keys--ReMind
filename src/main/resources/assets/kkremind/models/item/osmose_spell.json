@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/spellosmose"
+    "layer0": "kkremind:item/spellosmose"
   }
 }

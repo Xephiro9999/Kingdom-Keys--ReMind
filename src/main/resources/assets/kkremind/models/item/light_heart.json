@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/light_heart"
+    "layer0": "kkremind:item/light_heart"
   }
 }

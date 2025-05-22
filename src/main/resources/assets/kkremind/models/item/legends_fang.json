@@ -1,10 +1,10 @@
 {
-  "parent": "forge:item/default",
-  "loader": "forge:obj",
+  "parent": "neoforge:item/default",
+  "loader": "neoforge:obj",
   "flip_v" : "true",
-  "model": "magicksaddon:models/item/keyblade/legends_fang.obj",
+  "model": "kkremind:models/item/keyblade/legends_fang.obj",
   "textures": {
-    "layer0": "magicksaddon:textures/item/keyblades/legends_fang"
+    "layer0": "kkremind:textures/item/keyblades/legends_fang"
   },
   "display": {
     "firstperson_righthand": {
@@ -52,7 +52,7 @@
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "magicksaddon:textures/item/keyblades/blitzers_dream"
+        "layer0": "kkremind:textures/item/keyblades/blitzers_dream"
       }
     }
   }

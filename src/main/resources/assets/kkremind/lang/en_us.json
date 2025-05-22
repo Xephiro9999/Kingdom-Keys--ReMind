@@ -163,7 +163,7 @@
   "item.kkremind.crystals_light": "Crystal's Light",
   "item.kkremind.blitzers_dream": "Blitzer's Dream",
   "item.kkremind.legends_fang": "Legend's Fang",
-  "item.magicksaddon.fierce_deity_key": "Fierce Deity Key",
+  "item.kkremind.fierce_deity_key": "Fierce Deity Key",
 
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
@@ -172,7 +172,7 @@
   "item.kkremind.crystals_light_chain": "Crystal's Light Chain",
   "item.kkremind.blitzers_dream_chain": "Blitzer's Dream Chain",
   "item.kkremind.legends_fang_chain": "Legend's Fang Chain",
-  "item.magicksaddon.fierce_deity_key_chain": "Fierce Deity Key Chain",
+  "item.kkremind.fierce_deity_key_chain": "Fierce Deity Key Chain",
 
   "item.kkremind.aqua_chaplet": "Aqua Chaplet",
   "item.kkremind.heros_glove": "Hero's Glove",
@@ -250,9 +250,9 @@
 
   "reactioncommand.rc_test.name": "Does nothing",
 
-  "key.categories.remind": "Kingdom Keys - Re:Mind",
+  "key.categories.kkremind": "Kingdom Keys - Re:Mind",
 
-  "key.remind.summonspirit": "Summon Spirit",
+  "key.kkremind.summonspirit": "Summon Spirit",
 
   "entity.kkremind.chirithy": "Chirithy"
 

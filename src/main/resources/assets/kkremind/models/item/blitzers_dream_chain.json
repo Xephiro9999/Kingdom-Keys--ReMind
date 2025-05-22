@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/blitzers_dream_chain"
+    "layer0": "kkremind:item/blitzers_dream_chain"
   }
 }

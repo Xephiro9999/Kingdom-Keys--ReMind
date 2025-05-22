@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/forest_clasp"
+    "layer0": "kkremind:item/forest_clasp"
   }
 }

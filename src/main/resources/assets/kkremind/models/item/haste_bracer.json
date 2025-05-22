@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicksaddon:item/haste_bracer"
+    "layer0": "kkremind:item/haste_bracer"
   }
 }
