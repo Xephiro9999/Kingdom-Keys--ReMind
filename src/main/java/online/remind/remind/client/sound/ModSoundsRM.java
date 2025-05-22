@@ -42,7 +42,7 @@ public class ModSoundsRM {
             HEARTLESS_ANGEL = registerSound("heartless_angel"),
             DARK_MODE = registerSound("darkness"),
 
-            ROYAL_GUARD = registerSound("royal_guard"),
+            ROYAL_GUARD = registerSound("royal_block"),
             ROYAL_PARRY = registerSound("royal_parry");
 
 

@@ -149,9 +149,9 @@
           "magicksaddon:darkness"
         ]
       },
-      "royal_guard": {
+      "royal_block": {
         "sounds": [
-          "magicksaddon:royal_guard"
+          "magicksaddon:royal_block"
         ]
       },
       "royal_parry": {

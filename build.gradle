@@ -6,7 +6,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = '1.20.1-5.25.2'
+version = '1.20.1-5.25.2a'
 group = 'online.xephiro.magicksaddon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'KK-ReMind'
 
@@ -152,7 +152,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // KK Implementation
-    implementation fg.deobf("curse.maven:kingdom-keys-re-coded-242862:6320012")
+    implementation fg.deobf("curse.maven:kingdom-keys-re-coded-242862:6551306")
 
 
     //implementation fg.deobf("kingdomkeys:kingdomkeys:1.20.1-2.5.4")

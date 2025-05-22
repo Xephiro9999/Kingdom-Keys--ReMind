@@ -1,8 +1,10 @@
 package online.remind.remind.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -160,6 +162,15 @@ public class EntityEventsRM {
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
 			if (ModConfigs.donorKeybladeGrant){
+				MinecraftServer server = player.getServer();
+				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
+					// Player is OP
+					player.sendSystemMessage(Component.literal("Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
+				}
+			}
+
+
+
 				if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
 					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 					UUID uuid = player.getUUID();
@@ -207,9 +218,11 @@ public class EntityEventsRM {
 						player.addItem(item);
 					}
 				}
+			} else {
+				player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
 			}
         }
-	}
+
 
 	@SubscribeEvent
 	public void onPlayerClone(PlayerEvent.Clone event) {
@@ -236,12 +249,12 @@ public class EntityEventsRM {
 
 		oPlayer.invalidateCaps();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param player
-	 * @param AbilityName StringsX.darkPower
-	 * @param formName ModID + StringsX.darkMode
+	 * @param AbilityName StringsRM.darkPower
+	 * @param formName ModID + StringsRM.darkForm
 	 */
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
@@ -250,9 +263,6 @@ public class EntityEventsRM {
 			if(!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}
-			playerData.addVisibleDriveForm(formName);
-		} else { // If ability to use dark form is NOT equipped
-			playerData.remVisibleDriveForm(formName);
 		}
 
 		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){
@@ -293,28 +303,36 @@ public class EntityEventsRM {
 				}
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
-				playerData.unequipAbility(StringsRM.focusBlock,0);
-				playerData.unequipAbility(StringsRM.stopBlock,0);
-				playerData.unequipAbility(StringsRM.royalGuard,0);
+			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())){
+				if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+					playerData.unequipAbility(StringsRM.focusBlock, 0);
+					playerData.unequipAbility(StringsRM.stopBlock, 0);
+					playerData.unequipAbility(StringsRM.royalGuard, 0);
+				}
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
-				playerData.unequipAbility(StringsRM.renewalBlock,0);
-				playerData.unequipAbility(StringsRM.stopBlock,0);
-				playerData.unequipAbility(StringsRM.royalGuard,0);
+			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())){
+				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+					playerData.unequipAbility(StringsRM.renewalBlock, 0);
+					playerData.unequipAbility(StringsRM.stopBlock, 0);
+					playerData.unequipAbility(StringsRM.royalGuard, 0);
+				}
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)){
-				playerData.unequipAbility(StringsRM.renewalBlock,0);
-				playerData.unequipAbility(StringsRM.focusBlock,0);
-				playerData.unequipAbility(StringsRM.royalGuard,0);
+			if(event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())){
+				if(playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+					playerData.unequipAbility(StringsRM.renewalBlock, 0);
+					playerData.unequipAbility(StringsRM.focusBlock, 0);
+					playerData.unequipAbility(StringsRM.royalGuard, 0);
+				}
 			}
 
-			if(event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)){
-				playerData.unequipAbility(StringsRM.renewalBlock,0);
-				playerData.unequipAbility(StringsRM.stopBlock,0);
-				playerData.unequipAbility(StringsRM.focusBlock,0);
+			if(event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
+				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)) {
+					playerData.unequipAbility(StringsRM.renewalBlock, 0);
+					playerData.unequipAbility(StringsRM.stopBlock, 0);
+					playerData.unequipAbility(StringsRM.focusBlock, 0);
+				}
 			}
 
 
@@ -342,15 +360,14 @@ public class EntityEventsRM {
 			}
 		}
 
-		if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)){
-			// TODO: Force Guard or Parry equip
-
+		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
+			playerData.unequipAbility(StringsRM.lightStep, 0);
 		}
 
+		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())){
+			playerData.unequipAbility(StringsRM.darkStep, 0);
+		}
 
-
-
-			
 	}
 
 

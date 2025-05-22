@@ -18,6 +18,7 @@ public class ModReactionCommandsRM {
         DARK_MINE_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dark_mine", () -> new DarkMineRC(new ResourceLocation(StringsRM.DarkMineRC),true)),
         DUAL_SHOT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dual_shot", () -> new DualShotRC(new ResourceLocation(StringsRM.DualShotRC),true)),
         TWILIGHT_FORM = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"twilight", () -> new TwilightFormRC(new ResourceLocation(StringsRM.TwilightRC),true)),
+        RAGE_FORM = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"rage", () -> new RageFormRC(new ResourceLocation(StringsRM.RageRC),true)),
         DARK_FIRAGA_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dark_firaga", () -> new DarkFiragaRC(new ResourceLocation(StringsRM.DarkFiragaRC),true)),
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC(new ResourceLocation(StringsRM.XemnasRC),true)),
 

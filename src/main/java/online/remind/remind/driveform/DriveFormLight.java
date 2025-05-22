@@ -28,6 +28,11 @@ public class DriveFormLight extends DriveForm {
 
     }
 
+    @Override
+    public boolean displayInCommandMenu(Player player){
+        return ModCapabilities.getPlayer(player).isAbilityEquipped(StringsRM.wayToLight);
+    }
+
     @SubscribeEvent
     public static void getDarkModeXP(LivingDeathEvent event) {
         if (!event.getEntity().level().isClientSide && event.getEntity() instanceof Monster) {

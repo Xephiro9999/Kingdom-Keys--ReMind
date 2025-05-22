@@ -23,9 +23,15 @@ public class ModConfigs {
 
     public static void bakeCommon(){
         donorKeybladeGrant = COMMON.donorKeybladeGrant.get();
+
+        rageFormPercent = COMMON.rageFormPercent.get();
+
     }
 
     public static boolean donorKeybladeGrant;
+
+    public static double rageFormPercent;
+
 
     @SubscribeEvent
     public static void configEvent(ModConfigEvent event) {

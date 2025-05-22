@@ -55,15 +55,23 @@ public class GuardSkillMixin {
 
 
         if (playerCapabilities.isAbilityEquipped(StringsRM.renewalBlock)) {
-            player.heal(player.getMaxHealth() * 0.05F);
-            player.getFoodData().eat(3, 3);
-            //System.out.println("Healed for "+ player.getMaxHealth() * 0.05F +" on Block!");
+            if (event.isParried()){
+                player.heal(player.getMaxHealth() * 0.075F);
+                player.getFoodData().eat(2, 2);
+            } else {
+                player.heal(player.getMaxHealth() * 0.025F);
+                player.getFoodData().eat(1, 1);
+            }
+            event.getPlayerPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
+
         }
 
         if (playerCapabilities.isAbilityEquipped(StringsRM.focusBlock)) {
-            playerCapabilities.addFocus(10);
-            //System.out.println("Focus Restored on Block!");
-            //System.out.println(event.getDamageSource().getEntity());
+            if (event.isParried()){
+                playerCapabilities.addFocus(25);
+            } else {
+                playerCapabilities.addFocus(10);
+            }
         }
 
         // Stop Block Code? :)
@@ -80,12 +88,12 @@ public class GuardSkillMixin {
         if (playerCapabilities.isAbilityEquipped(StringsRM.royalGuard)) {
             if (event.isParried()) {
                 if (!playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-                    playerCapabilities.addFP(50);
+                    playerCapabilities.addFP(25);
                 } else if (playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())){
-                    playerCapabilities.addDP(50);
+                    playerCapabilities.addDP(25);
                 }
                 event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
-            } else if (!event.isParried()){
+            } else {
                 if (!playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerCapabilities.addFP(10);
                 } else if (playerCapabilities.getActiveDriveForm().equals(DriveForm.NONE.toString())){
@@ -93,6 +101,7 @@ public class GuardSkillMixin {
                 }
                 event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
             }
+
             PacketHandler.syncToAllAround(player, playerCapabilities);
         }
 

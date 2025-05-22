@@ -106,7 +106,6 @@ public class CSPanelPacket {
                 DriveForm drive = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Valor));
                 if (level == 0){
                     playerData.setDriveFormLevel(Strings.Form_Valor, 1);
-                    playerData.addVisibleDriveForm(Strings.Form_Valor);
                 } else {
                     while (playerData.getDriveFormLevel(Strings.Form_Valor) < level + 1) {
                         int cost = drive.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Valor) + 1);
@@ -122,7 +121,6 @@ public class CSPanelPacket {
                 DriveForm drive1 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Wisdom));
                 if (level == 0){
                     playerData.setDriveFormLevel(Strings.Form_Wisdom, 1);
-                    playerData.addVisibleDriveForm(Strings.Form_Wisdom);
                 } else {
                     while (playerData.getDriveFormLevel(Strings.Form_Wisdom) < level + 1) {
                         int cost = drive1.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Wisdom) + 1);
@@ -137,7 +135,6 @@ public class CSPanelPacket {
                 DriveForm drive2 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Wisdom));
                 if (level == 0){
                     playerData.setDriveFormLevel(Strings.Form_Limit, 1);
-                    playerData.addVisibleDriveForm(Strings.Form_Limit);
                 } else {
                     while (playerData.getDriveFormLevel(Strings.Form_Limit) < level + 1) {
                         int cost = drive2.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Limit) + 1);
@@ -153,7 +150,6 @@ public class CSPanelPacket {
                 DriveForm drive3 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Master));
                 if (level == 0){
                     playerData.setDriveFormLevel(Strings.Form_Master, 1);
-                    playerData.addVisibleDriveForm(Strings.Form_Master);
                 } else {
                     while (playerData.getDriveFormLevel(Strings.Form_Master) < level + 1) {
                         int cost = drive3.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Master) + 1);
@@ -168,7 +164,6 @@ public class CSPanelPacket {
                 DriveForm drive4 = ModDriveForms.registry.get().getValue(new ResourceLocation(Strings.Form_Final));
                 if (level == 0){
                     playerData.setDriveFormLevel(Strings.Form_Final, 1);
-                    playerData.addVisibleDriveForm(Strings.Form_Final);
                 } else {
                     while (playerData.getDriveFormLevel(Strings.Form_Final) < level + 1) {
                         int cost = drive4.getLevelUpCost(playerData.getDriveFormLevel(Strings.Form_Final) + 1);

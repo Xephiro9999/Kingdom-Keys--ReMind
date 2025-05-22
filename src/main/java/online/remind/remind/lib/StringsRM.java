@@ -95,6 +95,7 @@ public class StringsRM {
         LightBeamRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"light_beam",
         DarkMineRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"dark_mine",
         TwilightRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"twilight",
+        RageRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"rage",
         DualShotRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"dual_shot",
         DarkFiragaRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"dark_firaga",
         XemnasRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"xemnas",

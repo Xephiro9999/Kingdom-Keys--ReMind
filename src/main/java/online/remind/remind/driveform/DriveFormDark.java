@@ -29,6 +29,11 @@ public class DriveFormDark extends DriveForm {
         this.skinRL = skinRL;
     }
 
+    @Override
+    public boolean displayInCommandMenu(Player player){
+        return ModCapabilities.getPlayer(player).isAbilityEquipped(StringsRM.darkPower);
+    }
+
     @SubscribeEvent
     public static void getDarkModeXP(LivingDeathEvent event) {
         if (!event.getEntity().level().isClientSide && event.getEntity() instanceof Monster) {
@@ -52,7 +57,7 @@ public class DriveFormDark extends DriveForm {
     public void endDrive(Player player) {
         super.endDrive(player);
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-        playerData.setEquippedShotlock("");
+        //playerData.setEquippedShotlock("");
     }
 
 

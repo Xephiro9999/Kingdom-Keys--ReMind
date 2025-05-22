@@ -28,6 +28,11 @@ public class DriveFormRage extends DriveForm {
 		this.skinRL = skinRL;
 	}
 
+	@Override
+	public boolean displayInCommandMenu(Player player){
+		return ModCapabilities.getPlayer(player).isAbilityEquipped(StringsRM.rageAwakened);
+	}
+
 	@SubscribeEvent
 	public static void getRageFormXP(LivingAttackEvent event) {
 		if (!event.getEntity().level().isClientSide && event.getEntity() instanceof Monster) {
@@ -37,11 +42,13 @@ public class DriveFormRage extends DriveForm {
 				IGlobalCapabilitiesRM formData = ModCapabilitiesRM.getGlobal(player);
 
 				if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm)) {
-					double mult = Double.parseDouble(ModConfigs.driveFormXPMultiplier.get(formData.getRiskchargeCount() + 1).split(",")[1]);
-					playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
+					if (playerData.isAbilityEquipped(StringsRM.rageAwakened)) {
+						double mult = Double.parseDouble(ModConfigs.driveFormXPMultiplier.get(formData.getRiskchargeCount() + 1).split(",")[1]);
+						playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
 
-					PacketHandlerRM.syncGlobalToAllAround(player, formData);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+						PacketHandlerRM.syncGlobalToAllAround(player, formData);
+						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+					}
 				}
 			}
 		}
