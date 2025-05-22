@@ -84,9 +84,6 @@ public class EntityEventsRM {
 			if(!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}
-			playerData.addVisibleDriveForm(formName);
-		} else { // If ability to use dark form is NOT equipped
-			playerData.remVisibleDriveForm(formName);
 		}
 
 		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){

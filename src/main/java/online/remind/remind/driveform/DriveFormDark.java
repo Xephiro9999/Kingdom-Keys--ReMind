@@ -8,6 +8,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
+import online.kingdomkeys.kingdomkeys.data.ModData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
@@ -46,6 +47,11 @@ public class DriveFormDark extends DriveForm {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean displayInCommandMenu(Player player){
+        return PlayerData.get(player).isAbilityEquipped(StringsRM.darkPower);
     }
 
     @Override
