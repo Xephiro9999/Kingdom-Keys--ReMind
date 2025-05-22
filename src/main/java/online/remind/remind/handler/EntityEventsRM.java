@@ -1,15 +1,19 @@
 package online.remind.remind.handler;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -17,6 +21,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
@@ -36,6 +41,8 @@ import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+
+import java.util.Map;
 
 public class EntityEventsRM {
 
@@ -602,10 +609,48 @@ public class EntityEventsRM {
 				if (playerData.isAbilityEquipped(Strings.damageDrive)) {
 					playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
-					}
-
 				}
+
 			}
+			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)) {
+				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
+				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
+				float damage = event.getOriginalDamage();
+
+					/*
+					System.out.println("Dark Bonus Res? "+darkBoosts);
+					System.out.println("Light Bonus Res? "+lightBoosts);
+					 */
+				//System.out.println("Before Negation: "+damage);
+
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
+					System.out.println("Darkness");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)) {
+						damage += (damage * lightBoosts);
+					}
+				}
+				if (!event.getSource().getMsgId().equals(DamageTypes.PLAYER_EXPLOSION.toString())) {
+					System.out.println("Explosion");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)) {
+						damage += (damage * lightBoosts);
+					}
+				}
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
+					System.out.println("Light");
+					damage -= (damage * lightBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)) {
+						damage += (damage * darkBoosts);
+					}
+				}
+				//System.out.println("After Negation: "+damage);
+				event.setNewDamage(damage);
+			}
+
+		}
 
 
 		// On Hit Effects
@@ -629,61 +674,95 @@ public class EntityEventsRM {
 					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
 					event.getEntity().invulnerableTime = 0;
 				}
+
+				// Spellblade Ability
+				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
+				int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
+				int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
+				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
+
+				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
+				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
+//player
+
+				if (event.getSource().type().msgId().equals("player")) {
+
+					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
+						Map<String, Integer> boosts = Map.of(
+								"thunder", thundBoosts,
+								"fire", fireBoosts,
+								"blizzard", blizBoosts,
+								"water", waterBoosts,
+								"dark", darkBoosts,
+								"light", lightBoosts
+						);
+						// Get how many have that max value
+						int maxBoost = boosts.values().stream().max(Integer::compare).orElse(0);
+						// Only continue if ONE boost has the highest value AND it’s >= 4
+						long count = boosts.values().stream().filter(v -> v == maxBoost).count();
+						// Find which one is the winner
+						if (count == 1 && maxBoost >= 4) {
+							for (Map.Entry<String, Integer> entry : boosts.entrySet()) {
+								if (entry.getValue() == maxBoost) {
+									String elementBlade = entry.getKey();
+
+									switch (elementBlade) {
+										case "fire":
+											// Fire Blade
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts / 2) * dmg));
+											event.getEntity().setRemainingFireTicks(2 * fireBoosts);
+											event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY() + event.getEntity().level().random.nextDouble() * 2D, event.getEntity().getZ() + event.getEntity().level().random.nextDouble() - 0.5D, 0, 0, 0);
+											break;
+
+										case "blizzard":
+											// Blizzard Blade
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((blizBoosts / 2) * dmg));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, blizBoosts * 20, blizBoosts + 2));
+											break;
+										case "thunder":
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) ((thundBoosts / 2) * dmg));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, thundBoosts * 10, thundBoosts));
+											event.getEntity().invulnerableTime = 0;
+											LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, event.getEntity().level());
+											lightningBolt.moveTo(Vec3.atBottomCenterOf(event.getEntity().getOnPos()));
+											event.getEntity().level().addFreshEntity(lightningBolt);
+											break;
+										case "water":
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+											event.getEntity().setAirSupply(0);
+											if (event.getEntity().getAirSupply() == 0) {
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+											}
+											break;
+										case "light":
+											// Light Blade
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) ((lightBoosts / 2) * dmg));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.GLOWING, 20 * lightBoosts, 3));
+											break;
+										case "dark":
+											// Dark Blade
+											event.getEntity().invulnerableTime = 0;
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) ((darkBoosts / 2) * dmg));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20 * darkBoosts, 3));
+											event.getEntity().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * darkBoosts, darkBoosts));
+											break;
+									}
+								}
+							}
+
+						}
+					}
+
+				}
 			}
 		}
 	}
-
-		public void hitEntity(LivingIncomingDamageEvent event){
-			if(event.getEntity() instanceof Player player) {
-				PlayerData playerData = PlayerData.get(player);
-				if(playerData == null)
-					return;
-
-			// Light/Dark Boost downsides
-			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
-				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
-				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
-				float damage = event.getOriginalAmount();
-
-					/*
-					System.out.println("Dark Bonus Res? "+darkBoosts);
-					System.out.println("Light Bonus Res? "+lightBoosts);
-					 */
-				//System.out.println("Before Negation: "+damage);
-
-
-				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
-					System.out.println("Darkness");
-					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
-						damage += (damage * lightBoosts);
-					}
-				}
-				if (!event.getSource().getMsgId().equals(DamageTypes.PLAYER_EXPLOSION.toString())){
-					System.out.println("Explosion");
-					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
-						damage += (damage * lightBoosts);
-					}
-				}
-
-				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
-					System.out.println("Light");
-					damage -= (damage * lightBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
-						damage += (damage * darkBoosts);
-					}
-				}
-				//System.out.println("After Negation: "+damage);
-				event.setAmount(damage);
-			}
-		}
-	}
-
-	// EFM Stuff Below
-
-
-
-
-
 }

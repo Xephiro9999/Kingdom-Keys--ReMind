@@ -53,7 +53,7 @@ public class ModAbilitiesRM extends ModAbilities{
         DEDICATION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dedication").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.dedication), 0, Ability.AbilityType.SUPPORT, order++)),
         HEARTS_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hearts_power").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.heartsPower), 0, Ability.AbilityType.SUPPORT, order++)),
         FRIEND_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"friends_power").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.friendsPower), 3, Ability.AbilityType.SUPPORT, order++)),
-
+        SPELLBLADE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"spellblade").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.spellblade), 0, Ability.AbilityType.SUPPORT, order++)),
 
 
 

@@ -7,6 +7,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
@@ -135,6 +136,21 @@ public class ClientEventsRM {
 					//if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())){
 						//player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.5F,0F,0.5F),1F),player.getX(), player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 					//}
+
+					// Spellblade Visual Effects
+
+					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) >= 4){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.0f,0.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+					}
+					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) >= 4){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.95f,1F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+					}
+					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) >= 4){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+					}
+					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) >= 4){
+						player.level().addAlwaysVisibleParticle(ParticleTypes.BUBBLE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
+					}
 				}
 			}
 		}
