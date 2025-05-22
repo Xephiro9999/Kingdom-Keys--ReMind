@@ -40,7 +40,7 @@ public class ClientEventsRM {
 							}
 							if (playerData.getAlignment().equals(Utils.OrgMember.XALDIN)){
 								player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.9f,0.9F,1F),1F),player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
-								player.level().addAlwaysVisibleParticle(ParticleTypes.SONIC_BOOM, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 3,3,3);
+								player.level().addAlwaysVisibleParticle(ParticleTypes.POOF, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 3,3,3);
 							}
 							if (playerData.getAlignment().equals(Utils.OrgMember.VEXEN)){
 								player.level().addAlwaysVisibleParticle(ParticleTypes.SNOWFLAKE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);

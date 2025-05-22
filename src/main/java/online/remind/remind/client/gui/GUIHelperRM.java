@@ -19,4 +19,9 @@ public class GUIHelperRM {
         //mc.setScreen(new AddonMenu()); TODO send packet to get player data to open menu
         PacketHandlerRM.sendToServer(new CSOpenAddonMenu());
     }
+
+    public static void openPanelMenu(){
+        Minecraft mc = Minecraft.getInstance();
+        mc.setScreen(new PanelsMenu());
+    }
 }

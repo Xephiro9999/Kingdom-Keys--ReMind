@@ -22,9 +22,9 @@ public class ModAbilitiesRM extends ModAbilities{
     public static final Supplier<Ability>
             // Action
     	DARK_PASSAGE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_passage").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.darkPassage), 3, Ability.AbilityType.ACTION, order++)),
-        RAGE_AWAKENED = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"rage_awakened").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.rageAwakened), 5,Ability.AbilityType.ACTION, order++)),
-        WAY_TO_LIGHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"way_to_light").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.wayToLight), 5, Ability.AbilityType.ACTION, order++)),
-        DARK_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_power").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darkPower), 5, Ability.AbilityType.ACTION, order++)),
+        RAGE_AWAKENED = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"rage_awakened").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.rageAwakened), 3,Ability.AbilityType.ACTION, order++)),
+        WAY_TO_LIGHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"way_to_light").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.wayToLight), 3, Ability.AbilityType.ACTION, order++)),
+        DARK_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_power").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darkPower), 3, Ability.AbilityType.ACTION, order++)),
         RISKCHARGE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"riskcharge").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.riskCharge), 0, Ability.AbilityType.ACTION, order++)),
 
             // Action - EFM
@@ -36,8 +36,8 @@ public class ModAbilitiesRM extends ModAbilities{
 
 
             // Growth
-        LIGHT_STEP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_step").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.lightStep), 3, Ability.AbilityType.GROWTH, order++)),
-        DARK_STEP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_step").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darkStep), 3, Ability.AbilityType.GROWTH, order++)),
+        LIGHT_STEP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_step").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.lightStep), 0, Ability.AbilityType.GROWTH, order++)),
+        DARK_STEP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_step").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darkStep), 0, Ability.AbilityType.GROWTH, order++)),
 
             // Support
         DARKNESS_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"darkness_boost").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darknessBoost), 3, Ability.AbilityType.SUPPORT, order++)),

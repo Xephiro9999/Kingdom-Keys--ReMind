@@ -66,8 +66,6 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
-
-			globalData.setPanelChoice("0");
 		}
 	}
 	
@@ -108,9 +106,6 @@ public class EntityEventsRM {
 		playerData2.setMPOG((int) playerData.getMaxMP());
 		float mpBoost = (float) playerData.getMagicStat().get();
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-				//System.out.println("Original MP: "+playerData2.getMPOG());
-				//System.out.println("Boost: " + mpBoost);
-				//playerData.addMaxMP(mpBoost);
 				playerData.addMaxMP(12.5);
 			}
 
@@ -127,7 +122,6 @@ public class EntityEventsRM {
 
 					if (party != null){
 						float friendBoost = party.getMembers().size() - 1;
-						System.out.println(friendBoost);
 					}
 				}
 			}
@@ -175,7 +169,6 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-			//playerData.setMaxMP(playerData2.getMPOG());
 			playerData.addMaxMP(-12.5);
 
 		}
@@ -258,15 +251,17 @@ public class EntityEventsRM {
 
 
 					// Org Passives
-					if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
-						//playerData.addAbility(StringsRM.darknessBoost,true);
-						playerData.getStrengthStat().addModifier("Organization", 5, false, true);
-						playerData.getMagicStat().addModifier("Organization", 5, false, true);
-						playerData.getDefenseStat().addModifier("Organization", 5, false, true);
-					} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
-						playerData.getStrengthStat().removeModifier("Organization");
-						playerData.getMagicStat().removeModifier("Organization");
-						playerData.getDefenseStat().removeModifier("Organization");
+					if (!player.level().isClientSide) {
+						if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
+							//playerData.addAbility(StringsRM.darknessBoost,true);
+							playerData.getStrengthStat().addModifier("Organization", 5, false, true);
+							playerData.getMagicStat().addModifier("Organization", 5, false, true);
+							playerData.getDefenseStat().addModifier("Organization", 5, false, true);
+						} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
+							playerData.getStrengthStat().removeModifier("Organization");
+							playerData.getMagicStat().removeModifier("Organization");
+							playerData.getDefenseStat().removeModifier("Organization");
+						}
 					}
 
 					if (playerData != null && globalData != null) {
@@ -349,9 +344,7 @@ public class EntityEventsRM {
 
 						if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE) {
 							float heartsBoost = (playerData.getHearts() * 0.0002f);
-							System.out.println(playerData.getHearts() + " > " + heartsBoost);
 							float overBoost = heartsBoost * 0.025f;
-							System.out.println(overBoost);
 							if (heartsBoost >= 50) {
 								playerData.getStrengthStat().addModifier("Hearts Are Power", 50 + overBoost, false, true);
 								playerData.getMagicStat().addModifier("Hearts Are Power", 50 + overBoost, false, true);
@@ -425,7 +418,7 @@ public class EntityEventsRM {
 					// Haste
 					if (globalData.getHasteTicks() > 0) {
 						globalData.remHasteTicks(1);
-						System.out.println(globalData.getHasteTicks());
+						//System.out.println(globalData.getHasteTicks());
 						if (globalData.getHasteTicks() <= 0) {
 							player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 							player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
@@ -564,7 +557,7 @@ public class EntityEventsRM {
 				return;
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
-			System.out.println(missingHP);
+			//System.out.println(missingHP);
 
 			// Adrenaline
 			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
@@ -592,15 +585,12 @@ public class EntityEventsRM {
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()){
 				float DMGTaken = event.getNewDamage();
 
-				//System.out.println(DMGTaken);
 
 				event.setNewDamage(0);
-				playerData.remMP(DMGTaken);
+				playerData.remMP(DMGTaken * 1.5);
 				float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 10){
-					//playerData.addMP(DMGTaken / (1+ playerData.getNumberOfAbilitiesEquipped(Strings.mpRage)));
+				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11){
 					playerData.addMP(mpRageModifier);
-					//System.out.println(mpRageModifier);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 				}
 				if (playerData.isAbilityEquipped(Strings.damageDrive)){
