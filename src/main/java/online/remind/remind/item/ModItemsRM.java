@@ -52,6 +52,7 @@ public class ModItemsRM{
         crystalsLight = ITEMS.register("crystals_light", () -> new KeybladeItem(new Item.Properties())),
         blitzersDream = ITEMS.register("blitzers_dream", () -> new KeybladeItem(new Item.Properties())),
         legendsFang = ITEMS.register("legends_fang", () -> new KeybladeItem(new Item.Properties())),
+        fierceDeityKey = ITEMS.register("fierce_deity_key", () -> new KeybladeItem(new Item.Properties())),
 
 
     // Keychains
@@ -62,8 +63,10 @@ public class ModItemsRM{
         crystalsLightChain = ITEMS.register("crystals_light_chain", () -> new KeychainItem()),
         blitzersDreamChain = ITEMS.register("blitzers_dream_chain", () -> new KeychainItem()),
         legendsFangChain = ITEMS.register("legends_fang_chain", () -> new KeychainItem()),
+        fierceDeityKeyChain = ITEMS.register("fierce_deity_key_chain", () -> new KeychainItem()),
 
-            // Org Weapons
+
+    // Org Weapons
 
 
 

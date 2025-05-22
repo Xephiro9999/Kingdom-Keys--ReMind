@@ -61,40 +61,43 @@ public class CSPanelPacket implements CustomPacketPayload {
                     System.out.println("This shouldn't happen");
                     break;
                 case 1:
+                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                     playerData.addHearts(-1000 * globalData.getSTRPanel());
                     globalData.addSTRPanel(1);
                     if (globalData.getSTRPanel() > 50){
                         globalData.setSTRPanel(50);
                         System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getSTRPanel());
                     }
-                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
                     playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                     break;
                 case 2:
+                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                     playerData.addHearts(-1000 * globalData.getMAGPanel());
                     globalData.addMAGPanel(1);
                     if (globalData.getMAGPanel() > 50){
                         globalData.setMAGPanel(50);
                         System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getMAGPanel());
                     }
-                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                     playerData.getMagicStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                     break;
                 case 3:
+                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                     playerData.addHearts(-1000 * globalData.getDEFPanel());
                     globalData.addDEFPanel(1);
                     if (globalData.getDEFPanel() > 50){
                         globalData.setDEFPanel(50);
                         System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getDEFPanel());
                     }
-                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                     playerData.getDefenseStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                     break;
                 case 4:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     playerData.addMaxAP(2);
                     playerData.addHearts(-1000);
                     break;
                 case 5:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     level = playerData.getDriveFormLevel(Strings.Form_Valor);
                     DriveForm drive = ModDriveForms.registry.get(ResourceLocation.parse(Strings.Form_Valor));
                     if (level == 0){
@@ -106,9 +109,9 @@ public class CSPanelPacket implements CustomPacketPayload {
                         }
                     }
                     playerData.addHearts(-5000);
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     break;
                 case 6:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     level = playerData.getDriveFormLevel(Strings.Form_Wisdom);
                     DriveForm drive1 = ModDriveForms.registry.get(ResourceLocation.parse(Strings.Form_Wisdom));
                     if (level == 0){
@@ -120,9 +123,9 @@ public class CSPanelPacket implements CustomPacketPayload {
                         }
                     }
                     playerData.addHearts(-5000);
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     break;
                 case 7:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     level = playerData.getDriveFormLevel(Strings.Form_Limit);
                     DriveForm drive2 = ModDriveForms.registry.get(ResourceLocation.parse(Strings.Form_Limit));
                     if (level == 0){
@@ -134,9 +137,9 @@ public class CSPanelPacket implements CustomPacketPayload {
                         }
                     }
                     playerData.addHearts(-5000);
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     break;
                 case 8:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     level = playerData.getDriveFormLevel(Strings.Form_Master);
                     DriveForm drive3 = ModDriveForms.registry.get(ResourceLocation.parse(Strings.Form_Master));
                     if (level == 0){
@@ -148,9 +151,9 @@ public class CSPanelPacket implements CustomPacketPayload {
                         }
                     }
                     playerData.addHearts(-5000);
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     break;
                 case 9:
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     level = playerData.getDriveFormLevel(Strings.Form_Final);
                     DriveForm drive4 = ModDriveForms.registry.get(ResourceLocation.parse(Strings.Form_Final));
                     if (level == 0){
@@ -163,7 +166,6 @@ public class CSPanelPacket implements CustomPacketPayload {
                         }
                     }
                     playerData.addHearts(-5000);
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
                     break;
                 case 10:
                     playerData.addHearts(-10000 * playerData.getLevel());

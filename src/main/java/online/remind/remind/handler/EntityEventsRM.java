@@ -3,6 +3,7 @@ package online.remind.remind.handler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,12 +13,14 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -271,10 +274,10 @@ public class EntityEventsRM {
 
 						// Light/Darkness Within
 
-						double boostWithin = (playerData.getStrengthStat().getStat() + playerData.getMagicStat().getStat()) / 5;
+						double boostWithin = (playerData.getStrengthStat().getStat() + playerData.getMagicStat().get()) / 2;
 
-						int darknessWithinBoost = (int) (boostWithin * playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.055F);
-						int lightWithinBoost = (int) (boostWithin * playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.055F);
+						int darknessWithinBoost = (int) (boostWithin * playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1F);
+						int lightWithinBoost = (int) (boostWithin * playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1F);
 
 						if (playerData.isAbilityEquipped(StringsRM.lightWithin)) {
 							playerData.getStrengthStat().addModifier("light_within", lightWithinBoost, false, false);
@@ -346,13 +349,13 @@ public class EntityEventsRM {
 							float heartsBoost = (playerData.getHearts() * 0.0002f);
 							float overBoost = heartsBoost * 0.025f;
 							if (heartsBoost >= 50) {
-								playerData.getStrengthStat().addModifier("Hearts Are Power", 50 + overBoost, false, true);
-								playerData.getMagicStat().addModifier("Hearts Are Power", 50 + overBoost, false, true);
-								playerData.getDefenseStat().addModifier("Hearts Are Power", 50 + overBoost, false, true);
+								playerData.getStrengthStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+								playerData.getMagicStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+								playerData.getDefenseStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
 							} else {
-								playerData.getStrengthStat().addModifier("Hearts Are Power", heartsBoost, false, true);
-								playerData.getMagicStat().addModifier("Hearts Are Power", heartsBoost, false, true);
-								playerData.getDefenseStat().addModifier("Hearts Are Power", heartsBoost, false, true);
+								playerData.getStrengthStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+								playerData.getMagicStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+								playerData.getDefenseStat().addModifier("Hearts Are Power", heartsBoost, false, false);
 							}
 						} else {
 							playerData.getStrengthStat().removeModifier("Hearts Are Power");
@@ -550,10 +553,10 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void hurtEvent(LivingDamageEvent.Pre event){
-		if(event.getEntity() instanceof Player player) {
-            PlayerData playerData = PlayerData.get(player);
-			if(playerData == null)
+	public void hurtEvent(LivingDamageEvent.Pre event) {
+		if (event.getEntity() instanceof Player player) {
+			PlayerData playerData = PlayerData.get(player);
+			if (playerData == null)
 				return;
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
@@ -561,14 +564,14 @@ public class EntityEventsRM {
 
 			// Adrenaline
 			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
-				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
+				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4) {
 					playerData.getStrengthStat().addModifier("adrenaline", 5, false, false);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 				}
 			}
 			// Critical Surge
-			if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
-				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
+			if (playerData.isAbilityEquipped(StringsRM.critical_surge)) {
+				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4) {
 					playerData.getMagicStat().addModifier("critical_surge", 5, false, false);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 				}
@@ -582,25 +585,30 @@ public class EntityEventsRM {
 			//Protect Abilities
 
 			// MP Shield
-			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()){
+			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
 				float DMGTaken = event.getNewDamage();
 
 
 				event.setNewDamage(0);
 				playerData.remMP(DMGTaken * 1.5);
 				float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11){
+				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
 					playerData.addMP(mpRageModifier);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 				}
-				if (playerData.isAbilityEquipped(Strings.damageDrive)){
+				if (playerData.isAbilityEquipped(Strings.damageDrive)) {
 					playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
-				}
+					}
 
+				}
 			}
 
-			// On Hit Effects
+
+		// On Hit Effects
+		if (event.getSource().getEntity() instanceof Player player) {
+			PlayerData playerData = PlayerData.get(player);
+			if (playerData != null) {
 			/*
 			double LifeStealAmount = (float) (playerData.getStrengthStat().getStat() * 0.15F);
 			System.out.println("Entity Hit: "+event.getEntity());
@@ -611,12 +619,60 @@ public class EntityEventsRM {
 			}
 			 */
 
-			int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
-			float addDmg = (float) (crtBoosts * 3);
-			if (playerData.isAbilityEquipped(StringsRM.Jecht)){
-				System.out.println(addDmg);
-				event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
-				event.getEntity().invulnerableTime = 0;
+				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
+				float addDmg = (float) (crtBoosts * 3);
+				if (playerData.isAbilityEquipped(StringsRM.Jecht)) {
+					System.out.println(addDmg);
+					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
+					event.getEntity().invulnerableTime = 0;
+				}
+			}
+		}
+	}
+
+		public void hitEntity(LivingIncomingDamageEvent event){
+			if(event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if(playerData == null)
+					return;
+
+			// Light/Dark Boost downsides
+			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
+				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
+				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
+				float damage = event.getOriginalAmount();
+
+					/*
+					System.out.println("Dark Bonus Res? "+darkBoosts);
+					System.out.println("Light Bonus Res? "+lightBoosts);
+					 */
+				//System.out.println("Before Negation: "+damage);
+
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
+					System.out.println("Darkness");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+						damage += (damage * lightBoosts);
+					}
+				}
+				if (!event.getSource().getMsgId().equals(DamageTypes.PLAYER_EXPLOSION.toString())){
+					System.out.println("Explosion");
+					damage -= (damage * darkBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+						damage += (damage * lightBoosts);
+					}
+				}
+
+				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
+					System.out.println("Light");
+					damage -= (damage * lightBoosts);
+					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
+						damage += (damage * darkBoosts);
+					}
+				}
+				//System.out.println("After Negation: "+damage);
+				event.setAmount(damage);
 			}
 		}
 	}

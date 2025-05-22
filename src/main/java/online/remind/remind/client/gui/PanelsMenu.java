@@ -21,6 +21,8 @@ import java.awt.*;
 
 public class PanelsMenu extends MenuBackground {
 
+    int ticks = 0;
+
     private MenuButton backButton, strUp, magUp, defUp, apUp, giveAbility, lvl, req0, valorUp, wisdomUp, limitUp, masterUp, finalUp, reqV, reqW, reqL, reqM, reqF, rejectOrg, reset;
 
     MenuColourBox str, mag, def, ap;
@@ -34,6 +36,10 @@ public class PanelsMenu extends MenuBackground {
     public PanelsMenu() {
         super("Panel System", new Color(154, 154, 154));
         minecraft = Minecraft.getInstance();
+    }
+
+    public void reloadMenu(){
+        GUIHelperRM.openPanelMenu();
     }
 
     protected void action(String string) {
@@ -51,7 +57,7 @@ public class PanelsMenu extends MenuBackground {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(1));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "magUp" -> {
                 // globalData.setPanelChoice("MAG");
@@ -121,11 +127,20 @@ public class PanelsMenu extends MenuBackground {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        ticks++;
+        init();
+
+    }
+
+    @Override
     public void init() {
 
         Player player;
         final PlayerData playerData = PlayerData.get(minecraft.player);
         IGlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
+        ticks = 0;
 
         super.init();
         this.renderables.clear();
@@ -312,5 +327,7 @@ public class PanelsMenu extends MenuBackground {
                 addRenderableWidget(mag = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, Utils.translateToLocal("Panel MAG: "), "" + addedData.getMAGPanel() + " [" + playerData.getMagic(true) + "]", 0xaa190f));
                 addRenderableWidget(def = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, Utils.translateToLocal("Panel DEF: "), "" + addedData.getDEFPanel() + " [" + playerData.getDefense(true) + "]", 0xaa190f));
                 addRenderableWidget(ap = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, Utils.translateToLocal("AP: "), "" + (int) playerData.getMaxAPStat().getStat(), 0xaa190f));
+
+                super.init();
             }
         }
