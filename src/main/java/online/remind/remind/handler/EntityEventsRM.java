@@ -77,8 +77,12 @@ public class EntityEventsRM {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
 			// To initialize the toggle feature
-			globalData.setPanelsEnabled(1);
-			globalData.setNGPEnabled(1);
+			if (playerData != null) {
+				if(playerData.getAlignment() == Utils.OrgMember.NONE) {
+					globalData.setPanelsEnabled(0);
+				}
+				globalData.setNGPEnabled(1);
+			}
 		}
 	}
 	
