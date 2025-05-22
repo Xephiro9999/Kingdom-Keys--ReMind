@@ -16,8 +16,6 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -39,20 +37,11 @@ public class MeteorEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public MeteorEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        super(ModEntitiesRM.TYPE_METEOR.get(), world);
-    }
-
     public MeteorEntity(Level world, Player player, float dmgMult, LivingEntity lockedOnEntity) {
         super(ModEntitiesRM.TYPE_METEOR.get(), player, world);
         setCaster(player.getUUID());
         this.dmgMult = dmgMult;
         this.lockedOnEntity = lockedOnEntity;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public int getMaxTicks() {
@@ -86,6 +75,7 @@ public class MeteorEntity extends ThrowableProjectile {
     }
 
     List<LivingEntity> list = new ArrayList<>();
+
 
     @Override
     public void tick() {
@@ -146,7 +136,7 @@ public class MeteorEntity extends ThrowableProjectile {
 
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER, Optional.of(Util.NIL_UUID));
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER, Optional.of(Util.NIL_UUID));
     }
 }
