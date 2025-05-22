@@ -13,6 +13,7 @@ import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -67,7 +68,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.setEquippedShotlock("");
 
             //Utils.restartLevel(playerData, player);
-            //Utils.restartLevel2(playerData, player);
+            Utils.restartLevel2(playerData, player);
 
 
             playerData.setSoAState(SoAState.NONE);
@@ -111,6 +112,8 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
             playerData.addMaxHP(2 * globalData.getPrestigeLvl());
             playerData.addMaxMP(2 * globalData.getPrestigeLvl());
+            player.heal(playerData.getMaxHP());
+            playerData.setMP(playerData.getMaxMP());
 
             // NG+ Bonus Abilities
 

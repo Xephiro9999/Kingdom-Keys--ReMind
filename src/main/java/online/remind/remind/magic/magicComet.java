@@ -9,6 +9,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.CometEntity;
+import online.remind.remind.entity.magic.MeteorEntity;
 import online.remind.remind.lib.StringsRM;
 
 public class magicComet extends Magic {
@@ -25,7 +26,7 @@ public class magicComet extends Magic {
 		switch (level) {
 		case 0:
 			// Comet
-			ThrowableProjectile comet = new CometEntity(player.level(), player, dmgMult, 2, 0);
+			ThrowableProjectile comet = new CometEntity(player.level(), player, dmgMult, 2,0, 0, player.getYRot(), 0, false);
 			comet.setOwner(caster);
 			comet.setPos(player.getX(), player.getY() + 1.8F, player.getZ());
 			player.level().addFreshEntity(comet);
@@ -33,13 +34,10 @@ public class magicComet extends Magic {
 			break;
 		case 1:
 			// Meteor
-			for (int i = -3; i <= 3; i++) {
-				ThrowableProjectile meteor = new CometEntity(player.level(), player, dmgMult, 2, i);
-				meteor.setOwner(caster);
-				meteor.setPos(player.getX() + (Math.random() * 10) - 5, player.getY() + (Math.random() * i) + 2, player.getZ() + (Math.random() * 10) - 5);
-				player.level().addFreshEntity(meteor);
-				meteor.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 1.5F, 0);
-			}
+			MeteorEntity meteor = new MeteorEntity(player.level(), player, dmgMult, lockOnTarget);
+			meteor.setOwner(caster);
+			meteor.setPos(player.getX(), player.getY() + 1.8F, player.getZ());
+			player.level().addFreshEntity(meteor);
 			break;
 		}
 

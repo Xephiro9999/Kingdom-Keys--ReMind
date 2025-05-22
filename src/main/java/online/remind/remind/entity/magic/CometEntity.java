@@ -23,8 +23,10 @@ import java.util.List;
 
 public class CometEntity extends ThrowableProjectile {
         int maxTicks = 200, radius = 2;
+        float dmg;
         float dmgMult = 1;
         int index = 0;
+        boolean meteor;
 
 
         public CometEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
@@ -37,11 +39,13 @@ public class CometEntity extends ThrowableProjectile {
                 this.blocksBuilding = true;
         }
 
-        public CometEntity(Level world, LivingEntity player, float dmgMult, int radius, int index) {
+        public CometEntity(Level world, LivingEntity player, float dmgMult, int radius, int index, double x, double y, double z, boolean meteor) {
                 super(ModEntitiesRM.TYPE_COMET.get(), player, world);
                 this.dmgMult = dmgMult;
                 this.radius = radius;
                 this.index = index;
+                this.meteor = meteor;
+                this.setPos(x,y,z);
         }
 
         @Override
@@ -58,6 +62,9 @@ public class CometEntity extends ThrowableProjectile {
                 //world.addParticle(ParticleTypes.ENTITY_EFFECT, getPosX(), getPosY(), getPosZ(), 1, 1, 0);
                 if(tickCount > 2)
                         level().addParticle(ParticleTypes.FLAME, getX(), getY(), getZ(), 0, 0, 0);
+
+                if(meteor)
+                        this.setDeltaMovement(this.getDeltaMovement().add(0, -0.5, 0));
 
                 super.tick();
         }
@@ -96,7 +103,11 @@ public class CometEntity extends ThrowableProjectile {
                                                                 e.invulnerableTime = 0;
                                                         }
                                                 }
-                                                level().explode(this, this.blockPosition().getX(), this.blockPosition().getY() + (double)(this.getBbHeight() / 16.0F), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
+                                                if (!meteor) {
+                                                        level().explode(this, this.blockPosition().getX(), this.blockPosition().getY() + (double) (this.getBbHeight() / 16.0F), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
+                                                } else {
+                                                        level().explode(this, this.blockPosition().getX(), this.blockPosition().getY(), this.blockPosition().getZ(), 0, false, Level.ExplosionInteraction.NONE);
+                                                }
                                                 remove(RemovalReason.KILLED);
 
                                         }
@@ -114,8 +125,11 @@ public class CometEntity extends ThrowableProjectile {
                                                 e.invulnerableTime = 0;
                                         }
                                 }
-                                this.level().explode(this, this.blockPosition().getX(), this.blockPosition().getY() + (double) (this.getBbHeight() / 16.0F), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
-
+                                if (!meteor) {
+                                        level().explode(this, this.blockPosition().getX(), this.blockPosition().getY() + (double) (this.getBbHeight() / 16.0F), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
+                                } else {
+                                        level().explode(this, this.blockPosition().getX(), this.blockPosition().getY(), this.blockPosition().getZ(), radius, false, Level.ExplosionInteraction.NONE);
+                                }
                                 remove(RemovalReason.KILLED);
                         }
                 }
