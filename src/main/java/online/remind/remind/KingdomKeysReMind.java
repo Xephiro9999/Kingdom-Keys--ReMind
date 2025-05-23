@@ -16,6 +16,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -24,6 +25,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModEffects;
 import online.remind.remind.entity.ModEntitiesRM;
@@ -80,6 +82,8 @@ public class KingdomKeysReMind {
             //KKRMSkills.SKILLS.register(modEventBus);
             //NeoForge.EVENT_BUS.register(new EpicFightEvents());
         }
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, ModConfigs.COMMON_SPEC);
     }
 
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
