@@ -757,16 +757,21 @@ public class EntityEventsRM {
 		if (event.getSource().getEntity() instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
 			if (playerData != null) {
-			/*
-			double LifeStealAmount = (float) (playerData.getStrengthStat().getStat() * 0.15F);
-			System.out.println("Entity Hit: "+event.getEntity());
-			System.out.println("Attacker: "+event.getSource().getEntity());
-			System.out.println(LifeStealAmount);
-			if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() || player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-				player.heal((int) LifeStealAmount);
-			}
-			 */
 
+				// Xephiro Keyblade Buff - Me Exclusive
+				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != null) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get()) {
+						if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
+
+							float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
+							System.out.println("Life Steal for " + vamp + "HP.");
+
+							player.heal(vamp);
+
+						}
+					}
+
+				// Brutal Blitzer Ability
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
 				if (playerData.isAbilityEquipped(StringsRM.Jecht)) {
