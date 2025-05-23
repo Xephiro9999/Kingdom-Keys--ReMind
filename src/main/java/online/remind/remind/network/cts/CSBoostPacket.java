@@ -20,7 +20,10 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.function.Supplier;
 
-public class CSBoostPacket {
+public class CSBoostPacket implements CustomPacketPayload{
+    public static final Type<CSBoostPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_boost_packet"));
+    public static final StreamCodec<FriendlyByteBuf, CSBoostPacket> STREAM_CODEC = StreamCodec.of(CSBoostPacket::encode, CSBoostPacket::decode);
+
     // 0 = Default, 1 = NG+, 2 = Panels
     private int boost;
     public CSBoostPacket(){}
@@ -29,16 +32,18 @@ public class CSBoostPacket {
         this.boost = boost;
     }
 
-    public void encode(FriendlyByteBuf buffer) {
-        buffer.writeInt(this.boost);
+    public static void encode(FriendlyByteBuf buffer, CSBoostPacket message) {
+        buffer.writeInt(message.boost);
     }
 
     public static CSBoostPacket decode(FriendlyByteBuf buffer) {
         CSBoostPacket msg = new CSBoostPacket();
+        msg.boost = buffer.readInt();
         return msg;
     }
 
-    public static void handle(final CSBoostPacket message, IPayloadContext ctx) {
+    public static void handle(final CSBoostPacket message, final IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
         Player player = ctx.player();
 
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
@@ -84,5 +89,12 @@ public class CSBoostPacket {
         }
         PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
+        });
     }
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
 }

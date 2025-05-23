@@ -41,7 +41,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSSetStepTicksPacket.TYPE, CSSetStepTicksPacket.STREAM_CODEC, CSSetStepTicksPacket::handle);
         registrar.playToServer(CSSummonSpiritPacket.TYPE, CSSummonSpiritPacket.STREAM_CODEC, CSSummonSpiritPacket::handle);
         registrar.playToServer(CSPanelPacket.TYPE, CSPanelPacket.STREAM_CODEC, CSPanelPacket::handle);
-        registrar.playToServer(CSPanelPacket.TYPE, CSBoostPacket.STREAM_CODEC, CSBoostPacket::handle);
+        registrar.playToServer(CSBoostPacket.TYPE, CSBoostPacket.STREAM_CODEC, CSBoostPacket::handle);
         registrar.playToServer(CSOpenAddonMenu.TYPE,CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle);
     }
 

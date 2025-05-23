@@ -127,7 +127,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
                 if (globalData.getSTRBonus() > 50){
                     globalData.setSTRBonus(50);
                 }
-                System.out.println("Strength Bonus: " + globalData.getSTRBonus());
+                //System.out.println("Strength Bonus: " + globalData.getSTRBonus());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
             }
 
@@ -137,7 +137,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
                 if (globalData.getMAGBonus() > 50){
                     globalData.setMAGBonus(50);
                 }
-                System.out.println("Magic Bonus: " + globalData.getMAGBonus());
+                //System.out.println("Magic Bonus: " + globalData.getMAGBonus());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
             }
 
@@ -147,13 +147,13 @@ public class CSPrestigePacket implements CustomPacketPayload {
                 if (globalData.getDEFBonus() > 50){
                     globalData.setDEFBonus(50);
                 }
-                System.out.println("Defense Bonus: " + globalData.getDEFBonus());
+                //System.out.println("Defense Bonus: " + globalData.getDEFBonus());
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
             }
 
 
-            System.out.println("NG+ Counts: " + globalData.getNGPWarriorCount() + ", " + globalData.getNGPMysticCount() + ", " + globalData.getNGPGuardianCount());
-            System.out.println("Bonus Stats: " + globalData.getSTRBonus() + ", " + globalData.getMAGBonus() + ", " + globalData.getDEFBonus());
+            //System.out.println("NG+ Counts: " + globalData.getNGPWarriorCount() + ", " + globalData.getNGPMysticCount() + ", " + globalData.getNGPGuardianCount());
+            //System.out.println("Bonus Stats: " + globalData.getSTRBonus() + ", " + globalData.getMAGBonus() + ", " + globalData.getDEFBonus());
 
             playerData.getStrengthStat().removeModifier("NG+ Bonus");
             playerData.getMagicStat().removeModifier("NG+ Bonus");

@@ -23,11 +23,6 @@ public class CSPanelPacket implements CustomPacketPayload {
 
     // 0 = none (default), 1 = str, 2 = mag, 3 = def...
     private int choice;
-    String formName;
-
-
-    private static int driveLvl;
-
     public CSPanelPacket(){}
 
     public CSPanelPacket(int choice){
