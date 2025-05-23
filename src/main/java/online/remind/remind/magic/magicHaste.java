@@ -38,19 +38,19 @@ public class magicHaste extends Magic {
 			if (globalData.getHasteTicks() <= 0) {
 				switch (level) {
 				case 0:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 					break;
 
 				case 1:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 					break;
 				case 2:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 					if (worldData.getPartyFromMember(player.getUUID()) != null) {
 						Party party = worldData.getPartyFromMember(player.getUUID());
@@ -61,8 +61,8 @@ public class magicHaste extends Magic {
 									LivingEntity e = player.level().getPlayerByUUID(list.get(i).getUUID());
 									if (e != null && Utils.isEntityInParty(party, e) && e != player) {
 										IGlobalDataRM globalData2 = ModDataRM.getGlobal(e);
-										e.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-										e.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.25 + (0.25 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+										e.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+										e.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), 0.15 + (0.15 * level), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 										globalData2.setHasteTicks(time, level);
 									}
 								}

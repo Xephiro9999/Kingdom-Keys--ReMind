@@ -46,6 +46,8 @@ public class GlobalDataRM implements IGlobalDataRM {
         storage.putBoolean("dreamEaterSummoned", this.hasDreamEaterSummoned());
         storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
 
+        // Donor Grant
+        storage.putInt("donorGrant", this.getDonorGiven());
 
         return storage;
     }
@@ -77,6 +79,8 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
+
+        this.setDonorGiven(properties.getInt("donor_grant"));
 
         this.setPanelChoice(properties.getString("Panels_Choice"));
 
@@ -124,6 +128,7 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     private boolean dreamEaterSummoned = false;
     private int dreamEaterSummonedID;
+    private int donorGiven;
 
     //Haste
     public int getHasteLevel() {
@@ -494,6 +499,16 @@ public class GlobalDataRM implements IGlobalDataRM {
     @Override
     public void setDreamEaterSummonedID(int i) {
 
+    }
+
+    @Override
+    public int getDonorGiven(){
+        return donorGiven;
+    }
+
+    @Override
+    public void setDonorGiven(int i){
+        donorGiven = i;
     }
 
 

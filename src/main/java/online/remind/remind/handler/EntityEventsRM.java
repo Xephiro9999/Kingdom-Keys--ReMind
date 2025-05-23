@@ -1,7 +1,9 @@
 package online.remind.remind.handler;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -26,6 +29,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
+import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -37,18 +41,32 @@ import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class EntityEventsRM {
 
 	public int ticks;
 
 	int maxTicks;
+
+	private static final Set<UUID> ALLOWED_UUIDS = Set.of(
+			UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), // Xephiro
+			UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), // Test - Dev Account
+			UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), // RealRegen
+			UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), // Goblex
+			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a") // NolValue
+
+
+
+	);
 
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
@@ -76,13 +94,87 @@ public class EntityEventsRM {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
 				playerData.addAbility(StringsRM.counterRush, true);
 			}
+
 			// To initialize the toggle feature
 			if (playerData != null) {
 				if(playerData.getAlignment() == Utils.OrgMember.NONE) {
 					globalData.setPanelsEnabled(0);
 				}
 				globalData.setNGPEnabled(1);
+
+				// If player was inflicted with slow/haste before logging out
+
+				if (globalData.getHasteTicks() > 0) {
+					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+
+				}
+				if (globalData.getSlowTicks() > 0) {
+					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+
+				}
 			}
+
+			if (ModConfigs.donorKeybladeGrant){
+				MinecraftServer server = player.getServer();
+				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
+					// Player is OP
+					player.sendSystemMessage(Component.literal("Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
+				}
+			}
+
+
+
+			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
+				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+				UUID uuid = player.getUUID();
+				// Donator 'If' statements below...
+				if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+
+					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					// Give Respective Keyblade
+					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
+					player.addItem(item);
+				}
+				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					// Give Respective Keyblade
+					ItemStack item = new ItemStack(ModItems.kibladeChain.get());
+					player.addItem(item);
+
+				}
+				if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
+					player.addItem(item);
+				}
+				if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
+					player.addItem(item);
+				}
+				if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
+					player.addItem(item);
+				}
+			}
+		} else {
+			player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
 		}
 	}
 	
@@ -400,7 +492,7 @@ public class EntityEventsRM {
 
 						// Attack Haste Ability
 						if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.attackHaste)) {
-							double attackSpeedBonus = 1.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
+							double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
 							player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
 						} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
 							player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
@@ -437,8 +529,8 @@ public class EntityEventsRM {
 						globalData.remHasteTicks(1);
 						//System.out.println(globalData.getHasteTicks());
 						if (globalData.getHasteTicks() <= 0) {
-							player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-							player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.25 + (0.25 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 						}
 					}
@@ -529,8 +621,8 @@ public class EntityEventsRM {
 
 						}
 						if (globalData.getSlowTicks() <= 0) {
-							livingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.25 + (0.25 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-							livingEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.25 + (0.25 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							livingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							livingEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 						}
 					}
 				}
@@ -602,17 +694,21 @@ public class EntityEventsRM {
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
 				float DMGTaken = event.getNewDamage();
 
-
-				event.setNewDamage(0);
-				playerData.remMP(DMGTaken * 1.5);
-				float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-				if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
-					playerData.addMP(mpRageModifier);
-					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
-				}
-				if (playerData.isAbilityEquipped(Strings.damageDrive)) {
-					playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
-					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+				if (DMGTaken > playerData.getMP()){
+					float overflowDMG = (float) (DMGTaken - playerData.getMP());
+					event.setNewDamage(overflowDMG);
+				}else {
+					event.setNewDamage(0);
+					playerData.remMP(DMGTaken * 1.5);
+					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
+					if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
+						playerData.addMP(mpRageModifier);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+					}
+					if (playerData.isAbilityEquipped(Strings.damageDrive)) {
+						playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+					}
 				}
 
 			}
