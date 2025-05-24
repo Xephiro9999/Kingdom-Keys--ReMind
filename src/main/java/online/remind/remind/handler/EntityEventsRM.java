@@ -969,7 +969,7 @@ public class EntityEventsRM {
 					}
 
 					// Xephiro Keyblade Buff - Me Exclusive
-					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != null) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE) != null) {
 						if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get()) {
 							if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
 
