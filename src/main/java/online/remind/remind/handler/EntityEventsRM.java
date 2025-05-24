@@ -65,16 +65,15 @@ public class EntityEventsRM {
 			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a") // NolValue
 
 
-
 	);
 
 	@SubscribeEvent
-	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
+	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e) {
 		Player player = e.getEntity();
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-		if (playerData != null){
+		if (playerData != null) {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 				playerData.addAbility(StringsRM.renewalBlock, true);
 			}
@@ -97,7 +96,7 @@ public class EntityEventsRM {
 
 			// To initialize the toggle feature
 			if (playerData != null) {
-				if(playerData.getAlignment() == Utils.OrgMember.NONE) {
+				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					globalData.setPanelsEnabled(0);
 				}
 				globalData.setNGPEnabled(1);
@@ -116,14 +115,13 @@ public class EntityEventsRM {
 				}
 			}
 
-			if (ModConfigs.donorKeybladeGrant){
+			if (ModConfigs.donorKeybladeGrant) {
 				MinecraftServer server = player.getServer();
 				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
 					// Player is OP
 					player.sendSystemMessage(Component.literal("Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
 				}
 			}
-
 
 
 			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
@@ -177,34 +175,33 @@ public class EntityEventsRM {
 			player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
 		}
 	}
-	
+
 	/**
-	 * 
 	 * @param player
 	 * @param AbilityName StringsX.darkPower
-	 * @param formName ModID + StringsX.darkMode
+	 * @param formName    ModID + StringsX.darkMode
 	 */
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
 		PlayerData playerData = PlayerData.get(player);
 
-		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
-			if(!playerData.getDriveFormMap().containsKey(formName)) {
+		if (playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
+			if (!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}
 		}
 
-		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){
+		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7) {
 			playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 7);
 		}
 	}
 
-	private void updateEquippedAbilities(Player player){
+	private void updateEquippedAbilities(Player player) {
 		PlayerData playerData = PlayerData.get(player);
 
 	}
 
 	@SubscribeEvent
-	public void equipAbility(AbilityEvent.Equip event){
+	public void equipAbility(AbilityEvent.Equip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
 		if (event.getPlayer().getServer() != null) {
@@ -214,44 +211,44 @@ public class EntityEventsRM {
 
 		playerData2.setMPOG((int) playerData.getMaxMP());
 		float mpBoost = (float) playerData.getMagicStat().get();
-			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-				playerData.addMaxMP(12.5);
-			}
+		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+			playerData.addMaxMP(12.5);
+		}
 
-			if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
-				playerData.addMaxHP(15);
-				event.getPlayer().setHealth(playerData.getMaxHP());
-				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-			}
+		if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
+			playerData.addMaxHP(15);
+			event.getPlayer().setHealth(playerData.getMaxHP());
+			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+		}
 
-			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-				if (event.getPlayer().getServer() != null) {
-					WorldData worldData = WorldData.get(event.getPlayer().getServer());
-					Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
+			if (event.getPlayer().getServer() != null) {
+				WorldData worldData = WorldData.get(event.getPlayer().getServer());
+				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
 
-					if (party != null){
-						float friendBoost = party.getMembers().size() - 1;
-					}
+				if (party != null) {
+					float friendBoost = party.getMembers().size() - 1;
 				}
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.focusBlock)){
-				playerData.unequipAbility(StringsRM.focusBlock,0);
+		if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.focusBlock)) {
+			playerData.unequipAbility(StringsRM.focusBlock, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)) {
+			playerData.unequipAbility(StringsRM.renewalBlock, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
+				playerData2.setCanCounter(0);
+				playerData.unequipAbility(StringsRM.counterBlast, 0);
+				playerData.unequipAbility(StringsRM.counterRush, 0);
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) && playerData.isAbilityEquipped(StringsRM.renewalBlock)){
-				playerData.unequipAbility(StringsRM.renewalBlock,0);
-			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
-				if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-					playerData2.setCanCounter(0);
-					playerData.unequipAbility(StringsRM.counterBlast, 0);
-					playerData.unequipAbility(StringsRM.counterRush, 0);
-				}
-			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())) {
 			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
 				playerData2.setCanCounter(0);
 				playerData.unequipAbility(StringsRM.counterHammer, 0);
@@ -259,22 +256,19 @@ public class EntityEventsRM {
 			}
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)) {
 				playerData2.setCanCounter(0);
-				playerData.unequipAbility(StringsRM.counterHammer,0);
-				playerData.unequipAbility(StringsRM.counterBlast,0);
+				playerData.unequipAbility(StringsRM.counterHammer, 0);
+				playerData.unequipAbility(StringsRM.counterBlast, 0);
 			}
 		}
 
 
-
-
-			
 	}
 
 	@SubscribeEvent
-	public void unequipAbility(AbilityEvent.Unequip event){
+	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
@@ -288,27 +282,24 @@ public class EntityEventsRM {
 			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
 			playerData.getStrengthStat().removeModifier("Dedication");
 			playerData.getMagicStat().removeModifier("Dedication");
 			playerData.getDefenseStat().removeModifier("Dedication");
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
 			playerData.getStrengthStat().removeModifier("Friendship");
 			playerData.getMagicStat().removeModifier("Friendship");
 			playerData.getDefenseStat().removeModifier("Friendship");
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
 			playerData2.remCanCounter(1);
 			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), playerData2);
 		}
 
 	}
-
-
-
 
 
 	@SubscribeEvent
@@ -631,15 +622,14 @@ public class EntityEventsRM {
 	}
 
 
-	
 	@SubscribeEvent
-	public void onDeath(LivingDeathEvent event){
+	public void onDeath(LivingDeathEvent event) {
 		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
-		if (event.getEntity() instanceof Player){
+		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 
-			if (1 == globalData.getAutoLifeActive()){
-				if (player.getHealth() <= 0){
+			if (1 == globalData.getAutoLifeActive()) {
+				if (player.getHealth() <= 0) {
 					globalData.remAutoLifeActive(1);
 					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalDataRM) globalData);
 					event.setCanceled(true);
@@ -694,10 +684,10 @@ public class EntityEventsRM {
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
 				float DMGTaken = event.getNewDamage();
 
-				if (DMGTaken > playerData.getMP()){
+				if (DMGTaken > playerData.getMP()) {
 					float overflowDMG = (float) (DMGTaken - playerData.getMP());
 					event.setNewDamage(overflowDMG);
-				}else {
+				} else {
 					event.setNewDamage(0);
 					playerData.remMP(DMGTaken * 1.5);
 					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
@@ -771,101 +761,102 @@ public class EntityEventsRM {
 						}
 					}
 
-				// Brutal Blitzer Ability
-				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
-				float addDmg = (float) (crtBoosts * 3);
-				if (playerData.isAbilityEquipped(StringsRM.Jecht)) {
-					System.out.println(addDmg);
-					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
-					event.getEntity().invulnerableTime = 0;
-				}
-
-				// Spellblade Ability
-				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
-				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
-				int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
-				int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
-				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
-				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
-
-				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
-				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
-//player
-
-				if (event.getSource().type().msgId().equals("player")) {
-
-					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
-						Map<String, Integer> boosts = Map.of(
-								"thunder", thundBoosts,
-								"fire", fireBoosts,
-								"blizzard", blizBoosts,
-								"water", waterBoosts,
-								"dark", darkBoosts,
-								"light", lightBoosts
-						);
-						// Get how many have that max value
-						int maxBoost = boosts.values().stream().max(Integer::compare).orElse(0);
-						// Only continue if ONE boost has the highest value AND it’s >= 4
-						long count = boosts.values().stream().filter(v -> v == maxBoost).count();
-						// Find which one is the winner
-						if (count == 1 && maxBoost >= 4) {
-							for (Map.Entry<String, Integer> entry : boosts.entrySet()) {
-								if (entry.getValue() == maxBoost) {
-									String elementBlade = entry.getKey();
-
-									switch (elementBlade) {
-										case "fire":
-											// Fire Blade
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts / 2) * dmg));
-											event.getEntity().setRemainingFireTicks(2 * fireBoosts);
-											event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY() + event.getEntity().level().random.nextDouble() * 2D, event.getEntity().getZ() + event.getEntity().level().random.nextDouble() - 0.5D, 0, 0, 0);
-											break;
-
-										case "blizzard":
-											// Blizzard Blade
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((blizBoosts / 2) * dmg));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, blizBoosts * 20, blizBoosts + 2));
-											break;
-										case "thunder":
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) ((thundBoosts / 2) * dmg));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, thundBoosts * 10, thundBoosts));
-											event.getEntity().invulnerableTime = 0;
-											LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, event.getEntity().level());
-											lightningBolt.moveTo(Vec3.atBottomCenterOf(event.getEntity().getOnPos()));
-											event.getEntity().level().addFreshEntity(lightningBolt);
-											break;
-										case "water":
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
-											event.getEntity().setAirSupply(0);
-											if (event.getEntity().getAirSupply() == 0) {
-												event.getEntity().invulnerableTime = 0;
-												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
-											}
-											break;
-										case "light":
-											// Light Blade
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) ((lightBoosts / 2) * dmg));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.GLOWING, 20 * lightBoosts, 3));
-											break;
-										case "dark":
-											// Dark Blade
-											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) ((darkBoosts / 2) * dmg));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20 * darkBoosts, 3));
-											event.getEntity().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * darkBoosts, darkBoosts));
-											break;
-									}
-								}
-							}
-
-						}
+					// Brutal Blitzer Ability
+					int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
+					float addDmg = (float) (crtBoosts * 3);
+					if (playerData.isAbilityEquipped(StringsRM.Jecht)) {
+						System.out.println(addDmg);
+						event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
+						event.getEntity().invulnerableTime = 0;
 					}
 
+					// Spellblade Ability
+					int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+					int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
+					int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
+					int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
+					int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+					int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
+
+					// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
+					float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
+//player
+
+					if (event.getSource().type().msgId().equals("player")) {
+
+						if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
+							Map<String, Integer> boosts = Map.of(
+									"thunder", thundBoosts,
+									"fire", fireBoosts,
+									"blizzard", blizBoosts,
+									"water", waterBoosts,
+									"dark", darkBoosts,
+									"light", lightBoosts
+							);
+							// Get how many have that max value
+							int maxBoost = boosts.values().stream().max(Integer::compare).orElse(0);
+							// Only continue if ONE boost has the highest value AND it’s >= 4
+							long count = boosts.values().stream().filter(v -> v == maxBoost).count();
+							// Find which one is the winner
+							if (count == 1 && maxBoost >= 4) {
+								for (Map.Entry<String, Integer> entry : boosts.entrySet()) {
+									if (entry.getValue() == maxBoost) {
+										String elementBlade = entry.getKey();
+
+										switch (elementBlade) {
+											case "fire":
+												// Fire Blade
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts / 2) * dmg));
+												event.getEntity().setRemainingFireTicks(2 * fireBoosts);
+												event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY() + event.getEntity().level().random.nextDouble() * 2D, event.getEntity().getZ() + event.getEntity().level().random.nextDouble() - 0.5D, 0, 0, 0);
+												break;
+
+											case "blizzard":
+												// Blizzard Blade
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((blizBoosts / 2) * dmg));
+												event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, blizBoosts * 20, blizBoosts + 2));
+												break;
+											case "thunder":
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, event.getEntity(), null), (float) ((thundBoosts / 2) * dmg));
+												event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, thundBoosts * 10, thundBoosts));
+												event.getEntity().invulnerableTime = 0;
+												LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, event.getEntity().level());
+												lightningBolt.moveTo(Vec3.atBottomCenterOf(event.getEntity().getOnPos()));
+												event.getEntity().level().addFreshEntity(lightningBolt);
+												break;
+											case "water":
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+												event.getEntity().setAirSupply(0);
+												if (event.getEntity().getAirSupply() == 0) {
+													event.getEntity().invulnerableTime = 0;
+													event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+												}
+												break;
+											case "light":
+												// Light Blade
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (float) ((lightBoosts / 2) * dmg));
+												event.getEntity().addEffect(new MobEffectInstance(MobEffects.GLOWING, 20 * lightBoosts, 3));
+												break;
+											case "dark":
+												// Dark Blade
+												event.getEntity().invulnerableTime = 0;
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (float) ((darkBoosts / 2) * dmg));
+												event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20 * darkBoosts, 3));
+												event.getEntity().addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * darkBoosts, darkBoosts));
+												break;
+										}
+									}
+								}
+
+							}
+						}
+
+					}
 				}
 			}
 		}
