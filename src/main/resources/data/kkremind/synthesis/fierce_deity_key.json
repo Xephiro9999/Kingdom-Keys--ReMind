@@ -1,0 +1,35 @@
+{
+  "cost": 10000,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:writhing_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:blazing_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:illusory_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:sinister_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:sinister_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:orichalcum",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:fierce_deity_key_chain",
+    "quantity": 1
+  },
+  "tier": 6
+}
