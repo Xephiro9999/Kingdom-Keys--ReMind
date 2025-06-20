@@ -1,14 +1,17 @@
 package online.remind.remind.mixin;
 
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
@@ -77,9 +80,10 @@ public class GuardSkillMixin {
         // Stop Block Code? :)
         if (playerCapabilities.isAbilityEquipped(StringsRM.stopBlock)) {
             if (event.isParried()) {
+                IGlobalCapabilities target = ModCapabilities.getGlobal((LivingEntity) attacker);
                 if (playerCapabilities.getMP() >= 10) {
+                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP.get(), 40, 2, false, false, false));
                     event.getPlayerPatch().playSound(ModSounds.stop.get(), 1f, 1f);
-                    attackerData.setStoppedTicks(40);
                     playerCapabilities.remMP(10);
                 }
             }

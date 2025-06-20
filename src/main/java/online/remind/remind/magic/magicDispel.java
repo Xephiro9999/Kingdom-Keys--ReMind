@@ -2,6 +2,7 @@ package online.remind.remind.magic;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
@@ -46,7 +48,7 @@ public class magicDispel extends Magic {
 				lockOnEntity.removeEffect(goodEffect.getEffect());
 			}
 
-			globalData2.setAeroTicks(1, level);
+
 			if (globalData.getHasteTicks() > 1) {
 				globalData.setHasteTicks(1, level);
 			}
@@ -77,7 +79,6 @@ public class magicDispel extends Magic {
 						lEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 						lEntity.removeEffect(MobEffects.FIRE_RESISTANCE);
 
-						globalData2.setAeroTicks(1, level);
 						if (globalData.getHasteTicks() > 1) {
 							globalData.setHasteTicks(1, level);
 						}
