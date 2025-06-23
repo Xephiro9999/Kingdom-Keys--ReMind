@@ -8,7 +8,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
-import online.kingdomkeys.kingdomkeys.data.ModData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
@@ -23,7 +22,7 @@ import online.remind.remind.network.PacketHandlerRM;
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DriveFormDark extends DriveForm {
 
-    public DriveFormDark(String registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+    public DriveFormDark(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[]{0.25F, 0F, 0.25F};
         this.skinRL = skinRL;

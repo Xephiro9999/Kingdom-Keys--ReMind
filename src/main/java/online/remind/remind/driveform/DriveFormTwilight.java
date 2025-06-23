@@ -2,7 +2,6 @@ package online.remind.remind.driveform;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
@@ -10,7 +9,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
 public class DriveFormTwilight extends DriveForm {
-    public DriveFormTwilight(String registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+    public DriveFormTwilight(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[] {0.25F,0.25F,0.25F};
         this.skinRL = skinRL;

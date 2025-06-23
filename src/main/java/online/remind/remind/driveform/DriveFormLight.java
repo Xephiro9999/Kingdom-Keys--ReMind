@@ -20,7 +20,7 @@ import online.remind.remind.network.PacketHandlerRM;
 
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DriveFormLight extends DriveForm {
-    public DriveFormLight(String registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+    public DriveFormLight(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[] { 1F, 1F, 0.85F };
         this.skinRL = skinRL;

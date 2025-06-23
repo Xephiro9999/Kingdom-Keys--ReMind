@@ -21,7 +21,7 @@ import online.remind.remind.network.PacketHandlerRM;
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID)
 public class DriveFormRage extends DriveForm {
 
-	public DriveFormRage(String registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+	public DriveFormRage(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
 		super(registeryName, order, hasKeychain, baseGrowthAbilities);
 		this.color = new float[] { 0.5F, 0F, 0F };
 		this.skinRL = skinRL;

@@ -571,11 +571,14 @@ public class EntityEventsRM {
 				}
 
 				if (globalData != null) {
+					if (livingEntity instanceof Player player) {
 
-					// RC Cooldown mechanic
+						// RC Cooldown mechanic
+						if (globalData.getRCCooldownTicks() > 0) {
 
-					if (globalData.getRCCooldownTicks() > 0) {
-						globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
+							globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+						}
 					}
 
 			/*
