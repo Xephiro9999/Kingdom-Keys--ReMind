@@ -6,6 +6,7 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 
 public class AddonMenu extends MenuScreen {
@@ -49,20 +50,24 @@ public class AddonMenu extends MenuScreen {
         float buttonPosX = (float) width * 0.80F;
         float buttonWidth = ((float) width * 0.1744F) - 22;
 
-        addRenderableWidget(prestige = new MenuButton((int) buttonPosX, start, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Prestige), MenuButton.ButtonType.BUTTON, true, (e) -> {
-            action(RMButtons.PRESTIGE);
 
-        }));
+        if (ModConfigs.ngpEnabled) {
+            addRenderableWidget(prestige = new MenuButton((int) buttonPosX, start, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Prestige), MenuButton.ButtonType.BUTTON, true, (e) -> {
+                action(RMButtons.PRESTIGE);
+
+            }));
+        }
         addRenderableWidget(dreamEater = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_DreamEater), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action(RMButtons.DREAMEATER);
         }));
 
         // Panel
-
-        if (playerData.getAlignment() != Utils.OrgMember.NONE) {
-            addRenderableWidget(panel = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Panel), MenuButton.ButtonType.BUTTON, true, (e) -> {
-                action(RMButtons.PANEL);
-            }));
+        if (ModConfigs.panelsEnabled) {
+            if (playerData.getAlignment() != Utils.OrgMember.NONE) {
+                addRenderableWidget(panel = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Panel), MenuButton.ButtonType.BUTTON, true, (e) -> {
+                    action(RMButtons.PANEL);
+                }));
+            }
         }
 
 

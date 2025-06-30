@@ -24,12 +24,16 @@ public class ModConfigs {
     public static void bakeCommon(){
         donorKeybladeGrant = COMMON.donorKeybladeGrant.get();
         rageFormPercent = COMMON.rageFormPercent.get();
-        // NG+ Configs
 
+        // NG+ Configs
+        ngpEnabled = COMMON.ngpEnabled.get();
         statCap = COMMON.statCap.get();
         hpCap = COMMON.hpCap.get();
         mpCap = COMMON.mpCap.get();
         statBonus = COMMON.statBonus.get();
+
+        // Panels Configs
+        panelsEnabled = COMMON.panelsEnabled.get();
 
 
     }
@@ -38,10 +42,14 @@ public class ModConfigs {
 
     public static double rageFormPercent;
 
+
+    public static boolean ngpEnabled;
     public static int statCap;
     public static int statBonus;
     public static int hpCap;
     public static int mpCap;
+
+    public static boolean panelsEnabled;
 
 
     @SubscribeEvent
