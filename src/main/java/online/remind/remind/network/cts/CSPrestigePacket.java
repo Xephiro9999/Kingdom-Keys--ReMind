@@ -20,6 +20,7 @@ import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -130,9 +131,9 @@ public class CSPrestigePacket {
 
         if (oldChoice == "WARRIOR"){
             globalData.addNGPWarriorCount(+1);
-            globalData.addSTRBonus(+2);
-            if (globalData.getSTRBonus() > 50){
-                globalData.setSTRBonus(50);
+            globalData.addSTRBonus(+ModConfigs.statBonus);
+            if (globalData.getSTRBonus() > ModConfigs.statCap){
+                globalData.setSTRBonus(ModConfigs.statCap);
             }
             System.out.println("Strength Bonus: " + globalData.getSTRBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
@@ -140,9 +141,9 @@ public class CSPrestigePacket {
         
         if (oldChoice == "MYSTIC"){
             globalData.addNGPMysticCount(+1);
-            globalData.addMAGBonus(+2);
-            if (globalData.getMAGBonus() > 50){
-                globalData.setMAGBonus(50);
+            globalData.addMAGBonus(+ModConfigs.statBonus);
+            if (globalData.getMAGBonus() > ModConfigs.statCap){
+                globalData.setMAGBonus(ModConfigs.statCap);
             }
             System.out.println("Magic Bonus: " + globalData.getMAGBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
@@ -150,9 +151,9 @@ public class CSPrestigePacket {
         
         if (oldChoice == "GUARDIAN"){
             globalData.addNGPGuardianCount(+1);
-            globalData.addDEFBonus(+2);
-            if (globalData.getDEFBonus() > 50){
-                globalData.setDEFBonus(50);
+            globalData.addDEFBonus(+ModConfigs.statBonus);
+            if (globalData.getDEFBonus() > ModConfigs.statCap){
+                globalData.setDEFBonus(ModConfigs.statCap);
             }
             System.out.println("Defense Bonus: " + globalData.getDEFBonus());
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
@@ -322,14 +323,14 @@ public class CSPrestigePacket {
 
 
         // Make sure the cap is in place.
-        if(globalData.getSTRBonus() > 50){
-            globalData.setSTRBonus(50);
+        if(globalData.getSTRBonus() > ModConfigs.statCap){
+            globalData.setSTRBonus(ModConfigs.statCap);
         }
-        if(globalData.getMAGBonus() > 50){
-            globalData.setMAGBonus(50);
+        if(globalData.getMAGBonus() > ModConfigs.statCap){
+            globalData.setMAGBonus(ModConfigs.statCap);
         }
-        if(globalData.getDEFBonus() > 50){
-            globalData.setDEFBonus(50);
+        if(globalData.getDEFBonus() > ModConfigs.statCap){
+            globalData.setDEFBonus(ModConfigs.statCap);
         }
 
         playerData.getStrengthStat().removeModifier("NG+ Bonus");
@@ -345,8 +346,22 @@ public class CSPrestigePacket {
             playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
             playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
         }
-        playerData.addMaxHP(2 * globalData.getPrestigeLvl());
-        playerData.addMaxMP(2 * globalData.getPrestigeLvl());
+
+        int addedHP = 2 * globalData.getPrestigeLvl();
+        int addedMP = 2 * globalData.getPrestigeLvl();
+
+        if (addedHP > ModConfigs.hpCap){
+            playerData.addMaxHP(ModConfigs.hpCap);
+        } else {
+            playerData.addMaxHP(addedHP);
+        }
+
+        if (addedMP > ModConfigs.mpCap){
+            playerData.addMaxHP(ModConfigs.mpCap);
+        } else {
+            playerData.addMaxMP(addedMP);
+        }
+
 
 
 

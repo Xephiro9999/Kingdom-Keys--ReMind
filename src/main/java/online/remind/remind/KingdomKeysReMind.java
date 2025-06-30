@@ -1,8 +1,10 @@
 package online.remind.remind;
 
 import com.google.common.base.Suppliers;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -11,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,6 +34,8 @@ import online.kingdomkeys.kingdomkeys.lib.Tags;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.command.AddonCommand;
+import online.remind.remind.command.ModCommands;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModEffects;
@@ -130,6 +135,12 @@ public class KingdomKeysReMind {
 
         // Org Weapons
         ListsRM.loadAddonOrgWeapons();
+    }
+
+    @SubscribeEvent
+    public void registerCommands(RegisterCommandsEvent event){
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+        ModCommands.register(dispatcher);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

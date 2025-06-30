@@ -23,14 +23,25 @@ public class ModConfigs {
 
     public static void bakeCommon(){
         donorKeybladeGrant = COMMON.donorKeybladeGrant.get();
-
         rageFormPercent = COMMON.rageFormPercent.get();
+        // NG+ Configs
+
+        statCap = COMMON.statCap.get();
+        hpCap = COMMON.hpCap.get();
+        mpCap = COMMON.mpCap.get();
+        statBonus = COMMON.statBonus.get();
+
 
     }
 
     public static boolean donorKeybladeGrant;
 
     public static double rageFormPercent;
+
+    public static int statCap;
+    public static int statBonus;
+    public static int hpCap;
+    public static int mpCap;
 
 
     @SubscribeEvent
