@@ -51,9 +51,6 @@ public class magicEsuna extends Magic {
 			if (globalData.getSlowTicks() > 1) {
 				globalData.setSlowTicks(1, level);
 			}
-			if (globalData2.getStoppedTicks() > 1) {
-				globalData2.setStoppedTicks(0);
-			}
 
 			PacketHandler.syncToAllAround(player, globalData2);
 			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
