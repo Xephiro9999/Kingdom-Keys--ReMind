@@ -219,8 +219,6 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.criticalBoost, true);
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
-                globalData.addSTRBonus(ModConfigs.statBonus);
-                playerData.addMaxAP(2);
                 break;
 
         }
@@ -268,8 +266,6 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.grandMagicHaste, true);
                 playerData.addAbility(StringsRM.mpBoost, true);
                 playerData.addAbility(StringsRM.mpShield, true);
-                globalData.addMAGBonus(ModConfigs.statBonus);
-                playerData.addMaxAP(2);
                 break;
         }
 
@@ -316,8 +312,6 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.hpWalker, true);
                 playerData.addAbility(StringsRM.hpBoost, true);
                 playerData.addAbility(Strings.protect, true);
-                globalData.addDEFBonus(ModConfigs.statBonus);
-                playerData.addMaxAP(2);
                 break;
         }
 

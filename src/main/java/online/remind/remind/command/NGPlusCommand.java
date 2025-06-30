@@ -162,6 +162,13 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
 
             // NG+ Abilities
 
+            if (globalData.getPrestigeLvl() > 0) {
+
+                playerData.addAbility(Strings.experienceBoost, true);
+                playerData.addAbility(Strings.luckyLucky, true);
+                playerData.addAbility(StringsRM.dedication, true);
+            }
+
             switch (globalData.getNGPWarriorCount()) {
                 case 0:
                     break;

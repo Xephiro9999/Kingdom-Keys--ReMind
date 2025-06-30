@@ -9,10 +9,15 @@ public class CommonConfig {
     public ForgeConfigSpec.DoubleValue rageFormPercent;
 
     // NG+
+    public ForgeConfigSpec.BooleanValue ngpEnabled;
     public ForgeConfigSpec.IntValue statCap;
     public ForgeConfigSpec.IntValue statBonus;
     public ForgeConfigSpec.IntValue hpCap;
     public ForgeConfigSpec.IntValue mpCap;
+
+    // Panels
+    public ForgeConfigSpec.BooleanValue panelsEnabled;
+
 
 
 
@@ -25,7 +30,7 @@ public class CommonConfig {
                 .define("donorKeybladeGrant", true);
 
         builder.pop();
-        builder.push("Form Balance");
+        builder.push("Forms");
 
         rageFormPercent = builder
                 .comment("Changes the base chance for Rage Form's Reaction Command to appear. Setting this to 0 will disable the Reaction Command.")
@@ -33,8 +38,12 @@ public class CommonConfig {
                 .defineInRange("rageFormPercent", 10.0,0,100);
 
         builder.pop();
-        builder.push("NG+ Balance");
+        builder.push("NG+");
 
+        ngpEnabled = builder
+                .comment("Dictates if New Game + is enabled or not.")
+                .comment("Default: true")
+                .define("New Game + Enabled", true);
         statCap = builder
                 .comment("Sets the maximum NG+ can give you stat wise. (This excludes HP and MP)")
                 .comment("Default: 50")
@@ -51,5 +60,12 @@ public class CommonConfig {
                 .comment("Sets the maximum MP that NG+ can give you. WARNING! Setting this too high will break the balance of certain spells!")
                 .comment("Default: 100")
                 .defineInRange("MP Cap:", 100, 0, 9999);
+        builder.pop();
+        builder.push("Panels");
+
+        panelsEnabled = builder
+                .comment("Dictates if Panels are enabled or not. NOTE: If false, you will get rid of the only way for Org members to level up forms aside from gathering the orbs.")
+                .comment("Default: true")
+                .define("Panels Enabled", true);
     }
 }
