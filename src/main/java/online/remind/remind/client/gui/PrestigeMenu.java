@@ -3,37 +3,40 @@ package online.remind.remind.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
+import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.item.KKAccessoryItem;
 import online.kingdomkeys.kingdomkeys.item.KKArmorItem;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipAccessories;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipArmor;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.capabilities.IGlobalDataRM;
-import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
+import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPrestigePacket;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PrestigeMenu extends MenuBackground{
+public class PrestigeMenu extends MenuBackground {
+
 
     public int slot = -1;
 
+    public Map<KKArmorItem, Integer> addedArmorList = new HashMap<KKArmorItem, Integer>();
+    public Map<KKAccessoryItem, Integer> addedAccessoryList = new HashMap<KKAccessoryItem, Integer>();
 
-
-    private MenuButton backButton, prestige, levelReq, toggleOn, toggleOff;
+    private MenuButton backButton, prestige, levelReq, toggleOff, toggleOn;
 
     MenuColourBox level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath;
 
     MenuColourBox[] playerWidgets = {level, prestigeLevel, gainedHP, gainedMP, gainedSTR, gainedMAG, gainedDEF, currentPath, warriorPath, mysticPath, guardianPath};
-
 
 
     public PrestigeMenu() {
@@ -45,27 +48,29 @@ public class PrestigeMenu extends MenuBackground{
     protected void action(String string) {
         if (string.equals("back"))
             GUIHelperRM.openAddonMenu();
-        if (string.equals("confirm")){
+        if (string.equals("confirm")) {
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
+
         }
-        if (string.equals("toggleOff")){
+        if (string.equals("toggleOff")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(1));
             GUIHelperRM.openAddonMenu();
         }
-        if (string.equals("toggleOn")){
+        if (string.equals("toggleOn")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(3));
             GUIHelperRM.openAddonMenu();
         }
-
     }
+
+
 
     @Override
     public void init() {
 
         Player player;
-        final PlayerData playerData = PlayerData.get(minecraft.player);
-        IGlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
+        final IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
+        IGlobalCapabilitiesRM addedData = ModCapabilitiesRM.getGlobal(minecraft.player);
 
         super.init();
         this.renderables.clear();
@@ -126,13 +131,13 @@ public class PrestigeMenu extends MenuBackground{
         addRenderableWidget(guardianPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("NG+ \uD83D\uDEE1 Count: "),"" + addedData.getNGPGuardianCount(), 0xe3ce44));
 
         // Stats Column
-        addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
-        addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
+        addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2 + " (Cap: "+ ModConfigs.hpCap+")", 0x3ECE44));
+        addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2 + " (Cap: "+ ModConfigs.mpCap+")", 0x3ECE44));
 
 
-        addRenderableWidget(gainedSTR = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained STR: "), "" + addedData.getSTRBonus(), 0xaa190f));
-        addRenderableWidget(gainedMAG = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained MAG: "), "" + addedData.getMAGBonus(), 0xaa190f));
-        addRenderableWidget(gainedDEF = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained DEF: "), "" + addedData.getDEFBonus(), 0xaa190f));
+        addRenderableWidget(gainedSTR = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained STR: "), "" + addedData.getSTRBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
+        addRenderableWidget(gainedMAG = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained MAG: "), "" + addedData.getMAGBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
+        addRenderableWidget(gainedDEF = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained DEF: "), "" + addedData.getDEFBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
     }
 
 

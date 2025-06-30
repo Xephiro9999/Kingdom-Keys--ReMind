@@ -219,7 +219,7 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.criticalBoost, true);
                 playerData.addAbility(Strings.formBoost, true);
                 playerData.addAbility(Strings.driveBoost, true);
-                globalData.addSTRBonus(+1);
+                globalData.addSTRBonus(ModConfigs.statBonus);
                 playerData.addMaxAP(2);
                 break;
 
@@ -268,7 +268,7 @@ public class CSPrestigePacket {
                 playerData.addAbility(Strings.grandMagicHaste, true);
                 playerData.addAbility(StringsRM.mpBoost, true);
                 playerData.addAbility(StringsRM.mpShield, true);
-                globalData.addMAGBonus(+1);
+                globalData.addMAGBonus(ModConfigs.statBonus);
                 playerData.addMaxAP(2);
                 break;
         }
@@ -316,13 +316,14 @@ public class CSPrestigePacket {
                 playerData.addAbility(StringsRM.hpWalker, true);
                 playerData.addAbility(StringsRM.hpBoost, true);
                 playerData.addAbility(Strings.protect, true);
-                globalData.addDEFBonus(+1);
+                globalData.addDEFBonus(ModConfigs.statBonus);
                 playerData.addMaxAP(2);
                 break;
         }
 
 
         // Make sure the cap is in place.
+        /*
         if(globalData.getSTRBonus() > ModConfigs.statCap){
             globalData.setSTRBonus(ModConfigs.statCap);
         }
@@ -332,6 +333,7 @@ public class CSPrestigePacket {
         if(globalData.getDEFBonus() > ModConfigs.statCap){
             globalData.setDEFBonus(ModConfigs.statCap);
         }
+         */
 
         playerData.getStrengthStat().removeModifier("NG+ Bonus");
         playerData.getMagicStat().removeModifier("NG+ Bonus");
@@ -342,9 +344,21 @@ public class CSPrestigePacket {
 
 
         if (globalData.getNGPEnabled() == 1) {
-            playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
-            playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
-            playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
+            if (globalData.getSTRBonus() > ModConfigs.statCap){
+                playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+            } else {
+                playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
+            }
+            if (globalData.getMAGBonus() > ModConfigs.statCap){
+                playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+            } else {
+                playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
+            }
+            if (globalData.getDEFBonus() > ModConfigs.statCap){
+                playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+            } else {
+                playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
+            }
         }
 
         int addedHP = 2 * globalData.getPrestigeLvl();
