@@ -128,6 +128,24 @@ public class EntityEventsRM {
 			}
 			globalData.setNGPEnabled(1);
 
+			if (globalData.getNGPEnabled() == 1) {
+				if (globalData.getSTRBonus() > ModConfigs.statCap){
+					playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+				} else {
+					playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
+				}
+				if (globalData.getMAGBonus() > ModConfigs.statCap){
+					playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+				} else {
+					playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
+				}
+				if (globalData.getDEFBonus() > ModConfigs.statCap){
+					playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
+				} else {
+					playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
+				}
+			}
+
 			// If player was inflicted with slow/haste before logging out
 
 			if (globalData.getHasteTicks() > 0) {
