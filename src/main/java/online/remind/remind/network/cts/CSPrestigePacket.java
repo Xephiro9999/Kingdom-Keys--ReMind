@@ -369,9 +369,10 @@ public class CSPrestigePacket {
 
 
 
-        PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+
 
         //System.out.println("Prestige Level: " + globalData.getPrestigeLvl());
+        PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         ctx.get().setPacketHandled(true);
     }

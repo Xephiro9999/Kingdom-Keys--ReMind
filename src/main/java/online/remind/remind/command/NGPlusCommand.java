@@ -20,9 +20,12 @@ import net.minecraft.server.level.ServerPlayer;
 import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.network.PacketHandlerRM;
 import org.apache.logging.log4j.core.jmx.Server;
 
 public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <player>
@@ -60,19 +63,23 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
             switch(chosenOpt){
                case "warrior" -> {
                    globalData.setNGPWarriorCount(amount);
-                   globalData.setSTRBonus(amount * ModConfigs.statCap);
+                   globalData.setSTRBonus(amount * ModConfigs.statBonus);
+                   playerData.getStrengthStat().removeModifier("NG+ Bonus");
                    playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
                    globalData.setPrestigeLvl(globalData.getNGPWarriorCount() + globalData.getNGPMysticCount() + globalData.getNGPGuardianCount());
                }
                case "mystic" -> {
                    globalData.setNGPMysticCount(amount);
-                   globalData.setMAGBonus(amount * ModConfigs.statCap);
+                   globalData.setMAGBonus(amount * ModConfigs.statBonus);
+                   playerData.getMagicStat().removeModifier("NG+ Bonus");
+
                    playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
                    globalData.setPrestigeLvl(globalData.getNGPWarriorCount() + globalData.getNGPMysticCount() + globalData.getNGPGuardianCount());
                }
                case "guardian" -> {
                    globalData.setNGPGuardianCount(amount);
-                   globalData.setDEFBonus(amount * ModConfigs.statCap);
+                   globalData.setDEFBonus(amount * ModConfigs.statBonus);
+                   playerData.getDefenseStat().removeModifier("NG+ Bonus");
                    playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
                    globalData.setPrestigeLvl(globalData.getNGPWarriorCount() + globalData.getNGPMysticCount() + globalData.getNGPGuardianCount());
                }
@@ -80,15 +87,29 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
                    globalData.setNGPWarriorCount(amount);
                    globalData.setNGPMysticCount(amount);
                    globalData.setNGPGuardianCount(amount);
-                   globalData.setSTRBonus(amount * ModConfigs.statCap);
-                   globalData.setMAGBonus(amount * ModConfigs.statCap);
-                   globalData.setDEFBonus(amount * ModConfigs.statCap);
+                   globalData.setSTRBonus(amount * ModConfigs.statBonus);
+                   globalData.setMAGBonus(amount * ModConfigs.statBonus);
+                   globalData.setDEFBonus(amount * ModConfigs.statBonus);
+                   playerData.getStrengthStat().removeModifier("NG+ Bonus");
+                   playerData.getMagicStat().removeModifier("NG+ Bonus");
+                   playerData.getDefenseStat().removeModifier("NG+ Bonus");
+                   if (globalData.getSTRBonus() > ModConfigs.statCap){
+                       globalData.setSTRBonus(ModConfigs.statCap);
+                   }
+                   if (globalData.getMAGBonus() > ModConfigs.statCap){
+                       globalData.setMAGBonus(ModConfigs.statCap);
+                   }
+                   if (globalData.getDEFBonus() > ModConfigs.statCap){
+                       globalData.setDEFBonus(ModConfigs.statCap);
+                   }
                    playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
                    playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
                    playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
                    globalData.setPrestigeLvl(globalData.getNGPWarriorCount() + globalData.getNGPMysticCount() + globalData.getNGPGuardianCount());
                }
             }
+            PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         }
         return 0;
     }
