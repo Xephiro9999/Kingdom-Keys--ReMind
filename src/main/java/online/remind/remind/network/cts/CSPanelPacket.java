@@ -15,6 +15,7 @@ import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.gui.PanelsMenu;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.sql.SQLOutput;
@@ -65,21 +66,18 @@ public class CSPanelPacket {
             case 1:
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.addHearts(-1000 * globalData.getSTRPanel() + 1);
-                globalData.addSTRPanel(1);
-                if (globalData.getSTRPanel() > 50){
-                    globalData.setSTRPanel(50);
-                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getSTRPanel());
+                globalData.addSTRPanel(ModConfigs.panelBonus);
+                if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+                    playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
                 }
-                System.out.println(globalData.getSTRPanel());
                 playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                 break;
             case 2:
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.addHearts(-1000 * globalData.getMAGPanel() + 1);
-                globalData.addMAGPanel(1);
-                if (globalData.getMAGPanel() > 50){
-                    globalData.setMAGPanel(50);
-                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getMAGPanel());
+                globalData.addMAGPanel(ModConfigs.panelBonus);
+                if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+                    playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
                 }
                 System.out.println(globalData.getMAGPanel());
                 playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
@@ -87,10 +85,9 @@ public class CSPanelPacket {
             case 3:
                 PacketHandlerRM.syncGlobalToAllAround(player, globalData);
                 playerData.addHearts(-1000 * globalData.getDEFPanel() + 1);
-                globalData.addDEFPanel(1);
-                if (globalData.getDEFPanel() > 50){
-                    globalData.setDEFPanel(50);
-                    System.out.println("Fail Safe for Accidental Cap Break, Stat is now: "+ globalData.getDEFPanel());
+                globalData.addDEFPanel(ModConfigs.panelBonus);
+                if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+                    playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
                 }
                 //System.out.println(globalData.getDEFPanel());
                 playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
