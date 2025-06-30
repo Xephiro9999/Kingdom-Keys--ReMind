@@ -34,22 +34,28 @@ public class ModConfigs {
 
         // Panels Configs
         panelsEnabled = COMMON.panelsEnabled.get();
+        panelBonus = COMMON.panelBonus.get();
+        panelLimit = COMMON.panelLimit.get();
 
 
     }
 
     public static boolean donorKeybladeGrant;
 
+    // Forms
     public static double rageFormPercent;
 
-
+    // NG+
     public static boolean ngpEnabled;
     public static int statCap;
     public static int statBonus;
     public static int hpCap;
     public static int mpCap;
 
+    // Panels
     public static boolean panelsEnabled;
+    public static int panelBonus;
+    public static int panelLimit;
 
 
     @SubscribeEvent

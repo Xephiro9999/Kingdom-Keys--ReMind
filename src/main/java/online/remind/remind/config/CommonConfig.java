@@ -17,6 +17,8 @@ public class CommonConfig {
 
     // Panels
     public ForgeConfigSpec.BooleanValue panelsEnabled;
+    public ForgeConfigSpec.IntValue panelBonus;
+    public ForgeConfigSpec.IntValue panelLimit;
 
 
 
@@ -67,5 +69,13 @@ public class CommonConfig {
                 .comment("Dictates if Panels are enabled or not. NOTE: If false, you will get rid of the only way for Org members to level up forms aside from gathering the orbs.")
                 .comment("Default: true")
                 .define("Panels Enabled", true);
+        panelBonus = builder
+                .comment("Sets the stat bonus for STR, MAG, and DEF in the panels menu. Note: Setting this to 0 will disable the boost entirely, and setting this too high can/will break balance!")
+                .comment("Default: 1")
+                .defineInRange("Panel Stat Bonus:", 1, 0, 9999);
+        panelLimit = builder
+                .comment("Sets the max stats given by the Panel System. Note: High numbers can/will break balance!")
+                .comment("Default: 50")
+                .defineInRange("Panels Cap:", 50, 1, 9999);
     }
 }
