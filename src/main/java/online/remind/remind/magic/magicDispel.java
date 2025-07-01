@@ -46,7 +46,7 @@ public class magicDispel extends Magic {
 				lockOnEntity.removeEffect(goodEffect.getEffect());
 			}
 
-			globalData2.setAeroTicks(1, level);
+
 			if (globalData.getHasteTicks() > 1) {
 				globalData.setHasteTicks(1, level);
 			}
@@ -77,7 +77,7 @@ public class magicDispel extends Magic {
 						lEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 						lEntity.removeEffect(MobEffects.FIRE_RESISTANCE);
 
-						globalData2.setAeroTicks(1, level);
+
 						if (globalData.getHasteTicks() > 1) {
 							globalData.setHasteTicks(1, level);
 						}

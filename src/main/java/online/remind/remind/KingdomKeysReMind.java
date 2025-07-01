@@ -113,7 +113,7 @@ public class KingdomKeysReMind {
         // Org Weapons
         ListsRM.loadAddonOrgWeapons();
     }
-    
+
     @SubscribeEvent
     public void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
