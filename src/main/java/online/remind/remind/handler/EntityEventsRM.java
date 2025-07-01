@@ -51,6 +51,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -709,43 +710,27 @@ public class EntityEventsRM {
 
 				// Spells go Down Below
 
-				// Slow
-				if (globalData.getSlowTicks() > 0) {
-					globalData.remSlowTicks(1);
-					if (globalData.getSlowTicks() > 0) {
-
-					}
-					if (globalData.getSlowTicks() <= 0) {
-						livingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-						livingEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-					}
-				}
-
-				// Haste
-				if (event.getEntity() instanceof Player player) {
-					if (globalData.getHasteTicks() > 0) {
-						globalData.remHasteTicks(1);
-						//System.out.println(globalData.getHasteTicks());
-						if (globalData.getHasteTicks() <= 0) {
-							player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-							player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-
-						}
-					}
-				}
 				// Berserk
 				if (event.getEntity() instanceof Player player) {
-					if (globalData.getBerserkTicks() > 0) {
-						globalData.remBerserkTicks(1);
-						if (globalData.getBerserkTicks() <= 0) {
-							PlayerData playerData = PlayerData.get(player);
-							playerData.getStrengthStat().removeModifier("berserk");
-							playerData.getDefenseStat().removeModifier("berserk");
-							if (!event.getEntity().level().isClientSide) {
-								PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player); //Sync KK stat packet
-								PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalDataRM) globalData);
-							}
-						}
+					PlayerData playerData = PlayerData.get(player);
+					if (player.hasEffect(ModMobEffectsRM.BERSERK)){
+						MobEffectInstance berserk = player.getEffect(ModMobEffectsRM.BERSERK);
+
+						int amp = berserk.getAmplifier();
+
+						double strBonus = (playerData.getStrengthStat().getStat() * 0.15D) * (amp + 1);
+						double defDebuff = (playerData.getDefenseStat().getStat() * 0.15D) * (amp + 1);
+
+						playerData.getStrengthStat().addModifier("berserk", strBonus, false, false);
+						playerData.getDefenseStat().addModifier("berserk", -defDebuff, false, false);
+
+					} else {
+						playerData.getStrengthStat().removeModifier("berserk");
+						playerData.getDefenseStat().removeModifier("berserk");
+
+					}
+					if(!event.getEntity().level().isClientSide) {
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 				}
 
@@ -791,21 +776,16 @@ public class EntityEventsRM {
 		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
-
-			if (1 == globalData.getAutoLifeActive()){
-				if (player.getHealth() <= 0){
-					globalData.remAutoLifeActive(1);
-					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalDataRM) globalData);
-					event.setCanceled(true);
-					player.setHealth(10.0F);
-					player.invulnerableTime = 10;
-					player.removeAllEffects();
-					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
-					player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+				if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
+					if(player.getHealth() <= 0){
+						event.setCanceled(true);
+						player.setHealth(0.1F);
+						player.invulnerableTime = 10;
+						player.removeAllEffects();
+						player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
+						player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+					}
 				}
-			}
-
-
 		}
 		// Dream Eater Death Event
 

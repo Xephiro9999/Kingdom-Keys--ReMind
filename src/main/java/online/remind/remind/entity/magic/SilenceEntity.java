@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +21,7 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import org.joml.Vector3f;
 
@@ -104,12 +106,8 @@ public class SilenceEntity extends ThrowableProjectile {
                             if(this.getOwner() instanceof Player) {
                                 List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((Player) this.getOwner(), this, radius,radius,radius);
                                 for(LivingEntity e : targetList) {
-                                // Silence (Add Magic CD)
-                                //targetData.remMP(dmg);
-                                targetData.setMagicCooldownTicks((int) time);
-                                targetData.setLimitCooldownTicks((int) time);
+                                e.addEffect(new MobEffectInstance(ModMobEffectsRM.SILENCE, (int) time, 0, false, false));
                                 playSound(ModSoundsRM.SILENCEHIT.get(),1F,1F);
-                                PacketHandler.sendTo(new SCSyncPlayerData((Player) target), (ServerPlayer) target);
                                 }
                             }
                         }

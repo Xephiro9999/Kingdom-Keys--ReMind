@@ -81,6 +81,7 @@ public class KingdomKeysReMind {
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
 
+
         if (ModList.get().isLoaded("epicfight")) {
             efmLoaded = true;
             //KKRMSkills.SKILLS.register(modEventBus);

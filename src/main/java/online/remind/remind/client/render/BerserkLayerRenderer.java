@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
@@ -24,6 +25,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.model.BerserkAuraModel;
+import online.remind.remind.effect.ModMobEffectsRM;
 
 @OnlyIn(Dist.CLIENT)
 public class BerserkLayerRenderer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>>  {
@@ -51,18 +53,18 @@ public class BerserkLayerRenderer<T extends LivingEntity> extends RenderLayer<T,
 
     public void renderEntity(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ModDataRM.getGlobal(entitylivingbaseIn) != null) {
-            IGlobalDataRM globalData = ModDataRM.getGlobal(entitylivingbaseIn);
-            if (globalData.getBerserkTicks() > 0) {
-                VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
 
-                for (int i = 1; i <= globalData.getBerserkLevel() + 1; ++i) {
+            if(entitylivingbaseIn.hasEffect(ModMobEffectsRM.BERSERK)){
+                MobEffectInstance berserk = entitylivingbaseIn.getEffect(ModMobEffectsRM.BERSERK);
+                VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
+                for (int i = 1; i <= berserk.getAmplifier() + 1; ++i) {
                     matrixStackIn.pushPose();
                     float f = ageInTicks * 20;
                     if (i % 2 == 0)
                         f *= -1;
                     matrixStackIn.mulPose(Axis.YP.rotationDegrees(f));
                     float scale = 1;
-                    switch (globalData.getBerserkLevel()) {
+                    switch (berserk.getAmplifier()) {
                         case 0:
                             if (entitylivingbaseIn instanceof Player) {
                                 scale = 0.75F * i;

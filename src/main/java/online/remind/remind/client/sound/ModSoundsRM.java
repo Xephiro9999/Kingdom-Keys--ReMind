@@ -2,6 +2,7 @@ package online.remind.remind.client.sound;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import online.remind.remind.KingdomKeysReMind;
 
@@ -10,7 +11,7 @@ import java.util.function.Supplier;
 public class ModSoundsRM {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, KingdomKeysReMind.MODID);
 
-    public static final Supplier<SoundEvent>
+    public static final DeferredHolder<SoundEvent, SoundEvent>
             HASTE = registerSound("haste"),
             SLOW = registerSound("slow"),
             HOLY = registerSound("holy"),
@@ -44,7 +45,7 @@ public class ModSoundsRM {
             DARK_MODE = registerSound("darkness");
 
 
-    public static Supplier<SoundEvent> registerSound(String name) {
+    public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {
         final ResourceLocation soundID = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, name);
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(soundID));
     }

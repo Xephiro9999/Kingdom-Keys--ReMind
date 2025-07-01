@@ -95,7 +95,7 @@ public class magicDispel extends Magic {
 
 	@Override
 	protected void playMagicCastSound(Player player, Player caster, int level) {
-		 player.level().playSound(null, player.blockPosition(), ModSoundsRM.DISPEL.get(),
+		 player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.DISPEL.get(),
 		 SoundSource.PLAYERS, 1F, 1F);
 	}
 }

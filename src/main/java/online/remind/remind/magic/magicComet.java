@@ -45,6 +45,6 @@ public class magicComet extends Magic {
 
 	@Override
 	protected void playMagicCastSound(Player player, Player caster, int level) {
-		player.level().playSound(null, player.blockPosition(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
+		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

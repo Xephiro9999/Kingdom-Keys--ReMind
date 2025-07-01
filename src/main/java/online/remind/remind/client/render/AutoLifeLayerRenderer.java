@@ -23,6 +23,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.model.AutoLifeModel;
+import online.remind.remind.effect.ModMobEffectsRM;
 
 @OnlyIn(Dist.CLIENT)
 public class AutoLifeLayerRenderer<T extends LivingEntity> extends RenderLayer<T, PlayerModel<T>> {
@@ -49,8 +50,7 @@ public class AutoLifeLayerRenderer<T extends LivingEntity> extends RenderLayer<T
 
     public void renderEntity(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ModDataRM.getGlobal(entitylivingbaseIn) != null) {
-            IGlobalDataRM globalData = ModDataRM.getGlobal(entitylivingbaseIn);
-            if (globalData.getAutoLifeActive() > 0) {
+            if (entitylivingbaseIn.hasEffect(ModMobEffectsRM.AUTO_LIFE)) {
                 VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
 
                 matrixStackIn.pushPose();
