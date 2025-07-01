@@ -1,30 +1,30 @@
 package online.remind.remind.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class CommonConfig {
 
-    public ForgeConfigSpec.BooleanValue donorKeybladeGrant;
+    public ModConfigSpec.BooleanValue donorKeybladeGrant;
 
-    public ForgeConfigSpec.DoubleValue rageFormPercent;
+    public ModConfigSpec.DoubleValue rageFormPercent;
 
     // NG+
-    public ForgeConfigSpec.BooleanValue ngpEnabled;
-    public ForgeConfigSpec.IntValue statCap;
-    public ForgeConfigSpec.IntValue statBonus;
-    public ForgeConfigSpec.IntValue hpCap;
-    public ForgeConfigSpec.IntValue mpCap;
+    public ModConfigSpec.BooleanValue ngpEnabled;
+    public ModConfigSpec.IntValue statCap;
+    public ModConfigSpec.IntValue statBonus;
+    public ModConfigSpec.IntValue hpCap;
+    public ModConfigSpec.IntValue mpCap;
 
     // Panels
-    public ForgeConfigSpec.BooleanValue panelsEnabled;
-    public ForgeConfigSpec.IntValue panelBonus;
-    public ForgeConfigSpec.IntValue panelLimit;
+    public ModConfigSpec.BooleanValue panelsEnabled;
+    public ModConfigSpec.IntValue panelBonus;
+    public ModConfigSpec.IntValue panelLimit;
 
 
 
 
 
-    CommonConfig(final ForgeConfigSpec.Builder builder) {
+    CommonConfig(final ModConfigSpec.Builder builder) {
         builder.push("General");
 
         donorKeybladeGrant = builder

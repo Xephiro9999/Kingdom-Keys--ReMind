@@ -60,6 +60,9 @@ public class StringsRM {
         friendsPower = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"friends_power",
         renewalBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"renewal_block",
         focusBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"focus_block",
+        stopBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"stop_block",
+        poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
+        royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
 
         // FF Keyblade Abilities

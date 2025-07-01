@@ -17,14 +17,15 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
-import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+//import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+//import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+//import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -63,8 +64,8 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
 
 
         for (ServerPlayer player : players){
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-            IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+            final PlayerData playerData = PlayerData.get(player);
+            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
             int addedHP = globalData.getPrestigeLvl() * 2;
             int addedMP = globalData.getPrestigeLvl() * 2;
@@ -309,7 +310,7 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
 
 
 
-            PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+            PacketHandler.sendTo(new SCSyncPlayerData(player), player);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         }
         return 0;

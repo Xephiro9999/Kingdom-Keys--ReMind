@@ -60,6 +60,6 @@ public class magicEsuna extends Magic {
 
 	@Override
 	protected void playMagicCastSound(Player player, Player caster, int level) {
-		player.level().playSound(null, player.blockPosition(), ModSoundsRM.ESUNA.get(), SoundSource.PLAYERS, 1F, 1F);
+		player.level().playSound(null, player.position().x(), player.position().y(), player.position().z(), ModSoundsRM.ESUNA.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

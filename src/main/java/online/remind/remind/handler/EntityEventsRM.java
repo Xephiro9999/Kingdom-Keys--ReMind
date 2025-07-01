@@ -23,45 +23,43 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
-import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
+//import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
-import yesman.epicfight.server.commands.PlayerSkillCommand;
-import yesman.epicfight.skill.*;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+//import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+//import yesman.epicfight.server.commands.PlayerSkillCommand;
+//import yesman.epicfight.skill.*;
+//import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+//import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+//import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.Map;
 import java.util.Set;
@@ -87,8 +85,8 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
 		Player player = e.getEntity();
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+		PlayerData playerData = PlayerData.get(player);
+		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 		if (playerData != null){
 			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
@@ -166,14 +164,13 @@ public class EntityEventsRM {
 			// If player was inflicted with slow/haste before logging out
 
 			if (globalData.getHasteTicks() > 0) {
-				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
+				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 			}
 			if (globalData.getSlowTicks() > 0) {
-				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
+				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 			}
 
 			/*
@@ -259,32 +256,6 @@ public class EntityEventsRM {
         }
 
 
-	@SubscribeEvent
-	public void onPlayerClone(PlayerEvent.Clone event) {
-		Player oPlayer = event.getOriginal();
-		Player nPlayer = event.getEntity();
-
-				
-		oPlayer.reviveCaps();
-
-		IGlobalCapabilitiesRM oldPlayerData = ModCapabilitiesRM.getGlobal(oPlayer);
-		IGlobalCapabilitiesRM newPlayerData = ModCapabilitiesRM.getGlobal(nPlayer);
-		
-		newPlayerData.setPrestigeLvl(oldPlayerData.getPrestigeLvl());
-		newPlayerData.setNGPWarriorCount(oldPlayerData.getNGPWarriorCount());
-		newPlayerData.setNGPMysticCount(oldPlayerData.getNGPMysticCount());
-		newPlayerData.setNGPGuardianCount(oldPlayerData.getNGPGuardianCount());
-		newPlayerData.setSTRBonus(oldPlayerData.getSTRBonus());
-		newPlayerData.setMAGBonus(oldPlayerData.getMAGBonus());
-		newPlayerData.setDEFBonus(oldPlayerData.getDEFBonus());
-
-
-
-
-
-		oPlayer.invalidateCaps();
-	}
-
 	/**
 	 *
 	 * @param player
@@ -292,7 +263,7 @@ public class EntityEventsRM {
 	 * @param formName ModID + StringsRM.darkForm
 	 */
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+		PlayerData playerData = PlayerData.get(player);
 
 		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
 			if(!playerData.getDriveFormMap().containsKey(formName)) {
@@ -306,16 +277,16 @@ public class EntityEventsRM {
 	}
 
 	private void updateEquippedAbilities(Player player){
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+		PlayerData playerData = PlayerData.get(player);
 
 	}
 
 
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
-		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
-		IWorldCapabilities worldData = ModCapabilities.getWorld(event.getPlayer().level());
+		PlayerData playerData = PlayerData.get(event.getPlayer());
+		IGlobalDataRM  playerData2 = ModDataRM.getGlobal(event.getPlayer());
+		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		//Player player = event.getPlayer();
 
 		float mpBoost = (float) playerData.getMagicStat().get();
@@ -411,8 +382,9 @@ public class EntityEventsRM {
 
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event){
-		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
-		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
+		PlayerData playerData = PlayerData.get(event.getPlayer());
+		IGlobalDataRM  playerData2 = ModDataRM.getGlobal(event.getPlayer());
+		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 			playerData.addMaxMP(-12.5);
 
@@ -448,268 +420,267 @@ public class EntityEventsRM {
 
 
 	@SubscribeEvent
-	public void onLivingUpdate(LivingEvent.LivingTickEvent event) {
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
+	public void onLivingUpdate(EntityTickEvent.Pre event) {
+		if (event.getEntity() instanceof LivingEntity livingEntity) {
+			IGlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
 
-		// Spellblade Visual Effects
+			// Spellblade Visual Effects
 
-		// Xephiro Keyblade Debuff
+			// Xephiro Keyblade Debuff
 
 
-		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-					//System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
-					//System.out.println(player.getUUID());
-					//playerData.getStrengthStat().addModifier("Not Xephiro", -25, false, true);
-					//playerData.getMagicStat().addModifier("Not Xephiro", -25, false, true);
-					//playerData.getDefenseStat().addModifier("Not Xephiro", -25, false, true);
-				} else {
-					playerData.getStrengthStat().removeModifier("Not Xephiro");
-					playerData.getMagicStat().removeModifier("Not Xephiro");
-					playerData.getDefenseStat().removeModifier("Not Xephiro");
-				}
-			}
-		}
-
-		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if (playerData != null) {
-				if (globalData.getCanCounter() == 1) {
-					maxTicks = 200;
-					if (ticks <= maxTicks) {
-						ticks += 5;
-						//System.out.println(ticks);
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
+						//System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
+						//System.out.println(player.getUUID());
+						//playerData.getStrengthStat().addModifier("Not Xephiro", -25, false, true);
+						//playerData.getMagicStat().addModifier("Not Xephiro", -25, false, true);
+						//playerData.getDefenseStat().addModifier("Not Xephiro", -25, false, true);
 					} else {
-						globalData.setCanCounter(0);
-						ticks = 0;
+						playerData.getStrengthStat().removeModifier("Not Xephiro");
+						playerData.getMagicStat().removeModifier("Not Xephiro");
+						playerData.getDefenseStat().removeModifier("Not Xephiro");
 					}
 				}
 			}
-		}
 
-
-		// Form Shotlock Change Test
-		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
-				//playerData.setEquippedShotlock(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide);
-				//System.out.println(playerData.getEquippedShotlock());
-			} else {
-				//System.out.println(playerData.getEquippedShotlock());
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null) {
+					if (globalData.getCanCounter() == 1) {
+						maxTicks = 200;
+						if (ticks <= maxTicks) {
+							ticks += 5;
+							//System.out.println(ticks);
+						} else {
+							globalData.setCanCounter(0);
+							ticks = 0;
+						}
+					}
+				}
 			}
-		}
 
 
-		// Org Passives
-		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if(playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE){
-				playerData.getStrengthStat().addModifier("Organization",5,false,true);
-				playerData.getMagicStat().addModifier("Organization",5,false,true);
-				playerData.getDefenseStat().addModifier("Organization",5,false,true);
-			} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
-				playerData.getStrengthStat().removeModifier("Organization");
-				playerData.getMagicStat().removeModifier("Organization");
-				playerData.getDefenseStat().removeModifier("Organization");
+			// Form Shotlock Change Test
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
+					//playerData.setEquippedShotlock(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide);
+					//System.out.println(playerData.getEquippedShotlock());
+				} else {
+					//System.out.println(playerData.getEquippedShotlock());
+				}
 			}
-		}
 
-		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			IWorldCapabilities worldData = ModCapabilities.getWorld(player.level());
-			if(playerData != null && globalData != null) {
-				updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID+":"+ StringsRM.darkForm);
-				updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID+":"+ StringsRM.rageForm);
-				updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID+":"+ StringsRM.lightForm);
 
-				// Light/Darkness Within
-
-				double boostWithin = (playerData.getStrengthStat().get() + playerData.getMagicStat().get()) / 2;
-
-				//System.out.println("STR: "+playerData.getStrengthStat().get());
-				//System.out.println("MAG: "+playerData.getMagicStat().get());
-
-				//System.out.println("Potential Boost: "+boostWithin);
-
-				int darknessWithinBoost = (int) (boostWithin * (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1F));
-				int lightWithinBoost = (int) (boostWithin * (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1F));
-
-				if (playerData.isAbilityEquipped(StringsRM.lightWithin)) {
-					//System.out.println("Light Boost: "+ lightWithinBoost);
-					playerData.getStrengthStat().addModifier("light_within", lightWithinBoost, false, false);
-					playerData.getMagicStat().addModifier("light_within", lightWithinBoost, false, false);
-				} else {
-					playerData.getStrengthStat().removeModifier("light_within");
-					playerData.getMagicStat().removeModifier("light_within");
+			// Org Passives
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
+					playerData.getStrengthStat().addModifier("Organization", 5, false, true);
+					playerData.getMagicStat().addModifier("Organization", 5, false, true);
+					playerData.getDefenseStat().addModifier("Organization", 5, false, true);
+				} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
+					playerData.getStrengthStat().removeModifier("Organization");
+					playerData.getMagicStat().removeModifier("Organization");
+					playerData.getDefenseStat().removeModifier("Organization");
 				}
-				if (playerData.isAbilityEquipped(StringsRM.darknessWithin)){
-					//System.out.println("Dark Boost: "+ darknessWithinBoost);
-					playerData.getStrengthStat().addModifier("darkness_within", darknessWithinBoost, false, false);
-					playerData.getMagicStat().addModifier("darkness_within", darknessWithinBoost, false, false);
-				} else {
-					playerData.getStrengthStat().removeModifier("darkness_within");
-					playerData.getMagicStat().removeModifier("darkness_within");
-				}
+			}
 
-				if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
-					playerData.getStrengthStat().removeModifier("Riskcharge");
-				}
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				WorldData worldData = WorldData.get(player.getServer());
+				if (playerData != null && globalData != null) {
+					updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID + ":" + StringsRM.darkForm);
+					updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID + ":" + StringsRM.rageForm);
+					updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID + ":" + StringsRM.lightForm);
 
-				// Vehemence
+					// Light/Darkness Within
 
-				if (playerData.isAbilityEquipped(StringsRM.vehemence)) {
+					double boostWithin = (playerData.getStrengthStat().get() + playerData.getMagicStat().get()) / 2;
 
-					int vehemenceSTR = (int) (playerData.getStrengthStat().getStat() * 0.25F);
-					int vehemenceDEF = (int) (playerData.getDefenseStat().getStat() * 0.25F);
-					int vehemenceMAG = (int) (playerData.getMagicStat().getStat() * 0.25F);
+					//System.out.println("STR: "+playerData.getStrengthStat().get());
+					//System.out.println("MAG: "+playerData.getMagicStat().get());
 
-					if (playerData.getChosen() == SoAState.WARRIOR){
-						playerData.getStrengthStat().addModifier("Vehemence", vehemenceSTR,false, false);
-						playerData.getMagicStat().addModifier("Vehemence", -(vehemenceSTR/2), false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceSTR/2),false, false);
-					}
-					if (playerData.getChosen() == SoAState.MYSTIC){
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceMAG/2),false, false);
-						playerData.getMagicStat().addModifier("Vehemence", vehemenceMAG,false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceMAG/2),false, false);
-					}
-					if (playerData.getChosen() == SoAState.GUARDIAN){
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF/2),false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF,false, false);
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF/2),false, false);
-					}
-				} else if (!playerData.isAbilityEquipped(StringsRM.vehemence)) {
-					playerData.getStrengthStat().removeModifier("Vehemence");
-					playerData.getMagicStat().removeModifier("Vehemence");
-					playerData.getDefenseStat().removeModifier("Vehemence");
-				}
+					//System.out.println("Potential Boost: "+boostWithin);
 
-				if (playerData.isAbilityEquipped(StringsRM.dedication)) {
-					if (playerData.getChosen() == SoAState.WARRIOR){
-						playerData.getStrengthStat().addModifier("Dedication", (double) (playerData.getLevel()) /2,false, true);
-					}
-					if (playerData.getChosen() == SoAState.MYSTIC){
-						playerData.getMagicStat().addModifier("Dedication", (double) playerData.getLevel() /2,false, true);
-					}
-					if (playerData.getChosen() == SoAState.GUARDIAN){
-						playerData.getDefenseStat().addModifier("Dedication", (double) playerData.getLevel() /2,false, true);
-					}
-				} else {
-					playerData.getStrengthStat().removeModifier("Dedication");
-					playerData.getMagicStat().removeModifier("Dedication");
-					playerData.getDefenseStat().removeModifier("Dedication");
-				}
+					int darknessWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1F));
+					int lightWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1F));
 
-				// Hearts Are Power Ability
-
-				if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE){
-					float heartsBoost = (playerData.getHearts() * 0.0002f);
-					//System.out.println(playerData.getHearts() + " > " + heartsBoost);
-					float overBoost = heartsBoost * 0.025f;
-					//System.out.println(overBoost);
-					if (heartsBoost >= 50){
-						playerData.getStrengthStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
-						playerData.getMagicStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
-						playerData.getDefenseStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
+					if (playerData.isAbilityEquipped(StringsRM.lightWithin)) {
+						//System.out.println("Light Boost: "+ lightWithinBoost);
+						playerData.getStrengthStat().addModifier("light_within", lightWithinBoost, false, false);
+						playerData.getMagicStat().addModifier("light_within", lightWithinBoost, false, false);
 					} else {
-					playerData.getStrengthStat().addModifier("Hearts Are Power",heartsBoost,false,false);
-					playerData.getMagicStat().addModifier("Hearts Are Power",heartsBoost,false,false);
-					playerData.getDefenseStat().addModifier("Hearts Are Power",heartsBoost,false,false);
+						playerData.getStrengthStat().removeModifier("light_within");
+						playerData.getMagicStat().removeModifier("light_within");
 					}
-				}
-				else {
-					playerData.getStrengthStat().removeModifier("Hearts Are Power");
-					playerData.getMagicStat().removeModifier("Hearts Are Power");
-					playerData.getDefenseStat().removeModifier("Hearts Are Power");
-				}
-
-				if (playerData.getAlignment() == Utils.OrgMember.NONE){
-					playerData.getStrengthStat().removeModifier("Hearts Are Power");
-					playerData.getMagicStat().removeModifier("Hearts Are Power");
-					playerData.getDefenseStat().removeModifier("Hearts Are Power");
-				}
-
-				// My Friends Are My Power
-				if (playerData.isAbilityEquipped(StringsRM.friendsPower)){
-					Party party = worldData.getPartyFromMember(player.getUUID());
-					if (party != null){
-						int friendBoost = 5 * (party.getMembers().size() - 1);
-						playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, true);
-						playerData.getMagicStat().addModifier("Friendship", friendBoost, false, true);
-						playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, true);
+					if (playerData.isAbilityEquipped(StringsRM.darknessWithin)) {
+						//System.out.println("Dark Boost: "+ darknessWithinBoost);
+						playerData.getStrengthStat().addModifier("darkness_within", darknessWithinBoost, false, false);
+						playerData.getMagicStat().addModifier("darkness_within", darknessWithinBoost, false, false);
+					} else {
+						playerData.getStrengthStat().removeModifier("darkness_within");
+						playerData.getMagicStat().removeModifier("darkness_within");
 					}
-				} else {
-					playerData.getStrengthStat().removeModifier("Friendship");
-					playerData.getMagicStat().removeModifier("Friendship");
-					playerData.getDefenseStat().removeModifier("Friendship");
-				}
 
-				// Attack Haste Ability
-				if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.attackHaste)) {
-					double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
-					player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
-				} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
-					player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
-				}
-
-				// Tidus Keyblade
-				if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
-					if (player.isUnderWater()){
-						playerData.getStrengthStat().addModifier("Tidus", 5, false, false);
-						player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 10, 1));
-						player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 10, 0));
+					if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+						playerData.getStrengthStat().removeModifier("Riskcharge");
 					}
-					else if (!player.isUnderWater()){
+
+					// Vehemence
+
+					if (playerData.isAbilityEquipped(StringsRM.vehemence)) {
+
+						int vehemenceSTR = (int) (playerData.getStrengthStat().getStat() * 0.25F);
+						int vehemenceDEF = (int) (playerData.getDefenseStat().getStat() * 0.25F);
+						int vehemenceMAG = (int) (playerData.getMagicStat().getStat() * 0.25F);
+
+						if (playerData.getChosen() == SoAState.WARRIOR) {
+							playerData.getStrengthStat().addModifier("Vehemence", vehemenceSTR, false, false);
+							playerData.getMagicStat().addModifier("Vehemence", -(vehemenceSTR / 2), false, false);
+							playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceSTR / 2), false, false);
+						}
+						if (playerData.getChosen() == SoAState.MYSTIC) {
+							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceMAG / 2), false, false);
+							playerData.getMagicStat().addModifier("Vehemence", vehemenceMAG, false, false);
+							playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceMAG / 2), false, false);
+						}
+						if (playerData.getChosen() == SoAState.GUARDIAN) {
+							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
+							playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF, false, false);
+							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
+						}
+					} else if (!playerData.isAbilityEquipped(StringsRM.vehemence)) {
+						playerData.getStrengthStat().removeModifier("Vehemence");
+						playerData.getMagicStat().removeModifier("Vehemence");
+						playerData.getDefenseStat().removeModifier("Vehemence");
+					}
+
+					if (playerData.isAbilityEquipped(StringsRM.dedication)) {
+						if (playerData.getChosen() == SoAState.WARRIOR) {
+							playerData.getStrengthStat().addModifier("Dedication", (double) (playerData.getLevel()) / 2, false, true);
+						}
+						if (playerData.getChosen() == SoAState.MYSTIC) {
+							playerData.getMagicStat().addModifier("Dedication", (double) playerData.getLevel() / 2, false, true);
+						}
+						if (playerData.getChosen() == SoAState.GUARDIAN) {
+							playerData.getDefenseStat().addModifier("Dedication", (double) playerData.getLevel() / 2, false, true);
+						}
+					} else {
+						playerData.getStrengthStat().removeModifier("Dedication");
+						playerData.getMagicStat().removeModifier("Dedication");
+						playerData.getDefenseStat().removeModifier("Dedication");
+					}
+
+					// Hearts Are Power Ability
+
+					if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE) {
+						float heartsBoost = (playerData.getHearts() * 0.0002f);
+						//System.out.println(playerData.getHearts() + " > " + heartsBoost);
+						float overBoost = heartsBoost * 0.025f;
+						//System.out.println(overBoost);
+						if (heartsBoost >= 50) {
+							playerData.getStrengthStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+							playerData.getMagicStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+							playerData.getDefenseStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+						} else {
+							playerData.getStrengthStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+							playerData.getMagicStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+							playerData.getDefenseStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+						}
+					} else {
+						playerData.getStrengthStat().removeModifier("Hearts Are Power");
+						playerData.getMagicStat().removeModifier("Hearts Are Power");
+						playerData.getDefenseStat().removeModifier("Hearts Are Power");
+					}
+
+					if (playerData.getAlignment() == Utils.OrgMember.NONE) {
+						playerData.getStrengthStat().removeModifier("Hearts Are Power");
+						playerData.getMagicStat().removeModifier("Hearts Are Power");
+						playerData.getDefenseStat().removeModifier("Hearts Are Power");
+					}
+
+					// My Friends Are My Power
+					if (playerData.isAbilityEquipped(StringsRM.friendsPower)) {
+						Party party = worldData.getPartyFromMember(player.getUUID());
+						if (party != null) {
+							int friendBoost = 5 * (party.getMembers().size() - 1);
+							playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, true);
+							playerData.getMagicStat().addModifier("Friendship", friendBoost, false, true);
+							playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, true);
+						}
+					} else {
+						playerData.getStrengthStat().removeModifier("Friendship");
+						playerData.getMagicStat().removeModifier("Friendship");
+						playerData.getDefenseStat().removeModifier("Friendship");
+					}
+
+					// Attack Haste Ability
+					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.attackHaste)) {
+						double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
+						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
+					} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
+						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
+					}
+
+					// Tidus Keyblade
+					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
+						if (player.isUnderWater()) {
+							playerData.getStrengthStat().addModifier("Tidus", 5, false, false);
+							player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 10, 1));
+							player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 10, 0));
+						} else if (!player.isUnderWater()) {
+							playerData.getStrengthStat().removeModifier("Tidus");
+						}
+					} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)) {
 						playerData.getStrengthStat().removeModifier("Tidus");
 					}
-				} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)){
-					playerData.getStrengthStat().removeModifier("Tidus");
-				}
 
-				// Panel System
-				if (!player.level().isClientSide){
-					if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
+					// Panel System
+					if (!player.level().isClientSide) {
+						if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
 
-						if (globalData.getSTRPanel() > ModConfigs.panelLimit){
-							playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-							globalData.setSTRPanel(ModConfigs.panelLimit);
+							if (globalData.getSTRPanel() > ModConfigs.panelLimit) {
+								playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+								globalData.setSTRPanel(ModConfigs.panelLimit);
+							}
+							if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
+								playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+								globalData.setMAGPanel(ModConfigs.panelLimit);
+							}
+							if (globalData.getDEFPanel() > ModConfigs.panelLimit) {
+								playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+								globalData.setDEFPanel(ModConfigs.panelLimit);
+							}
+
+							playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
+							playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
+							playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
+
+
 						}
-						if (globalData.getMAGPanel() > ModConfigs.panelLimit){
-							playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-							globalData.setMAGPanel(ModConfigs.panelLimit);
-						}
-						if (globalData.getDEFPanel() > ModConfigs.panelLimit){
-							playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-							globalData.setDEFPanel(ModConfigs.panelLimit);
-						}
-
-						playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
-						playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
-						playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
-
-
+					} else {
+						playerData.getStrengthStat().removeModifier("Panel");
+						playerData.getMagicStat().removeModifier("Panel");
+						playerData.getDefenseStat().removeModifier("Panel");
+						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 					}
-				} else {
-					playerData.getStrengthStat().removeModifier("Panel");
-					playerData.getMagicStat().removeModifier("Panel");
-					playerData.getDefenseStat().removeModifier("Panel");
-					//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+
+
 				}
 
-
 			}
 
-		}
+			if (globalData != null) {
 
-		if (globalData != null) {
+				// RC Cooldown mechanic
 
-			// RC Cooldown mechanic
-
-			if (globalData.getRCCooldownTicks() > 0){
-				globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
-			}
+				if (globalData.getRCCooldownTicks() > 0) {
+					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
+				}
 
 			/*
 			if (globalData.getBlockedTicks() > 0){
@@ -718,93 +689,93 @@ public class EntityEventsRM {
 			}
 			*/
 
-			// Step Ticks
-			if(globalData.getStepTicks() > 0) {
-				globalData.remStepTicks(1);
-				if (globalData.getStepTicks() <= 0) { // Step has finished, notify all the clients about it
-					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
-					if(event.getEntity() instanceof Player player) {
-						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-						if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())) {
-							player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
-						}
-						if (playerData.isAbilityEquipped(StringsRM.lightStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
-							player.level().playSound(null, player.blockPosition(), ModSoundsRM.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
-						}
-						player.invulnerableTime = 4;
-					}
-				}
-			}
-
-			// Spells go Down Below
-
-			// Slow
-			if (globalData.getSlowTicks() > 0) {
-				globalData.remSlowTicks(1);
-				if (globalData.getSlowTicks() > 0){
-
-				}
-				if (globalData.getSlowTicks() <= 0) {
-					event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
-					event.getEntity().getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
-				}
-			}
-
-			// Haste
-			if (event.getEntity() instanceof Player player){
-				if (globalData.getHasteTicks() > 0) {
-					globalData.remHasteTicks(1);
-					//System.out.println(globalData.getHasteTicks());
-					if (globalData.getHasteTicks() <= 0) {
-						player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-						player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
-					}
-				}
-			}
-			// Berserk
-			if (event.getEntity() instanceof Player player){
-				if (globalData.getBerserkTicks() > 0) {
-					globalData.remBerserkTicks(1);
-					if (globalData.getBerserkTicks() <= 0) {
-						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-						playerData.getStrengthStat().removeModifier("berserk");
-						playerData.getDefenseStat().removeModifier("berserk");
-						if(!event.getEntity().level().isClientSide) {
-							PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player); //Sync KK stat packet
-							PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
+				// Step Ticks
+				if (globalData.getStepTicks() > 0) {
+					globalData.remStepTicks(1);
+					if (globalData.getStepTicks() <= 0) { // Step has finished, notify all the clients about it
+						PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (GlobalDataRM) globalData);
+						if (event.getEntity() instanceof Player player) {
+							PlayerData playerData = PlayerData.get(player);
+							if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())) {
+								player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
+							}
+							if (playerData.isAbilityEquipped(StringsRM.lightStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
+								player.level().playSound(null, player.blockPosition(), ModSoundsRM.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
+							}
+							player.invulnerableTime = 4;
 						}
 					}
 				}
-			}
 
+				// Spells go Down Below
 
+				// Slow
+				if (globalData.getSlowTicks() > 0) {
+					globalData.remSlowTicks(1);
+					if (globalData.getSlowTicks() > 0) {
 
-			// HP / MP / EXP Walker
-			if (event.getEntity() instanceof Player player) {
-				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-				if(playerData != null) {
-					if (player.isSprinting()) {
-						if (player.tickCount % 40 == 0 && playerData.isAbilityEquipped(StringsRM.hpWalker)) {
-							int hpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpWalker);
-							player.heal(hpWalkerMult);
+					}
+					if (globalData.getSlowTicks() <= 0) {
+						livingEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+						livingEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+					}
+				}
+
+				// Haste
+				if (event.getEntity() instanceof Player player) {
+					if (globalData.getHasteTicks() > 0) {
+						globalData.remHasteTicks(1);
+						//System.out.println(globalData.getHasteTicks());
+						if (globalData.getHasteTicks() <= 0) {
+							player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+							player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Haste"), -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+
 						}
-						if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.mpWalker)) {
-							if (!playerData.getRecharge()) {
-								int mpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpWalker);
-								playerData.addMP(0.5 * mpWalkerMult);
+					}
+				}
+				// Berserk
+				if (event.getEntity() instanceof Player player) {
+					if (globalData.getBerserkTicks() > 0) {
+						globalData.remBerserkTicks(1);
+						if (globalData.getBerserkTicks() <= 0) {
+							PlayerData playerData = PlayerData.get(player);
+							playerData.getStrengthStat().removeModifier("berserk");
+							playerData.getDefenseStat().removeModifier("berserk");
+							if (!event.getEntity().level().isClientSide) {
+								PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player); //Sync KK stat packet
+								PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalDataRM) globalData);
 							}
 						}
-						if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker)) {
-							playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
-						}
-						if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
-							playerData.addHearts(5* playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
-						}
-						if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.focusWalker)) {
-							if (!playerData.getRecharge()) {
-								int focusWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.focusWalker);
-								playerData.addFocus(0.5 * focusWalkerMult);
+					}
+				}
+
+
+				// HP / MP / EXP Walker
+				if (event.getEntity() instanceof Player player) {
+					PlayerData playerData = PlayerData.get(player);
+					if (playerData != null) {
+						if (player.isSprinting()) {
+							if (player.tickCount % 40 == 0 && playerData.isAbilityEquipped(StringsRM.hpWalker)) {
+								int hpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpWalker);
+								player.heal(hpWalkerMult);
+							}
+							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.mpWalker)) {
+								if (!playerData.getRecharge()) {
+									int mpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpWalker);
+									playerData.addMP(0.5 * mpWalkerMult);
+								}
+							}
+							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker)) {
+								playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
+							}
+							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
+								playerData.addHearts(5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
+							}
+							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.focusWalker)) {
+								if (!playerData.getRecharge()) {
+									int focusWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.focusWalker);
+									playerData.addFocus(0.5 * focusWalkerMult);
+								}
 							}
 						}
 					}
@@ -817,14 +788,14 @@ public class EntityEventsRM {
 	
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event){
-		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
+		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
 
 			if (1 == globalData.getAutoLifeActive()){
 				if (player.getHealth() <= 0){
 					globalData.remAutoLifeActive(1);
-					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
+					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalDataRM) globalData);
 					event.setCanceled(true);
 					player.setHealth(10.0F);
 					player.invulnerableTime = 10;
@@ -842,9 +813,9 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void hurtEvent(LivingHurtEvent event){
+	public void hurtEvent(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
-            IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+			PlayerData playerData = PlayerData.get(player);
 			if(playerData == null)
 				return;
 
@@ -853,52 +824,44 @@ public class EntityEventsRM {
 
 			// Adrenaline
 			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
-				if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
+				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
 					playerData.getStrengthStat().addModifier("adrenaline", 5, false, false);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
-				}
+					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);				}
 			}
 			// Critical Surge
 			if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
-				if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
+				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
 					playerData.getMagicStat().addModifier("critical_surge", 5, false, false);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
-				}
+					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);				}
 			}
 			if (player.getHealth() + 1 >= player.getMaxHealth() / 4) {
 				playerData.getStrengthStat().removeModifier("adrenaline");
 				playerData.getMagicStat().removeModifier("critical_surge");
-				PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+				PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 			}
 
 			//Protect Abilities
 
 			// MP Shield
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
-				float DMGTaken = event.getAmount();
+				float DMGTaken = event.getNewDamage();
 
-				//System.out.println("Damage Dealt: "+DMGTaken);
-				//System.out.println("MP Taken: "+ 1.5 * DMGTaken);
-
-				event.setCanceled(true);
 				if (DMGTaken > playerData.getMP()) {
 					float overflowDMG = (float) (DMGTaken - playerData.getMP());
-					event.getEntity().hurt(event.getEntity().damageSources().indirectMagic(event.getEntity(), null), overflowDMG);
-
+					event.setNewDamage(overflowDMG);
 				} else {
+					event.setNewDamage(0);
 					playerData.remMP(DMGTaken * 1.5);
 					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
 					if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
 						playerData.addMP(mpRageModifier);
-						//System.out.println("MP Restored via Mana Shield: " + mpRageModifier);
-						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 					if (playerData.isAbilityEquipped(Strings.damageDrive)) {
 						playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
-						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 				}
-
 
 			}
 
@@ -909,17 +872,8 @@ public class EntityEventsRM {
 
 		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+			PlayerData playerData = PlayerData.get(player);
 			if(playerData != null) {
-				/*
-				double LifeStealAmount = (float) (playerData.getStrengthStat().getStat() * 0.15F);
-				System.out.println("Entity Hit: "+event.getEntity());
-				System.out.println("Attacker: "+event.getSource().getEntity());
-				System.out.println(LifeStealAmount);
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() || player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-					player.heal((int) LifeStealAmount);
-				}
-				 */
 
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
@@ -938,8 +892,7 @@ public class EntityEventsRM {
 				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
 
 				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
-				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
-//player
+				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F); //player
 
 				if (event.getSource().type().msgId().equals("player")) {
 
@@ -967,7 +920,7 @@ public class EntityEventsRM {
 											// Fire Blade
 											event.getEntity().invulnerableTime = 0;
 											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, event.getEntity(), null), (float) ((fireBoosts / 2) * dmg));
-											event.getEntity().setSecondsOnFire(2 * fireBoosts);
+											event.getEntity().setRemainingFireTicks(2 * fireBoosts);
 											event.getEntity().level().addAlwaysVisibleParticle(ParticleTypes.FLAME, event.getEntity().getX() + event.getEntity().level().random.nextDouble() - 0.5D, event.getEntity().getY() + event.getEntity().level().random.nextDouble() * 2D, event.getEntity().getZ() + event.getEntity().level().random.nextDouble() - 0.5D, 0, 0, 0);
 											break;
 
@@ -1034,9 +987,9 @@ public class EntityEventsRM {
 		}
 	}
 
-	public void hitEntity(LivingHurtEvent event){
+	public void hitEntity(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
-			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+			PlayerData playerData = PlayerData.get(player);
 			if(playerData == null)
 				return;
 
@@ -1044,7 +997,7 @@ public class EntityEventsRM {
 			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
 				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
 				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
-				float damage = event.getAmount();
+				float damage = event.getNewDamage();
 
 					/*
 					System.out.println("Dark Bonus Res? "+darkBoosts);
@@ -1054,7 +1007,7 @@ public class EntityEventsRM {
 
 
 				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
-					System.out.println("Darkness");
+					//System.out.println("Darkness");
 					damage -= (damage * darkBoosts);
 					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
 						damage += (damage * lightBoosts);
@@ -1071,14 +1024,14 @@ public class EntityEventsRM {
 				 */
 
 				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
-					System.out.println("Light");
+					//System.out.println("Light");
 					damage -= (damage * lightBoosts);
 					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
 						damage += (damage * darkBoosts);
 					}
 				}
 				//System.out.println("After Negation: "+damage);
-				event.setAmount(damage);
+				event.setNewDamage(damage);
 			}
 
 

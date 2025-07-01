@@ -37,6 +37,6 @@ public class magicWarp extends Magic {
 
 	@Override
 	protected void playMagicCastSound(Player player, Player caster, int level) {
-		player.level().playSound(null, player.blockPosition(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
+		player.level().playSound(null, player.position().x(), player.position().y(), player.position().z(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }
