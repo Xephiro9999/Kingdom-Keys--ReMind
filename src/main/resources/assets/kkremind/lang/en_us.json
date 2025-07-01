@@ -257,7 +257,12 @@
 
   "key.kkremind.summonspirit": "Summon Spirit",
 
-  "entity.kkremind.chirithy": "Chirithy"
+  "entity.kkremind.chirithy": "Chirithy",
+
+  "effect.kkremind.haste_rm": "Haste",
+  "effect.kkremind.haste_rm.1": "Hastera",
+  "effect.kkremind.haste_rm.2": "Hastega",
+  "effect.kkremind.slow_rm": "Slow"
 
 
 }

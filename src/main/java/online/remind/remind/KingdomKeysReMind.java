@@ -31,7 +31,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.command.ModCommands;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.effect.ModEffects;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
@@ -74,7 +74,7 @@ public class KingdomKeysReMind {
         ModAbilitiesRM.ABILITIES.register(modEventBus);
         ModDriveFormsRM.DRIVE_FORMS.register(modEventBus);
         ModShotlocksRM.SHOTLOCKS.register(modEventBus);
-        ModEffects.MOB_EFFECTS.register(modEventBus);
+        ModMobEffectsRM.MOB_EFFECTS.register(modEventBus);
         ReMindParticles.PARTICLE_TYPES.register(modEventBus);
         ModReactionCommandsRM.REACTION_COMMANDS.register(modEventBus);
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);

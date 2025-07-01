@@ -29,7 +29,7 @@ public class CommonConfig {
 
         donorKeybladeGrant = builder
                 .comment("Enables Donators to get commissioned keyblades upon first join. True by Default.")
-                .define("donorKeybladeGrant", true);
+                .define("Give Donors Keyblades", true);
 
         builder.pop();
         builder.push("Forms");
@@ -37,7 +37,7 @@ public class CommonConfig {
         rageFormPercent = builder
                 .comment("Changes the base chance for Rage Form's Reaction Command to appear. Setting this to 0 will disable the Reaction Command.")
                 .comment("Default: 10.0.")
-                .defineInRange("rageFormPercent", 10.0,0,100);
+                .defineInRange("Base Rage Form Chance", 10.0,0,100);
 
         builder.pop();
         builder.push("NG+");

@@ -4,8 +4,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class StoneEffect extends MobEffect {
-    public StoneEffect(MobEffectCategory pCategory, int pColor){
+public class AutoLifeEffect extends MobEffect {
+    public AutoLifeEffect(MobEffectCategory pCategory, int pColor){
         super(pCategory, pColor);
     }
 
