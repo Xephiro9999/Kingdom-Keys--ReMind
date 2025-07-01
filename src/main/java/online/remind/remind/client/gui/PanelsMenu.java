@@ -14,6 +14,7 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
@@ -188,11 +189,11 @@ public class PanelsMenu extends MenuBackground {
 
         int i = 0;
         // STR
-        if (playerData.getHearts() >= 1000 * addedData.getSTRPanel()+1 && addedData.getSTRPanel() < 50) {
+        if (playerData.getHearts() >= 1000 * addedData.getSTRPanel()+1 && addedData.getSTRPanel() < ModConfigs.panelLimit) {
             addRenderableWidget(strUp = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth,("STR +  -  Cost: "+ ChatFormatting.GREEN + (1000 * (addedData.getSTRPanel()+1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("strUp");
             }));
-        } else if (playerData.getHearts() < 1000 * addedData.getSTRPanel()+1 && addedData.getSTRPanel() < 50){
+        } else if (playerData.getHearts() < 1000 * addedData.getSTRPanel()+1 && addedData.getSTRPanel() < ModConfigs.panelLimit){
             addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "STR +  -  Cost: "+ ChatFormatting.DARK_RED + (1000 * (addedData.getSTRPanel()+1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
@@ -202,11 +203,11 @@ public class PanelsMenu extends MenuBackground {
             }));
         }
         // MAG
-        if (playerData.getHearts() >= 1000 * addedData.getMAGPanel()+1 && addedData.getMAGPanel() < 50) {
+        if (playerData.getHearts() >= 1000 * addedData.getMAGPanel()+1 && addedData.getMAGPanel() < ModConfigs.panelLimit) {
             addRenderableWidget(magUp = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, ("MAG +  -  Cost: "+ ChatFormatting.GREEN +  (1000 * (addedData.getMAGPanel() +1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("magUp");
             }));
-        } else if (playerData.getHearts() < 1000 * addedData.getMAGPanel() && addedData.getMAGPanel()+1 < 50){
+        } else if (playerData.getHearts() < 1000 * addedData.getMAGPanel() && addedData.getMAGPanel()+1 < ModConfigs.panelLimit){
             addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, "MAG +  -  Cost: " + ChatFormatting.DARK_RED +  (1000 * (addedData.getMAGPanel()+1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
@@ -216,11 +217,11 @@ public class PanelsMenu extends MenuBackground {
             }));
         }
         // DEF
-        if (playerData.getHearts() >= 1000 * addedData.getDEFPanel()+1 && addedData.getDEFPanel() < 50) {
+        if (playerData.getHearts() >= 1000 * addedData.getDEFPanel()+1 && addedData.getDEFPanel() < ModConfigs.panelLimit) {
                 addRenderableWidget(defUp = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, ("DEF +  -  Cost: "+ ChatFormatting.GREEN + (1000 * (addedData.getDEFPanel()+1))), MenuButton.ButtonType.BUTTON, false, (e) -> {
                     action("defUp");
                 }));
-        } else if  (playerData.getHearts() < 1000 * addedData.getDEFPanel()+1 && addedData.getDEFPanel() < 50){
+        } else if  (playerData.getHearts() < 1000 * addedData.getDEFPanel()+1 && addedData.getDEFPanel() < ModConfigs.panelLimit){
             addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, "DEF +  -  Cost: "+ ChatFormatting.DARK_RED + (1000 * (addedData.getDEFPanel() +1)), MenuButton.ButtonType.BUTTON, false, (e) -> {
                 action("req");
             }));
@@ -398,9 +399,9 @@ public class PanelsMenu extends MenuBackground {
         //addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
 
 
-        addRenderableWidget(str = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel STR: "), "" + addedData.getSTRPanel() + " ["+ playerData.getStrength(true) + "]", 0xaa190f));
-        addRenderableWidget(mag = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel MAG: "), "" + addedData.getMAGPanel() + " ["+ playerData.getMagic(true) + "]", 0xaa190f));
-        addRenderableWidget(def = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel DEF: "), "" + addedData.getDEFPanel() + " ["+ playerData.getDefense(true) + "]", 0xaa190f));
+        addRenderableWidget(str = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel STR: "), "" + addedData.getSTRPanel() + " / " + ChatFormatting.GOLD + ModConfigs.panelLimit + ChatFormatting.YELLOW +  " ["+ playerData.getStrength(true) + "]", 0xaa190f));
+        addRenderableWidget(mag = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel MAG: "), "" + addedData.getMAGPanel() + " / " + ChatFormatting.GOLD + ModConfigs.panelLimit + ChatFormatting.YELLOW +  " ["+ playerData.getMagic(true) + "]", 0xaa190f));
+        addRenderableWidget(def = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("Panel DEF: "), "" + addedData.getDEFPanel() + " / " + ChatFormatting.GOLD + ModConfigs.panelLimit + ChatFormatting.YELLOW + " ["+  playerData.getDefense(true) + "]", 0xaa190f));
         addRenderableWidget(ap = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth, Utils.translateToLocal("AP: "), "" + (int) playerData.getMaxAPStat().getStat(), 0xaa190f));
 
         super.init();

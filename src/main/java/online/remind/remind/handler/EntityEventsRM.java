@@ -125,7 +125,24 @@ public class EntityEventsRM {
 				// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 				globalData.setPanelsEnabled(0);
+			} else if (globalData.getPanelsEnabled() == 1) {
+				// Fail Safe -- Login
+				if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+					playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+					globalData.setSTRPanel(ModConfigs.panelLimit);
+				}
+				if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+					playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+					globalData.setMAGPanel(ModConfigs.panelLimit);
+				}
+				if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+					playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+					globalData.setDEFPanel(ModConfigs.panelLimit);
+				}
 			}
+
+
+
 			globalData.setNGPEnabled(1);
 
 			if (globalData.getNGPEnabled() == 1) {
@@ -654,12 +671,25 @@ public class EntityEventsRM {
 				// Panel System
 				if (!player.level().isClientSide){
 					if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
+
+						if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+							playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+							globalData.setSTRPanel(ModConfigs.panelLimit);
+						}
+						if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+							playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+							globalData.setMAGPanel(ModConfigs.panelLimit);
+						}
+						if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+							playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+							globalData.setDEFPanel(ModConfigs.panelLimit);
+						}
+
 						playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
 						playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
 						playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
 
-						//System.out.println("Panel Buff Added");
-						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
+
 					}
 				} else {
 					playerData.getStrengthStat().removeModifier("Panel");
