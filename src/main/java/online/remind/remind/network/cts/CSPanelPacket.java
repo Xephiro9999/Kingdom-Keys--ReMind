@@ -211,6 +211,21 @@ public class CSPanelPacket {
                 break;
         }
 
+        // Failsafe
+
+        if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+            playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+            globalData.setSTRPanel(ModConfigs.panelLimit);
+        }
+        if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+            playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+            globalData.setMAGPanel(ModConfigs.panelLimit);
+        }
+        if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+            playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
+            globalData.setDEFPanel(ModConfigs.panelLimit);
+        }
+
         PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), player);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         ctx.get().setPacketHandled(true);

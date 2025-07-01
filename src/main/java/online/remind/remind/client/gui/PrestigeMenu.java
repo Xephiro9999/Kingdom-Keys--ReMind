@@ -1,5 +1,6 @@
 package online.remind.remind.client.gui;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -131,13 +132,13 @@ public class PrestigeMenu extends MenuBackground {
         addRenderableWidget(guardianPath = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, Utils.translateToLocal("NG+ \uD83D\uDEE1 Count: "),"" + addedData.getNGPGuardianCount(), 0xe3ce44));
 
         // Stats Column
-        addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2 + " (Cap: "+ ModConfigs.hpCap+")", 0x3ECE44));
-        addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2 + " (Cap: "+ ModConfigs.mpCap+")", 0x3ECE44));
+        addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2 + " / " + ChatFormatting.GOLD + ModConfigs.hpCap, 0x3ECE44));
+        addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2 + " / " + ChatFormatting.GOLD + ModConfigs.mpCap, 0x3ECE44));
 
 
-        addRenderableWidget(gainedSTR = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained STR: "), "" + addedData.getSTRBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
-        addRenderableWidget(gainedMAG = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained MAG: "), "" + addedData.getMAGBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
-        addRenderableWidget(gainedDEF = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained DEF: "), "" + addedData.getDEFBonus() + " (Cap: "+ ModConfigs.statCap+")", 0xaa190f));
+        addRenderableWidget(gainedSTR = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained STR: "), "" + addedData.getSTRBonus() + " / "+ ChatFormatting.GOLD + ModConfigs.statCap, 0xaa190f));
+        addRenderableWidget(gainedMAG = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained MAG: "), "" + addedData.getMAGBonus() + " / "+ ChatFormatting.GOLD + ModConfigs.statCap, 0xaa190f));
+        addRenderableWidget(gainedDEF = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained DEF: "), "" + addedData.getDEFBonus() + " / "+ ChatFormatting.GOLD + ModConfigs.statCap, 0xaa190f));
     }
 
 
