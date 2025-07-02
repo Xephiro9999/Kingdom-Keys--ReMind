@@ -734,6 +734,41 @@ public class EntityEventsRM {
 					}
 				}
 
+				// Stone
+
+				if (event.getEntity() instanceof Player player) {
+					PlayerData playerData = PlayerData.get(player);
+					if (player.hasEffect(ModMobEffectsRM.STONE)) {
+
+					}
+				}
+
+				// Regen
+				if (event.getEntity() instanceof Player player) {
+					PlayerData playerData = PlayerData.get(player);
+					if (player.hasEffect(ModMobEffectsRM.REGEN)) {
+						MobEffectInstance regen = player.getEffect(ModMobEffectsRM.REGEN);
+
+						int amp = regen.getAmplifier();
+
+						switch(amp){
+							case 0:
+								player.heal(1);
+								break;
+							case 1:
+								player.heal(2);
+								break;
+							case 2:
+								player.heal(3);
+								playerData.addMP(0.5);
+								playerData.addFocus(0.5);
+								break;
+						}
+					}
+				}
+
+
+
 
 				// HP / MP / EXP Walker
 				if (event.getEntity() instanceof Player player) {

@@ -43,6 +43,13 @@
   "magic.kkremind.magic_esuna0.name": "Esuna",
   "magic.kkremind.magic_dispel0.name": "Dispel",
   "magic.kkremind.magic_faith0.name": "Faith",
+  "magic.kkremind.magic_regen0.name": "Regen",
+  "magic.kkremind.magic_regen1.name": "Regenra",
+  "magic.kkremind.magic_regen2.name": "Regenga",
+  "magic.kkremind.magic_death0.name": "LV4 Death",
+  "magic.kkremind.magic_death1.name": "LV3 Death",
+  "magic.kkremind.magic_death2.name": "LV2 Death",
+  "magic.kkremind.magic_death3.name": "LV1 Death",
 
 
 
@@ -62,6 +69,7 @@
   "item.kkremind.dispel_spell": "Dispel Spell",
   "item.kkremind.warp_spell": "Warp Spell",
   "item.kkremind.faith_spell": "Faith Spell",
+  "item.kkremind.regen_spell": "Regen Spell",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
@@ -262,7 +270,11 @@
   "effect.kkremind.haste_rm": "Haste (Re:Mind)",
   "effect.kkremind.haste_rm.1": "Hastera",
   "effect.kkremind.haste_rm.2": "Hastega",
-  "effect.kkremind.slow_rm": "Slow (Re:Mind)"
+  "effect.kkremind.slow_rm": "Slow (Re:Mind)",
+  "effect.kkremind.silence": "Silence",
+  "effect.kkremind.berserk": "Berserk",
+  "effect.kkremind.regen": "Regen",
+  "effect.kkremind.auto_life": "Auto-Life"
 
 
 }
