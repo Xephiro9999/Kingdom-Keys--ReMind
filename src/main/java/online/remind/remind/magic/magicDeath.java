@@ -22,6 +22,25 @@ public class magicDeath extends Magic {
     @Override
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData casterData = PlayerData.get(caster);
+        int crisisLv = 0;
+
+        float casterHPPercent = ((caster.getMaxHealth() - caster.getHealth()) / caster.getMaxHealth()) *100f;
+
+
+        if (casterHPPercent >= 25 && casterHPPercent <= 50){
+            crisisLv = 1;
+        }
+        if (casterHPPercent >= 50 && casterHPPercent <= 75){
+            crisisLv = 2;
+        }
+        if (casterHPPercent >= 75){
+            crisisLv = 3;
+        }
+
+        System.out.println("Crisis Level: " + crisisLv);
+
+
+
 
         if (lockOnEntity != null){
 
@@ -42,17 +61,10 @@ public class magicDeath extends Magic {
                     System.out.println("Unequipped pesky ability");
                     PacketHandler.syncToAllAround((Player) lockOnEntity, target);
                 }
-
-                // Chance Breakdown
-                /*
-                System.out.println("Caster's MAG: " + casterData.getMagic(true));
-                System.out.println("Target's DEF: " + target.getDefense(true));
-                System.out.println("Increased Chance based on Target's Missing HP %: " + chanceBoost);
-                 */
-
                 double roll = Math.random() * 100;
-                switch(level){
+                switch(crisisLv){
                     case 0: // Death Lv4
+                        caster.sendSystemMessage(Component.literal("<Death> You hardly need my help you know..."));
                         if (targetLevel % 4 == 0){
                             chance += chanceBoost;
                             System.out.println("Target meets Level Req! Chance: " + chance);
@@ -68,6 +80,7 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 1: // Death Lv3
+                        caster.sendSystemMessage(Component.literal("<Death> You've need of my strength..? As you wish..."));
                         if (targetLevel % 3 == 0){
                             chance += chanceBoost;
                             System.out.println("Target meets Level Req! Chance: " + chance);
@@ -85,6 +98,7 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 2: // Death Lv2
+                        caster.sendSystemMessage(Component.literal("<Death> My approach draws near on you and your foe... but first... THEM."));
                         if (targetLevel % 2 == 0){
                             chance += chanceBoost;
                             System.out.println("Target meets Level Req! Chance: " + chance);
@@ -100,6 +114,7 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 3: // Death Lv1
+                        caster.sendSystemMessage(Component.literal("<Death> On my doorstep you beg for my aid? So be it."));
                         chance += chanceBoost;
                         System.out.println("Target meets Level Req! Chance: " + chance);
                         if (roll <= chance){
@@ -115,10 +130,11 @@ public class magicDeath extends Magic {
                 System.out.println(chance);
                 double roll = Math.random() * 100;
                 System.out.println(roll);
-                switch(level){
+                switch(crisisLv){
                     case 0: // Death Lv4
+                        caster.sendSystemMessage(Component.literal("<Death> You hardly need my help you know..."));
                         if (mobLvl % 4 == 0){
-                            chance += 10;
+                            chance += 20;
                             if (roll <= chance){
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
@@ -129,8 +145,9 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 1: // Death Lv3
+                        caster.sendSystemMessage(Component.literal("<Death> You've need of my strength..? As you wish..."));
                         if (mobLvl % 3 == 0){
-                            chance += 10;
+                            chance += 30;
                             if (roll <= chance){
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
@@ -141,8 +158,9 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 2: // Death Lv2
+                        caster.sendSystemMessage(Component.literal("<Death> My approach draws near on you and your foe... but first... THEM."));
                         if (mobLvl % 2 == 0){
-                            chance += 10;
+                            chance += 40;
                             if (roll <= chance){
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
@@ -153,7 +171,8 @@ public class magicDeath extends Magic {
                         }
                         break;
                     case 3: // Death Lv1
-                        chance += 10;
+                        caster.sendSystemMessage(Component.literal("<Death> On my doorstep you beg for my aid? So be it."));
+                        chance += 50;
                         if (roll <= chance){
                             lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                         }
