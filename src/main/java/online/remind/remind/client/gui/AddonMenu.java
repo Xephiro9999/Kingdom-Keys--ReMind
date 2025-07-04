@@ -18,10 +18,10 @@ public class AddonMenu extends MenuScreen {
     }
 
     public enum RMButtons {
-        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL
+        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
     }
 
-    MenuButton prestige, dreamEater, credits, wiki, panel;
+    MenuButton prestige, dreamEater, credits, wiki, panel, wallet;
 
     protected void action(RMButtons buttonID){
         switch (buttonID){
@@ -30,6 +30,7 @@ public class AddonMenu extends MenuScreen {
             case CREDITS -> minecraft.setScreen(new CreditsScreen());
             case PANEL -> minecraft.setScreen(new PanelsMenu());
             case WIKI -> minecraft.setScreen(new WikiMenu());
+            case WALLET -> minecraft.setScreen(new WalletMenu());
 
         }
     }
@@ -79,6 +80,10 @@ public class AddonMenu extends MenuScreen {
 
         addRenderableWidget(credits = new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Credits), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action(RMButtons.CREDITS);
+        }));
+
+        addRenderableWidget(wallet = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wallet), MenuButton.ButtonType.BUTTON, false, (e) -> {
+            action(RMButtons.WALLET);
         }));
     }
 }
