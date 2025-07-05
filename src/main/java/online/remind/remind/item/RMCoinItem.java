@@ -55,4 +55,12 @@ public class RMCoinItem extends Item implements IItemCategory{
         return ItemCategory.MISC;
     }
 
+    public int getCoinValue() {
+        return value;
+    }
+
+    public String getCoinType() {
+        return type;
+    }
+
 }
