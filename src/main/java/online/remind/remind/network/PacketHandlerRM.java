@@ -32,6 +32,7 @@ public class PacketHandlerRM {
         HANDLER.registerMessage(packetID++, CSSummonSpiritPacket.class,CSSummonSpiritPacket::encode,CSSummonSpiritPacket::decode,CSSummonSpiritPacket::handle);
         HANDLER.registerMessage(packetID++, CSPanelPacket.class,CSPanelPacket::encode,CSPanelPacket::decode, CSPanelPacket::handle);
         HANDLER.registerMessage(packetID++, CSBoostPacket.class, CSBoostPacket::encode, CSBoostPacket::decode, CSBoostPacket::handle);
+        HANDLER.registerMessage(packetID++, CSTakeCoins.class, CSTakeCoins::encode, CSTakeCoins::decode, CSTakeCoins::handle);
 
     }
 

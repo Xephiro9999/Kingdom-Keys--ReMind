@@ -41,6 +41,7 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.item.RMCoinItem;
 import online.remind.remind.lib.Tags;
+import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSTakeCoins;
 import org.jetbrains.annotations.NotNull;
 
@@ -111,28 +112,29 @@ public class WalletMenu extends MenuFilterable {
 
                         //System.out.println(amountSet);
                         //System.out.println(amountBox.getValue());
-                        System.out.println(selectedItemstack);
+                        //System.out.println(selectedItemstack);
 
-                        if (selectedItemstack.getItem() instanceof RMCoinItem coin){
+                        /*if (selectedItemstack.getItem() instanceof RMCoinItem coin){
                             String type = coin.getCoinType();
                             int value = coin.getCoinValue();
                             if (Objects.equals(type, "munny")){
                                 System.out.println(type + ": " + value);
-
+                                playerData.setMunny(playerData.getMunny() - (value * amountSet));
                             }
                             else if (Objects.equals(type, "hearts") && playerData.getAlignment() != Utils.OrgMember.NONE){
                                 System.out.println(type + ": " + value);
-
+                                playerData.setHearts(playerData.getHearts() - (value * amountSet));
                             }
-                        }
+                        }*/
+                        //System.out.println("Selected ItemStack: " + selectedItemstack);
+                        //System.out.println("Selected Item: " + selectedItemstack.getItem());
+                        //System.out.println("Amount from box: " + amountBox.getValue());
 
-                        System.out.println(minecraft.player.toString());
-                        //System.out.println(selectedItemstack.getItem());
-                        //System.out.println(playerData.toString());
+                        ItemStack copy = selectedItemstack.copy();
+                        copy.setCount(Integer.parseInt(amountBox.getValue()));
+                        PacketHandlerRM.sendToServer(new CSTakeCoins(copy));
 
-
-                        //PacketHandler.sendToServer(new CSTakeCoins(selectedItemstack.getItem(), Integer.parseInt(amountBox.getValue()), "", minecraft.player.toString()));
-                        //PacketHandler.sendToServer(new CSTakeMaterials(selectedItemstack.getItem(), Integer.parseInt(amountBox.getValue()), parent.invFile, parent.name == null ? "" : parent.name, parent.moogle));
+                        //PacketHandlerRM.sendToServer(new CSTakeCoins(selectedItemstack));
                     } catch (NumberFormatException e) {
                         KingdomKeys.LOGGER.error("NaN "+amountBox.getValue());
                     }
@@ -180,13 +182,14 @@ public class WalletMenu extends MenuFilterable {
             Item item = entry.get();
             if (item instanceof RMCoinItem coin) {
                 String type = coin.getCoinType();
-                int value = coin.getCoinValue();
-                if (Objects.equals(type, "munny")){
-                    items.add(new ItemStack(item, Math.floorDiv(playerData.getMunny(), value)));
+
+                // Only show heart coins if alignment is NOT NONE
+                if (Objects.equals(type, "hearts") && playerData.getAlignment() == Utils.OrgMember.NONE) {
+                    continue;
                 }
-                else if (Objects.equals(type, "hearts") && playerData.getAlignment() != Utils.OrgMember.NONE){
-                    items.add(new ItemStack(item, Math.floorDiv(playerData.getHearts(), value)));
-                }
+
+                ItemStack coinStack = new ItemStack(item, 1);
+                items.add(coinStack);
             }
         }
 
@@ -197,17 +200,17 @@ public class WalletMenu extends MenuFilterable {
             if (item instanceof RMCoinItem coin) {
                 return coin.getCoinType().equals("munny") ? 0 : 1; // 'munny' first, 'hearts' after
             }
-            return null;
+            return Integer.MAX_VALUE; // fallback if not an RMCoinItem
         }).thenComparing(stack -> {
             Item item = stack.getItem();
             if (item instanceof RMCoinItem coin) {
                 return coin.getCoinValue(); // sort by coin value ascending
             }
-            return null;
+            return Integer.MAX_VALUE;
         }));
 
         for (int i = 0; i < items.size(); i++) {
-            MenuStockItem item = new MenuStockItem(this, items.get(i), (int) invPosX, (int) invPosY + (i * 14), boxL.getWidth()-scrollBar.getWidth()-4, true);
+            MenuStockItem item = new MenuStockItem(this, items.get(i), (int) invPosX, (int) invPosY + (i * 14), boxL.getWidth()-scrollBar.getWidth()-4, false);
             item.setBackgroundColor(new Color(30,30,100));
             inventory.add(item);
         }
@@ -215,17 +218,42 @@ public class WalletMenu extends MenuFilterable {
 
         //addRenderableWidget(deposit = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, Utils.translateToLocal(Strings.Gui_Synthesis_Materials_Deposit), ButtonType.BUTTON, (e) -> { action("deposit"); }));
         addRenderableWidget(back = new MenuButton((int) buttonPosX, button_statsY/* + (18)*/, (int) buttonWidth, Utils.translateToLocal(Strings.Gui_Menu_Back), ButtonType.BUTTON, (e) -> action("back")));
-        addRenderableWidget(amountBox = new EditBox(minecraft.font, boxR.getX()+30, (int) (topBarHeight + middleHeight - 30), minecraft.font.width("#####"), 16, Component.translatable("test")) {
+        addRenderableWidget(amountBox = new EditBox(minecraft.font, boxR.getX() + 30, (int) (topBarHeight + middleHeight - 30), minecraft.font.width("#####"), 16, Component.translatable("test")) {
             @Override
             public boolean charTyped(char c, int i) {
-                if (Utils.isNumber(c)) {
-                    String text = new StringBuilder(this.getValue()).insert(this.getCursorPosition(), c).toString();
-                    if (Integer.parseInt(text) > 64) {
-                        return false;
-                    }
-                } else {
+                if (!Utils.isNumber(c)) {
                     return false;
                 }
+
+                String text = new StringBuilder(this.getValue()).insert(this.getCursorPosition(), c).toString();
+
+                int enteredAmount;
+                try {
+                    enteredAmount = Integer.parseInt(text);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+
+                if (enteredAmount > 64) {
+                    return false;
+                }
+
+                if (selectedItemStack != null && selectedItemStack.getItem() instanceof RMCoinItem coin) {
+                    IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
+                    int coinValue = coin.getCoinValue();
+                    String coinType = coin.getCoinType();
+
+                    int maxAffordable = switch (coinType) {
+                        case "munny" -> playerData.getMunny() / coinValue;
+                        case "hearts" -> playerData.getAlignment() != Utils.OrgMember.NONE ? playerData.getHearts() / coinValue : 0;
+                        default -> 0;
+                    };
+
+                    if (enteredAmount > maxAffordable) {
+                        return false;
+                    }
+                }
+
                 return super.charTyped(c, i);
             }
         });
@@ -264,6 +292,7 @@ public class WalletMenu extends MenuFilterable {
                 gui.enableScissor(boxL.getX()+2,scrollBar.getY()+2,boxL.getX()+boxL.getWidth(),scrollBar.getBottom()-5); //Arbitrary number to hide the cut one
                 renderable.render(gui,mouseX,mouseY,partialTicks);
                 gui.disableScissor();
+
             } else {
                 renderable.render(gui,mouseX,mouseY,partialTicks);
             }
@@ -280,6 +309,27 @@ public class WalletMenu extends MenuFilterable {
         take.render(gui, mouseX, mouseY, partialTicks);
 
         take.visible = true;
+        take.active = false; // default
+        take.setMessage(Component.translatable(Strings.Gui_Synthesis_Materials_Take)); // reset label
+
+        if (selectedItemStack != null && !selectedItemStack.isEmpty() && selectedItemStack.getItem() instanceof RMCoinItem coin) {
+            IPlayerCapabilities playerData = ModCapabilities.getPlayer(minecraft.player);
+            int amount = 1;
+            int value = coin.getCoinValue();
+            String type = coin.getCoinType();
+
+            boolean canTake = switch (type) {
+                case "munny" -> playerData.getMunny() >= value * amount;
+                case "hearts" -> playerData.getAlignment() != Utils.OrgMember.NONE && playerData.getHearts() >= value * amount;
+                default -> false;
+            };
+
+            if (canTake) {
+                take.active = true;
+            } else {
+                take.active = false;
+            }
+        }
 
         float iconPosX = boxR.getX();
         float iconPosY = boxR.getY() + 15;
