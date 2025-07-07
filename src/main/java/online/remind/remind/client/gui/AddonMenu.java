@@ -82,7 +82,7 @@ public class AddonMenu extends MenuScreen {
             action(RMButtons.CREDITS);
         }));
 
-        addRenderableWidget(wallet = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wallet), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(wallet = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wallet), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action(RMButtons.WALLET);
         }));
     }

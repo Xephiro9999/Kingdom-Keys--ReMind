@@ -1,0 +1,9 @@
+{
+  "values": [
+    "magicksaddon:copper_coin",
+    "magicksaddon:silver_coin",
+    "magicksaddon:gold_coin",
+    "magicksaddon:heart_coin"
+  ],
+  "replace": false
+}
