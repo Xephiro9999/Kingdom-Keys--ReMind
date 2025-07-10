@@ -1,4 +1,4 @@
-package online.remind.remind.entity.mob.goal;
+package online.remind.remind.entity.spirits.goal;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;

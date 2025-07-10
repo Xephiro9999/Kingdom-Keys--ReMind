@@ -2,14 +2,9 @@ package online.remind.remind.entity;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -29,12 +24,11 @@ import online.remind.remind.client.render.reactioncommand.DarkMineEntityRenderer
 import online.remind.remind.client.render.reactioncommand.LightBeamEntityRenderer;
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
 import online.remind.remind.entity.magic.*;
-import online.remind.remind.entity.mob.ChirithyEntity;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
 import online.remind.remind.item.ModItemsRM;
 
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 

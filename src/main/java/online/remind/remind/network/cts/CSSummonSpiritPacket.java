@@ -9,7 +9,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.entity.mob.ChirithyEntity;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.network.PacketHandlerRM;
 
 public class CSSummonSpiritPacket implements CustomPacketPayload {

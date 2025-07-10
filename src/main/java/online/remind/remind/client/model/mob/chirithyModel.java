@@ -17,7 +17,7 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.animations.ModAnimationDefinitions;
-import online.remind.remind.entity.mob.ChirithyEntity;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 
 public class chirithyModel<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor

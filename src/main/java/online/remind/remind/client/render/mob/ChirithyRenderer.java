@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.model.mob.chirithyModel;
-import online.remind.remind.entity.mob.ChirithyEntity;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 
 public class ChirithyRenderer extends MobRenderer<ChirithyEntity, chirithyModel<ChirithyEntity>> {
 

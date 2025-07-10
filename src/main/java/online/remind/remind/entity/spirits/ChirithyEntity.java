@@ -1,4 +1,4 @@
-package online.remind.remind.entity.mob;
+package online.remind.remind.entity.spirits;
 
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
