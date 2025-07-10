@@ -3,6 +3,7 @@ package online.remind.remind.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.api.item.IItemCategory;
 import online.kingdomkeys.kingdomkeys.api.item.ItemCategory;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -41,11 +43,14 @@ public class RMCoinItem extends Item implements IItemCategory{
                     case "munny": {
                         playerData.setMunny(playerData.getMunny() + value);
                         player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Munny!"), true);
+                        //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+
                         break;
                     }
                     case "hearts": {
                         playerData.addHearts(value);
                         player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Hearts!"), true);
+                        //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
                         break;
                     }
                 }
