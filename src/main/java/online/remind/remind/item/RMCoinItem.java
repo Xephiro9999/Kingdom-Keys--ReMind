@@ -34,26 +34,53 @@ public class RMCoinItem extends Item implements IItemCategory{
         IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
         if (!world.isClientSide) {
             if (playerData != null ) {
-                if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
-                    player.getMainHandItem().shrink(1);
-                } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
-                    player.getOffhandItem().shrink(1);
-                }
-                switch (type) {
-                    case "munny": {
-                        playerData.setMunny(playerData.getMunny() + value);
-                        player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Munny!"), true);
-                        //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
 
-                        break;
+                int stack = player.getMainHandItem().getCount();
+
+                if (player.isCrouching()){
+                    if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
+                        player.getMainHandItem().shrink(stack);
+                    } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
+                        player.getOffhandItem().shrink(stack);
                     }
-                    case "hearts": {
-                        playerData.addHearts(value);
-                        player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Hearts!"), true);
-                        //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
-                        break;
+                    switch (type) {
+                        case "munny": {
+                            playerData.setMunny(playerData.getMunny() + value * stack);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value * stack + " Munny!"), true);
+                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+
+                            break;
+                        }
+                        case "hearts": {
+                            playerData.addHearts(value * stack);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value * stack + " Hearts!"), true);
+                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+                            break;
+                        }
+                    }
+                } else {
+                    if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
+                        player.getMainHandItem().shrink(1);
+                    } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
+                        player.getOffhandItem().shrink(1);
+                    }
+                    switch (type) {
+                        case "munny": {
+                            playerData.setMunny(playerData.getMunny() + value);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Munny!"), true);
+                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+
+                            break;
+                        }
+                        case "hearts": {
+                            playerData.addHearts(value);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Hearts!"), true);
+                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+                            break;
+                        }
                     }
                 }
+
                 PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
             }
         }
