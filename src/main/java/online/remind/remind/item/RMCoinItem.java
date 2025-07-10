@@ -1,5 +1,7 @@
 package online.remind.remind.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,6 +15,7 @@ import online.kingdomkeys.kingdomkeys.api.item.IItemCategory;
 import online.kingdomkeys.kingdomkeys.api.item.ItemCategory;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 
 public class RMCoinItem extends Item implements IItemCategory{
     int value;
@@ -37,10 +40,12 @@ public class RMCoinItem extends Item implements IItemCategory{
                 switch (type) {
                     case "munny": {
                         playerData.setMunny(playerData.getMunny() + value);
+                        player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Munny!"), true);
                         break;
                     }
                     case "hearts": {
                         playerData.addHearts(value);
+                        player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Hearts!"), true);
                         break;
                     }
                 }
