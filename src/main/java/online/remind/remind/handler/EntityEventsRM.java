@@ -841,6 +841,8 @@ public class EntityEventsRM {
 
 	}
 
+
+
 	@SubscribeEvent
 	public void hurtEvent(LivingHurtEvent event){
 		if(event.getEntity() instanceof Player player) {
@@ -849,16 +851,14 @@ public class EntityEventsRM {
 				return;
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
-			//System.out.println(missingHP);
-			if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
-			// Adrenaline
+			if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4) {
+				// Adrenaline
 				if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
-
 					playerData.getStrengthStat().addModifier("adrenaline", 5, false, false);
 					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
-			// Critical Surge
-				if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
+				// Critical Surge
+				if (playerData.isAbilityEquipped(StringsRM.critical_surge)) {
 
 					playerData.getMagicStat().addModifier("critical_surge", 5, false, false);
 					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
@@ -872,17 +872,15 @@ public class EntityEventsRM {
 
 			// MP Shield
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
+
 				float DMGTaken = event.getAmount();
-
-				//System.out.println("Damage Dealt: "+DMGTaken);
-				//System.out.println("MP Taken: "+ 1.5 * DMGTaken);
-
-				event.setCanceled(true);
 				if (DMGTaken > playerData.getMP()) {
 					float overflowDMG = (float) (DMGTaken - playerData.getMP());
-					event.getEntity().hurt(event.getEntity().damageSources().indirectMagic(event.getEntity(), null), overflowDMG);
-
+					//event.getEntity().hurt(event.getEntity().damageSources().indirectMagic(event.getEntity(), null), overflowDMG);
+					playerData.remMP(DMGTaken);
+					event.setAmount(overflowDMG);
 				} else {
+					event.setCanceled(true);
 					playerData.remMP(DMGTaken * 1.5);
 					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
 					if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
@@ -895,8 +893,6 @@ public class EntityEventsRM {
 						PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 					}
 				}
-
-
 			}
 
 
@@ -908,15 +904,6 @@ public class EntityEventsRM {
 		if (event.getSource().getEntity() instanceof Player player){
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if(playerData != null) {
-				/*
-				double LifeStealAmount = (float) (playerData.getStrengthStat().getStat() * 0.15F);
-				System.out.println("Entity Hit: "+event.getEntity());
-				System.out.println("Attacker: "+event.getSource().getEntity());
-				System.out.println(LifeStealAmount);
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() || player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-					player.heal((int) LifeStealAmount);
-				}
-				 */
 
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
@@ -935,8 +922,7 @@ public class EntityEventsRM {
 				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
 
 				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
-				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F);
-//player
+				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F); //player
 
 				if (event.getSource().type().msgId().equals("player")) {
 
@@ -1019,8 +1005,7 @@ public class EntityEventsRM {
 							if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
 
 								float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
-								System.out.println("Life Steal for " + vamp + "HP.");
-
+								//System.out.println("Life Steal for " + vamp + "HP.");
 								player.heal(vamp);
 
 							}
