@@ -850,17 +850,16 @@ public class EntityEventsRM {
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
 			//System.out.println(missingHP);
-
+			if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
 			// Adrenaline
-			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
-				if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
+				if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
+
 					playerData.getStrengthStat().addModifier("adrenaline", 5, false, false);
 					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
-			}
 			// Critical Surge
-			if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
-				if (player.getHealth() - event.getAmount() <= player.getMaxHealth() / 4){
+				if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
+
 					playerData.getMagicStat().addModifier("critical_surge", 5, false, false);
 					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
@@ -870,8 +869,6 @@ public class EntityEventsRM {
 				playerData.getMagicStat().removeModifier("critical_surge");
 				PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 			}
-
-			//Protect Abilities
 
 			// MP Shield
 			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
