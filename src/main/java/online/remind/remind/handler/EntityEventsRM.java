@@ -753,13 +753,13 @@ public class EntityEventsRM {
 
 						switch(amp){
 							case 0:
-								player.heal(1);
+								player.heal(0.25f);
 								break;
 							case 1:
-								player.heal(2);
+								player.heal(0.5f);
 								break;
 							case 2:
-								player.heal(3);
+								player.heal(1f);
 								playerData.addMP(0.5);
 								playerData.addFocus(0.5);
 								break;
