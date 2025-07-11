@@ -20,7 +20,9 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.item.ModItemsRM;
+import online.remind.remind.item.RMCoinItem;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.network.cts.CSTakeCoins;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

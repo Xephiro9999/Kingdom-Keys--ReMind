@@ -43,6 +43,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSPanelPacket.TYPE, CSPanelPacket.STREAM_CODEC, CSPanelPacket::handle);
         registrar.playToServer(CSBoostPacket.TYPE, CSBoostPacket.STREAM_CODEC, CSBoostPacket::handle);
         registrar.playToServer(CSOpenAddonMenu.TYPE,CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle);
+        registrar.playToServer(CSTakeCoins.TYPE,CSTakeCoins.STREAM_CODEC,CSTakeCoins::handle);
     }
 
         public static void sendToServer(CustomPacketPayload msg) {
