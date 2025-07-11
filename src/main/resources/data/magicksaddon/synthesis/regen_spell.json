@@ -20,7 +20,7 @@
   ],
   "output": {
     "type": "item",
-    "item": "kkremind:regen_spell",
+    "item": "magicksaddon:regen_spell",
     "quantity": 1
   },
   "tier": 5

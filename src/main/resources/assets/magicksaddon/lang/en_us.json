@@ -265,25 +265,25 @@
   "menu_button.wallet.desc": "Allows you to retrieve Munny or Hearts as coins for trade use.",
 
 
-  "reactioncommand.rc_riskcharge.name": "Riskcharge",
-  "reactioncommand.rc_raging_burst.name": "Raging Burst",
-  "reactioncommand.rc_light_beam.name": "Light Charge",
-  "reactioncommand.rc_dark_mine.name": "Dark Mine",
-  "reactioncommand.rc_twilight.name": "Twilight's Embrace",
-  "reactioncommand.rc_rage.name": "Rage Form",
-  "reactioncommand.rc_dual_shot.name": "Dual Shot",
-  "reactioncommand.rc_dark_firaga.name": "Dark Firaga",
+  "reactioncommand.magicksaddon.rc_riskcharge.name": "Riskcharge",
+  "reactioncommand.magicksaddon.rc_raging_burst.name": "Raging Burst",
+  "reactioncommand.magicksaddon.rc_light_beam.name": "Light Charge",
+  "reactioncommand.magicksaddon.rc_dark_mine.name": "Dark Mine",
+  "reactioncommand.magicksaddon.rc_twilight.name": "Twilight's Embrace",
+  "reactioncommand.magicksaddon.rc_rage.name": "Rage Form",
+  "reactioncommand.magicksaddon.rc_dual_shot.name": "Dual Shot",
+  "reactioncommand.magicksaddon.rc_dark_firaga.name": "Dark Firaga",
 
 
-  "reactioncommand.rc_counter_hammer.name": "Counter Hammer",
-  "reactioncommand.rc_counter_blast.name": "Counter Blast",
-  "reactioncommand.rc_counter_rush.name": "Counter Rush",
+  "reactioncommand.magicksaddon.rc_counter_hammer.name": "Counter Hammer",
+  "reactioncommand.magicksaddon.rc_counter_blast.name": "Counter Blast",
+  "reactioncommand.magicksaddon.rc_counter_rush.name": "Counter Rush",
 
-  "reactioncommand.rc_test.name": "Does nothing",
+  "reactioncommand.magicksaddon.rc_test.name": "Does nothing",
 
-  "key.categories.remind": "Kingdom Keys - Re:Mind",
+  "key.categories.magicksaddon": "Kingdom Keys - Re:Mind",
 
-  "key.remind.summonspirit": "Summon Spirit",
+  "key.magicksaddon.summonspirit": "Summon Spirit",
 
   "entity.magicksaddon.chirithy": "Chirithy",
 
