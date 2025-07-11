@@ -29,6 +29,7 @@ public class AddonMenu extends MenuScreen {
             case CREDITS -> minecraft.setScreen(new CreditsScreen());
             case PANEL -> minecraft.setScreen(new PanelsMenu());
             case WIKI -> minecraft.setScreen(new WikiMenu());
+            case WALLET -> minecraft.setScreen(new WalletMenu());
 
         }
     }
@@ -75,7 +76,11 @@ public class AddonMenu extends MenuScreen {
         addRenderableWidget(wiki = new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wiki), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action(RMButtons.WIKI);
         }));
-
+        // Wallet
+        addRenderableWidget(wallet = new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wallet), MenuButton.ButtonType.BUTTON, true, (e) -> {
+            action(RMButtons.WALLET);
+        }));
+        // Credits
         addRenderableWidget(credits = new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Credits), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action(RMButtons.CREDITS);
         }));
