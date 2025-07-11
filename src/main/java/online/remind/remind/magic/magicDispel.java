@@ -18,6 +18,7 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.ArrayList;
@@ -78,15 +79,11 @@ public class magicDispel extends Magic {
 						lEntity.removeEffect(MobEffects.MOVEMENT_SPEED);
 						lEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 						lEntity.removeEffect(MobEffects.FIRE_RESISTANCE);
-
-						if (globalData.getHasteTicks() > 1) {
-							globalData.setHasteTicks(1, level);
-						}
-						globalData.setBerserkTicks(1, level);
-						globalData.setAutoLifeActive(0);
-
-						PacketHandlerRM.syncGlobalToAllAround(lEntity, globalData);
-						PacketHandler.syncToAllAround(lEntity, globalData2);
+						lEntity.removeEffect(ModMobEffectsRM.AUTO_LIFE.get());
+						lEntity.removeEffect(ModMobEffectsRM.HASTE_RM.get());
+						lEntity.removeEffect(ModMobEffectsRM.REGEN.get());
+						lEntity.removeEffect(ModMobEffectsRM.BERSERK.get());
+						lEntity.removeEffect(ModMobEffects.AERO.get());
 					}
 				}
 			}

@@ -32,7 +32,8 @@ public class ModMagicsRM {
             ESUNA = MAGIC.register("magic_esuna", () -> new magicEsuna(new ResourceLocation(KingdomKeysReMind.MODID,"magic_esuna"), true, 1)),
             DISPEL = MAGIC.register("magic_dispel", () -> new magicDispel(new ResourceLocation(KingdomKeysReMind.MODID,"magic_dispel"), false, 1)),
             REGEN = MAGIC.register("magic_regen", () -> new magicRegen(new ResourceLocation(KingdomKeysReMind.MODID,"magic_regen"), false, 3)),
-            FAITH = MAGIC.register("magic_faith", () -> new magicFaith(new ResourceLocation(KingdomKeysReMind.MODID,"magic_faith"), 1, null));
+            FAITH = MAGIC.register("magic_faith", () -> new magicFaith(new ResourceLocation(KingdomKeysReMind.MODID,"magic_faith"), 1, null)),
+            DEATH = MAGIC.register("magic_death", () -> new magicDeath(new ResourceLocation(KingdomKeysReMind.MODID, "magic_death"), false, 1));
 
 
 
@@ -44,7 +45,6 @@ public class ModMagicsRM {
 
 
     }
-
 
 
 

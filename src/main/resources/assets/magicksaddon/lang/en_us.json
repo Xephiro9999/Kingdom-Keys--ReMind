@@ -43,6 +43,11 @@
   "magic.magicksaddon.magic_esuna0.name": "Esuna",
   "magic.magicksaddon.magic_dispel0.name": "Dispel",
   "magic.magicksaddon.magic_faith0.name": "Faith",
+  "magic.magicksaddon.magic_regen0.name": "Regen",
+  "magic.magicksaddon.magic_regen1.name": "Regenra",
+  "magic.magicksaddon.magic_regen2.name": "Regenga",
+  "magic.magicksaddon.magic_death0.name": "LV? Death",
+
 
 
 
@@ -62,6 +67,7 @@
   "item.magicksaddon.dispel_spell": "Dispel Spell",
   "item.magicksaddon.warp_spell": "Warp Spell",
   "item.magicksaddon.faith_spell": "Faith Spell",
+  "item.magicksaddon.regen_spell": "Regen Spell",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
@@ -281,7 +287,16 @@
 
   "entity.magicksaddon.chirithy": "Chirithy",
 
-  "item.magicksaddon.chirithy_spawn_egg": "Chirithy Spawn Egg"
+  "item.magicksaddon.chirithy_spawn_egg": "Chirithy Spawn Egg",
+
+  "effect.magicksaddon.haste_rm": "Haste (Re:Mind)",
+  "effect.magicksaddon.haste_rm.1": "Hastera",
+  "effect.magicksaddon.haste_rm.2": "Hastega",
+  "effect.magicksaddon.slow_rm": "Slow (Re:Mind)",
+  "effect.magicksaddon.silence": "Silence",
+  "effect.magicksaddon.berserk": "Berserk",
+  "effect.magicksaddon.regen": "Regen",
+  "effect.magicksaddon.auto_life": "Auto-Life"
 
 
 }

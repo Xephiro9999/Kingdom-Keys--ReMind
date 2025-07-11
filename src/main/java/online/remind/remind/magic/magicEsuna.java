@@ -47,11 +47,6 @@ public class magicEsuna extends Magic {
 				player.removeEffect(badEffect.getEffect());
 			}
 
-			// KK & ReMind Effects
-			if (globalData.getSlowTicks() > 1) {
-				globalData.setSlowTicks(1, level);
-			}
-
 
 			PacketHandler.syncToAllAround(player, globalData2);
 			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
