@@ -3,6 +3,7 @@ package online.remind.remind.magic;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 
 import java.util.List;
 
@@ -32,25 +34,10 @@ public class magicHaste extends Magic {
 		if (globalData != null) {
 			int time = (int) (ModCapabilities.getPlayer(caster).getMaxMP() * ((level * 0.75) + 5) + 5);
 			caster.swing(InteractionHand.MAIN_HAND);
-			// Effect and Level Modifier
+			caster.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM.get(), time, level, false, false, false));
 
-			if (globalData.getHasteTicks() <= 0) {
-				switch (level) {
-				case 0:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
 
-					break;
-
-				case 1:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-
-					break;
-				case 2:
-					player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-					player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-
+				if (level == 2){
 					if (worldData.getPartyFromMember(player.getUUID()) != null) {
 						Party party = worldData.getPartyFromMember(player.getUUID());
 						List<Party.Member> list = party.getMembers();
@@ -59,21 +46,16 @@ public class magicHaste extends Magic {
 								if (player.level().getPlayerByUUID(list.get(i).getUUID()) != null && player.distanceTo(player.level().getPlayerByUUID(list.get(i).getUUID())) < ModConfigs.partyRangeLimit) {
 									LivingEntity e = player.level().getPlayerByUUID(list.get(i).getUUID());
 									if (e != null && Utils.isEntityInParty(party, e) && e != player) {
-										IGlobalCapabilitiesRM globalData2 = ModCapabilitiesRM.getGlobal(e);
-										e.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-										e.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", 0.15 + (0.15 * level), AttributeModifier.Operation.MULTIPLY_BASE));
-										globalData2.setHasteTicks(time, level);
+										e.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM.get(), time, level, false, false, false));
 									}
 								}
 							}
 						}
 					}
-					break;
 				}
-				globalData.setHasteTicks(time, level);
 			}
 		}
-	}
+
 
 	@Override
 	protected void playMagicCastSound(Player player, Player caster, int level) {

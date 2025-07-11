@@ -18,6 +18,7 @@ import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 
 import java.util.List;
 
@@ -45,19 +46,7 @@ public class magicSlow extends Magic {
 				if (e instanceof LivingEntity lEntity) {
 					IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(lEntity);
 					if (globalData != null) {
-
-						if (lEntity.getAttribute(Attributes.MOVEMENT_SPEED) != null && lEntity.getAttribute(Attributes.ATTACK_SPEED) != null) {
-							//lEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, time, level + 1));
-							//lEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,time, level + 1));
-							lEntity.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-							lEntity.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
-							globalData.setSlowTicks(time, level); // Slow Time
-							globalData.setSlowCaster(player.getDisplayName().getString());
-						} else {
-							lEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, time, level + 1));
-							lEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,time, level + 1));
-						}
+							lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.SLOW_RM.get(), time, level, false, false, false));
 					}
 				}
 			}

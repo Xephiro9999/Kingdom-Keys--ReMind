@@ -31,6 +31,7 @@ public class ModMagicsRM {
             WARP = MAGIC.register("magic_warp", () -> new magicWarp(new ResourceLocation(KingdomKeysReMind.MODID,"magic_warp"), false, 1, null)),
             ESUNA = MAGIC.register("magic_esuna", () -> new magicEsuna(new ResourceLocation(KingdomKeysReMind.MODID,"magic_esuna"), true, 1)),
             DISPEL = MAGIC.register("magic_dispel", () -> new magicDispel(new ResourceLocation(KingdomKeysReMind.MODID,"magic_dispel"), false, 1)),
+            REGEN = MAGIC.register("magic_regen", () -> new magicRegen(new ResourceLocation(KingdomKeysReMind.MODID,"magic_regen"), false, 3)),
             FAITH = MAGIC.register("magic_faith", () -> new magicFaith(new ResourceLocation(KingdomKeysReMind.MODID,"magic_faith"), 1, null));
 
 

@@ -17,6 +17,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +54,7 @@ import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -81,16 +83,15 @@ public class EntityEventsRM {
 			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a") // NolValue
 
 
-
-			);
+	);
 
 	@SubscribeEvent
-	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
+	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e) {
 		Player player = e.getEntity();
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
 
-		if (playerData != null){
+		if (playerData != null) {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 				playerData.addAbility(StringsRM.renewalBlock, true);
 			}
@@ -121,60 +122,47 @@ public class EntityEventsRM {
 			}
 
 
-
-				// To initialize the toggle feature
+			// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 				globalData.setPanelsEnabled(0);
 			} else if (globalData.getPanelsEnabled() == 1) {
 				// Fail Safe -- Login
-				if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+				if (globalData.getSTRPanel() > ModConfigs.panelLimit) {
 					playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setSTRPanel(ModConfigs.panelLimit);
 				}
-				if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+				if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
 					playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setMAGPanel(ModConfigs.panelLimit);
 				}
-				if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+				if (globalData.getDEFPanel() > ModConfigs.panelLimit) {
 					playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setDEFPanel(ModConfigs.panelLimit);
 				}
 			}
 
 
-
 			globalData.setNGPEnabled(1);
 
 			if (globalData.getNGPEnabled() == 1) {
-				if (globalData.getSTRBonus() > ModConfigs.statCap){
+				if (globalData.getSTRBonus() > ModConfigs.statCap) {
 					playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
 				}
-				if (globalData.getMAGBonus() > ModConfigs.statCap){
+				if (globalData.getMAGBonus() > ModConfigs.statCap) {
 					playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
 				}
-				if (globalData.getDEFBonus() > ModConfigs.statCap){
+				if (globalData.getDEFBonus() > ModConfigs.statCap) {
 					playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
 				}
 			}
 
-			// If player was inflicted with slow/haste before logging out
 
-			if (globalData.getHasteTicks() > 0) {
-				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", (0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
-			}
-			if (globalData.getSlowTicks() > 0) {
-				player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
-			}
 
 			/*
 			// Xephiro Check -- gives me my keyblade upon 1st join
@@ -196,7 +184,7 @@ public class EntityEventsRM {
 
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
-			if (ModConfigs.donorKeybladeGrant){
+			if (ModConfigs.donorKeybladeGrant) {
 				MinecraftServer server = player.getServer();
 				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
 					// Player is OP
@@ -205,58 +193,57 @@ public class EntityEventsRM {
 			}
 
 
+			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
+				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+				UUID uuid = player.getUUID();
+				// Donator 'If' statements below...
+				if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 
-				if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
-					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
-					UUID uuid = player.getUUID();
-					// Donator 'If' statements below...
-					if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
-
-						// Code to set the donor trigger to not set off again
-						globalData.setDonorGiven(1);
-						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-						// Give Respective Keyblade
-						ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-						player.addItem(item);
-					}
-					if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-						// Code to set the donor trigger to not set off again
-						globalData.setDonorGiven(1);
-						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-						// Give Respective Keyblade
-						ItemStack item = new ItemStack(ModItems.kibladeChain.get());
-						player.addItem(item);
-
-					}
-					if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-						globalData.setDonorGiven(1);
-						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-						ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
-						player.addItem(item);
-						}
-					if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-						globalData.setDonorGiven(1);
-						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-						ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
-						player.addItem(item);
-						}
-					if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-						globalData.setDonorGiven(1);
-						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-						ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
-						player.addItem(item);
-					}
+					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					// Give Respective Keyblade
+					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
+					player.addItem(item);
 				}
-			} else {
-				player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
+				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					// Give Respective Keyblade
+					ItemStack item = new ItemStack(ModItems.kibladeChain.get());
+					player.addItem(item);
+
+				}
+				if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
+					player.addItem(item);
+				}
+				if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
+					player.addItem(item);
+				}
+				if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+					ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
+					player.addItem(item);
+				}
 			}
-        }
+		} else {
+			player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
+		}
+	}
 
 
 	@SubscribeEvent
@@ -264,12 +251,12 @@ public class EntityEventsRM {
 		Player oPlayer = event.getOriginal();
 		Player nPlayer = event.getEntity();
 
-				
+
 		oPlayer.reviveCaps();
 
 		IGlobalCapabilitiesRM oldPlayerData = ModCapabilitiesRM.getGlobal(oPlayer);
 		IGlobalCapabilitiesRM newPlayerData = ModCapabilitiesRM.getGlobal(nPlayer);
-		
+
 		newPlayerData.setPrestigeLvl(oldPlayerData.getPrestigeLvl());
 		newPlayerData.setNGPWarriorCount(oldPlayerData.getNGPWarriorCount());
 		newPlayerData.setNGPMysticCount(oldPlayerData.getNGPMysticCount());
@@ -279,107 +266,103 @@ public class EntityEventsRM {
 		newPlayerData.setDEFBonus(oldPlayerData.getDEFBonus());
 
 
-
-
-
 		oPlayer.invalidateCaps();
 	}
 
 	/**
-	 *
 	 * @param player
 	 * @param AbilityName StringsRM.darkPower
-	 * @param formName ModID + StringsRM.darkForm
+	 * @param formName    ModID + StringsRM.darkForm
 	 */
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 
-		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
-			if(!playerData.getDriveFormMap().containsKey(formName)) {
+		if (playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
+			if (!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}
 		}
 
-		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){
+		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7) {
 			playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 7);
 		}
 	}
 
-	private void updateEquippedAbilities(Player player){
+	private void updateEquippedAbilities(Player player) {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 
 	}
 
 
 	@SubscribeEvent
-	public void equipAbility(AbilityEvent.Equip event){
+	public void equipAbility(AbilityEvent.Equip event) {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
 		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
 		IWorldCapabilities worldData = ModCapabilities.getWorld(event.getPlayer().level());
 		//Player player = event.getPlayer();
 
 		float mpBoost = (float) playerData.getMagicStat().get();
-			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-				playerData.addMaxMP(12.5);
+		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+			playerData.addMaxMP(12.5);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
+			playerData.addMaxHP(15);
+			event.getPlayer().setHealth(playerData.getMaxHP());
+			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
+
+			Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
+			if (party != null) {
+				float friendBoost = party.getMembers().size() - 1;
+				//System.out.println(friendBoost);
 			}
+		}
 
-			if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
-				playerData.addMaxHP(15);
-				event.getPlayer().setHealth(playerData.getMaxHP());
-				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+		if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+				playerData.unequipAbility(StringsRM.focusBlock, 0);
+				playerData.unequipAbility(StringsRM.stopBlock, 0);
+				playerData.unequipAbility(StringsRM.royalGuard, 0);
 			}
+		}
 
-			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-
-				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
-				if (party != null){
-					float friendBoost = party.getMembers().size() - 1;
-					//System.out.println(friendBoost);
-				}
+		if (event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+				playerData.unequipAbility(StringsRM.renewalBlock, 0);
+				playerData.unequipAbility(StringsRM.stopBlock, 0);
+				playerData.unequipAbility(StringsRM.royalGuard, 0);
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())){
-				if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
+		if (event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+				playerData.unequipAbility(StringsRM.renewalBlock, 0);
+				playerData.unequipAbility(StringsRM.focusBlock, 0);
+				playerData.unequipAbility(StringsRM.royalGuard, 0);
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())){
-				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
+		if (event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)) {
+				playerData.unequipAbility(StringsRM.renewalBlock, 0);
+				playerData.unequipAbility(StringsRM.stopBlock, 0);
+				playerData.unequipAbility(StringsRM.focusBlock, 0);
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())){
-				if(playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
+
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
+				playerData2.setCanCounter(0);
+				playerData.unequipAbility(StringsRM.counterBlast, 0);
+				playerData.unequipAbility(StringsRM.counterRush, 0);
 			}
+		}
 
-			if(event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
-				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-				}
-			}
-
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
-				if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-					playerData2.setCanCounter(0);
-					playerData.unequipAbility(StringsRM.counterBlast, 0);
-					playerData.unequipAbility(StringsRM.counterRush, 0);
-				}
-			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())) {
 			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
 				playerData2.setCanCounter(0);
 				playerData.unequipAbility(StringsRM.counterHammer, 0);
@@ -387,30 +370,27 @@ public class EntityEventsRM {
 			}
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
+			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)) {
 				playerData2.setCanCounter(0);
-				playerData.unequipAbility(StringsRM.counterHammer,0);
-				playerData.unequipAbility(StringsRM.counterBlast,0);
+				playerData.unequipAbility(StringsRM.counterHammer, 0);
+				playerData.unequipAbility(StringsRM.counterBlast, 0);
 			}
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())) {
 			playerData.unequipAbility(StringsRM.lightStep, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())) {
 			playerData.unequipAbility(StringsRM.darkStep, 0);
 		}
 
 	}
 
 
-
-
-
 	@SubscribeEvent
-	public void unequipAbility(AbilityEvent.Unequip event){
+	public void unequipAbility(AbilityEvent.Unequip event) {
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(event.getPlayer());
 		IGlobalCapabilitiesRM playerData2 = ModCapabilitiesRM.getGlobal(event.getPlayer());
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
@@ -424,27 +404,24 @@ public class EntityEventsRM {
 			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
 			playerData.getStrengthStat().removeModifier("Dedication");
 			playerData.getMagicStat().removeModifier("Dedication");
 			playerData.getDefenseStat().removeModifier("Dedication");
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
 			playerData.getStrengthStat().removeModifier("Friendship");
 			playerData.getMagicStat().removeModifier("Friendship");
 			playerData.getDefenseStat().removeModifier("Friendship");
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
 			playerData2.remCanCounter(1);
 			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), playerData2);
 		}
 
 	}
-
-
-
 
 
 	@SubscribeEvent
@@ -456,7 +433,7 @@ public class EntityEventsRM {
 		// Xephiro Keyblade Debuff
 
 
-		if(event.getEntity() instanceof Player player) {
+		if (event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
 				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
@@ -473,7 +450,7 @@ public class EntityEventsRM {
 			}
 		}
 
-		if(event.getEntity() instanceof Player player) {
+		if (event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if (playerData != null) {
 				if (globalData.getCanCounter() == 1) {
@@ -491,7 +468,7 @@ public class EntityEventsRM {
 
 
 		// Form Shotlock Change Test
-		if(event.getEntity() instanceof Player player) {
+		if (event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
 				//playerData.setEquippedShotlock(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide);
@@ -503,12 +480,12 @@ public class EntityEventsRM {
 
 
 		// Org Passives
-		if(event.getEntity() instanceof Player player) {
+		if (event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if(playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE){
-				playerData.getStrengthStat().addModifier("Organization",5,false,true);
-				playerData.getMagicStat().addModifier("Organization",5,false,true);
-				playerData.getDefenseStat().addModifier("Organization",5,false,true);
+			if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
+				playerData.getStrengthStat().addModifier("Organization", 5, false, true);
+				playerData.getMagicStat().addModifier("Organization", 5, false, true);
+				playerData.getDefenseStat().addModifier("Organization", 5, false, true);
 			} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 				playerData.getStrengthStat().removeModifier("Organization");
 				playerData.getMagicStat().removeModifier("Organization");
@@ -516,13 +493,13 @@ public class EntityEventsRM {
 			}
 		}
 
-		if(event.getEntity() instanceof Player player) {
+		if (event.getEntity() instanceof Player player) {
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 			IWorldCapabilities worldData = ModCapabilities.getWorld(player.level());
-			if(playerData != null && globalData != null) {
-				updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID+":"+ StringsRM.darkForm);
-				updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID+":"+ StringsRM.rageForm);
-				updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID+":"+ StringsRM.lightForm);
+			if (playerData != null && globalData != null) {
+				updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID + ":" + StringsRM.darkForm);
+				updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID + ":" + StringsRM.rageForm);
+				updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID + ":" + StringsRM.lightForm);
 
 				// Light/Darkness Within
 
@@ -544,7 +521,7 @@ public class EntityEventsRM {
 					playerData.getStrengthStat().removeModifier("light_within");
 					playerData.getMagicStat().removeModifier("light_within");
 				}
-				if (playerData.isAbilityEquipped(StringsRM.darknessWithin)){
+				if (playerData.isAbilityEquipped(StringsRM.darknessWithin)) {
 					//System.out.println("Dark Boost: "+ darknessWithinBoost);
 					playerData.getStrengthStat().addModifier("darkness_within", darknessWithinBoost, false, false);
 					playerData.getMagicStat().addModifier("darkness_within", darknessWithinBoost, false, false);
@@ -565,20 +542,20 @@ public class EntityEventsRM {
 					int vehemenceDEF = (int) (playerData.getDefenseStat().getStat() * 0.25F);
 					int vehemenceMAG = (int) (playerData.getMagicStat().getStat() * 0.25F);
 
-					if (playerData.getChosen() == SoAState.WARRIOR){
-						playerData.getStrengthStat().addModifier("Vehemence", vehemenceSTR,false, false);
-						playerData.getMagicStat().addModifier("Vehemence", -(vehemenceSTR/2), false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceSTR/2),false, false);
+					if (playerData.getChosen() == SoAState.WARRIOR) {
+						playerData.getStrengthStat().addModifier("Vehemence", vehemenceSTR, false, false);
+						playerData.getMagicStat().addModifier("Vehemence", -(vehemenceSTR / 2), false, false);
+						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceSTR / 2), false, false);
 					}
-					if (playerData.getChosen() == SoAState.MYSTIC){
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceMAG/2),false, false);
-						playerData.getMagicStat().addModifier("Vehemence", vehemenceMAG,false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceMAG/2),false, false);
+					if (playerData.getChosen() == SoAState.MYSTIC) {
+						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceMAG / 2), false, false);
+						playerData.getMagicStat().addModifier("Vehemence", vehemenceMAG, false, false);
+						playerData.getDefenseStat().addModifier("Vehemence", -(vehemenceMAG / 2), false, false);
 					}
-					if (playerData.getChosen() == SoAState.GUARDIAN){
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF/2),false, false);
-						playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF,false, false);
-						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF/2),false, false);
+					if (playerData.getChosen() == SoAState.GUARDIAN) {
+						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
+						playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF, false, false);
+						playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
 					}
 				} else if (!playerData.isAbilityEquipped(StringsRM.vehemence)) {
 					playerData.getStrengthStat().removeModifier("Vehemence");
@@ -587,14 +564,14 @@ public class EntityEventsRM {
 				}
 
 				if (playerData.isAbilityEquipped(StringsRM.dedication)) {
-					if (playerData.getChosen() == SoAState.WARRIOR){
-						playerData.getStrengthStat().addModifier("Dedication", (double) (playerData.getLevel()) /2,false, true);
+					if (playerData.getChosen() == SoAState.WARRIOR) {
+						playerData.getStrengthStat().addModifier("Dedication", (double) (playerData.getLevel()) / 2, false, true);
 					}
-					if (playerData.getChosen() == SoAState.MYSTIC){
-						playerData.getMagicStat().addModifier("Dedication", (double) playerData.getLevel() /2,false, true);
+					if (playerData.getChosen() == SoAState.MYSTIC) {
+						playerData.getMagicStat().addModifier("Dedication", (double) playerData.getLevel() / 2, false, true);
 					}
-					if (playerData.getChosen() == SoAState.GUARDIAN){
-						playerData.getDefenseStat().addModifier("Dedication", (double) playerData.getLevel() /2,false, true);
+					if (playerData.getChosen() == SoAState.GUARDIAN) {
+						playerData.getDefenseStat().addModifier("Dedication", (double) playerData.getLevel() / 2, false, true);
 					}
 				} else {
 					playerData.getStrengthStat().removeModifier("Dedication");
@@ -604,37 +581,36 @@ public class EntityEventsRM {
 
 				// Hearts Are Power Ability
 
-				if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE){
+				if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE) {
 					float heartsBoost = (playerData.getHearts() * 0.0002f);
 					//System.out.println(playerData.getHearts() + " > " + heartsBoost);
 					float overBoost = heartsBoost * 0.025f;
 					//System.out.println(overBoost);
-					if (heartsBoost >= 50){
-						playerData.getStrengthStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
-						playerData.getMagicStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
-						playerData.getDefenseStat().addModifier("Hearts Are Power",50 + overBoost,false,false);
+					if (heartsBoost >= 50) {
+						playerData.getStrengthStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+						playerData.getMagicStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
+						playerData.getDefenseStat().addModifier("Hearts Are Power", 50 + overBoost, false, false);
 					} else {
-					playerData.getStrengthStat().addModifier("Hearts Are Power",heartsBoost,false,false);
-					playerData.getMagicStat().addModifier("Hearts Are Power",heartsBoost,false,false);
-					playerData.getDefenseStat().addModifier("Hearts Are Power",heartsBoost,false,false);
+						playerData.getStrengthStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+						playerData.getMagicStat().addModifier("Hearts Are Power", heartsBoost, false, false);
+						playerData.getDefenseStat().addModifier("Hearts Are Power", heartsBoost, false, false);
 					}
-				}
-				else {
+				} else {
 					playerData.getStrengthStat().removeModifier("Hearts Are Power");
 					playerData.getMagicStat().removeModifier("Hearts Are Power");
 					playerData.getDefenseStat().removeModifier("Hearts Are Power");
 				}
 
-				if (playerData.getAlignment() == Utils.OrgMember.NONE){
+				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					playerData.getStrengthStat().removeModifier("Hearts Are Power");
 					playerData.getMagicStat().removeModifier("Hearts Are Power");
 					playerData.getDefenseStat().removeModifier("Hearts Are Power");
 				}
 
 				// My Friends Are My Power
-				if (playerData.isAbilityEquipped(StringsRM.friendsPower)){
+				if (playerData.isAbilityEquipped(StringsRM.friendsPower)) {
 					Party party = worldData.getPartyFromMember(player.getUUID());
-					if (party != null){
+					if (party != null) {
 						int friendBoost = 5 * (party.getMembers().size() - 1);
 						playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, true);
 						playerData.getMagicStat().addModifier("Friendship", friendBoost, false, true);
@@ -656,31 +632,30 @@ public class EntityEventsRM {
 
 				// Tidus Keyblade
 				if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
-					if (player.isUnderWater()){
+					if (player.isUnderWater()) {
 						playerData.getStrengthStat().addModifier("Tidus", 5, false, false);
 						player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 10, 1));
 						player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 10, 0));
-					}
-					else if (!player.isUnderWater()){
+					} else if (!player.isUnderWater()) {
 						playerData.getStrengthStat().removeModifier("Tidus");
 					}
-				} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)){
+				} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)) {
 					playerData.getStrengthStat().removeModifier("Tidus");
 				}
 
 				// Panel System
-				if (!player.level().isClientSide){
+				if (!player.level().isClientSide) {
 					if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
 
-						if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+						if (globalData.getSTRPanel() > ModConfigs.panelLimit) {
 							playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 							globalData.setSTRPanel(ModConfigs.panelLimit);
 						}
-						if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+						if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
 							playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 							globalData.setMAGPanel(ModConfigs.panelLimit);
 						}
-						if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+						if (globalData.getDEFPanel() > ModConfigs.panelLimit) {
 							playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 							globalData.setDEFPanel(ModConfigs.panelLimit);
 						}
@@ -707,7 +682,7 @@ public class EntityEventsRM {
 
 			// RC Cooldown mechanic
 
-			if (globalData.getRCCooldownTicks() > 0){
+			if (globalData.getRCCooldownTicks() > 0) {
 				globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 			}
 
@@ -719,11 +694,11 @@ public class EntityEventsRM {
 			*/
 
 			// Step Ticks
-			if(globalData.getStepTicks() > 0) {
+			if (globalData.getStepTicks() > 0) {
 				globalData.remStepTicks(1);
 				if (globalData.getStepTicks() <= 0) { // Step has finished, notify all the clients about it
 					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
-					if(event.getEntity() instanceof Player player) {
+					if (event.getEntity() instanceof Player player) {
 						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 						if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())) {
 							player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
@@ -738,52 +713,93 @@ public class EntityEventsRM {
 
 			// Spells go Down Below
 
-			// Slow
-			if (globalData.getSlowTicks() > 0) {
-				globalData.remSlowTicks(1);
-				if (globalData.getSlowTicks() > 0){
-
-				}
-				if (globalData.getSlowTicks() <= 0) {
-					event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
-					event.getEntity().getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Slow", 0.15 + (0.15 * globalData.getSlowLevel()), AttributeModifier.Operation.MULTIPLY_BASE));
-				}
-			}
-
-			// Haste
-			if (event.getEntity() instanceof Player player){
-				if (globalData.getHasteTicks() > 0) {
-					globalData.remHasteTicks(1);
-					//System.out.println(globalData.getHasteTicks());
-					if (globalData.getHasteTicks() <= 0) {
-						player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-						player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier("Haste", -(0.15 + (0.15 * globalData.getHasteLevel())), AttributeModifier.Operation.MULTIPLY_BASE));
-
-					}
-				}
-			}
 			// Berserk
-			if (event.getEntity() instanceof Player player){
-				if (globalData.getBerserkTicks() > 0) {
-					globalData.remBerserkTicks(1);
-					if (globalData.getBerserkTicks() <= 0) {
-						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-						playerData.getStrengthStat().removeModifier("berserk");
-						playerData.getDefenseStat().removeModifier("berserk");
-						if(!event.getEntity().level().isClientSide) {
-							PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player); //Sync KK stat packet
-							PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
-						}
+			if (event.getEntity() instanceof Player player) {
+				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+				if (player.hasEffect(ModMobEffectsRM.BERSERK.get())) {
+					MobEffectInstance berserk = player.getEffect(ModMobEffectsRM.BERSERK.get());
+					int amp = berserk.getAmplifier();
+
+					double strBuff = (playerData.getStrengthStat().getStat() * 0.15D) * (amp + 1);
+					double defNerf = (playerData.getDefenseStat().getStat() * 0.15D) * (amp + 1);
+
+					playerData.getStrengthStat().addModifier("berserk", strBuff, false, false);
+					playerData.getDefenseStat().addModifier("berserk", -defNerf, false, false);
+
+				} else {
+					playerData.getStrengthStat().removeModifier("berserk");
+					playerData.getDefenseStat().removeModifier("berserk");
+				}
+
+				if (!event.getEntity().level().isClientSide) {
+					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player); //Sync KK stat packet
+				}
+			}
+
+			// Stone
+
+			if (event.getEntity() instanceof Player player) {
+				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+				if (player.hasEffect(ModMobEffectsRM.STONE.get())) {
+
+				}
+			}
+
+			// Regen
+			if (event.getEntity() instanceof Player player) {
+				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+				if (player.hasEffect(ModMobEffectsRM.REGEN.get())) {
+					MobEffectInstance regen = player.getEffect(ModMobEffectsRM.REGEN.get());
+
+					int amp = regen.getAmplifier();
+
+					switch (amp) {
+						case 0:
+							player.heal(0.25f);
+							break;
+						case 1:
+							player.heal(0.5f);
+							break;
+						case 2:
+							player.heal(1f);
+							playerData.addMP(0.5);
+							playerData.addFocus(0.5);
+							break;
 					}
 				}
 			}
 
+			// Remove Slow and Haste I hope
+
+
+			UUID Haste = UUID.fromString("4db7efef-9886-49a8-b10c-ff83b8b97be2");
+			UUID Slow = UUID.fromString("bcbcb87b-3dab-466f-bcbb-0e47e5d691aa");
+			LivingEntity entity = event.getEntity();
+			AttributeInstance moveSpeed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+			AttributeInstance attackSpeed = entity.getAttribute(Attributes.ATTACK_SPEED);
+
+			if (!entity.hasEffect(ModMobEffectsRM.HASTE_RM.get())) {
+				if (moveSpeed != null && moveSpeed.getModifier(Haste) != null) {
+					moveSpeed.removeModifier(Haste);
+				}
+				if (attackSpeed != null && attackSpeed.getModifier(Haste) != null) {
+					attackSpeed.removeModifier(Haste);
+				}
+			}
+			if (!entity.hasEffect(ModMobEffectsRM.SLOW_RM.get())) {
+				if (moveSpeed != null && moveSpeed.getModifier(Slow) != null) {
+					moveSpeed.removeModifier(Slow);
+				}
+				if (attackSpeed != null && attackSpeed.getModifier(Slow) != null) {
+					attackSpeed.removeModifier(Slow);
+				}
+			}
 
 
 			// HP / MP / EXP Walker
 			if (event.getEntity() instanceof Player player) {
 				IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-				if(playerData != null) {
+				if (playerData != null) {
 					if (player.isSprinting()) {
 						if (player.tickCount % 40 == 0 && playerData.isAbilityEquipped(StringsRM.hpWalker)) {
 							int hpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpWalker);
@@ -799,7 +815,7 @@ public class EntityEventsRM {
 							playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
 						}
 						if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
-							playerData.addHearts(5* playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
+							playerData.addHearts(5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
 						}
 						if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.focusWalker)) {
 							if (!playerData.getRecharge()) {
@@ -814,17 +830,15 @@ public class EntityEventsRM {
 	}
 
 
+
 	
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event){
 		IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
-
-			if (1 == globalData.getAutoLifeActive()){
+			if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE.get())){
 				if (player.getHealth() <= 0){
-					globalData.remAutoLifeActive(1);
-					PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesRM) globalData);
 					event.setCanceled(true);
 					player.setHealth(10.0F);
 					player.invulnerableTime = 10;
