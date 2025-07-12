@@ -32,6 +32,9 @@ public class ModSoundsRM {
             SILENCEHIT = registerSound("silencehit"),
             WARPHITPLAYER = registerSound("warp_hit_player"),
             ESUNA = registerSound("esuna"),
+            REGEN = registerSound("regen"),
+            DEATH_CAST = registerSound("death_cast"),
+            DEATH_HIT = registerSound("death_hit"),
 
             DISPEL = registerSound("dispel"),
             LIGHT_BEAM = registerSound("light_beam"),

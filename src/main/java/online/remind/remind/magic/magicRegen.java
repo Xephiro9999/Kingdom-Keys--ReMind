@@ -29,6 +29,7 @@ public class magicRegen extends Magic {
         int time = (int) (ModCapabilities.getPlayer(caster).getMaxMP() * ((level + 1) * 2));
         if (globalData != null) {
             caster.swing(InteractionHand.MAIN_HAND);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.REGEN.get(), SoundSource.PLAYERS, 1F, 1F);
             player.addEffect(new MobEffectInstance(ModMobEffectsRM.REGEN.get(),time, level,false,false, false));
         }
     }

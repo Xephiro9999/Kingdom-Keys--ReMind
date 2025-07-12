@@ -158,6 +158,21 @@
         "sounds": [
           "magicksaddon:royal_parry"
         ]
+      },
+      "regen": {
+        "sounds": [
+          "magicksaddon:regen"
+        ]
+      },
+      "death_cast": {
+        "sounds": [
+          "magicksaddon:death_cast"
+        ]
+      },
+      "death_hit": {
+        "sounds": [
+          "magicksaddon:death_hit"
+        ]
       }
 
   }
