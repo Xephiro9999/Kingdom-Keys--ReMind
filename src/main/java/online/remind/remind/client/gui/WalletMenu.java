@@ -41,6 +41,8 @@ public class WalletMenu extends MenuFilterable {
     MenuBox boxL, boxR;
     EditBox amountBox;
 
+    WalletMenu parent;
+
     public WalletMenu(){
         super("Wallet", new Color(75,150,65));
         drawPlayerInfo = true;
@@ -165,8 +167,9 @@ public class WalletMenu extends MenuFilterable {
 
 
 
+
         for (DeferredHolder<Item, ? extends Item> itemRegistryObject : ModItemsRM.ITEMS.getEntries()) {
-            Item item = BuiltInRegistries.ITEM.get((ResourceKey<Item>) ModItemsRM.ITEMS.getEntries());
+            Item item = BuiltInRegistries.ITEM.get(itemRegistryObject.getKey());
             if (item instanceof RMCoinItem coin) {
                 String type = coin.getCoinType();
 

@@ -213,6 +213,11 @@
   "item.kkremind.friendbinder": "Friend Heartbinder",
   "item.kkremind.nothingness_binder": "Nothing's Heartbinder",
 
+  "item.kkremind.copper_coin": "Copper Coin",
+  "item.kkremind.silver_coin": "Silver Coin",
+  "item.kkremind.gold_coin": "Gold Coin",
+  "item.kkremind.heart_coin": "Heart Coin",
+
 
   "key.categories.kkremind": "Re:Mind",
   "key.kkremind.openmenu": "Open Menu",
@@ -243,6 +248,9 @@
   "menu_button.shotlock.desc": "Tells you about the new Shotlocks added with Re:Mind.",
   "menu_button.ability": "Abilities",
   "menu_button.ability.desc": "Tells you about the new Abilities added with Re:Mind.",
+
+  "menu_button.wallet": "Wallet",
+  "menu_button.wallet.desc": "Allows you to retrieve Munny or Hearts as coins for trade use.",
 
   "reactioncommand.rc_riskcharge.name": "Riskcharge",
   "reactioncommand.rc_raging_burst.name": "Raging Burst",

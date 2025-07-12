@@ -134,5 +134,6 @@ public class StringsRM {
         Gui_Menu_Button_Armor = StringsRM.MENU_Prefix + ".armor",
         Gui_Menu_Button_Accessories = StringsRM.MENU_Prefix + ".accessory",
         Gui_Menu_Button_Shotlocks = StringsRM.MENU_Prefix + ".shotlock",
-        Gui_Menu_Button_Credits = StringsRM.MENU_Prefix + ".creditsScreen";
+        Gui_Menu_Button_Credits = StringsRM.MENU_Prefix + ".creditsScreen",
+        Gui_Menu_Button_Wallet = StringsRM.MENU_Prefix + ".wallet";
 }

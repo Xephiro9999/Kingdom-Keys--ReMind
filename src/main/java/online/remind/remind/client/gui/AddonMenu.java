@@ -17,10 +17,10 @@ public class AddonMenu extends MenuScreen {
     }
 
     public enum RMButtons {
-        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL
+        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
     }
 
-    MenuButton prestige, dreamEater, credits, wiki, panel;
+    MenuButton prestige, dreamEater, credits, wiki, panel, wallet;
 
     protected void action(RMButtons buttonID){
         switch (buttonID){

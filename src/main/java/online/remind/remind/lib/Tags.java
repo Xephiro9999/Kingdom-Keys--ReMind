@@ -10,7 +10,7 @@ import online.remind.remind.KingdomKeysReMind;
 public class Tags {
 
     public static final TagKey<Item>
-            MUNNY = TagKey.create(Registries.ITEM, new ResourceLocation(KingdomKeysReMind.MODID, "kkremind/munny"));
+            MUNNY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "kkremind/munny"));
 
 
 }

@@ -19,20 +19,20 @@ import online.remind.remind.item.RMCoinItem;
 
 import java.util.Objects;
 
-public class CSTakeCoins implements CustomPacketPayload{
+public record CSTakeCoins(ItemStack stack) implements CustomPacketPayload{
     public static final Type<CSTakeCoins> TYPE = new Type(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_coin"));
-    public static final StreamCodec<FriendlyByteBuf, CSTakeCoins> STREAM_CODEC = StreamCodec.of(CSTakeCoins::encode, CSTakeCoins::decode);
-    ItemStack stack;
 
 
 
-    public CSTakeCoins() {}
+
+
 
     public static final StreamCodec<RegistryFriendlyByteBuf, CSTakeCoins> STREAM_CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,
             CSTakeCoins::stack,
             CSTakeCoins::new
     );
+
 
     public CSTakeCoins(ItemStack stack) {
         this.stack = stack;
@@ -43,11 +43,6 @@ public class CSTakeCoins implements CustomPacketPayload{
 
     }
 
-    public static CSTakeCoins decode(RegistryFriendlyByteBuf buffer) {
-        CSTakeCoins msg = new CSTakeCoins();
-        msg.stack = ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer);
-        return msg;
-    }
 
     public static void handle(final CSTakeCoins message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
