@@ -1,10 +1,13 @@
 package online.remind.remind.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.ints.IntPriorityQueue;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,10 +28,11 @@ import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSTakeCoins;
 import org.jetbrains.annotations.NotNull;
 
+
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class WalletMenu extends MenuFilterable {
 
@@ -158,8 +162,11 @@ public class WalletMenu extends MenuFilterable {
 
         PlayerData playerData = PlayerData.get(minecraft.player);
 
+
+
+
         for (DeferredHolder<Item, ? extends Item> itemRegistryObject : ModItemsRM.ITEMS.getEntries()) {
-            Item item = entry.get();
+            Item item = BuiltInRegistries.ITEM.get((ResourceKey<Item>) ModItemsRM.ITEMS.getEntries());
             if (item instanceof RMCoinItem coin) {
                 String type = coin.getCoinType();
 
@@ -359,9 +366,9 @@ public class WalletMenu extends MenuFilterable {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double deltaY) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         if(mouseX >= boxL.getX() && mouseX <= scrollBar.getX()+ scrollBar.getWidth())
-            scrollBar.mouseScrolled(mouseX, mouseY, deltaY);
+            scrollBar.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
 
         updateScroll();
         return false;
