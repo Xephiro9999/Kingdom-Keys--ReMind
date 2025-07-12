@@ -70,11 +70,13 @@ public class magicDeath extends Magic {
                             System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         } else {
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         }
@@ -86,13 +88,13 @@ public class magicDeath extends Magic {
                             System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
-
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         } else {
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
-
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         }
@@ -104,11 +106,13 @@ public class magicDeath extends Magic {
                             System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         } else {
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         }
@@ -119,6 +123,7 @@ public class magicDeath extends Magic {
                         System.out.println("Target meets Level Req! Chance: " + chance);
                         if (roll <= chance){
                             lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
+                            lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                             lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                         }
                         break;
@@ -136,10 +141,12 @@ public class magicDeath extends Magic {
                         if (mobLvl % 4 == 0){
                             chance += 20;
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         } else {
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),99999);
                             }
                         }
@@ -149,10 +156,12 @@ public class magicDeath extends Magic {
                         if (mobLvl % 3 == 0){
                             chance += 30;
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
                         } else {
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
                         }
@@ -162,10 +171,12 @@ public class magicDeath extends Magic {
                         if (mobLvl % 2 == 0){
                             chance += 40;
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
                         } else {
                             if (roll <= chance){
+                                lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                                 lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                             }
                         }
@@ -174,6 +185,7 @@ public class magicDeath extends Magic {
                         caster.sendSystemMessage(Component.literal("<Death> On my doorstep you beg for my aid? So be it."));
                         chance += 50;
                         if (roll <= chance){
+                            lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
                             lockOnEntity.hurt(lockOnEntity.damageSources().indirectMagic(caster, null),9999);
                         }
                         break;
@@ -187,6 +199,6 @@ public class magicDeath extends Magic {
 
     @Override
     protected void playMagicCastSound(Player player, Player caster, int level) {
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.DEATH_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
     }
 }

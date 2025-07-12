@@ -158,6 +158,21 @@
     "sounds": [
       "kkremind:royal_parry"
     ]
+  },
+  "regen": {
+    "sounds": [
+      "kkremind:regen"
+    ]
+  },
+  "death_cast": {
+    "sounds": [
+      "kkremind:death_cast"
+    ]
+  },
+  "death_hit": {
+    "sounds": [
+      "kkremind:death_hit"
+    ]
   }
 
 }
