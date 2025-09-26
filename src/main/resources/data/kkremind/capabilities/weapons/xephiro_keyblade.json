@@ -1,0 +1,21 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.6,
+      0.6,
+      1.1
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -1.1
+    ]
+  },
+  "attributes": {
+    "two_hand": {
+      "impact": 1.0
+    }
+  },
+  "type": "epicfight:xephiro"
+}

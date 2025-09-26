@@ -70,7 +70,10 @@ public class ModAbilitiesRM extends ModAbilities{
 
     // Weapon Exclusive Abilities
         TIDUS = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"tidus").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Tidus),3,Ability.AbilityType.SUPPORT, order++)),
-        JECHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"jecht").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++));
+        JECHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"jecht").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++)),
+
+        LYRIC1 = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"lyric1").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Lyric1),0,Ability.AbilityType.SUPPORT, order++)),
+        LYRIC2 = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"lyric2").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Lyric2),0,Ability.AbilityType.SUPPORT, order++));
 
 
     // Twilight (Double) Form Exclusive Abilities

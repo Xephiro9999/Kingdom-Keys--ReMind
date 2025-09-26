@@ -17,7 +17,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus, donorGiven;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -46,6 +46,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.defPanel = capability.getDEFPanel();
         this.panelsStatus = capability.getPanelsEnabled();
         this.ngpStatus = capability.getNGPEnabled();
+        this.donorGiven = capability.getDonorGiven();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -70,6 +71,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.defPanel);
         buffer.writeInt(message.panelsStatus);
         buffer.writeInt(message.ngpStatus);
+        buffer.writeInt(message.donorGiven);
 
     }
 
@@ -96,6 +98,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.defPanel = buffer.readInt();
         msg.panelsStatus = buffer.readInt();
         msg.ngpStatus = buffer.readInt();
+        msg.donorGiven = buffer.readInt();
 
 
         return msg;
@@ -126,6 +129,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setDEFPanel(message.defPanel);
                 globalData.setPanelsEnabled(message.panelsStatus);
                 globalData.setNGPEnabled(message.ngpStatus);
+                globalData.setDonorGiven(message.donorGiven);
 			}
 		});
     }

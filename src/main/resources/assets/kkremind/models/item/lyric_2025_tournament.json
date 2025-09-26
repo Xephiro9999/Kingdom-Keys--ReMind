@@ -1,8 +1,8 @@
 {
   "parent": "forge:item/default",
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "flip_v" : "true",
-  "model": "magicksaddon:models/item/keyblade/custom/lyric_2025_tournament.obj",
+  "model": "kkremind:models/item/keyblade/custom/lyric_2025_tournament.obj",
   "textures": {
 
   },
@@ -52,7 +52,7 @@
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "magicksaddon:textures/item/keyblades/blitzers_dream"
+        "layer0": "kkremind:textures/item/keyblades/blitzers_dream"
       }
     }
   }

@@ -1,15 +1,15 @@
 {
-  "ability": "magicksaddon:ability_lyric1",
+  "ability": "kkremind:ability_lyric1",
   "base_stats": {
     "mag": 6,
     "str": 6
   },
   "description": "A Keyblade forged out of necessity, it specializes in lightning-clad strikes faster than the eye can follow. Seemingly with a mind of it’s own, it refuses to be wielded by anyone not of Ainu descent. \nRequested by LyricAinu after winning the Spring 2025 PROJECT: Keyblade Tournament",
-  "keychain": "magicksaddon:lyric_2025_tournament_chain",
+  "keychain": "kkremind:lyric_2025_tournament_chain",
   "levels": [
     {
       "mag": 6,
-      "ability": "magicksaddon:ability_lyric2",
+      "ability": "kkremind:ability_lyric2",
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -35,7 +35,7 @@
         }
       ],
       "str": 7,
-      "ability": "magicksaddon:ability_spellblade"
+      "ability": "kkremind:ability_spellblade"
     },
     {
       "mag": 7,
@@ -64,7 +64,7 @@
         }
       ],
       "str": 8,
-      "ability": "magicksaddon:ability_attack_haste"
+      "ability": "kkremind:ability_attack_haste"
     },
     {
       "mag": 8,
@@ -101,7 +101,7 @@
         }
       ],
       "str": 9,
-      "ability": "magicksaddon:ability_attack_haste"
+      "ability": "kkremind:ability_attack_haste"
     },
     {
       "mag": 9,
@@ -158,7 +158,7 @@
         }
       ],
       "str": 11,
-      "ability": "magicksaddon:ability_attack_haste"
+      "ability": "kkremind:ability_attack_haste"
     },
     {
       "mag": 11,
