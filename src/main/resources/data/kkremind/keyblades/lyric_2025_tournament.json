@@ -1,0 +1,278 @@
+{
+  "ability": "magicksaddon:ability_lyric1",
+  "base_stats": {
+    "mag": 6,
+    "str": 6
+  },
+  "description": "A Keyblade forged out of necessity, it specializes in lightning-clad strikes faster than the eye can follow. Seemingly with a mind of it’s own, it refuses to be wielded by anyone not of Ainu descent. \nRequested by LyricAinu after winning the Spring 2025 PROJECT: Keyblade Tournament",
+  "keychain": "magicksaddon:lyric_2025_tournament_chain",
+  "levels": [
+    {
+      "mag": 6,
+      "ability": "magicksaddon:ability_lyric2",
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 2
+        }
+      ],
+      "str": 7
+    },
+    {
+      "mag": 7,
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 3
+        }
+      ],
+      "str": 7,
+      "ability": "magicksaddon:ability_spellblade"
+    },
+    {
+      "mag": 7,
+      "recipe": [
+        {
+          "material": "kingdomkeys:fluorite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_shard",
+          "quantity": 4
+        }
+      ],
+      "str": 8
+    },
+    {
+      "mag": 8,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 1
+        }
+      ],
+      "str": 8,
+      "ability": "magicksaddon:ability_attack_haste"
+    },
+    {
+      "mag": 8,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 9
+    },
+    {
+      "mag": 9,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 9,
+      "ability": "magicksaddon:ability_attack_haste"
+    },
+    {
+      "mag": 9,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 10,
+      "ability": "kingdomkeys:ability_thunder_boost"
+    },
+    {
+      "mag": 10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 10,
+      "ability": "kingdomkeys:ability_thunder_boost"
+    },
+    {
+      "mag": 10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 11,
+      "ability": "magicksaddon:ability_attack_haste"
+    },
+    {
+      "mag": 11,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 1
+        }
+      ],
+      "str": 11,
+      "ability": "kingdomkeys:ability_thunder_boost"
+    },
+    {
+      "mag": 12,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 12,
+      "ability": "kingdomkeys:ability_thunder_boost"
+    },
+    {
+      "mag": 14,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": 16,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 16,
+      "ability": "kingdomkeys:ability_thundaza"
+    },
+    {
+      "mag": 18,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 4
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 18,
+      "ability": "kingdomkeys:ability_thundaza"
+    },
+    {
+      "mag": 20,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 5
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 20,
+      "ability": "kingdomkeys:ability_protectga"
+    }
+  ],
+  "reach": 6.0
+}
