@@ -144,6 +144,11 @@
   "ability.ability_spellblade.name": "Spellblade",
   "ability.ability_spellblade.desc": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary! \nPlease note, only 1 bonus may be active at a time. \nRequires 4 of a certain boost to activate.",
 
+  "ability.ability_lyric1.name": "Volt Absorb",
+  "ability.ability_lyric1.desc": "When equipped and hit with Lightning or Thunder based magic, take 10% less damage and gain Haste and Speed for 5 seconds.",
+  "ability.ability_lyric2.name": "Flash and Thunder",
+  "ability.ability_lyric2.desc": "",
+
 
   "shotlock.flame_salvo.name": "Flame Salvo",
   "shotlock.bubble_blaster.name": "Bubble Blaster",

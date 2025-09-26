@@ -90,7 +90,7 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-		if (playerData != null){
+		if (playerData != null) {
 			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 				playerData.addAbility(StringsRM.renewalBlock, true);
 			}
@@ -121,42 +121,40 @@ public class EntityEventsRM {
 			}
 
 
-
-				// To initialize the toggle feature
+			// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 				globalData.setPanelsEnabled(0);
 			} else if (globalData.getPanelsEnabled() == 1) {
 				// Fail Safe -- Login
-				if (globalData.getSTRPanel() > ModConfigs.panelLimit){
+				if (globalData.getSTRPanel() > ModConfigs.panelLimit) {
 					playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setSTRPanel(ModConfigs.panelLimit);
 				}
-				if (globalData.getMAGPanel() > ModConfigs.panelLimit){
+				if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
 					playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setMAGPanel(ModConfigs.panelLimit);
 				}
-				if (globalData.getDEFPanel() > ModConfigs.panelLimit){
+				if (globalData.getDEFPanel() > ModConfigs.panelLimit) {
 					playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
 					globalData.setDEFPanel(ModConfigs.panelLimit);
 				}
 			}
 
 
-
 			globalData.setNGPEnabled(1);
 
 			if (globalData.getNGPEnabled() == 1) {
-				if (globalData.getSTRBonus() > ModConfigs.statCap){
+				if (globalData.getSTRBonus() > ModConfigs.statCap) {
 					playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
 				}
-				if (globalData.getMAGBonus() > ModConfigs.statCap){
+				if (globalData.getMAGBonus() > ModConfigs.statCap) {
 					playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
 				}
-				if (globalData.getDEFBonus() > ModConfigs.statCap){
+				if (globalData.getDEFBonus() > ModConfigs.statCap) {
 					playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
 				} else {
 					playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
@@ -195,7 +193,7 @@ public class EntityEventsRM {
 
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
-			if (ModConfigs.donorKeybladeGrant){
+			if (ModConfigs.donorKeybladeGrant) {
 				MinecraftServer server = player.getServer();
 				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
 					// Player is OP
@@ -203,15 +201,12 @@ public class EntityEventsRM {
 				}
 
 
-
-				if (globalData.getDonorGiven() == 0) {
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+				if (globalData.getDonorGiven() < 1) {
 					if (ALLOWED_UUIDS.contains(player.getUUID())) {
 						System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 						UUID uuid = player.getUUID();
 						// Donator 'If' statements below...
-						if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
+						if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"))) { // Xephiro
 							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 
 							// Code to set the donor trigger to not set off again
@@ -220,7 +215,7 @@ public class EntityEventsRM {
 							ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
 							player.addItem(item);
 						}
-						if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
+						if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) { // Dev
 							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
 							// Code to set the donor trigger to not set off again
@@ -230,12 +225,12 @@ public class EntityEventsRM {
 							player.addItem(item);
 
 						}
-						if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
+						if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"))) { // RealRegen
 							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 							ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
 							player.addItem(item);
 						}
-						if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
+						if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"))) { // Goblex
 							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 							ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
 							player.addItem(item);
@@ -250,14 +245,13 @@ public class EntityEventsRM {
 							ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
 							player.addItem(item);
 						}
-
+						globalData.setDonorGiven(1);
+						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
 					}
-				}
-
-
 				}
 			} else {
 				player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
+				}
 			}
         }
 
