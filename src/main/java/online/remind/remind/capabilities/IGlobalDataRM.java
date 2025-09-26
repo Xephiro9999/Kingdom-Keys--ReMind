@@ -118,8 +118,8 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void setDreamEaterSummonedID(int i);
 
     // Donor Item Grant
-    int getDonorGiven();
-    void setDonorGiven(int i);
+    boolean getDonorGiven();
+    void setDonorGiven(boolean i);
 
 
 }

@@ -62,6 +62,7 @@ import online.remind.remind.network.PacketHandlerRM;
 //import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 //import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -72,17 +73,7 @@ public class EntityEventsRM {
 
 	int maxTicks;
 
-	private static final Set<UUID> ALLOWED_UUIDS = Set.of(
-			UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), // Xephiro
-			UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), // Test - Dev Account
-			UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), // RealRegen
-			UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), // Goblex
-			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a"), // NolValue
-			UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514") // Lyric
-
-
-
-			);
+	public static Map<UUID, Item> ALLOWED_UUIDS = new HashMap<>();
 
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
@@ -173,24 +164,6 @@ public class EntityEventsRM {
 				player.getAttribute(Attributes.ATTACK_SPEED).addTransientModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "Slow"), -(0.15 + (0.15 * globalData.getSlowLevel())), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 			}
 
-			/*
-			// Xephiro Check -- gives me my keyblade upon 1st join
-			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-				//System.out.println("Xephiro has logged in!");
-				Set<Item> targetItems = Set.of(ModItemsRM.xephiroKeybladeChain.get());
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != ModItemsRM.xephiroKeybladeChain.get() && !player.getInventory().hasAnyOf(targetItems)) {
-					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-					player.addItem(item);
-					player.sendSystemMessage(Component.literal("Hello Xephiro! Here's your Keyblade!"));
-					//System.out.println("Xephiro has been given his keyblade!");
-				} else {
-					//System.out.println("Xephiro already has his keyblade!");
-				}
-			} else {
-				//System.out.println(e.getEntity().getUUID().toString());
-			}
-			 */
-
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
 			if (ModConfigs.donorKeybladeGrant) {
@@ -201,51 +174,15 @@ public class EntityEventsRM {
 				}
 
 
-				if (globalData.getDonorGiven() < 1) {
-					if (ALLOWED_UUIDS.contains(player.getUUID())) {
+				if (globalData.getDonorGiven()) {
+					if (ALLOWED_UUIDS.containsKey(player.getUUID())) {
 						System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 						UUID uuid = player.getUUID();
-						// Donator 'If' statements below...
-						if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"))) { // Xephiro
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+						ItemStack item = new ItemStack(ALLOWED_UUIDS.get(uuid));
+						player.addItem(item);
+						globalData.setDonorGiven(true);
 
-							// Code to set the donor trigger to not set off again
-
-							// Give Respective Keyblade
-							ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-							player.addItem(item);
-						}
-						if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) { // Dev
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-							// Code to set the donor trigger to not set off again
-
-							// Give Respective Keyblade
-							ItemStack item = new ItemStack(ModItems.kibladeChain.get());
-							player.addItem(item);
-
-						}
-						if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"))) { // RealRegen
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-							ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
-							player.addItem(item);
-						}
-						if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"))) { // Goblex
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-							ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
-							player.addItem(item);
-						}
-						if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a"))) { // NolValue
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-							ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
-							player.addItem(item);
-						}
-						if (uuid.equals(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514"))) { // Lyric
-							player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-							ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
-							player.addItem(item);
-						}
-						globalData.setDonorGiven(1);
 						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
 					}
 				}

@@ -10,14 +10,13 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 
-import java.util.Optional;
-
 public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload {
     public static final Type<SCSyncGlobalCapabilityToAllPacketRM> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "sc_sync_global_capability_to_all"));
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, panelChoice, strPanel, magPanel, defPanel, panelsStatus, ngpStatus, donorGiven;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public boolean donorGiven;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -71,7 +70,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.defPanel);
         buffer.writeInt(message.panelsStatus);
         buffer.writeInt(message.ngpStatus);
-        buffer.writeInt(message.donorGiven);
+        buffer.writeBoolean(message.donorGiven);
 
     }
 
@@ -98,7 +97,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.defPanel = buffer.readInt();
         msg.panelsStatus = buffer.readInt();
         msg.ngpStatus = buffer.readInt();
-        msg.donorGiven = buffer.readInt();
+        msg.donorGiven = buffer.readBoolean();
 
 
         return msg;

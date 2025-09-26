@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -44,6 +45,8 @@ import online.remind.remind.shotlock.ModShotlocksRM;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 
@@ -110,6 +113,12 @@ public class KingdomKeysReMind {
         // Some common setup code
         //event.enqueueWork(ModEntitiesRM::registerPlacements);
 
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), ModItemsRM.xephiroKeybladeChain.get()); // Xephiro
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), ModItems.kibladeChain.get());          // Test - Dev Account
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), ModItemsRM.gazingOmenChain.get());     // RealRegen
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), ModItemsRM.elementalCrescendoChain.get()); // Goblex
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a"), ModItemsRM.fierceDeityKeyChain.get());     // NolValue
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514"), ModItemsRM.lyric2025TournamentChain.get());  // Lyric
 
         // Org Weapons
         ListsRM.loadAddonOrgWeapons();
