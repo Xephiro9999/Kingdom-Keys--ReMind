@@ -70,7 +70,9 @@ public class ModAbilitiesRM extends ModAbilities{
 
     // Weapon Exclusive Abilities
         TIDUS = ABILITIES.register(StringsRM.ABMA_Prefix+"tidus", () -> new Ability(new ResourceLocation(StringsRM.Tidus),3,Ability.AbilityType.SUPPORT, order++)),
-        JECHT = ABILITIES.register(StringsRM.ABMA_Prefix+"jecht", () -> new Ability(new ResourceLocation(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++));
+        JECHT = ABILITIES.register(StringsRM.ABMA_Prefix+"jecht", () -> new Ability(new ResourceLocation(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++)),
+        LYRIC1 = ABILITIES.register(StringsRM.ABMA_Prefix+"lyric1", () -> new Ability(new ResourceLocation(StringsRM.Lyric1),0,Ability.AbilityType.SUPPORT, order++)), // Volt Absorb
+        LYRIC2 = ABILITIES.register(StringsRM.ABMA_Prefix+"lyric2", () -> new Ability(new ResourceLocation(StringsRM.Lyric2),0,Ability.AbilityType.SUPPORT, order++)); // Flash and Thunder
 
 
     // Twilight (Double) Form Exclusive Abilities

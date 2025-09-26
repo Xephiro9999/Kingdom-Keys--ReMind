@@ -146,6 +146,11 @@
   "ability.ability_jecht.name": "Brutal Blitzer",
   "ability.ability_jecht.desc": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped!",
 
+  "ability.ability_lyric1.name": "Volt Absorb",
+  "ability.ability_lyric1.desc": "When equipped and hit with Lightning or Thunder based magic, take 10% less damage and gain Haste and Speed for 5 seconds.",
+  "ability.ability_lyric2.name": "Flash and Thunder",
+  "ability.ability_lyric2.desc": "",
+
   "ability.ability_spellblade.name": "Spellblade",
   "ability.ability_spellblade.desc": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary! Please note, only 1 bonus may be active at a time. Requires 4 of a certain boost to activate.",
 
@@ -177,12 +182,14 @@
   "item.magicksaddon.blitzers_dream": "Blitzer's Dream",
   "item.magicksaddon.legends_fang": "Legend's Fang",
   "item.magicksaddon.fierce_deity_key": "Fierce Deity Key",
+  "item.magicksaddon.lyric_2025_tournament": "Wrongful Inheritor",
 
   "item.magicksaddon.xephiro_keyblade.desc": "A Keyblade belonging to Xephiro. Even looking at it gives you a sense of powerful Darkness and bloodthirst...\nIt denies any wielder that isn't Xephiro.",
   "item.magicksaddon.pureblood.desc": "A Keyblade that thrives in Darkness... You can feel your dark powers swell and burst by holding this weapon...",
   "item.magicksaddon.elemental_crescendo.desc": "A Playfully Musical of a Keyblade.\nRequested by Goblex.",
   "item.magicksaddon.gazing_omen.desc": "A Keyblade that favors magic, while boosting both Light and Darkness.\nRequested by RealRegen.",
   "item.magicksaddon.crystals_light.desc": "A Keyblade that resembles a legendary weapon of the Warrior of Light. This Keyblade excels in the powers of Light.",
+  "item.magicksaddon.lyric_2025_tournament.desc": "A Keyblade forged out of necessity, it specializes in lightning-clad strikes faster than the eye can follow. Seemingly with a mind of it’s own, it refuses to be wielded by anyone not of Ainu descent. \nRequested by LyricAniu after winning the Spring 2025 PROJECT: Keyblade Tournament",
 
   "item.magicksaddon.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.magicksaddon.pureblood_chain": "Pureblood Chain",
@@ -192,6 +199,7 @@
   "item.magicksaddon.blitzers_dream_chain": "Blitzer's Dream Chain",
   "item.magicksaddon.legends_fang_chain": "Legend's Fang Chain",
   "item.magicksaddon.fierce_deity_key_chain": "Fierce Deity Key Chain",
+  "item.magicksaddon.lyric_2025_tournament_chain": "Wrongful Inheritor Chain",
 
   "item.magicksaddon.aqua_chaplet": "Aqua Chaplet",
   "item.magicksaddon.heros_glove": "Hero's Glove",

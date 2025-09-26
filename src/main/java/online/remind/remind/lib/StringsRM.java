@@ -71,6 +71,10 @@ public class StringsRM {
         Tidus = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"tidus",
         Jecht = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"jecht",
 
+        // Custom Abilities
+        Lyric1 = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"lyric1",
+        Lyric2 = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"lyric2",
+
         // Reprisals
 
         counterHammer = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_hammer",

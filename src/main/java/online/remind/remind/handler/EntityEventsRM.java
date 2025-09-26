@@ -25,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -80,7 +81,9 @@ public class EntityEventsRM {
 			UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), // Test - Dev Account
 			UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), // RealRegen
 			UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), // Goblex
-			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a") // NolValue
+			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a"), // NolValue
+			UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514") // Lyric
+
 
 
 	);
@@ -196,13 +199,13 @@ public class EntityEventsRM {
 			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
 				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 				UUID uuid = player.getUUID();
+				// Code to set the donor trigger to not set off again
+
+
 				// Donator 'If' statements below...
 				if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
 					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 
-					// Code to set the donor trigger to not set off again
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
 					// Give Respective Keyblade
 					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
 					player.addItem(item);
@@ -210,35 +213,38 @@ public class EntityEventsRM {
 				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
 					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
-					// Code to set the donor trigger to not set off again
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-					// Give Respective Keyblade
+
 					ItemStack item = new ItemStack(ModItems.kibladeChain.get());
 					player.addItem(item);
 
 				}
 				if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
 					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
 					ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
 					player.addItem(item);
 				}
 				if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
 					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
 					ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
 					player.addItem(item);
 				}
 				if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
 					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-					globalData.setDonorGiven(1);
-					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
 					ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
 					player.addItem(item);
 				}
+				if (uuid.equals(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514")) && globalData.getDonorGiven() == 0){
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+					ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
+					player.addItem(item);
+				}
+				globalData.setDonorGiven(1);
+				PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
 			}
 		} else {
 			player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
@@ -909,6 +915,23 @@ public class EntityEventsRM {
 				}
 			}
 
+			if(playerData.isAbilityEquipped(StringsRM.Lyric1)){
+				player.sendSystemMessage(Component.literal("Damage Source: " + event.getSource().getMsgId()));
+				if (event.getSource().getMsgId().equals(KKResistanceType.lightning.toString()) || event.getSource().is(DamageTypes.LIGHTNING_BOLT)) {
+					float damage = event.getAmount();
+					float dmgReduc = damage * 0.10f;
+
+					//event.setCanceled(true);
+					player.sendSystemMessage(Component.literal("Damage: " + damage));
+					player.sendSystemMessage(Component.literal("Damage Reducation: " + dmgReduc));
+					event.setAmount(damage -= dmgReduc);
+					player.sendSystemMessage(Component.literal("Damage After: " + damage));
+					player.heal(2);
+					player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED,100, 0,false,true));
+					player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,100, 0,false,true));
+				}
+			}
+
 
 		}
 
@@ -1032,12 +1055,13 @@ public class EntityEventsRM {
 
 	public void hitEntity(LivingHurtEvent event){
 		if(event.getEntity() instanceof Player player) {
+
 			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-			if(playerData == null)
+			if (playerData == null)
 				return;
 
 			// Light/Dark Boost downsides
-			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
+			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)) {
 				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
 				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
 				float damage = event.getAmount();
@@ -1052,7 +1076,7 @@ public class EntityEventsRM {
 				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
 					System.out.println("Darkness");
 					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+					if (playerData.isAbilityEquipped(StringsRM.lightBoost)) {
 						damage += (damage * lightBoosts);
 					}
 				}
@@ -1069,7 +1093,7 @@ public class EntityEventsRM {
 				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
 					System.out.println("Light");
 					damage -= (damage * lightBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
+					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)) {
 						damage += (damage * darkBoosts);
 					}
 				}
@@ -1080,7 +1104,24 @@ public class EntityEventsRM {
 
 
 
+
+
+
 		}
+
+
+	}
+
+	public void onEntityStruckByLightning(EntityStruckByLightningEvent event){
+		if (event.getEntity() instanceof Player player){
+			IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+			if (playerData.isAbilityEquipped(StringsRM.Lyric1)) {
+					player.sendSystemMessage(Component.literal("Lightning"));
+					player.heal(4);
+				}
+			}
+		}
+
 	}
 
 	// EFM Stuff Below
@@ -1089,4 +1130,3 @@ public class EntityEventsRM {
 
 
 
-}

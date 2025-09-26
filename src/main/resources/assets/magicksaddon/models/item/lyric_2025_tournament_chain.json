@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magicksaddon:item/lyric_2025_tournament_chain"
+  }
+}
