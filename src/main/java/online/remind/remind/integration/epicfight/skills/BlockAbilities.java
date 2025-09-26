@@ -8,16 +8,12 @@ import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.api.utils.AttackResult;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 import yesman.epicfight.world.entity.eventlistener.HurtEvent;
-import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
-import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
 import java.util.Map;
 import java.util.UUID;

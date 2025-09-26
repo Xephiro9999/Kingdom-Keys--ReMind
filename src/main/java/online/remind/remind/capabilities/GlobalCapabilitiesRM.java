@@ -46,7 +46,7 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
         storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
 
         // Donor Grant
-        storage.putInt("donor_grant", this.getDonorGiven());
+        storage.putBoolean("donor_grant", this.getDonorGiven());
 
 
         return storage;
@@ -54,7 +54,7 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
 	@Override
     public void deserializeNBT(CompoundTag nbt) {
-        CompoundTag properties = (CompoundTag) nbt;
+        CompoundTag properties = nbt;
         this.setHasteTicks(properties.getInt("haste_ticks"), properties.getInt("haste_level"));
         this.setSlowTicks(properties.getInt("slow_ticks"), properties.getInt("slow_level"));
         this.setBerserkTicks(properties.getInt("berserk_ticks"), properties.getInt("berserk_level"));
@@ -80,7 +80,7 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
 
         this.setCanCounter(properties.getInt("can_counter"));
 
-        this.setDonorGiven(properties.getInt("donor_grant"));
+        this.setDonorGiven(properties.getBoolean("donor_grant"));
 
     }
 
@@ -126,7 +126,7 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     private boolean dreamEaterSummoned = false;
     private int dreamEaterSummonedID;
 
-    private int donorGiven;
+    private boolean donorGiven;
 
     //Haste
     public int getHasteLevel() {
@@ -485,12 +485,12 @@ public class GlobalCapabilitiesRM implements IGlobalCapabilitiesRM {
     }
 
     @Override
-    public int getDonorGiven(){
+    public boolean getDonorGiven(){
         return donorGiven;
     }
 
     @Override
-    public void setDonorGiven(int i){
+    public void setDonorGiven(boolean i){
         donorGiven = i;
     }
 

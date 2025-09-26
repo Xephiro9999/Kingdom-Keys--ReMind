@@ -9,7 +9,6 @@ import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.CometEntity;
-import online.remind.remind.entity.magic.FaithEntity;
 import online.remind.remind.entity.magic.MeteorEntity;
 import online.remind.remind.lib.StringsRM;
 

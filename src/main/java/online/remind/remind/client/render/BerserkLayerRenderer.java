@@ -22,8 +22,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import online.kingdomkeys.kingdomkeys.util.IDisabledAnimations;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
 import online.remind.remind.client.model.BerserkAuraModel;
 import online.remind.remind.effect.ModMobEffectsRM;
 

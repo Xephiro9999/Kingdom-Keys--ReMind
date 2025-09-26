@@ -14,8 +14,6 @@ import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipAccessories;
-import online.kingdomkeys.kingdomkeys.network.cts.CSEquipArmor;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
@@ -26,9 +24,8 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 public class CSPrestigePacket {
 

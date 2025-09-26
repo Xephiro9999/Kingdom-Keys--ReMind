@@ -1,16 +1,10 @@
 package online.remind.remind.handler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,28 +12,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
-import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.IWorldCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -59,15 +48,9 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
-import yesman.epicfight.server.commands.PlayerSkillCommand;
-import yesman.epicfight.skill.*;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class EntityEventsRM {
@@ -76,17 +59,8 @@ public class EntityEventsRM {
 
 	int maxTicks;
 
-	private static final Set<UUID> ALLOWED_UUIDS = Set.of(
-			UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), // Xephiro
-			UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), // Test - Dev Account
-			UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), // RealRegen
-			UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), // Goblex
-			UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a"), // NolValue
-			UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514") // Lyric
+	public static Map<UUID, Item> ALLOWED_UUIDS = new HashMap<>();
 
-
-
-	);
 
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e) {
@@ -165,26 +139,6 @@ public class EntityEventsRM {
 				}
 			}
 
-
-
-			/*
-			// Xephiro Check -- gives me my keyblade upon 1st join
-			if (e.getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-				//System.out.println("Xephiro has logged in!");
-				Set<Item> targetItems = Set.of(ModItemsRM.xephiroKeybladeChain.get());
-				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != ModItemsRM.xephiroKeybladeChain.get() && !player.getInventory().hasAnyOf(targetItems)) {
-					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-					player.addItem(item);
-					player.sendSystemMessage(Component.literal("Hello Xephiro! Here's your Keyblade!"));
-					//System.out.println("Xephiro has been given his keyblade!");
-				} else {
-					//System.out.println("Xephiro already has his keyblade!");
-				}
-			} else {
-				//System.out.println(e.getEntity().getUUID().toString());
-			}
-			 */
-
 			// TODO: Add other Donor Keyblades to this, but refine the system to make sure no duping bs happens.
 
 			if (ModConfigs.donorKeybladeGrant) {
@@ -195,54 +149,16 @@ public class EntityEventsRM {
 				}
 			}
 
-			if (globalData.getDonorGiven() == 0) {
-				if (ALLOWED_UUIDS.contains(player.getUUID())) {
+			if (!globalData.getDonorGiven()) {
+				if (ALLOWED_UUIDS.containsKey(player.getUUID())) {
 					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 					UUID uuid = player.getUUID();
 					// Code to set the donor trigger to not set off again
+					globalData.setDonorGiven(true);
+					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+					ItemStack item = new ItemStack(ALLOWED_UUIDS.get(uuid));
+					player.addItem(item);
 
-
-					// Donator 'If' statements below...
-					if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
-
-						// Give Respective Keyblade
-						ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-						player.addItem(item);
-					}
-					if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-
-						ItemStack item = new ItemStack(ModItems.kibladeChain.get());
-						player.addItem(item);
-
-					}
-					if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-						ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
-						player.addItem(item);
-					}
-					if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-						ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
-						player.addItem(item);
-					}
-					if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-						ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
-						player.addItem(item);
-					}
-					if (uuid.equals(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514")) && globalData.getDonorGiven() == 0) {
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-						ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
-						player.addItem(item);
-					}
-					globalData.setDonorGiven(1);
 					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
 
 				}

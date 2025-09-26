@@ -118,8 +118,8 @@ public interface IGlobalCapabilitiesRM extends INBTSerializable<CompoundTag> {
     void setDreamEaterSummonedID(int i);
 
     // Donor Item Grant
-    int getDonorGiven();
-    void setDonorGiven(int i);
+    boolean getDonorGiven();
+    void setDonorGiven(boolean b);
 
 
 }

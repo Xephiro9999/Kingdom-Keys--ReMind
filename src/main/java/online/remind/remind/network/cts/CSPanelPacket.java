@@ -3,7 +3,6 @@ package online.remind.remind.network.cts;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
 import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
@@ -14,11 +13,9 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
 import online.remind.remind.capabilities.ModCapabilitiesRM;
-import online.remind.remind.client.gui.PanelsMenu;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 
-import java.sql.SQLOutput;
 import java.util.function.Supplier;
 
 public class CSPanelPacket {
