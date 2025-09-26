@@ -195,56 +195,57 @@ public class EntityEventsRM {
 				}
 			}
 
+			if (globalData.getDonorGiven() == 0) {
+				if (ALLOWED_UUIDS.contains(player.getUUID())) {
+					System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+					UUID uuid = player.getUUID();
+					// Code to set the donor trigger to not set off again
 
-			if (globalData.getDonorGiven() == 0 && ALLOWED_UUIDS.contains(player.getUUID())) {
-				System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
-				UUID uuid = player.getUUID();
-				// Code to set the donor trigger to not set off again
+
+					// Donator 'If' statements below...
+					if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+
+						// Give Respective Keyblade
+						ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
+						player.addItem(item);
+					}
+					if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
 
 
-				// Donator 'If' statements below...
-				if (uuid.equals(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) && globalData.getDonorGiven() == 0) { // Xephiro
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+						ItemStack item = new ItemStack(ModItems.kibladeChain.get());
+						player.addItem(item);
 
-					// Give Respective Keyblade
-					ItemStack item = new ItemStack(ModItemsRM.xephiroKeybladeChain.get());
-					player.addItem(item);
+					}
+					if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+						ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
+						player.addItem(item);
+					}
+					if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+						ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
+						player.addItem(item);
+					}
+					if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+						ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
+						player.addItem(item);
+					}
+					if (uuid.equals(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514")) && globalData.getDonorGiven() == 0) {
+						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
+
+						ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
+						player.addItem(item);
+					}
+					globalData.setDonorGiven(1);
+					PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
 				}
-				if (uuid.equals(UUID.fromString("380df991-f603-344c-a090-369bad2a924a")) && globalData.getDonorGiven() == 0) { // Dev
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-
-					ItemStack item = new ItemStack(ModItems.kibladeChain.get());
-					player.addItem(item);
-
-				}
-				if (uuid.equals(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0")) && globalData.getDonorGiven() == 0) { // RealRegen
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-					ItemStack item = new ItemStack(ModItemsRM.gazingOmenChain.get());
-					player.addItem(item);
-				}
-				if (uuid.equals(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718")) && globalData.getDonorGiven() == 0) { // Goblex
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-					ItemStack item = new ItemStack(ModItemsRM.elementalCrescendoChain.get());
-					player.addItem(item);
-				}
-				if (uuid.equals(UUID.fromString("1d9409de-3a3a-4e5c-a249-50958353813a")) && globalData.getDonorGiven() == 0) { // NolValue
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-					ItemStack item = new ItemStack(ModItemsRM.fierceDeityKeyChain.get());
-					player.addItem(item);
-				}
-				if (uuid.equals(UUID.fromString("da1e7feb-6ed3-4f90-992e-6cf8fb1d5514")) && globalData.getDonorGiven() == 0){
-					player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade and thank you for supporting Kingdom Keys - Re:Mind!"));
-
-					ItemStack item = new ItemStack(ModItemsRM.lyric2025TournamentChain.get());
-					player.addItem(item);
-				}
-				globalData.setDonorGiven(1);
-				PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
-
 			}
 		} else {
 			player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
