@@ -64,7 +64,6 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class EntityEventsRM {
@@ -173,8 +172,7 @@ public class EntityEventsRM {
 					player.sendSystemMessage(Component.literal("Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
 				}
 
-
-				if (globalData.getDonorGiven()) {
+				if (!globalData.getDonorGiven()) {
 					if (ALLOWED_UUIDS.containsKey(player.getUUID())) {
 						System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 						UUID uuid = player.getUUID();

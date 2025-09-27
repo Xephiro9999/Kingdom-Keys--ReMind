@@ -47,7 +47,7 @@ public class GlobalDataRM implements IGlobalDataRM {
         storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
 
         // Donor Grant
-        storage.putBoolean("donorGrant", this.getDonorGiven());
+        storage.putBoolean("donor_grant", this.getDonorGiven());
 
         return storage;
     }
@@ -82,7 +82,7 @@ public class GlobalDataRM implements IGlobalDataRM {
 
         this.setDonorGiven(properties.getBoolean("donor_grant"));
 
-        this.setPanelChoice(properties.getString("Panels_Choice"));
+       // this.setPanelChoice(properties.getString("Panels_Choice"));
 
     }
 
