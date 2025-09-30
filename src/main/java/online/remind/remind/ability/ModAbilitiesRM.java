@@ -60,13 +60,17 @@ public class ModAbilitiesRM extends ModAbilities{
 
 
 
-    HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
+        HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         MP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         FOCUS_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"focus_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.focusWalker),10,Ability.AbilityType.SUPPORT, order++)),
         HEART_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"heart_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.heartWalker),10,Ability.AbilityType.SUPPORT, order++)),
         EXP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"exp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.expWalker),10,Ability.AbilityType.SUPPORT, order++)),
 
         ATTACK_HASTE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"attack_haste").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.attackHaste),3,Ability.AbilityType.SUPPORT, order++)),
+        MP_SLOW = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_slow").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpSlow),3,Ability.AbilityType.SUPPORT, order++)),
+        MP_SLOWRA = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_slowra").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpSlowra),4,Ability.AbilityType.SUPPORT, order++)),
+        MP_SLOWGA = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_slowga").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpSlowga),5,Ability.AbilityType.SUPPORT, order++)),
+        ONE_HP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"one_hp").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.oneHP),5,Ability.AbilityType.SUPPORT, order++)),
 
     // Weapon Exclusive Abilities
         TIDUS = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"tidus").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Tidus),3,Ability.AbilityType.SUPPORT, order++)),

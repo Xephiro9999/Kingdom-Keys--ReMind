@@ -143,6 +143,15 @@
   "ability.ability_jecht.desc": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped!",
   "ability.ability_spellblade.name": "Spellblade",
   "ability.ability_spellblade.desc": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary! \nPlease note, only 1 bonus may be active at a time. \nRequires 4 of a certain boost to activate.",
+  "ability.ability_mp_slow.name": "MP Slow",
+  "ability.ability_mp_slow.desc": "Decreases MP restoration speed after MP is fully consumed.",
+  "ability.ability_mp_slowra.name": "MP Slowra",
+  "ability.ability_mp_slowra.desc": "Decreases MP restoration speed even more after MP is fully consumed.",
+  "ability.ability_mp_slowga.name": "MP Slowga",
+  "ability.ability_mp_slowga.desc": "Highly decreases MP restoration speed after MP is fully consumed.",
+  "ability.ability_one_hp.name": "One HP",
+  "ability.ability_one_hp.desc": "It's... in the name...",
+
 
   "ability.ability_lyric1.name": "Volt Absorb",
   "ability.ability_lyric1.desc": "When equipped and hit with Lightning or Thunder based magic, take 10% less damage and gain Haste and Speed for 5 seconds.",
@@ -220,6 +229,7 @@
   "item.kkremind.friendbinder": "Friend Heartbinder",
   "item.kkremind.nothingness_binder": "Nothing's Heartbinder",
   "item.kkremind.silver_armlet": "Silver Armlet",
+  "item.kkremind.daredevil": "Daredevil",
 
   "item.kkremind.copper_coin": "Copper Coin",
   "item.kkremind.silver_coin": "Silver Coin",

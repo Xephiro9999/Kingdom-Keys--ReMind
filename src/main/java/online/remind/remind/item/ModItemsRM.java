@@ -78,7 +78,7 @@ public class ModItemsRM{
         herosGlove = ITEMS.register("heros_glove", () -> new KKArmorItem(new Item.Properties().stacksTo(1),4, ImmutableMap.of(KKResistanceType.fire,20,KKResistanceType.ice,20,KKResistanceType.darkness,20))),
         herosBelt = ITEMS.register("heros_belt", () -> new KKArmorItem(new Item.Properties().stacksTo(1),3, ImmutableMap.of(KKResistanceType.lightning,20,KKResistanceType.ice,20,KKResistanceType.darkness,20))),
         masterBelt = ITEMS.register("master_belt", () -> new KKArmorItem(new Item.Properties().stacksTo(1),7, ImmutableMap.of(KKResistanceType.darkness,20, KKResistanceType.light,20))),
-        ultima_ribbon = ITEMS.register("ultima_ribbon", () -> new KKArmorItem(new Item.Properties().stacksTo(1),5, ImmutableMap.of(KKResistanceType.fire,55,KKResistanceType.ice,55,KKResistanceType.lightning,55,KKResistanceType.darkness,55, KKResistanceType.light,55, KKResistanceType.water,50))),
+        ultima_ribbon = ITEMS.register("ultima_ribbon", () -> new KKArmorItem(new Item.Properties().stacksTo(1),5, ImmutableMap.of(KKResistanceType.fire,50,KKResistanceType.ice,50,KKResistanceType.lightning,50,KKResistanceType.darkness,50, KKResistanceType.light,50, KKResistanceType.water,50, KKResistanceType.air, 50))),
 
             // KK Accessories
         luckOfTheDraw = ITEMS.register("luck_of_the_draw", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 0,0,0,new String[] {Strings.luckyLucky,Strings.treasureMagnet})),
@@ -98,14 +98,16 @@ public class ModItemsRM{
         darkRing = ITEMS.register("dark_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),5,5,5, new String[] {StringsRM.darknessBoost})),
         lightRing = ITEMS.register("light_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),5,5,5, new String[] {StringsRM.lightBoost})),
 
-        expRing = ITEMS.register("exp_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),5,1,1, new String[] {StringsRM.expWalker})),
+        expRing = ITEMS.register("exp_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),5,1,1, new String[] {StringsRM.expWalker, Strings.experienceBoost})),
         focusSash = ITEMS.register("focus_sash", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),3,0,3, new String[] {StringsRM.focusWalker})),
         heartLocket = ITEMS.register("heart_locket", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),5,1,1, new String[] {StringsRM.heartWalker})),
         friendBinder = ITEMS.register("friendbinder", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),10,0,0, new String[] {StringsRM.friendsPower})),
         nothingnessBinder = ITEMS.register("nothingness_binder", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),10,0,0, new String[] {StringsRM.heartsPower})),
         silverArmlet = ITEMS.register("silver_armlet", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),10,0,0, new String[] {StringsRM.spellblade,StringsRM.mpBoost})),
+        daredevil = ITEMS.register("daredevil", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),0,0,0, new String[] {StringsRM.oneHP, Strings.experienceBoost, Strings.experienceBoost})),
 
-        // Coins
+
+    // Coins
         copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 100, "munny")),
         silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
         goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),

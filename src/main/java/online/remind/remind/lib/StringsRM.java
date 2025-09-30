@@ -65,6 +65,11 @@ public class StringsRM {
         royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
 
+        mpSlow = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slow",
+        mpSlowra = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slowra",
+        mpSlowga = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slowga",
+        oneHP = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"one_hp",
+
         // FF Keyblade Abilities
         Tidus = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"tidus",
         Jecht = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"jecht",

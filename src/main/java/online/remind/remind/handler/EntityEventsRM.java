@@ -26,9 +26,11 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
@@ -307,6 +309,28 @@ public class EntityEventsRM {
 
 		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())){
 			playerData.unequipAbility(StringsRM.darkStep, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOW.get())){
+			playerData.unequipAbility(Strings.mpHaste, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWRA.get())){
+			playerData.unequipAbility(Strings.mpHastera, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWGA.get())){
+			playerData.unequipAbility(Strings.mpHastega, 0);
+		}
+
+		if (event.getAbility().equals(ModAbilities.MP_HASTE.get())){
+			playerData.unequipAbility(StringsRM.mpSlow, 0);
+		}
+		if (event.getAbility().equals(ModAbilities.MP_HASTERA.get())){
+			playerData.unequipAbility(StringsRM.mpSlowra, 0);
+		}
+		if (event.getAbility().equals(ModAbilities.MP_HASTEGA.get())){
+			playerData.unequipAbility(StringsRM.mpSlowga, 0);
 		}
 
 	}
@@ -699,6 +723,36 @@ public class EntityEventsRM {
 								break;
 						}
 					}
+
+					// MP Slow Testing
+					if (playerData.isAbilityEquipped(StringsRM.mpSlow) || playerData.isAbilityEquipped(StringsRM.mpSlowra) || playerData.isAbilityEquipped(StringsRM.mpSlowga)){
+						//System.out.println(Utils.getMPHasteValue(playerData));
+						double val = 0;
+						val += (1.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlow));
+						val += (3.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlowra));
+						val += (5.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlowga));
+
+						//System.out.println("Slow Haste Value: "+val);
+
+						// Cap so your MP doesn't stop recharging
+						if (val > 16){
+							val = 16;
+						}
+
+						//System.out.println("Slow Haste Value (After Adjust/Cap): "+val);
+
+						if (playerData.getRecharge() && playerData.getMP() < playerData.getMaxMP()){
+							//playerData.addMP(playerData.getMaxMP() / 500 * ((Utils.getMPHasteValue(playerData) / 10) + 2));
+							playerData.addMP(playerData.getMaxMP() / 500 * (((Utils.getMPHasteValue(playerData) - val) / 10)));
+						}
+					}
+
+					// One HP Ability
+					if (playerData.isAbilityEquipped(StringsRM.oneHP)){
+						if (player.getHealth() > 1){
+							player.setHealth(1);
+						}
+					}
 				}
 
 
@@ -720,7 +774,14 @@ public class EntityEventsRM {
 								}
 							}
 							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker)) {
-								playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
+								if (!playerData.isAbilityEquipped(Strings.zeroExp)) {
+									if (playerData.isAbilityEquipped(Strings.experienceBoost) && player.getHealth() <= player.getMaxHealth() / 2) {
+										int expBoost = playerData.getNumberOfAbilitiesEquipped(Strings.experienceBoost);
+										playerData.addExperience(player, (5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker)) * expBoost, false, true);
+									} else {
+										playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
+									}
+								}
 							}
 							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
 								playerData.addHearts(5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
@@ -734,6 +795,16 @@ public class EntityEventsRM {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void playerHeal(LivingHealEvent event){
+		if (event.getEntity() instanceof Player player){
+			PlayerData playerData = PlayerData.get(player);
+			if (playerData.isAbilityEquipped(StringsRM.oneHP)){
+				event.setCanceled(true);
 			}
 		}
 	}
