@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +24,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCShowOverlayPacket;
 import online.remind.remind.client.sound.ModSoundsRM;
 import org.apache.logging.log4j.core.jmx.Server;
 
@@ -89,6 +91,13 @@ public class magicSteal extends Magic {
                 caster.level().addFreshEntity(new ItemEntity(caster.level(), caster.getX(), caster.getY() + 0.5, caster.getZ(), stolen));
             }
             caster.sendSystemMessage(Component.literal("You stole an item!"));
+
+            int randMunny = (int) ((Math.random() * 50) * (1 + casterData.getNumberOfAbilitiesEquipped(Strings.luckyLucky)));
+
+            caster.sendSystemMessage(Component.literal("You stole " + randMunny + " munny!"));
+            casterData.setMunny(casterData.getMunny() + randMunny);
+            PacketHandler.sendTo(new SCShowOverlayPacket("munny", randMunny), (ServerPlayer) player);
+
         }
 
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.itemget.get(), SoundSource.PLAYERS, 1F, 1F);
