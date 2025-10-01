@@ -2,7 +2,7 @@
   "cost": 0,
   "ingredients": [
     {
-      "material": "kingdomkeys:sinister_stone",
+      "material": "kingdomkeys:soothing_gem",
       "quantity": "3"
     },
     {
@@ -10,17 +10,17 @@
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:blazing_gem",
-      "quantity": "4"
+      "material": "kingdomkeys:soothing_stone",
+      "quantity": "3"
     },
     {
-      "material": "kingdomkeys:pulsing_crystal",
-      "quantity": "3"
+      "material": "kingdomkeys:soothing_crystal",
+      "quantity": "1"
     }
   ],
   "output": {
     "type": "item",
-    "item": "kkremind:comet_spell",
+    "item": "kkremind:ribbon_ff7",
     "quantity": 1
   },
   "tier": 6

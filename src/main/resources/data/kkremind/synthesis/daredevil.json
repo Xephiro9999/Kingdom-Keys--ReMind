@@ -3,25 +3,25 @@
   "ingredients": [
     {
       "material": "kingdomkeys:lucid_gem",
-      "quantity": "3"
+      "quantity": "2"
     },
     {
       "material": "kingdomkeys:writhing_gem",
-      "quantity": "3"
+      "quantity": "2"
     },
     {
       "material": "kingdomkeys:writhing_stone",
       "quantity": "3"
     },
     {
-      "material": "kingdomkeys:lucid_crystal",
+      "material": "kingdomkeys:sinister_crystal",
       "quantity": "1"
     }
   ],
   "output": {
     "type": "item",
-    "item": "kkremind:dark_ring",
+    "item": "kkremind:daredevil",
     "quantity": 1
   },
-  "tier": 4
+  "tier": 5
 }
