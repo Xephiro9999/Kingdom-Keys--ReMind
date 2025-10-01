@@ -47,6 +47,7 @@
   "magic.kkremind.magic_regen1.name": "Regenra",
   "magic.kkremind.magic_regen2.name": "Regenga",
   "magic.kkremind.magic_death0.name": "LV? Death",
+  "magic.kkremind.magic_steal0.name": "Steal",
 
 
 
@@ -151,6 +152,8 @@
   "ability.ability_mp_slowga.desc": "Highly decreases MP restoration speed after MP is fully consumed.",
   "ability.ability_one_hp.name": "One HP",
   "ability.ability_one_hp.desc": "It's... in the name...",
+  "ability.ability_ribbon.name": "Ribbon",
+  "ability.ability_ribbon.desc": "Grants immunity to all negative status effects.",
 
 
   "ability.ability_lyric1.name": "Volt Absorb",
@@ -230,6 +233,8 @@
   "item.kkremind.nothingness_binder": "Nothing's Heartbinder",
   "item.kkremind.silver_armlet": "Silver Armlet",
   "item.kkremind.daredevil": "Daredevil",
+  "item.kkremind.ribbon_ff7": "Ribbon (FF7)",
+  "item.kkremind.fury_ring": "Fury Ring",
 
   "item.kkremind.copper_coin": "Copper Coin",
   "item.kkremind.silver_coin": "Silver Coin",

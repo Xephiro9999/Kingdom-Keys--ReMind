@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -24,10 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
@@ -37,6 +35,7 @@ import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 //import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -64,9 +63,7 @@ import online.remind.remind.network.PacketHandlerRM;
 //import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 //import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityEventsRM {
 
@@ -793,6 +790,19 @@ public class EntityEventsRM {
 								}
 							}
 						}
+
+						if (playerData.isAbilityEquipped(StringsRM.ribbon)){
+							List<MobEffectInstance> effectsList = new ArrayList<>();
+							for (MobEffectInstance e : player.getActiveEffects()) {
+								if (e.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+									effectsList.add(e);
+								}
+							}
+
+							for(MobEffectInstance badEffect: effectsList){
+								player.removeEffect(badEffect.getEffect());
+							}
+						}
 					}
 				}
 			}
@@ -805,6 +815,27 @@ public class EntityEventsRM {
 			PlayerData playerData = PlayerData.get(player);
 			if (playerData.isAbilityEquipped(StringsRM.oneHP)){
 				event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onEffectAdded(MobEffectEvent.Added event){
+		if (event.getEntity() instanceof Player player){
+			PlayerData playerData = PlayerData.get(player);
+			if (playerData.isAbilityEquipped(StringsRM.ribbon)){
+				MobEffectInstance effect = event.getEffectInstance();
+				if (effect != null){
+					var effectHolder = effect.getEffect();
+					if (effectHolder.value().getCategory() == MobEffectCategory.HARMFUL){
+						player.removeEffect(effectHolder);
+					}
+					//System.out.println(effect.getEffect().value());
+					if (effect.getEffect().getKey() == ModMobEffects.FREEZE.getKey()){
+						System.out.println("Freeze!");
+						player.removeEffect(effectHolder);
+					}
+				}
 			}
 		}
 	}

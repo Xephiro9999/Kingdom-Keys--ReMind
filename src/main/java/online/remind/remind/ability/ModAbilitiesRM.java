@@ -71,6 +71,7 @@ public class ModAbilitiesRM extends ModAbilities{
         MP_SLOWRA = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_slowra").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpSlowra),4,Ability.AbilityType.SUPPORT, order++)),
         MP_SLOWGA = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_slowga").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpSlowga),5,Ability.AbilityType.SUPPORT, order++)),
         ONE_HP = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"one_hp").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.oneHP),5,Ability.AbilityType.SUPPORT, order++)),
+        RIBBON = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"ribbon").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.ribbon),10,Ability.AbilityType.SUPPORT, order++)),
 
     // Weapon Exclusive Abilities
         TIDUS = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"tidus").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Tidus),3,Ability.AbilityType.SUPPORT, order++)),
