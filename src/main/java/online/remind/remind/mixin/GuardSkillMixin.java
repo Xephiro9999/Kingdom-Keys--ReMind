@@ -1,21 +1,31 @@
-/* TODO No EFM 1.21
+//TODO No EFM 1.21
 package online.remind.remind.mixin;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.capability.IPlayerCapabilities;
-import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
-import online.remind.remind.capabilities.IGlobalCapabilitiesRM;
-import online.remind.remind.capabilities.ModCapabilitiesRM;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import yesman.epicfight.api.utils.AttackResult;
+import yesman.epicfight.api.neoevent.playerpatch.TakeDamageEvent;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.entity.eventlistener.HurtEvent;
+
+
+
 
 @Mixin(GuardSkill.class)
 public class GuardSkillMixin {
@@ -24,11 +34,11 @@ public class GuardSkillMixin {
     int ticks;
 
     @Inject(method = "dealEvent", at = @At("TAIL"), remap = false)
-    public void dealEventInject(PlayerPatch<?> playerpatch, HurtEvent.Pre event, boolean advanced, CallbackInfo ci) {
-
+    public void dealEventInject(PlayerPatch<?> playerpatch, TakeDamageEvent.Income event, boolean advanced, CallbackInfo ci) {
         Player player = playerpatch.getOriginal();
-        IPlayerCapabilities playerCapabilities = ModCapabilities.getPlayer(player);
-        IGlobalCapabilitiesRM globalData = ModCapabilitiesRM.getGlobal(player);
+        Entity attacker = event.getDamageSource().getEntity();
+        PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
         globalData.setCanCounter(1);
         //System.out.println("Can Counter! " + globalData.getCanCounter());
@@ -38,16 +48,54 @@ public class GuardSkillMixin {
         // Block Abilities Effects
 
 
-        if(playerCapabilities.isAbilityEquipped(StringsRM.renewalBlock)) {
-            player.heal(player.getMaxHealth() * 0.05F);
-            player.getFoodData().eat(3,3);
-            //System.out.println("Healed for "+ player.getMaxHealth() * 0.05F +" on Block!");
+        if(playerData.isAbilityEquipped(StringsRM.renewalBlock)) {
+            if (!event.isParried()){
+                player.heal(player.getMaxHealth() * 0.025F);
+                player.getFoodData().eat(3,3);
+            } else {
+                player.heal(player.getMaxHealth() * 0.075F);
+                player.getFoodData().eat(3,3);
+            }
+            event.getPlayerPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
         }
 
-        if(playerCapabilities.isAbilityEquipped(StringsRM.focusBlock)) {
-            playerCapabilities.addFocus(10);
-            //System.out.println("Focus Restored on Block!");
-            //System.out.println(event.getDamageSource().getEntity());
+        if(playerData.isAbilityEquipped(StringsRM.focusBlock)) {
+            if (!event.isParried()){
+                playerData.addFocus(10);
+            } else {
+                playerData.addFocus(25);
+            }
+        }
+        // Stop Block Code? :)
+        if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
+            if (event.isParried()) {
+                GlobalData target = GlobalData.get((LivingEntity) attacker);
+                if (playerData.getMP() >= 10) {
+                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP, 40, 2, false, false, false));
+                    event.getPlayerPatch().playSound(ModSounds.stop.get(), 1f, 1f);
+                    playerData.remMP(10);
+                }
+            }
+        }
+        // Royal Guard
+        if (playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+            if (event.isParried()) {
+                if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                    playerData.addFP(25);
+                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                    playerData.addDP(25);
+                }
+                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
+            } else {
+                if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                    playerData.addFP(10);
+                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                    playerData.addDP(10);
+                }
+                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
+            }
+
+            PacketHandler.syncToAllAround(player, playerData);
         }
 
 
@@ -55,4 +103,3 @@ public class GuardSkillMixin {
 
     }
 }
-*/
