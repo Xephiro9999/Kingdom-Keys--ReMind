@@ -252,6 +252,7 @@ public class EntityEventsRM {
 			if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
 				EpicFightCapabilities.getUnparameterizedEntityPatch(event.getPlayer(), PlayerPatch.class).ifPresent(playerPatch -> {
 					//TODO: Try to figure out how to give the Guard skill...
+
 				});
 			}
 

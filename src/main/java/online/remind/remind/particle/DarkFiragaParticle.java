@@ -1,4 +1,4 @@
-package online.remind.remind.particle.shotlock;
+package online.remind.remind.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
