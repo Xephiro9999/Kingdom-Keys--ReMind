@@ -1,14 +1,14 @@
 {
   "ability": "kkremind:ability_tidus",
   "base_stats": {
-    "mag": 13,
-    "str": 13
+    "mag": 8,
+    "str": 4
   },
   "description": "Tidus' Brotherhood turned into a keyblade! This keyblade excels in fast strikes and has a special effect when underwater!",
   "keychain": "kkremind:blitzers_dream_chain",
   "levels": [
     {
-      "mag": 14,
+      "mag": 4,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -19,11 +19,11 @@
           "quantity": 2
         }
       ],
-      "str": 13,
+      "str": 9,
       "ability": "kkremind:ability_attack_haste"
     },
     {
-      "mag": 14,
+      "mag": 4,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -34,11 +34,11 @@
           "quantity": 3
         }
       ],
-      "str": 14,
+      "str": 10,
       "ability": "kingdomkeys:ability_critical_boost"
     },
     {
-      "mag": 14,
+      "mag": 4,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -47,210 +47,210 @@
         {
           "material": "kingdomkeys:wellspring_shard",
           "quantity": 4
+        }
+      ],
+      "str": 11
+    },
+    {
+      "mag": 4,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 1
+        }
+      ],
+      "str": 12,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 4,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 13
+    },
+    {
+      "mag": 5,
+      "recipe": [
+        {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 13,
+      "ability": "kingdomkeys:ability_mp_hastega"
+    },
+    {
+      "mag": 6,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 13
+    },
+    {
+      "mag": 7,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 13
+    },
+    {
+      "mag": 8,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 13
+    },
+    {
+      "mag": 9,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 1
+        }
+      ],
+      "str": 13,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 13,
+      "ability": "kingdomkeys:ability_water_boost"
+    },
+    {
+      "mag": 10,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": 11,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
+        }
+      ],
+      "str": 14
+    },
+    {
+      "mag": 11,
+      "recipe": [
+        {
+          "material": "kingdomkeys:electrum",
+          "quantity": 4
+        },
+        {
+          "material": "kingdomkeys:wellspring_crystal",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_crystal",
+          "quantity": 2
         }
       ],
       "str": 15
     },
     {
-      "mag": 15,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 1
-        }
-      ],
-      "str": 15,
-      "ability": "kingdomkeys:ability_water_boost"
-    },
-    {
-      "mag": 15,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_stone",
-          "quantity": 2
-        }
-      ],
-      "str": 16
-    },
-    {
-      "mag": 16,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 3
-        },
-        {
-          "material": "kingdomkeys:writhing_stone",
-          "quantity": 2
-        }
-      ],
-      "str": 16,
-      "ability": "kingdomkeys:ability_mp_hastega"
-    },
-    {
-      "mag": 16,
-      "recipe": [
-        {
-          "material": "kingdomkeys:adamantite",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_gem",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:writhing_gem",
-          "quantity": 1
-        }
-      ],
-      "str": 17
-    },
-    {
-      "mag": 17,
-      "recipe": [
-        {
-          "material": "kingdomkeys:adamantite",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_gem",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_gem",
-          "quantity": 2
-        }
-      ],
-      "str": 17
-    },
-    {
-      "mag": 18,
-      "recipe": [
-        {
-          "material": "kingdomkeys:adamantite",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_gem",
-          "quantity": 3
-        },
-        {
-          "material": "kingdomkeys:writhing_gem",
-          "quantity": 2
-        }
-      ],
-      "str": 17
-    },
-    {
-      "mag": 18,
-      "recipe": [
-        {
-          "material": "kingdomkeys:electrum",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_crystal",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:writhing_crystal",
-          "quantity": 1
-        }
-      ],
-      "str": 18,
-      "ability": "kingdomkeys:ability_water_boost"
-    },
-    {
-      "mag": 20,
-      "recipe": [
-        {
-          "material": "kingdomkeys:electrum",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_crystal",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_crystal",
-          "quantity": 2
-        }
-      ],
-      "str": 20,
-      "ability": "kingdomkeys:ability_water_boost"
-    },
-    {
-      "mag": 21,
-      "recipe": [
-        {
-          "material": "kingdomkeys:electrum",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:wellspring_crystal",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_crystal",
-          "quantity": 2
-        }
-      ],
-      "str": 21
-    },
-    {
-      "mag": 22,
-      "recipe": [
-        {
-          "material": "kingdomkeys:electrum",
-          "quantity": 3
-        },
-        {
-          "material": "kingdomkeys:wellspring_crystal",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_crystal",
-          "quantity": 2
-        }
-      ],
-      "str": 22
-    },
-    {
-      "mag": 23,
-      "recipe": [
-        {
-          "material": "kingdomkeys:electrum",
-          "quantity": 4
-        },
-        {
-          "material": "kingdomkeys:wellspring_crystal",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_crystal",
-          "quantity": 2
-        }
-      ],
-      "str": 23
-    },
-    {
-      "mag": 24,
+      "mag": 12,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -265,8 +265,8 @@
           "quantity": 2
         }
       ],
-      "str": 24,
-      "ability": "kingdomkeys:ability_mp_thrift"
+      "str": 15,
+      "ability": "kkremind:ability_attack_haste"
     }
   ],
   "reach": 6.0

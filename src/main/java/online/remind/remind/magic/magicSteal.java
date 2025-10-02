@@ -44,8 +44,11 @@ public class magicSteal extends Magic {
         PlayerData casterData = PlayerData.get(caster);
 
         // Chance roll based on caster's magic stat
-        double chance = (double) (casterData.getMagic(true) + casterData.getStrength(true)) /2;
-        caster.sendSystemMessage(Component.literal("Chance: " + chance));
+        //double chance = (double) (casterData.getMagic(true) + casterData.getStrength(true)) /2;
+
+        double chance = 25 + (casterData.getNumberOfAbilitiesEquipped(Strings.luckyLucky) * 1.5) + (casterData.getNumberOfAbilitiesEquipped(Strings.treasureMagnet) * 1.5);
+
+        //caster.sendSystemMessage(Component.literal("Chance: " + chance));
         if (chance < 0) chance = 0;
         double roll = Math.random() * 100;
         if (roll > chance) {

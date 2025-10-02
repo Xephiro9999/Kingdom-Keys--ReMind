@@ -1,14 +1,14 @@
 {
   "ability": "kingdomkeys:ability_fire_boost",
   "base_stats": {
-    "mag": 12,
-    "str": -3
+    "mag": 10,
+    "str": 0
   },
-  "description": "A Playfully Musical of a Keyblade, requested by Goblex.",
+  "description": "A Playfully Musical of a Keyblade, does very little for your strength but magnifies your magic prowess immensely. Requested by Goblex.",
   "keychain": "kkremind:elemental_crescendo_chain",
   "levels": [
     {
-      "mag": 12,
+      "mag": 11,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -19,10 +19,10 @@
           "quantity": 2
         }
       ],
-      "str": -4
+      "str": 0
     },
     {
-      "mag": 13,
+      "mag": 12,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -33,11 +33,11 @@
           "quantity": 3
         }
       ],
-      "str": -4,
+      "str": 0,
       "ability": "kingdomkeys:ability_blizzard_boost"
     },
     {
-      "mag": 14,
+      "mag": 13,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -48,10 +48,10 @@
           "quantity": 4
         }
       ],
-      "str": -5
+      "str": 0
     },
     {
-      "mag": 15,
+      "mag": 14,
       "recipe": [
         {
           "material": "kingdomkeys:damascus",
@@ -62,7 +62,7 @@
           "quantity": 1
         }
       ],
-      "str": -5,
+      "str": 0,
       "ability": "kingdomkeys:ability_thunder_boost"
     },
     {
@@ -81,7 +81,7 @@
           "quantity": 2
         }
       ],
-      "str": -6
+      "str": 0
     },
     {
       "mag": 16,
@@ -99,11 +99,11 @@
           "quantity": 2
         }
       ],
-      "str": -6,
+      "str": -1,
       "ability": "kingdomkeys:ability_mp_hastera"
     },
     {
-      "mag": 16,
+      "mag": 17,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -118,10 +118,10 @@
           "quantity": 1
         }
       ],
-      "str": -7
+      "str": -2
     },
     {
-      "mag": 17,
+      "mag": 18,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -136,10 +136,10 @@
           "quantity": 2
         }
       ],
-      "str": -7
+      "str": -3
     },
     {
-      "mag": 17,
+      "mag": 19,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -154,7 +154,7 @@
           "quantity": 2
         }
       ],
-      "str": -8
+      "str": -4
     },
     {
       "mag": 20,
@@ -172,7 +172,7 @@
           "quantity": 1
         }
       ],
-      "str": -8,
+      "str": -5,
       "ability": "kingdomkeys:ability_wizards_ruse"
     },
     {
@@ -191,7 +191,7 @@
           "quantity": 2
         }
       ],
-      "str": -9,
+      "str": -6,
       "ability": "kkremind:ability_mp_boost"
     },
     {
@@ -210,7 +210,7 @@
           "quantity": 2
         }
       ],
-      "str": -10
+      "str": -7
     },
     {
       "mag": 23,
@@ -228,7 +228,7 @@
           "quantity": 2
         }
       ],
-      "str": -11
+      "str": -8
     },
     {
       "mag": 24,
@@ -246,7 +246,7 @@
           "quantity": 2
         }
       ],
-      "str": -12
+      "str": -9
     },
     {
       "mag": 25,
@@ -264,7 +264,7 @@
           "quantity": 2
         }
       ],
-      "str": -13,
+      "str": -10,
       "ability": "kingdomkeys:ability_mp_thrift"
     }
   ],
