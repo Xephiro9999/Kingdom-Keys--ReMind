@@ -56,6 +56,12 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import yesman.epicfight.skill.Skill;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillSlot;
+import yesman.epicfight.skill.guard.GuardSkill;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 //import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 //import yesman.epicfight.server.commands.PlayerSkillCommand;
 //import yesman.epicfight.skill.*;
@@ -241,6 +247,12 @@ public class EntityEventsRM {
 					float friendBoost = party.getMembers().size() - 1;
 					//System.out.println(friendBoost);
 				}
+			}
+
+			if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
+				EpicFightCapabilities.getUnparameterizedEntityPatch(event.getPlayer(), PlayerPatch.class).ifPresent(playerPatch -> {
+					//TODO: Try to figure out how to give the Guard skill...
+				});
 			}
 
 			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())){

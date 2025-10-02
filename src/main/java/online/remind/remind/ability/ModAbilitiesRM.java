@@ -30,9 +30,9 @@ public class ModAbilitiesRM extends ModAbilities{
             // Action - EFM
         RENEWAL_BLOCK = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"renewal_block").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.renewalBlock), 0, Ability.AbilityType.ACTION, order++)),
         FOCUS_BLOCK = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"focus_block").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.focusBlock), 0, Ability.AbilityType.ACTION, order++)),
-                    STOP_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"stop_block", () -> new Ability(ResourceLocation.parse(StringsRM.stopBlock), 0, Ability.AbilityType.ACTION, order++)),
-                    POISON_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"poison_block", () -> new Ability(ResourceLocation.parse(StringsRM.poisonBlock), 0, Ability.AbilityType.ACTION, order++)),
-                    ROYAL_GUARD = ABILITIES.register(StringsRM.ABMA_Prefix+"royal_guard", () -> new Ability(ResourceLocation.parse(StringsRM.royalGuard), 0, Ability.AbilityType.ACTION, order++)),
+        STOP_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"stop_block", () -> new Ability(ResourceLocation.parse(StringsRM.stopBlock), 0, Ability.AbilityType.ACTION, order++)),
+        POISON_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"poison_block", () -> new Ability(ResourceLocation.parse(StringsRM.poisonBlock), 0, Ability.AbilityType.ACTION, order++)),
+        ROYAL_GUARD = ABILITIES.register(StringsRM.ABMA_Prefix+"royal_guard", () -> new Ability(ResourceLocation.parse(StringsRM.royalGuard), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_HAMMER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_hammer").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterHammer), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_BLAST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_blast").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterBlast), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_RUSH = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_rush").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterRush), 0, Ability.AbilityType.ACTION, order++)),

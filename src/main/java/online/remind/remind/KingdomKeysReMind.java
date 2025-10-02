@@ -88,7 +88,7 @@ public class KingdomKeysReMind {
 
         if (ModList.get().isLoaded("epicfight")) {
             efmLoaded = true;
-            KKRMSkills.SKILLS.register(modEventBus);
+            //KKRMSkills.SKILLS.register(modEventBus);
             //NeoForge.EVENT_BUS.register(new EpicFightEvents()); // <--- No longer exists but may in the future?
         }
 

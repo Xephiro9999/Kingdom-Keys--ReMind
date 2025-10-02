@@ -37,6 +37,11 @@ public class ModSoundsRM {
             REGEN = registerSound("regen"),
             DEATH_CAST = registerSound("death_cast"),
             DEATH_HIT = registerSound("death_hit"),
+            ROYAL_GUARD = registerSound("royal_block"),
+            ROYAL_PARRY = registerSound("royal_parry"),
+
+
+
 
 
             DISPEL = registerSound("dispel"),
