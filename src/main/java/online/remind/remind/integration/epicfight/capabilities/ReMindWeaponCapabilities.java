@@ -1,5 +1,5 @@
 package online.remind.remind.integration.epicfight.capabilities;
-
+/*
 import online.kingdomkeys.kingdomkeys.integration.epicfight.capabilities.GuardObject;
 import online.remind.remind.integration.epicfight.init.EpicRMWeapons;
 import online.remind.remind.integration.epicfight.init.RMStyles;
@@ -36,4 +36,5 @@ public class ReMindWeaponCapabilities extends WeaponCapability {
         return guardMap;
     }
 
-}
+}*/
+// Todo: Uncomment when EFM is fixed for KK/Re:Mind

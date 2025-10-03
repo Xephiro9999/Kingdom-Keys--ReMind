@@ -14,17 +14,18 @@ import online.remind.remind.integration.epicfight.capabilities.ReMindWeaponCapab
 import org.checkerframework.checker.units.qual.C;
 
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.neoforgeevent.WeaponCapabilityPresetRegistryEvent;
+import yesman.epicfight.api.neoevent.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.ColliderPreset;
-import yesman.epicfight.gameasset.EpicFightSkills;
-import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.gameasset.Animations.*;
+import yesman.epicfight.registry.entries.EpicFightSkills;
+import yesman.epicfight.registry.entries.EpicFightSounds;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
-public class EpicRMWeapons {
+/*public class EpicRMWeapons {
     public static final Function<Item, CapabilityItem.Builder> XEPHIRO = item -> {
         WeaponCapability.Builder builder = WeaponCapability.builder()
                 .category(CapabilityItem.WeaponCategories.SWORD)
@@ -70,4 +71,5 @@ public class EpicRMWeapons {
             return id;
         }
     }
-}
+}*/
+//TODO: Help with EFM on KK and find more imports or methods to fix efm for ReMind.

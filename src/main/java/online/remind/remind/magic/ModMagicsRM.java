@@ -36,8 +36,12 @@ public class ModMagicsRM {
             REGEN = MAGIC.register(ResourceLocation.parse("magic_regen").getPath(), () -> new magicRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_regen"), false, 3)),
             FAITH = MAGIC.register(ResourceLocation.parse("magic_faith").getPath(), () -> new magicFaith(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_faith"), 1, null)),
             DEATH = MAGIC.register(ResourceLocation.parse("magic_death").getPath(), () -> new magicDeath(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_death"), false, 1)),
-            STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1)),
-            SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null));
+            SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null)),
+
+
+            // "Spells"
+            STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1));
+            //TODO: Add BBS/DDD Attack Commands and FF Related Commands
 
 
 
