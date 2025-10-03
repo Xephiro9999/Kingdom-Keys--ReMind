@@ -6,6 +6,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.magic.attacks.attackQuickBlitz;
 
 import java.util.function.Supplier;
 
@@ -39,9 +40,10 @@ public class ModMagicsRM {
             SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null)),
 
 
-            // "Spells"
-            STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1));
-            //TODO: Add BBS/DDD Attack Commands and FF Related Commands
+    // "Spells"
+            STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1)),
+        //TODO: Add BBS/DDD Attack Commands and FF Related Commands
+            QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(),() -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_quick_blitz"), false, 1));
 
 
 

@@ -22,7 +22,7 @@ public class SparkEntityRenderer extends EntityRenderer<ThrowableProjectile> {
 
     public SparkEntityRenderer(EntityRendererProvider.Context context){
         super(context);
-        this.shadowRadius = 0.25F;
+        this.shadowRadius = 0.0F;
         sparkModel = new SparkModel<>(context.bakeLayer(BalloonModel.LAYER_LOCATION));
     }
 
@@ -32,7 +32,7 @@ public class SparkEntityRenderer extends EntityRenderer<ThrowableProjectile> {
         {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
-            matrixStackIn.translate(0, -0.7, 0);
+            matrixStackIn.translate(0, 0, 0);
             this.sparkModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
