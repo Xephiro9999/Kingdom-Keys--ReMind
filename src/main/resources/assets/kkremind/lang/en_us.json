@@ -47,7 +47,12 @@
   "magic.kkremind.magic_regen1.name": "Regenra",
   "magic.kkremind.magic_regen2.name": "Regenga",
   "magic.kkremind.magic_death0.name": "LV? Death",
+
+
   "magic.kkremind.magic_steal0.name": "Steal",
+  "magic.kkremind.attack_quick_blitz0.name": "Quick Blitz Lv.1",
+  "magic.kkremind.attack_quick_blitz1.name": "Quick Blitz Lv.2",
+  "magic.kkremind.attack_quick_blitz2.name": "Quick Blitz Lv.3",
 
 
 

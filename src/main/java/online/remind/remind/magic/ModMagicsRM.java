@@ -43,7 +43,7 @@ public class ModMagicsRM {
     // "Spells"
             STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1)),
         //TODO: Add BBS/DDD Attack Commands and FF Related Commands
-            QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(),() -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_quick_blitz"), false, 1));
+            QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(),() -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_quick_blitz"), false, 3));
 
 
 
