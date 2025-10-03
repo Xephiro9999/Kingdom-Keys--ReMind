@@ -17,11 +17,24 @@ public class attackQuickBlitz extends Magic {
     private boolean hasLandedAttack = false;
     private double speed = 1.2;
     private double hitRange = 1.5;
+    float dmg;
 
     @Override
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(player);
-        float dmg = playerData.getStrength(true) * 0.75f;
+
+        switch(level){
+            case 0:
+                dmg = playerData.getStrength(true) * 0.7f;
+                break;
+            case 1:
+                dmg = playerData.getStrength(true) * 0.85f;
+                break;
+            case 2:
+                dmg = playerData.getStrength(true);
+                break;
+        }
+
         if (lockOnEntity != null){
             this.target = lockOnEntity;
             this.hasLandedAttack = false;
@@ -37,14 +50,12 @@ public class attackQuickBlitz extends Magic {
                 return;
             }
 
-            double speed = 1.2;
-            //double mx = dx / dist * 0.7; //speed to target
-            //double mz = dz / dist * 0.7;
+            double speed = 1.0;
             dx /= dist;
             dy /= dist;
             dz /= dist;
 
-            double jump = 0.6; // leap
+            double jump = 0.25; // leap
 
             caster.setDeltaMovement(
                     dx * speed,
@@ -53,11 +64,11 @@ public class attackQuickBlitz extends Magic {
             caster.hurtMarked = true;
             caster.fallDistance = 0;
 
-
                 caster.getServer().execute(() -> {
                     if (lockOnEntity.isAlive()) {
                         lockOnEntity.hurt(caster.damageSources().playerAttack(caster), dmg);
                         caster.swing(InteractionHand.MAIN_HAND);
+
                         // Optional knockback
                         //lockOnEntity.push(mx * 0.5, 0.1, mz * 0.5);
                     }
