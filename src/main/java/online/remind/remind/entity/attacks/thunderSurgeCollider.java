@@ -3,6 +3,7 @@ package online.remind.remind.entity.attacks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -66,7 +67,7 @@ public class thunderSurgeCollider extends ThrowableProjectile {
                 double angle = tickCount * 0.3 + i * (Math.PI / 4);
                 double xOffset = Math.cos(angle) * radius;
                 double zOffset = Math.sin(angle) * radius;
-                level().addParticle(ParticleTypes.ELECTRIC_SPARK,
+                ((ServerLevel) caster.level()).addParticle(ParticleTypes.ELECTRIC_SPARK,
                         getX() + xOffset,
                         getY(),
                         getZ() + zOffset,
