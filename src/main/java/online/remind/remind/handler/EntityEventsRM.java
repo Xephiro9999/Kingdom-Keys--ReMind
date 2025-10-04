@@ -1,6 +1,7 @@
 package online.remind.remind.handler;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -8,10 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -37,7 +35,6 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 //import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
-import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -56,10 +53,10 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import yesman.epicfight.skill.Skill;
+import yesman.epicfight.network.EpicFightNetworkManager;
+import yesman.epicfight.registry.entries.EpicFightSkills;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillSlot;
-import yesman.epicfight.skill.guard.GuardSkill;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -228,7 +225,7 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM  playerData2 = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
-		//Player player = event.getPlayer();
+		Player player = event.getPlayer();
 
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 				playerData.addMaxMP(12.5);
@@ -250,10 +247,18 @@ public class EntityEventsRM {
 			}
 
 			if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
-				EpicFightCapabilities.getUnparameterizedEntityPatch(event.getPlayer(), PlayerPatch.class).ifPresent(playerPatch -> {
-					//TODO: Try to figure out how to give the Guard skill...
+				PlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+				SkillContainer skillContainer = playerPatch.getPlayerSkills().getSkillContainerFor(SkillSlots.GUARD);
+				if (playerPatch.getSkill(SkillSlots.GUARD).isEmpty()){
+					playerPatch.getSkill(SkillSlots.GUARD).setSkill(EpicFightSkills.GUARD.get());
 
-				});
+					if (!player.level().isClientSide) {
+						EpicFightNetworkManager.sendToAllPlayerTrackingThisEntity(skillContainer.createSyncPacketToRemotePlayer(), player);
+						EpicFightNetworkManager.sendToPlayer(skillContainer.createSyncPacketToLocalPlayer(), (ServerPlayer) player);
+					}
+				}
+
+
 			}
 
 			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())){
