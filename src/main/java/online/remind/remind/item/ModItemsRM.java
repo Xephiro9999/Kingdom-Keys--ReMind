@@ -37,6 +37,8 @@ public class ModItemsRM{
         faithSpell = ITEMS.register("faith_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_faith")),
         regenSpell = ITEMS.register("regen_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
         stealSpell = ITEMS.register("steal_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_steal")),
+        quickBlitzAttack = ITEMS.register("quick_blitz_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_quick_blitz")),
+        slidingDashAttack = ITEMS.register("sliding_dash_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_sliding_dash")),
 
             // Shotlock Orbs
         flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":flame_salvo")),

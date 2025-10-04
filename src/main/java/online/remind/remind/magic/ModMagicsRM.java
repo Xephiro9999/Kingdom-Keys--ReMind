@@ -6,7 +6,10 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.magic.attacks.attackFireSurge;
 import online.remind.remind.magic.attacks.attackQuickBlitz;
+import online.remind.remind.magic.attacks.attackSlidingDash;
+import online.remind.remind.magic.attacks.attackThunderSurge;
 
 import java.util.function.Supplier;
 
@@ -43,7 +46,10 @@ public class ModMagicsRM {
     // "Spells"
             STEAL = MAGIC.register(ResourceLocation.parse("magic_steal").getPath(), () -> new magicSteal(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_steal"), false, 1)),
         //TODO: Add BBS/DDD Attack Commands and FF Related Commands
-            QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(),() -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_quick_blitz"), false, 3));
+            QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(),() -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_quick_blitz"), false, 3)),
+            SLIDING_DASH = MAGIC.register(ResourceLocation.parse("attack_sliding_dash").getPath(),() -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_sliding_dash"), false, 3)),
+            FIRE_SURGE = MAGIC.register(ResourceLocation.parse("attack_fire_surge").getPath(),() -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_fire_surge"), false, 3)),
+            THUNDER_SURGE = MAGIC.register(ResourceLocation.parse("attack_thunder_surge").getPath(),() -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_thunder_surge"), false, 3));
 
 
 

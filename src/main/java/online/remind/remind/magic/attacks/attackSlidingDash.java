@@ -3,26 +3,22 @@ package online.remind.remind.magic.attacks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.quickBlitzCollider;
+import online.remind.remind.entity.attacks.slidingDashCollider;
 
-public class attackQuickBlitz extends Magic {
+public class attackSlidingDash extends Magic {
 
-    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
+    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
         super(registryName, hasToSelect, maxLevel, null);
     }
 
     private LivingEntity target;
-    private boolean hasLandedAttack = false;
-    private double speed = 1.2;
-    private double hitRange = 1.5;
     float dmg;
+    double speed;
 
     @Override
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
@@ -30,27 +26,30 @@ public class attackQuickBlitz extends Magic {
 
         switch(level){
             case 0:
-                dmg = playerData.getStrength(true) * 0.7f;
+                dmg = playerData.getStrength(true) * 0.9f;
+                speed = 2.5;
                 break;
             case 1:
-                dmg = playerData.getStrength(true) * 0.85f;
+                dmg = playerData.getStrength(true);
+                speed = 3.25;
                 break;
             case 2:
-                dmg = playerData.getStrength(true);
+                dmg = playerData.getStrength(true) * 1.1f;
+                speed = 4;
                 break;
         }
 
-        double speed = 1.5;
-        double jump = 0.5;
+
         double yawRad = Math.toRadians(player.getYRot());
         double dx = -Math.sin(yawRad) * speed;
+        double jump = 0.175;
         double dz = Math.cos(yawRad) * speed;
         caster.setDeltaMovement(dx, jump, dz);
         caster.hurtMarked = true;
         caster.fallDistance = 0;
 
-        quickBlitzCollider quickBlitz = new quickBlitzCollider(player.level(), player, dmg);
-        caster.level().addFreshEntity(quickBlitz);
+        slidingDashCollider slidingDash = new slidingDashCollider(player.level(), player, dmg);
+        caster.level().addFreshEntity(slidingDash);
 
     }
 

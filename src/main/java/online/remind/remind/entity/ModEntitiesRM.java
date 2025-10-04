@@ -23,6 +23,10 @@ import online.remind.remind.client.render.mob.ChirithyRenderer;
 import online.remind.remind.client.render.reactioncommand.DarkMineEntityRenderer;
 import online.remind.remind.client.render.reactioncommand.LightBeamEntityRenderer;
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
+import online.remind.remind.entity.attacks.fireSurgeCollider;
+import online.remind.remind.entity.attacks.quickBlitzCollider;
+import online.remind.remind.entity.attacks.slidingDashCollider;
+import online.remind.remind.entity.attacks.thunderSurgeCollider;
 import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.reactioncommand.*;
@@ -50,6 +54,14 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<FaithEntity>> TYPE_FAITH = createEntityType(FaithEntity::new, MobCategory.MISC,"entity_faith", 1.5F, 1.5F);
     public static final Supplier<EntityType<MeteorEntity>> TYPE_METEOR = createEntityType(MeteorEntity::new, MobCategory.MISC,"entity_meteor", 1.5F, 1.5F);
     public static final Supplier<EntityType<SparkEntity>> TYPE_SPARK = createEntityType(SparkEntity::new, MobCategory.MISC,"entity_spark", 1.5F, 1.5F);
+
+    // Attack Commands
+    public static final Supplier<EntityType<quickBlitzCollider>> TYPE_QUICK_BLITZ = createEntityType(quickBlitzCollider::new, MobCategory.MISC,"quick_blitz_collider", 1.5F, 1.5F);
+    public static final Supplier<EntityType<slidingDashCollider>> TYPE_SLIDING_DASH = createEntityType(slidingDashCollider::new, MobCategory.MISC,"sliding_dash_collider", 1.5F, 1.5F);
+    public static final Supplier<EntityType<fireSurgeCollider>> TYPE_FIRE_SURGE = createEntityType(fireSurgeCollider::new, MobCategory.MISC,"fire_surge_collider", 1.5F, 1.5F);
+    public static final Supplier<EntityType<thunderSurgeCollider>> TYPE_THUNDER_SURGE = createEntityType(thunderSurgeCollider::new, MobCategory.MISC,"thunder_surge_collider", 1.5F, 1.5F);
+
+
 
     // Shotlocks
     public static final Supplier<EntityType<BioBarrageShotEntity>> TYPE_BIO_SHOT = createEntityType(BioBarrageShotEntity::new, MobCategory.MISC, "entity_bio_shot", 0.5F, 0.5F);
@@ -127,6 +139,9 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_FAITH.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_METEOR.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SPARK.get(), SparkEntityRenderer::new);
+
+        event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
+
 
         event.registerEntityRenderer(TYPE_BIO_SHOT.get(), BioShotEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SHOTLOCK_DARK_FIRAGA_SHOT.get(), BioShotEntityRenderer::new);

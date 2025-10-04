@@ -62,6 +62,7 @@ import yesman.epicfight.skill.SkillSlot;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 //import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 //import yesman.epicfight.server.commands.PlayerSkillCommand;
 //import yesman.epicfight.skill.*;
@@ -229,7 +230,6 @@ public class EntityEventsRM {
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		//Player player = event.getPlayer();
 
-		float mpBoost = (float) playerData.getMagicStat().get();
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 				playerData.addMaxMP(12.5);
 			}

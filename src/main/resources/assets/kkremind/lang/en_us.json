@@ -53,6 +53,9 @@
   "magic.kkremind.attack_quick_blitz0.name": "Quick Blitz Lv.1",
   "magic.kkremind.attack_quick_blitz1.name": "Quick Blitz Lv.2",
   "magic.kkremind.attack_quick_blitz2.name": "Quick Blitz Lv.3",
+  "magic.kkremind.attack_sliding_dash0.name": "Sliding Dash Lv.1",
+  "magic.kkremind.attack_sliding_dash1.name": "Sliding Dash Lv.2",
+  "magic.kkremind.attack_sliding_dash2.name": "Sliding Dash Lv.3",
 
 
 
@@ -74,7 +77,9 @@
   "item.kkremind.warp_spell": "Warp Spell",
   "item.kkremind.faith_spell": "Faith Spell",
   "item.kkremind.regen_spell": "Regen Spell",
-  "item.kkremind.steal_spell": "Steal 'Spell'",
+  "item.kkremind.steal_spell": "Steal Command",
+  "item.kkremind.quick_blitz_attack": "Quick Blitz Command",
+  "item.kkremind.sliding_dash_attack": "Sliding Dash Command",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
