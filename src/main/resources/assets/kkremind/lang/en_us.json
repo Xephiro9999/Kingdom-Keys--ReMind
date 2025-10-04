@@ -56,6 +56,12 @@
   "magic.kkremind.attack_sliding_dash0.name": "Sliding Dash Lv.1",
   "magic.kkremind.attack_sliding_dash1.name": "Sliding Dash Lv.2",
   "magic.kkremind.attack_sliding_dash2.name": "Sliding Dash Lv.3",
+  "magic.kkremind.attack_fire_surge0.name": "Fire Surge Lv.1",
+  "magic.kkremind.attack_fire_surge1.name": "Fire Surge Lv.2",
+  "magic.kkremind.attack_fire_surge2.name": "Fire Surge Lv.3",
+  "magic.kkremind.attack_thunder_surge0.name": "Thunder Surge Lv.1",
+  "magic.kkremind.attack_thunder_surge1.name": "Thunder Surge Lv.2",
+  "magic.kkremind.attack_thunder_surge2.name": "Thunder Surge Lv.3",
 
 
 
@@ -80,6 +86,8 @@
   "item.kkremind.steal_spell": "Steal Command",
   "item.kkremind.quick_blitz_attack": "Quick Blitz Command",
   "item.kkremind.sliding_dash_attack": "Sliding Dash Command",
+  "item.kkremind.fire_surge_attack": "Fire Surge Command",
+  "item.kkremind.thunder_surge_attack": "Thunder Surge Command",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
