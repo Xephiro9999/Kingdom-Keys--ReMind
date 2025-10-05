@@ -79,6 +79,10 @@ public class StringsRM {
         Lyric1 = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"lyric1",
         Lyric2 = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"lyric2",
 
+        Xephiro = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"xephiro",
+
+        Regen = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"regen",
+
         // Reprisals
 
         counterHammer = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_hammer",

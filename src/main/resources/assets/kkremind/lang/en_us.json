@@ -47,6 +47,9 @@
   "magic.kkremind.magic_regen1.name": "Regenra",
   "magic.kkremind.magic_regen2.name": "Regenga",
   "magic.kkremind.magic_death0.name": "LV? Death",
+  "magic.kkremind.magic_spark0.name": "Spark",
+  "magic.kkremind.magic_spark1.name": "Sparkra",
+  "magic.kkremind.magic_spark2.name": "Sparkga",
 
 
   "magic.kkremind.magic_steal0.name": "Steal",
@@ -83,6 +86,7 @@
   "item.kkremind.warp_spell": "Warp Spell",
   "item.kkremind.faith_spell": "Faith Spell",
   "item.kkremind.regen_spell": "Regen Spell",
+  "item.kkremind.spark_spell": "Spark Spell",
   "item.kkremind.steal_spell": "Steal Command",
   "item.kkremind.quick_blitz_attack": "Quick Blitz Command",
   "item.kkremind.sliding_dash_attack": "Sliding Dash Command",
@@ -184,6 +188,12 @@
   "ability.ability_lyric2.name": "Flash and Thunder",
   "ability.ability_lyric2.desc": "A Thunderous counter. Scales with Thunder Boost. \nRequires Counter Blast and EFM Guard Skill.",
 
+  "ability.ability_xephiro.name": "Vampiric Essence",
+  "ability.ability_xephiro.desc": "Makes your attacks thirst for blood. Granting HP on hit. \nScales with Darkness Boost.",
+
+  "ability.ability_regen.name": "Power of Nothingness",
+  "ability.ability_regen.desc": "",
+
 
   "shotlock.flame_salvo.name": "Flame Salvo",
   "shotlock.bubble_blaster.name": "Bubble Blaster",
@@ -208,7 +218,7 @@
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
   "item.kkremind.pureblood": "Pureblood",
   "item.kkremind.elemental_crescendo": "Elemental Crescendo",
-  "item.kkremind.gazing_omen": "Gazing Omen",
+  "item.kkremind.gazing_omen": "No Heart",
   "item.kkremind.crystals_light": "Crystal's Light",
   "item.kkremind.blitzers_dream": "Blitzer's Dream",
   "item.kkremind.legends_fang": "Legend's Fang",
@@ -218,7 +228,7 @@
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
   "item.kkremind.elemental_crescendo_chain": "Elemental Crescendo Chain",
-  "item.kkremind.gazing_omen_chain": "Gazing Omen Chain",
+  "item.kkremind.gazing_omen_chain": "No Heart Chain",
   "item.kkremind.crystals_light_chain": "Crystal's Light Chain",
   "item.kkremind.blitzers_dream_chain": "Blitzer's Dream Chain",
   "item.kkremind.legends_fang_chain": "Legend's Fang Chain",
@@ -305,6 +315,8 @@
   "reactioncommand.rc_twilight.name": "Twilight's Embrace",
   "reactioncommand.rc_dual_shot.name": "Dual Shot",
   "reactioncommand.rc_dark_firaga.name": "Dark Firaga",
+
+  "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 
 
   "reactioncommand.rc_counter_hammer.name": "Counter Hammer",

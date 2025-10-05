@@ -3,6 +3,7 @@ package online.remind.remind.magic.attacks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -21,16 +22,33 @@ public class attackThunderSurge extends Magic {
 
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(player);
-        float dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+        float dmg = 0;
+
+        switch(level){
+            case 0:
+                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.2f);
+                break;
+            case 1:
+                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.2f);
+                break;
+            case 2:
+                dmg = (playerData.getStrength(true) * 1.2f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.2f);
+                break;
+        }
+
         float radius = 1.5f + (0.5f * level);
 
-        double speed = 1.5;
+        double speed = 0.75;
 
         double yawRad = Math.toRadians(player.getYRot());
         double dx = -Math.sin(yawRad) * speed;
         double jump = 0.175;
         double dz = Math.cos(yawRad) * speed;
+        float yaw = player.getYRot();
+        float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
+        float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
         caster.setDeltaMovement(dx, jump, dz);
+        caster.push(motionX, 0, motionZ);
         caster.hurtMarked = true;
         caster.fallDistance = 0;
 
@@ -40,6 +58,6 @@ public class attackThunderSurge extends Magic {
 
         @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
-            player.level().playSound(null, player.blockPosition(), SoundEvents.CONDUIT_ATTACK_TARGET, SoundSource.PLAYERS, 1F, 1F);
+            player.level().playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1F, 1F);
     }
 }

@@ -1,14 +1,14 @@
 {
-  "ability": "kingdomkeys:ability_mp_thrift",
+  "ability": "kkremind:ability_regen",
   "base_stats": {
-    "mag": 10,
-    "str": 10
+    "mag": 13,
+    "str": 0
   },
-  "description": "A keyblade that favors magic, while boosting both Light and Darkness. Requested by RealRegen.",
+  "description": "A keyblade that favors magic, swelling with the power of Nothingness. Requested by RealRegen.",
   "keychain": "kkremind:gazing_omen_chain",
   "levels": [
     {
-      "mag": 11,
+      "mag": 14,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -19,10 +19,10 @@
           "quantity": 2
         }
       ],
-      "str": 9
+      "str": 0
     },
     {
-      "mag": 12,
+      "mag": 15,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -33,10 +33,10 @@
           "quantity": 3
         }
       ],
-      "str": 8
+      "str": 0
     },
     {
-      "mag": 13,
+      "mag": 16,
       "recipe": [
         {
           "material": "kingdomkeys:fluorite",
@@ -47,102 +47,101 @@
           "quantity": 4
         }
       ],
-      "str": 7,
+      "str": 0,
       "ability": "kkremind:ability_darkness_boost"
-    },
-    {
-      "mag": 14,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 1
-        }
-      ],
-      "str": 6
-    },
-    {
-      "mag": 15,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 2
-        },
-        {
-          "material": "kingdomkeys:writhing_stone",
-          "quantity": 2
-        }
-      ],
-      "str": 5,
-      "ability": "kkremind:ability_light_boost"
-    },
-    {
-      "mag": 16,
-      "recipe": [
-        {
-          "material": "kingdomkeys:damascus",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:wellspring_stone",
-          "quantity": 3
-        },
-        {
-          "material": "kingdomkeys:writhing_stone",
-          "quantity": 2
-        }
-      ],
-      "str": 4
     },
     {
       "mag": 17,
       "recipe": [
         {
-          "material": "kingdomkeys:adamantite",
+          "material": "kingdomkeys:damascus",
           "quantity": 1
         },
         {
-          "material": "kingdomkeys:wellspring_gem",
-          "quantity": 1
-        },
-        {
-          "material": "kingdomkeys:writhing_gem",
+          "material": "kingdomkeys:wellspring_stone",
           "quantity": 1
         }
       ],
-      "str": 3,
-      "ability": "kkremind:ability_light_boost"
+      "str": 0
     },
     {
       "mag": 18,
       "recipe": [
         {
-          "material": "kingdomkeys:adamantite",
+          "material": "kingdomkeys:damascus",
           "quantity": 1
         },
         {
-          "material": "kingdomkeys:wellspring_gem",
+          "material": "kingdomkeys:wellspring_stone",
           "quantity": 2
         },
         {
-          "material": "kingdomkeys:writhing_gem",
+          "material": "kingdomkeys:writhing_stone",
           "quantity": 2
         }
       ],
-      "str": 2,
+      "str": 0,
       "ability": "kkremind:ability_darkness_boost"
     },
     {
       "mag": 19,
       "recipe": [
         {
+          "material": "kingdomkeys:damascus",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_stone",
+          "quantity": 3
+        },
+        {
+          "material": "kingdomkeys:writhing_stone",
+          "quantity": 2
+        }
+      ],
+      "str": 0
+    },
+    {
+      "mag": 20,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 1
+        }
+      ],
+      "str": 0,
+      "ability": "kkremind:ability_darkness_boost"
+    },
+    {
+      "mag": 21,
+      "recipe": [
+        {
+          "material": "kingdomkeys:adamantite",
+          "quantity": 1
+        },
+        {
+          "material": "kingdomkeys:wellspring_gem",
+          "quantity": 2
+        },
+        {
+          "material": "kingdomkeys:writhing_gem",
+          "quantity": 2
+        }
+      ],
+      "str": 0
+    },
+    {
+      "mag": 22,
+      "recipe": [
+        {
           "material": "kingdomkeys:adamantite",
           "quantity": 1
         },
@@ -155,10 +154,10 @@
           "quantity": 2
         }
       ],
-      "str": 1
+      "str": 0
     },
     {
-      "mag": 20,
+      "mag": 23,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -174,12 +173,11 @@
         }
       ],
       "str": 0,
-      "ability": "kkremind:ability_mp_boost"
+      "ability": "kkremind:ability_darkness_boost"
     },
     {
       "str": -1,
-      "mag": 21,
-      "ability": "kkremind:ability_light_boost",
+      "mag": 24,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -197,7 +195,7 @@
     },
     {
       "str": -2,
-      "mag": 22,
+      "mag": 25,
       "ability": "kkremind:ability_darkness_boost",
       "recipe": [
         {
@@ -216,7 +214,7 @@
     },
     {
       "str": -3,
-      "mag": 23,
+      "mag": 26,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -234,7 +232,7 @@
     },
     {
       "str": -4,
-      "mag": 24,
+      "mag": 27,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -252,8 +250,8 @@
     },
     {
       "str": -5,
-      "mag": 25,
-      "ability": "kkremind:ability_mp_boost",
+      "mag": 28,
+      "ability": "kkremind:ability_spellblade",
       "recipe": [
         {
           "material": "kingdomkeys:electrum",

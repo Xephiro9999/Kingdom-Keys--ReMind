@@ -61,6 +61,7 @@ public class slidingDashCollider extends ThrowableProjectile {
             target.hurt(caster.damageSources().playerAttack((caster)), damage);
             caster.setDeltaMovement(0,0,0);
             caster.swing(InteractionHand.MAIN_HAND);
+            target.invulnerableTime = 0;
             hits++;
             if (hits == 2){
                 this.remove(RemovalReason.KILLED);

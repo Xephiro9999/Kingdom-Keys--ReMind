@@ -23,7 +23,7 @@ public class SparkEntityRenderer extends EntityRenderer<ThrowableProjectile> {
     public SparkEntityRenderer(EntityRendererProvider.Context context){
         super(context);
         this.shadowRadius = 0.0F;
-        sparkModel = new SparkModel<>(context.bakeLayer(BalloonModel.LAYER_LOCATION));
+        sparkModel = new SparkModel<>(context.bakeLayer(SparkModel.LAYER_LOCATION));
     }
 
     @Override

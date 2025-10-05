@@ -1,10 +1,10 @@
 {
-  "ability": "kkremind:ability_darkness_boost",
+  "ability": "kkremind:ability_xephiro",
   "base_stats": {
     "mag": 5,
-    "str": 13
+    "str": 10
   },
-  "description": "A keyblade belonging to Xephiro, even looking at it gives you a sense of powerful Darkness and bloodthirst... It denies any wielder that isn't Xephiro.",
+  "description": "A keyblade belonging to Xephiro, even looking at it gives you a sense of powerful Darkness and Bloodthirst... \nIt denies any wielder that isn't Xephiro it's full power.",
   "keychain": "kkremind:xephiro_keyblade_chain",
   "levels": [
     {
@@ -19,7 +19,7 @@
           "quantity": 2
         }
       ],
-      "str": 14
+      "str": 11
     },
     {
       "mag": 5,
@@ -33,7 +33,7 @@
           "quantity": 3
         }
       ],
-      "str": 14
+      "str": 12
     },
     {
       "mag": 5,
@@ -47,7 +47,7 @@
           "quantity": 4
         }
       ],
-      "str": 15,
+      "str": 13,
       "ability": "kkremind:ability_darkness_boost"
     },
     {
@@ -62,7 +62,7 @@
           "quantity": 1
         }
       ],
-      "str": 15
+      "str": 14
     },
     {
       "mag": 5,
@@ -80,8 +80,8 @@
           "quantity": 2
         }
       ],
-      "str": 16,
-      "ability": "kingdomkeys:ability_hp_gain"
+      "str": 15,
+      "ability": "kkremind:ability_darkness_boost"
     },
     {
       "mag": 5,
@@ -102,7 +102,7 @@
       "str": 16
     },
     {
-      "mag": 6,
+      "mag": 5,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -121,7 +121,7 @@
       "ability": "kkremind:ability_dark_power"
     },
     {
-      "mag": 8,
+      "mag": 5,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -140,7 +140,7 @@
       "ability": "kkremind:ability_attack_haste"
     },
     {
-      "mag": 9,
+      "mag": 5,
       "recipe": [
         {
           "material": "kingdomkeys:adamantite",
@@ -155,10 +155,10 @@
           "quantity": 2
         }
       ],
-      "str": 20
+      "str": 19
     },
     {
-      "mag": 10,
+      "mag": 5,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -173,12 +173,12 @@
           "quantity": 1
         }
       ],
-      "str": 23,
+      "str": 20,
       "ability": "kingdomkeys:ability_critical_boost"
     },
     {
-      "str": 24,
-      "mag": 10,
+      "str": 21,
+      "mag": 6,
       "ability": "kkremind:ability_attack_haste",
       "recipe": [
         {
@@ -204,8 +204,8 @@
       ]
     },
     {
-      "str": 24,
-      "mag": 11,
+      "str": 22,
+      "mag": 7,
       "ability": "kkremind:ability_darkness_boost",
       "recipe": [
         {
@@ -231,8 +231,8 @@
       ]
     },
     {
-      "str": 24,
-      "mag": 11,
+      "str": 23,
+      "mag": 8,
       "ability": "kkremind:ability_attack_haste",
       "recipe": [
         {
@@ -259,7 +259,7 @@
     },
     {
       "str": 24,
-      "mag": 12,
+      "mag": 9,
       "recipe": [
         {
           "material": "kingdomkeys:electrum",
@@ -285,7 +285,7 @@
     },
     {
       "str": 25,
-      "mag": 12,
+      "mag": 10,
       "ability": "kingdomkeys:ability_lucky_lucky",
       "recipe": [
         {

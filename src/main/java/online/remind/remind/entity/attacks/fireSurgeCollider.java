@@ -23,7 +23,7 @@ public class fireSurgeCollider extends ThrowableProjectile {
 
     private Player caster;
     private float damage;
-    private int maxTicks = 20;
+    private int maxTicks = 10;
     private double radius = 1.5;
     private int hits = 0;
     private int maxHits = 3;
@@ -73,15 +73,18 @@ public class fireSurgeCollider extends ThrowableProjectile {
         }
         // Ring of fire particles
         if (tickCount > 1) {
-            for (int i = 0; i < 8; i++) {
-                double angle = tickCount * 0.3 + i * (Math.PI / 4);
-                double xOffset = Math.cos(angle) * radius;
-                double zOffset = Math.sin(angle) * radius;
-                ((ServerLevel) caster.level()).addParticle(ParticleTypes.FLAME,
-                        getX() + xOffset,
-                        getY(),
-                        getZ() + zOffset,
-                        0, 0, 0);
+            if (caster.level() instanceof ServerLevel serverLevel) {
+
+                for (int i = 0; i < 8; i++) {
+                    double angle = caster.tickCount * 0.3 + i * (Math.PI / 4);
+                    double xOffset = Math.cos(angle) * radius;
+                    double zOffset = Math.sin(angle) * radius;
+                    serverLevel.sendParticles(ParticleTypes.FLAME,
+                            caster.getX() + xOffset,
+                            caster.getY() + 1.0,
+                            caster.getZ() + zOffset,
+                            1, 0, 0, 0, 0);
+                }
             }
         }
         super.tick();

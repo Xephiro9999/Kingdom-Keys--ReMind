@@ -55,7 +55,7 @@ public class attackSlidingDash extends Magic {
 
     @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1F, 1F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_RIPTIDE_3, SoundSource.PLAYERS, 1F, 1F);
 
     }
 }

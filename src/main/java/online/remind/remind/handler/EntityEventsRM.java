@@ -475,6 +475,8 @@ public class EntityEventsRM {
 
 					double boostWithin = (playerData.getStrengthStat().get() + playerData.getMagicStat().get()) / 2;
 
+					double regenBoost = (playerData.getMagicStat().get() * 0.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost));
+
 					//System.out.println("STR: "+playerData.getStrengthStat().get());
 					//System.out.println("MAG: "+playerData.getMagicStat().get());
 
@@ -499,6 +501,14 @@ public class EntityEventsRM {
 						playerData.getStrengthStat().removeModifier("darkness_within");
 						playerData.getMagicStat().removeModifier("darkness_within");
 					}
+
+					if (playerData.isAbilityEquipped(StringsRM.Regen)){
+						playerData.getMagicStat().addModifier("regen_buff", regenBoost, false, false);
+					} else {
+						playerData.getMagicStat().removeModifier("regen_buff");
+					}
+
+
 
 					if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
 						playerData.getStrengthStat().removeModifier("Riskcharge");
@@ -952,6 +962,29 @@ public class EntityEventsRM {
 					event.getEntity().invulnerableTime = 0;
 				}
 
+				// My Exclusive Ability
+				if (playerData.isAbilityEquipped(StringsRM.Xephiro)){
+
+					float currentHP = player.getHealth();
+					float maxHP =  player.getMaxHealth();
+					float missingHPRatio = 1.f - (currentHP / maxHP);
+
+					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
+					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
+					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
+					player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
+					player.getFoodData().eat(3,10);
+
+
+
+
+					System.out.println("%: " + darkScaling);
+					System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
+					//System.out.println("Bonus Damage: " + bonusDamage);
+				}
+
+
+
 				// Spellblade Ability
 				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
 				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
@@ -1047,7 +1080,6 @@ public class EntityEventsRM {
 								System.out.println("Life Steal for " + vamp + "HP.");
 
 								player.heal(vamp);
-
 							}
 						}
 					}

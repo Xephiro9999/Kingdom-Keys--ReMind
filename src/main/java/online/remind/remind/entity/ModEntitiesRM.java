@@ -79,6 +79,7 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<LightBeamEntity>> TYPE_LIGHT_BEAM = createEntityType(LightBeamEntity::new, MobCategory.MISC, "entity_rc_light_beam", 3F,4F);
     public static final Supplier<EntityType<DarkMineEntity>> TYPE_DARK_MINE = createEntityType(DarkMineEntity::new, MobCategory.MISC, "entity_rc_dark_mine", 2F,2.5F);
     public static final Supplier<EntityType<DualShotEntity>> TYPE_DUAL_SHOT = createEntityType(DualShotEntity::new, MobCategory.MISC, "entity_rc_dual_shot", 1.5F,1.5F);
+    public static final Supplier<EntityType<ThornsEntity>> TYPE_THORNS = createEntityType(ThornsEntity::new, MobCategory.MISC, "entity_rc_thorns", 1.5F,1.5F);
 
     // Misc
     public static final Supplier<EntityType<DarkFiragaEntity>> TYPE_DARK_FIRAGA = createEntityType(DarkFiragaEntity::new, MobCategory.MISC,"entity_dark_firaga", 1f, 1f);
@@ -158,6 +159,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_LIGHT_BEAM.get(), LightBeamEntityRenderer::new);
         event.registerEntityRenderer(TYPE_DARK_MINE.get(), DarkMineEntityRenderer::new);
         event.registerEntityRenderer(TYPE_DUAL_SHOT.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_THORNS.get(),InvisibleEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_DARK_FIRAGA.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_COUNTER_RUSH.get(),InvisibleEntityRenderer::new);

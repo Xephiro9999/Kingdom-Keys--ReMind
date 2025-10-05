@@ -1,5 +1,8 @@
 package online.remind.remind.entity.magic;
 
+import net.minecraft.world.phys.AABB;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,6 +26,8 @@ import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.entity.ModEntitiesRM;
 
+import java.util.List;
+
 public class SparkEntity extends ThrowableProjectile {
 
     private static final EntityDataAccessor<String> CASTER = SynchedEntityData.defineId(SparkEntity.class, EntityDataSerializers.STRING);
@@ -43,7 +48,7 @@ public class SparkEntity extends ThrowableProjectile {
     private Player ownerPlayer = null;
 
     // lifetime
-    private int maxTicks = 200;
+    private int maxTicks = 60;
 
     public SparkEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
@@ -129,51 +134,94 @@ public class SparkEntity extends ThrowableProjectile {
     public void tick() {
         super.tick();
 
-        // resolve owner/player once
-        if (this.ownerPlayer == null) {
-            if (this.getOwner() instanceof Player p) {
-                this.ownerPlayer = p;
-            } else if (this.casterName != null && !this.casterName.isEmpty()) {
-                for (Player p : level().players()) {
-                    if (p.getDisplayName().getString().equals(this.casterName)) {
-                        this.ownerPlayer = p;
-                        break;
+        // --- SERVER SIDE LOGIC ---
+        if (!level().isClientSide) {
+            // resolve owner if not yet cached
+            if (this.ownerPlayer == null) {
+                if (this.getOwner() instanceof Player p) {
+                    this.ownerPlayer = p;
+                } else if (this.casterName != null && !this.casterName.isEmpty()) {
+                    for (Player p : level().players()) {
+                        if (p.getDisplayName().getString().equals(this.casterName)) {
+                            this.ownerPlayer = p;
+                            break;
+                        }
                     }
+                }
+            }
+
+            // if no owner after a while → discard
+            if (this.ownerPlayer == null) {
+                if (this.tickCount > 40) this.discard();
+                return;
+            }
+
+            // lifetime check
+            if (this.tickCount > this.maxTicks) {
+                this.discard();
+                return;
+            }
+
+            // keep entity frozen
+            this.setDeltaMovement(0, 0, 0);
+
+            // use tickCount for deterministic orbiting
+            double time = this.tickCount;
+            double angle = this.angleOffset + this.direction * (time * this.orbitSpeed);
+
+            double cx = ownerPlayer.getX();
+            double cy = ownerPlayer.getY() + 1.0 + this.verticalOffset;
+            double cz = ownerPlayer.getZ();
+
+            double nx = cx + Math.cos(angle) * this.orbitRadius;
+            double nz = cz + Math.sin(angle) * this.orbitRadius;
+
+            // server sets authoritative position
+            this.setPos(nx, cy, nz);
+        }
+
+        if (!level().isClientSide && ownerPlayer != null) {
+            double damageRange = 0.5; // radius around orb to hit entities
+            AABB box = this.getBoundingBox().inflate(damageRange, damageRange, damageRange);
+
+            List<LivingEntity> targets = level().getEntitiesOfClass(LivingEntity.class, box,
+                    e -> e != ownerPlayer && e.isAlive());
+
+            for (LivingEntity target : targets) {
+                Party p = null;
+                if (ownerPlayer instanceof Player owner) p = WorldData.get(owner.getServer()).getPartyFromMember(owner.getUUID());
+                if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
+                    PlayerData playerData = PlayerData.get(ownerPlayer);
+                    //float dmg = ownerPlayer instanceof Player ? ((float) playerData.getMagic(true) / 3) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2f) : 4;
+                    float dmg = ownerPlayer instanceof Player ? (DamageCalculation.getMagicDamage((Player) ownerPlayer) * 0.15f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2f) : 4;
+
+                    if (target.getType().is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                            net.minecraft.resources.ResourceLocation.withDefaultNamespace("undead")))) {
+                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), (dmg * dmgMult) * 1.10F);
+                    } else if (target instanceof IKHMob ikhMob) {
+                        if (ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_PUREBLOOD ||
+                                ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_EMBLEM) {
+                            target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), (dmg * dmgMult) * 1.10F);
+                        } else {
+                            target.hurt(this.damageSources().indirectMagic(this, ownerPlayer), dmg);
+                        }
+                    } else {
+                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg * dmgMult);
+                    }
+                    target.invulnerableTime = 11; // reset invulnerability so multiple hits possible
                 }
             }
         }
 
-        if (ownerPlayer == null) {
-            // give time to resolve owner after spawn; if not found, discard
-            if (this.tickCount > 40) this.discard();
-            return;
+        // --- CLIENT SIDE VISUALS ---
+        if (this.level().isClientSide) {
+            spawnTrailParticles();
         }
+    }
 
-        if (this.tickCount > maxTicks) {
-            this.discard();
-            return;
-        }
-
-        // prevent physics interfering
-        this.setDeltaMovement(0, 0, 0);
-
-        // Use world time to compute angle deterministically (helps sync client/server)
-        double time = (double) this.level().getGameTime(); // increments each tick on both sides
-        double angle = this.angleOffset + this.direction * (time * this.orbitSpeed);
-
-        double cx = ownerPlayer.getX();
-        double cy = ownerPlayer.getY() + 1.0 + this.verticalOffset; // base height + vertical offset
-        double cz = ownerPlayer.getZ();
-
-        double nx = cx + Math.cos(angle) * this.orbitRadius;
-        double nz = cz + Math.sin(angle) * this.orbitRadius;
-        double ny = cy;
-
-        // position the entity exactly
-        this.setPos(nx, ny, nz);
-
-        // client-side: rainbow sparkle trail so the sparks are visible
-        if (this.level().isClientSide) spawnTrailParticles();
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
+        this.setPosRaw(x, y, z);
     }
 
     private void spawnTrailParticles() {
@@ -182,9 +230,9 @@ public class SparkEntity extends ThrowableProjectile {
         for (int i = 0; i < count; i++) {
             float hue = (float) (((this.level().getGameTime() * 6L + this.index * 30L + i * 10L) % 360L) / 360.0F);
             float[] rgb = hsbToRgb(hue, 1.0F, 1.0F);
-            DustParticleOptions dust = new DustParticleOptions(new Vector3f(rgb[0], rgb[1], rgb[2]), 0.45F);
+            DustParticleOptions dust = new DustParticleOptions(new Vector3f(rgb[0], rgb[1], rgb[2]), 1F);
             this.level().addParticle(dust, this.getX() + (this.random.nextDouble() - 0.5) * 0.12,
-                    this.getY() + (this.random.nextDouble() - 0.5) * 0.12,
+                    this.getY() + ((this.random.nextDouble() - 0.5) * 0.12 )+ 0.6,
                     this.getZ() + (this.random.nextDouble() - 0.5) * 0.12,
                     0.0, 0.0, 0.0);
         }
@@ -206,40 +254,5 @@ public class SparkEntity extends ThrowableProjectile {
             case 5 -> { r = brightness; g = p; b = q; }
         }
         return new float[]{r, g, b};
-    }
-
-    @Override
-    protected void onHit(HitResult rtRes) {
-        if (this.level().isClientSide) return;
-
-        EntityHitResult ert = null;
-        BlockHitResult brt = null;
-        if (rtRes instanceof EntityHitResult) ert = (EntityHitResult) rtRes;
-        if (rtRes instanceof BlockHitResult) brt = (BlockHitResult) rtRes;
-
-        if (ert != null && ert.getEntity() instanceof LivingEntity target) {
-            if (target != this.getOwner()) {
-                Party p = null;
-                if (this.getOwner() instanceof Player owner) p = WorldData.get(owner.getServer()).getPartyFromMember(owner.getUUID());
-                if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
-                    float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 5.75F : 2;
-                    if (target.getType().is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE, net.minecraft.resources.ResourceLocation.withDefaultNamespace("undead")))) {
-                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner()), (dmg * dmgMult) * 1.15F);
-                    } else if (target instanceof IKHMob ikhMob) {
-                        if (ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_PUREBLOOD || ikhMob.getKHMobType() == EntityHelper.MobType.HEARTLESS_EMBLEM) {
-                            target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner()), (dmg * dmgMult) * 1.15F);
-                        } else {
-                            target.hurt(this.damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);
-                        }
-                    } else {
-                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner()), dmg * dmgMult);
-                    }
-                    target.invulnerableTime = 0;
-                }
-            }
-            // keep orbiting (do not discard) so it can hit multiple targets; if you want one-hit, call discard()
-        } else if (brt != null) {
-            // on block hit: you can discard if you want
-        }
     }
 }

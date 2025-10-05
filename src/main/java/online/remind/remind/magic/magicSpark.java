@@ -16,89 +16,79 @@ public class magicSpark extends Magic {
 
     @Override
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-        float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+        float dmgMult = getDamageMult(level + 1) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
         dmgMult *= fullMPBlastMult;
 
-        // base parameters (tweak to taste)
         double baseRadius = 1.0;
         double outerRadius = 1.6;
-        double baseHeight = 1.0;
+        double baseHeight = -1;
         double heightStep = 0.5;
-        double speed = 0.12; // orbitSpeed (used in SparkEntity.setOrbitSpeed) - larger = faster
+        double speed = 0.5;
 
-        switch(level){
+        switch (level) {
             case 0:
-                // two opposite sparks, opposite directions
-                for (int i = 0; i < 2; i++){
+                // === 2 orbs: one pair (north/south) ===
+                for (int i = 0; i < 2; i++) {
                     SparkEntity spark = new SparkEntity(player.level(), player, i, dmgMult);
                     spark.setCaster(player.getDisplayName().getString());
-                    spark.setAngleOffset(i * Math.PI); // 0 and PI -> opposite
-                    spark.setDirection(i == 0 ? 1 : -1);
+
+                    // 0 and PI → opposite
+                    spark.setAngleOffset(i * Math.PI);
+                    spark.setDirection(1); // both rotate the same way
                     spark.setOrbitRadius(baseRadius);
                     spark.setOrbitSpeed(speed);
-                    spark.setVerticalOffset(0.9);
+                    spark.setVerticalOffset(baseHeight + 0.5);
                     player.level().addFreshEntity(spark);
                 }
                 break;
 
             case 1:
-                // two low + two slightly above; alternate directions per pair
-                for (int i = 0; i < 2; i++){
+                // === 4 orbs: 2 pairs (north/south + east/west) ===
+                for (int i = 0; i < 2; i++) {
+                    // pair 1: N/S
                     SparkEntity spark = new SparkEntity(player.level(), player, i, dmgMult);
                     spark.setCaster(player.getDisplayName().getString());
                     spark.setAngleOffset(i * Math.PI);
-                    spark.setDirection(i == 0 ? 1 : -1);
+                    spark.setDirection(1);
                     spark.setOrbitRadius(baseRadius);
                     spark.setOrbitSpeed(speed);
-                    spark.setVerticalOffset(baseHeight);
+                    spark.setVerticalOffset(baseHeight + 0.5);
                     player.level().addFreshEntity(spark);
 
-                    SparkEntity sparkra = new SparkEntity(player.level(), player, i+2, dmgMult);
-                    sparkra.setCaster(player.getDisplayName().getString());
-                    sparkra.setAngleOffset(i * Math.PI + Math.PI/8); // slight phase shift so they don't overlap perfectly
-                    sparkra.setDirection(i == 0 ? -1 : 1); // opposite direction of the lower one
-                    sparkra.setOrbitRadius(baseRadius);
-                    sparkra.setOrbitSpeed(speed);
-                    sparkra.setVerticalOffset(baseHeight + heightStep);
-                    player.level().addFreshEntity(sparkra);
+                    // pair 2: E/W → offset by 90°
+                    SparkEntity spark2 = new SparkEntity(player.level(), player, i + 2, dmgMult);
+                    spark2.setCaster(player.getDisplayName().getString());
+                    spark2.setAngleOffset(i * Math.PI + Math.PI / 2);
+                    spark2.setDirection(1);
+                    spark2.setOrbitRadius(baseRadius + 0.5);
+                    spark2.setOrbitSpeed(speed + 0.5);
+                    spark2.setVerticalOffset(baseHeight);
+                    player.level().addFreshEntity(spark2);
                 }
                 break;
 
             case 2:
-                // base pair, upper pair, outer pair
-                for (int i = 0; i < 2; i++){
-                    SparkEntity spark = new SparkEntity(player.level(), player, i, dmgMult);
-                    spark.setCaster(player.getDisplayName().getString());
-                    spark.setAngleOffset(i * Math.PI);
-                    spark.setDirection(i == 0 ? 1 : -1);
-                    spark.setOrbitRadius(baseRadius);
-                    spark.setOrbitSpeed(speed);
-                    spark.setVerticalOffset(baseHeight);
-                    player.level().addFreshEntity(spark);
+                // === 6 orbs: 3 pairs (120° apart) ===
+                for (int pair = 0; pair < 3; pair++) {
+                    for (int j = 0; j < 2; j++) {
+                        SparkEntity spark = new SparkEntity(player.level(), player, pair * 2 + j, dmgMult);
+                        spark.setCaster(player.getDisplayName().getString());
 
-                    SparkEntity sparkra = new SparkEntity(player.level(), player, i+2, dmgMult);
-                    sparkra.setCaster(player.getDisplayName().getString());
-                    sparkra.setAngleOffset(i * Math.PI + Math.PI/6);
-                    sparkra.setDirection(i == 0 ? -1 : 1);
-                    sparkra.setOrbitRadius(baseRadius + 0.15);
-                    sparkra.setOrbitSpeed(speed);
-                    sparkra.setVerticalOffset(baseHeight + heightStep);
-                    player.level().addFreshEntity(sparkra);
-
-                    SparkEntity sparkga = new SparkEntity(player.level(), player, i+4, dmgMult);
-                    sparkga.setCaster(player.getDisplayName().getString());
-                    sparkga.setAngleOffset(i * Math.PI + Math.PI/4);
-                    sparkga.setDirection(i == 0 ? 1 : -1);
-                    sparkga.setOrbitRadius(outerRadius);
-                    sparkga.setOrbitSpeed(speed * 1.05);
-                    sparkga.setVerticalOffset(baseHeight + heightStep + 0.25);
-                    player.level().addFreshEntity(sparkga);
+                        // each pair is 180° apart; shift each pair by 120°
+                        spark.setAngleOffset(j * Math.PI + (2 * Math.PI / 3) * pair);
+                        spark.setDirection(1);
+                        spark.setOrbitRadius(outerRadius + j);
+                        spark.setOrbitSpeed(speed);
+                        spark.setVerticalOffset(baseHeight + pair * heightStep);
+                        player.level().addFreshEntity(spark);
+                    }
                 }
                 break;
         }
     }
 
-    @Override
+
+            @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
         // sound handled elsewhere if desired
     }

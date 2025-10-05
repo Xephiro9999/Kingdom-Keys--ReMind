@@ -78,7 +78,9 @@ public class ModAbilitiesRM extends ModAbilities{
         JECHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"jecht").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Jecht),3,Ability.AbilityType.SUPPORT, order++)),
 
         LYRIC1 = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"lyric1").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Lyric1),0,Ability.AbilityType.SUPPORT, order++)),
-        LYRIC2 = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"lyric2").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Lyric2),0,Ability.AbilityType.SUPPORT, order++));
+        LYRIC2 = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"lyric2").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Lyric2),0,Ability.AbilityType.SUPPORT, order++)),
+        XEPHIRO = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"xephiro").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Xephiro),0,Ability.AbilityType.SUPPORT, order++)),
+        REGEN = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"regen").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.Regen),0,Ability.AbilityType.SUPPORT, order++));
 
 
     // Twilight (Double) Form Exclusive Abilities
