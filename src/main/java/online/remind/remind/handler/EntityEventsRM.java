@@ -398,28 +398,6 @@ public class EntityEventsRM {
 		if (event.getEntity() instanceof LivingEntity livingEntity) {
 			IGlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
 
-			// Spellblade Visual Effects
-
-			// Xephiro Keyblade Debuff
-
-
-			if (event.getEntity() instanceof Player player) {
-				PlayerData playerData = PlayerData.get(player);
-				if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
-					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get() && !player.getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3")) {
-						//System.out.println("Sanguine Gaze Equipped by NOT Xephiro!");
-						//System.out.println(player.getUUID());
-						//playerData.getStrengthStat().addModifier("Not Xephiro", -25, false, true);
-						//playerData.getMagicStat().addModifier("Not Xephiro", -25, false, true);
-						//playerData.getDefenseStat().addModifier("Not Xephiro", -25, false, true);
-					} else {
-						playerData.getStrengthStat().removeModifier("Not Xephiro");
-						playerData.getMagicStat().removeModifier("Not Xephiro");
-						playerData.getDefenseStat().removeModifier("Not Xephiro");
-					}
-				}
-			}
-
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {
