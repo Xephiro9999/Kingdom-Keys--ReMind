@@ -1,4 +1,4 @@
-/* //Useless
+//Useless
 package online.remind.remind.integration.epicfight.skills;
 
 import com.google.common.collect.Maps;
@@ -14,7 +14,7 @@ import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
-import yesman.epicfight.world.entity.eventlistener.HurtEvent;
+import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
 
 import java.util.Map;
 import java.util.UUID;
@@ -39,7 +39,7 @@ public class BlockAbilities extends GuardSkill {
 
 
     @Override
-    public void dealEvent(PlayerPatch<?> playerpatch, HurtEvent.Pre event, boolean advanced) {
+    public void dealEvent(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced) {
 
         event.setCanceled(true);
         event.setResult(AttackResult.ResultType.BLOCKED);
@@ -76,4 +76,4 @@ public class BlockAbilities extends GuardSkill {
 
 
 }
-*/
+

@@ -22,7 +22,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.entity.eventlistener.HurtEvent;
+import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
+
+
 
 import java.util.Objects;
 
@@ -33,7 +35,7 @@ public class GuardSkillMixin {
     int ticks;
 
     @Inject(method = "dealEvent", at = @At("TAIL"), remap = false)
-    public void dealEventInject(PlayerPatch<?> playerpatch, HurtEvent.Pre event, boolean advanced, CallbackInfo ci) {
+    public void dealEventInject(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
 
         Player player = playerpatch.getOriginal();
         Entity attacker = event.getDamageSource().getEntity();
