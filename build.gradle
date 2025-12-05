@@ -92,8 +92,9 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-    implementation "curse.maven:kingdom-keys-re-coded-242862:7000328"
-    implementation "curse.maven:epic-fight-mod-405076:7046108"
+    implementation "curse.maven:kingdom-keys-re-coded-242862:7297617"
+    implementation "curse.maven:geckolib-388172:7023453"
+    implementation "curse.maven:epic-fight-mod-405076:7213644"
 }
 
 tasks.withType(ProcessResources).configureEach {

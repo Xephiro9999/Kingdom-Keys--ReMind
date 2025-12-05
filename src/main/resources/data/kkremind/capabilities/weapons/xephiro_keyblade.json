@@ -13,9 +13,12 @@
     ]
   },
   "attributes": {
-    "two_hand": {
-      "impact": 1.0
+    "common": {
+      "armour_negation": 0.0,
+      "impact": 4.0,
+      "max_strikes": 1,
+      "speed_bonus": -0.90
     }
   },
-  "type": "epicfight:xephiro"
+  "type": "remind:xephiro"
 }

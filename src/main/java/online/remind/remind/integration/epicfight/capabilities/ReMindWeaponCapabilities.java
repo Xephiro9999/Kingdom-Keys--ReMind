@@ -1,8 +1,8 @@
 package online.remind.remind.integration.epicfight.capabilities;
-/*
+
 import online.kingdomkeys.kingdomkeys.integration.epicfight.capabilities.GuardObject;
 import online.remind.remind.integration.epicfight.init.EpicRMWeapons;
-import online.remind.remind.integration.epicfight.init.RMStyles;
+//import online.remind.remind.integration.epicfight.init.RMStyles;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
@@ -20,7 +20,7 @@ public class ReMindWeaponCapabilities extends WeaponCapability {
     private final Map<String, GuardObject> guardMap = new HashMap<>();
 
     public ReMindWeaponCapabilities(CapabilityItem.Builder builder) {
-        super(builder);
+        super((Builder) builder);
         guardMap.put(EpicRMWeapons.EpicRMWeaponEnum.XEPHIRO.toString()+ Styles.TWO_HAND, new GuardObject(Animations.SWORD_DUAL_GUARD_HIT, Animations.BIPED_COMMON_NEUTRALIZED, Animations.SWORD_DUAL_GUARD_HIT));
         guardMap.put(EpicRMWeapons.EpicRMWeaponEnum.XEPHIRO.toString()+ Styles.ONE_HAND, new GuardObject(Animations.SWORD_GUARD_HIT, Animations.BIPED_COMMON_NEUTRALIZED, Animations.SWORD_GUARD_HIT));
 
@@ -36,5 +36,5 @@ public class ReMindWeaponCapabilities extends WeaponCapability {
         return guardMap;
     }
 
-}*/
+}
 // Todo: Uncomment when EFM is fixed for KK/Re:Mind
