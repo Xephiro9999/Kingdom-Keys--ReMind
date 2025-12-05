@@ -27,7 +27,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 public class EpicRMWeapons {
-    public static final Function<Item, CapabilityItem.Builder> XEPHIRO = item -> {
+    public static final Function<Item, WeaponCapability.Builder> XEPHIRO = item -> {
         WeaponCapability.Builder builder = WeaponCapability.builder()
                 .category(CapabilityItem.WeaponCategories.SWORD)
                 .styleProvider(playerpatch -> playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicRMWeaponEnum.XEPHIRO ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
