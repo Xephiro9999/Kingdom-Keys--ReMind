@@ -38,6 +38,7 @@ import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 
 
+//import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
@@ -72,7 +73,7 @@ public class KingdomKeysReMind {
 
         if (ModList.get().isLoaded("epicfight")) {
             efmLoaded = true;
-            EpicFightIntegrationRM.initIntegration(modEventBus);
+            EpicFightIntegrationRM.initIntegrationRM(modEventBus);
             //KKRMSkills.SKILLS.register(modEventBus);
             //NeoForge.EVENT_BUS.register(new EpicFightEvents()); // <--- No longer exists but may in the future?
         }
