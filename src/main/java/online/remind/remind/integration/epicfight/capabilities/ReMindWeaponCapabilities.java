@@ -2,7 +2,6 @@ package online.remind.remind.integration.epicfight.capabilities;
 
 import online.kingdomkeys.kingdomkeys.integration.epicfight.capabilities.GuardObject;
 import online.remind.remind.integration.epicfight.init.EpicRMWeapons;
-//import online.remind.remind.integration.epicfight.init.RMStyles;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
@@ -10,7 +9,6 @@ import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
-import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 import java.util.HashMap;
 import java.util.Map;

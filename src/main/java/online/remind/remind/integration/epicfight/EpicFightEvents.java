@@ -1,4 +1,3 @@
-//TODO No EFM 1.21
 package online.remind.remind.integration.epicfight;
 
 import net.minecraft.world.entity.player.Player;
@@ -15,9 +14,9 @@ public class EpicFightEvents {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-            System.out.println(player.level().isClientSide() + " " + playerpatch);
+            //System.out.println(player.level().isClientSide() + " " + playerpatch);
             if (playerpatch != null) {
-               System.out.println(playerpatch.getSkill(SkillSlots.GUARD).getSkill());
+               //System.out.println(playerpatch.getSkill(SkillSlots.GUARD).getSkill());
             }
         }
     }
