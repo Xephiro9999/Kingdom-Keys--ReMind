@@ -1,17 +1,4 @@
 {
-  "collider": {
-    "number": 3,
-    "size": [
-      0.6,
-      0.6,
-      1.1
-    ],
-    "center": [
-      0.0,
-      0.0,
-      -1.1
-    ]
-  },
   "attributes": {
     "common": {
       "armour_negation": 0.0,
@@ -20,5 +7,5 @@
       "speed_bonus": -0.90
     }
   },
-  "type": "remind:xephiro"
+  "type": "kkremind:xephiro"
 }
