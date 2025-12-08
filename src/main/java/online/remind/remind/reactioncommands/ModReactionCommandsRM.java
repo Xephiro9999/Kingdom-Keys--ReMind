@@ -26,7 +26,12 @@ public class ModReactionCommandsRM {
         DARK_FIRAGA_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dark_firaga", () -> new DarkFiragaRC( ResourceLocation.parse(StringsRM.DarkFiragaRC),true)),
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC( ResourceLocation.parse(StringsRM.XemnasRC),true)),
 
-        // Reprisals
+        // Commission RCs
+
+        REGEN_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"regen", () -> new RegenRC( ResourceLocation.parse(StringsRM.RegenRC),true)),
+
+
+    // Reprisals
 
         COUNTER_HAMMER = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_hammer", () -> new CounterHammerRC( ResourceLocation.parse(StringsRM.CounterHammerRC), true)),
         COUNTER_BLAST = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_blast", () -> new CounterBlastRC( ResourceLocation.parse(StringsRM.CounterBlastRC), true)),

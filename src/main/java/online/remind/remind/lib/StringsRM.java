@@ -29,6 +29,7 @@ public class StringsRM {
         darkForm = StringsRM.DFMA_Prefix+"dark",
         lightForm = StringsRM.DFMA_Prefix+"light",
         twilight = StringsRM.DFMA_Prefix+"twilight",
+        regenForm = StringsRM.DFMA_Prefix+"regen",
 
 
         //Ability List
@@ -119,8 +120,11 @@ public class StringsRM {
         CounterBlastRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_blast",
         CounterRushRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_rush",
 
+        RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
 
-        //Keyblades
+
+
+    //Keyblades
         xephiroKeyblade = KingdomKeysReMind.MODID+":"+ StringsRM.KBMA_Prefix+"xephiro_keyblade",
 
         //Keychains

@@ -27,6 +27,7 @@ import online.remind.remind.entity.attacks.fireSurgeCollider;
 import online.remind.remind.entity.attacks.quickBlitzCollider;
 import online.remind.remind.entity.attacks.slidingDashCollider;
 import online.remind.remind.entity.attacks.thunderSurgeCollider;
+import online.remind.remind.entity.attacks.ravenousSaberCollider;
 import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.reactioncommand.*;
@@ -80,6 +81,8 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<DarkMineEntity>> TYPE_DARK_MINE = createEntityType(DarkMineEntity::new, MobCategory.MISC, "entity_rc_dark_mine", 2F,2.5F);
     public static final Supplier<EntityType<DualShotEntity>> TYPE_DUAL_SHOT = createEntityType(DualShotEntity::new, MobCategory.MISC, "entity_rc_dual_shot", 1.5F,1.5F);
     public static final Supplier<EntityType<ThornsEntity>> TYPE_THORNS = createEntityType(ThornsEntity::new, MobCategory.MISC, "entity_rc_thorns", 1.5F,1.5F);
+
+    public static final Supplier<EntityType<ravenousSaberCollider>> TYPE_RAVE_SABER = createEntityType(ravenousSaberCollider::new, MobCategory.MISC, "entity_rc_ravesaber", 1.5F,1.5F);
 
     // Misc
     public static final Supplier<EntityType<DarkFiragaEntity>> TYPE_DARK_FIRAGA = createEntityType(DarkFiragaEntity::new, MobCategory.MISC,"entity_dark_firaga", 1f, 1f);

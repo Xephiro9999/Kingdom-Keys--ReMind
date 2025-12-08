@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 
+import online.kingdomkeys.kingdomkeys.integration.epicfight.init.EpicKKWeapons;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.skills.KKSkills;
 import online.remind.remind.KingdomKeysReMind;
@@ -30,7 +31,7 @@ public class EpicRMWeapons {
     public static final Function<Item, WeaponCapability.Builder> XEPHIRO = item ->
         WeaponCapability.builder()
                 .category(CapabilityItem.WeaponCategories.SWORD)
-                .styleProvider(playerpatch -> playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicRMWeaponEnum.XEPHIRO ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
+                .styleProvider(playerpatch -> playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicKKWeapons.EpicKKWeaponEnum.KK_KEYBLADE ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
                 .hitSound(EpicFightSounds.BLADE_HIT.get())
                 .collider(ColliderPreset.LONGSWORD)
                 .weaponCombinationPredicator(entityPatch -> EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD)

@@ -191,8 +191,8 @@
   "ability.ability_xephiro.name": "Vampiric Essence",
   "ability.ability_xephiro.desc": "Makes your attacks thirst for blood. Granting HP on hit. \nScales with Darkness Boost.",
 
-  "ability.ability_regen.name": "Power of Nothingness",
-  "ability.ability_regen.desc": "",
+  "ability.ability_regen.name": "Regen's Ability",
+  "ability.ability_regen.desc": "This is a placeholder name and description",
 
 
   "shotlock.flame_salvo.name": "Flame Salvo",
@@ -214,6 +214,7 @@
   "form.form_dark.name": "Dark",
   "form.form_light.name": "Light",
   "form.form_twilight.name": "Twilight",
+  "form.form_regen.name": "????",
 
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
   "item.kkremind.pureblood": "Pureblood",
@@ -317,6 +318,8 @@
   "reactioncommand.rc_dark_firaga.name": "Dark Firaga",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
+
+  "reactioncommand.kkremind.rc_regen.name": "????",
 
 
   "reactioncommand.rc_counter_hammer.name": "Counter Hammer",
