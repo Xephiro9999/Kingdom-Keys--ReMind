@@ -42,8 +42,14 @@ public class RegenRC extends ReactionCommand {
             player.swing(InteractionHand.MAIN_HAND, true);
             //player.level().playSound(null, player.blockPosition(), ModSoundsRM.DUAL_SHOT.get(), SoundSource.PLAYERS, 1F, 1F);
 
-            ThrowableProjectile rc = new ravenousSaberCollider(player.level(), player, dmgmult);
-            System.out.println("Attack fired successfully");
+            // DEBUGGING
+            System.out.println("Base Damage: "+ dmg);
+            System.out.println("Damage Mult: "+ dmgmult);
+            System.out.println("Damage Total: "+ (dmg *dmgmult));
+
+            ravenousSaberCollider surge = new ravenousSaberCollider(player.level(), player, dmg);
+            player.level().addFreshEntity(surge);
+
 
             // Sync Packet
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);

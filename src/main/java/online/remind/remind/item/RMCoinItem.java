@@ -15,9 +15,16 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 
-public class RMCoinItem extends Item implements IItemCategory {
+public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
     int value;
     String type;
+
+    @Override
+    public Tab getTab() {
+        return Tab.MISC;
+    }
+
+
 
     public RMCoinItem(Properties properties, int value, String type) {
         super(properties);

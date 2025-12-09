@@ -1,9 +1,11 @@
 {
   "itemGroup.kkremindtab": "KK Re:Mind",
-  "itemGroup.addonmagictab": "KK ReMind: Magics",
-  "itemGroup.addonarmortab": "KK ReMind: Armors",
-  "itemGroup.addonaccessorytab": "KK ReMind: Accesories",
   "itemGroup.addonkeyblades": "KK ReMind: Keyblades",
+  "itemGroup.addonarmortab": "KK ReMind: Equipables",
+  "itemGroup.addonmagictab": "KK ReMind: Attacks & Magics",
+  "itemGroup.addonshotlocktab": "KK ReMind: Shotlocks",
+  "itemGroup.addonmisctab": "KK ReMind: Misc",
+
 
 
 

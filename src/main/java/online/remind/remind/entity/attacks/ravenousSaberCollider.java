@@ -1,8 +1,10 @@
 package online.remind.remind.entity.attacks;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -39,13 +41,13 @@ public class ravenousSaberCollider extends ThrowableProjectile {
     }
 
     private static final String[] ELEMENT_ORDER = {
-            "KKDamageTypes.FIRE", "KKDamageTypes.ICE", "KKDamageTypes.LIGHTNING", "KKDamageTypes.WATER", "KKDamageTypes.AIR"
+            "Fire", "Ice", "Lightning", "Water", "Air"
             // 0,1,2,3,4
     };
 
     private static final Map<String, ResourceKey<DamageType>> ELEMENT_DAMAGE_MAP = Map.of(
             "Fire", KKDamageTypes.FIRE,
-            "Blizzard", KKDamageTypes.ICE,
+            "Ice", KKDamageTypes.ICE,
             "Lightning", KKDamageTypes.LIGHTNING,
             "Water", KKDamageTypes.WATER,
             "Air", KKDamageTypes.AIR
@@ -58,7 +60,7 @@ public class ravenousSaberCollider extends ThrowableProjectile {
     }
 
     public ravenousSaberCollider(Level level, Player caster, float damage){
-        this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
+        this(ModEntitiesRM.TYPE_RAVE_SABER.get(),level);
         this.caster = caster;
         this.damage = damage;
         this.setPos(caster.getX(), caster.getY(), caster.getZ());
@@ -75,28 +77,122 @@ public class ravenousSaberCollider extends ThrowableProjectile {
             this.remove(RemovalReason.KILLED);
         }
 
+
         this.setPos(caster.getX(), caster.getY() + 0.5, caster.getZ());
 
-        hitTimer++;
-        System.out.println(hitTimer);
-        if (hitTimer >= hitDelay){
+        if (!level().isClientSide()) {
+            hitTimer++;
 
-            hitTimer = 0; // Resets Timer
+            if (hitTimer >= hitDelay) {
 
-            AABB hitBox = this.getBoundingBox().inflate(1.2); // easier to land
+                hitTimer = 0; // Resets Timer
 
-            for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)){
-                LivingEntity target = (LivingEntity) entity;
+                AABB hitBox = this.getBoundingBox().inflate(3.75); // easier to land
 
-                ResourceKey<DamageType> type = ELEMENT_DAMAGE_MAP.get(ELEMENT_ORDER[currentHitIndex]);
-                System.out.println(type);
-                target.hurt(KKDamageTypes.getElementalDamage(type,this, this.getOwner()), damage);
-                target.invulnerableTime = 0;
+                for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)) {
+                    LivingEntity target = (LivingEntity) entity;
+                    String element = ELEMENT_ORDER[currentHitIndex];
 
+
+                    ResourceKey<DamageType> dmgType = ELEMENT_DAMAGE_MAP.get(ELEMENT_ORDER[currentHitIndex]);
+                    System.out.println("[RavenousSaber] Element: " + element + " -> Type: " + dmgType);
+
+                    if (dmgType == null) {
+                        continue; // Hopefully doesn't crash
+                    }
+
+                    double radius = 90;
+                    if (caster.level() instanceof ServerLevel serverLevel) {
+                        switch (element) {
+
+
+                            case "Fire":
+
+                                level().playSound(null,
+                                        target.getX(), target.getY(), target.getZ(),
+                                        SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+
+
+                                break;
+                            case "Ice":
+
+                                level().playSound(null,
+                                        target.getX(), target.getY(), target.getZ(),
+                                        SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                break;
+                            case "Lightning":
+
+                                level().playSound(null,
+                                        target.getX(), target.getY(), target.getZ(),
+                                        SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                break;
+                            case "Water":
+
+                                level().playSound(null,
+                                        target.getX(), target.getY(), target.getZ(),
+                                        SoundEvents.WATER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                break;
+                            case "Air":
+
+                                level().playSound(null,
+                                        target.getX(), target.getY(), target.getZ(),
+                                        SoundEvents.BREEZE_WIND_CHARGE_BURST, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        spawnElementFX(level(), element, target.getX(), target.getY() + target.getBbHeight()/2, target.getZ());
+                        var src = KKDamageTypes.getElementalDamage(dmgType, this, caster);
+                        caster.swing(InteractionHand.MAIN_HAND);
+                        target.hurt(src, damage);
+                        target.invulnerableTime = 2;
+                        // Keep Target from moving
+                        target.setDeltaMovement(0, 0, 0);
+
+
+                        currentHitIndex++;
+                        if (currentHitIndex >= ELEMENT_ORDER.length) {
+                            currentHitIndex = 0;
+                        }
+                    }
+                }
             }
-
+            super.tick();
         }
-        super.tick();
+    }
+
+    public static void spawnElementFX(Level level, String element, double x, double y, double z) {
+        if (level instanceof ServerLevel server) {
+            // Use sendParticles for nearby clients
+            switch (element) {
+                case "Fire":
+                    server.sendParticles(ParticleTypes.FLAME, x, y, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.FLAME, x, y+1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.FLAME, x, y-1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    break;
+                case "Ice":
+                    server.sendParticles(ParticleTypes.SNOWFLAKE, x, y, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.SNOWFLAKE, x, y+1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.SNOWFLAKE, x, y-1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    break;
+                case "Lightning":
+                    server.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y+1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y-1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    break;
+                case "Water":
+                    server.sendParticles(ParticleTypes.SPLASH, x, y, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.SPLASH, x, y+1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.SPLASH, x, y-1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    break;
+                case "Air":
+                    server.sendParticles(ParticleTypes.CLOUD, x, y, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.CLOUD, x, y+1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    server.sendParticles(ParticleTypes.CLOUD, x, y-1, z, 8, 0.5, 0.5, 0.5, 0.05);
+                    break;
+            }
+        }
     }
 
     @Override

@@ -13,12 +13,17 @@ import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 
-public class ShotlockOrbItem extends Item {
+public class ShotlockOrbItem extends Item implements ICreativeTabRM {
     String shotlocks;
 
     public ShotlockOrbItem(Properties properties, String name){
         super(properties);
         this.shotlocks = name;
+    }
+
+    @Override
+    public Tab getTab(){
+        return Tab.SHOTLOCKS;
     }
 
     @Override

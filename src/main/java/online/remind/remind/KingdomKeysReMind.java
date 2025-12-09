@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import online.kingdomkeys.kingdomkeys.item.ICreativeTab;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -38,6 +39,7 @@ import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
+import online.remind.remind.item.ICreativeTabRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
 import online.remind.remind.magic.ModMagicsRM;
@@ -47,7 +49,6 @@ import online.remind.remind.shotlock.ModShotlocksRM;
 import org.slf4j.Logger;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -100,19 +101,58 @@ public class KingdomKeysReMind {
     }
 
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-
-    private static final Supplier<List<ItemStack>> maItems = Suppliers.memoize(() -> ModItemsRM.ITEMS.getEntries().stream().map(Supplier::get).map(ItemStack::new).toList());
+    private static final Supplier<List<ItemStack>> rmItems = Suppliers.memoize(() -> ModItemsRM.ITEMS.getEntries().stream().map(Supplier::get).map(ItemStack::new).toList());
+    private static final Supplier<List<ItemStack>> rmKeyblades = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.KEYBLADES).toList());
+    private static final Supplier<List<ItemStack>> rmKeychains = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.KEYCHAINS).toList());
+    private static final Supplier<List<ItemStack>> rmEquipables = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.EQUIPABLES).toList());
+    private static final Supplier<List<ItemStack>> rmSpells = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.SPELLS).toList());
+    private static final Supplier<List<ItemStack>> rmShotlocks = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.SHOTLOCKS).toList());
+    private static final Supplier<List<ItemStack>> rmMisc = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.MISC).toList());
 
 
     public static final Supplier<CreativeModeTab>
 
-            misc_tab = TABS.register("kkremindtab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.kkremindtab"))
-            .icon(() -> new ItemStack(ModItemsRM.hasteSpell.get()))
-            .displayItems(((params, output) -> {
-                maItems.get().forEach(output::accept);
+            rmKeybladesTab = TABS.register("addonkeyblades", () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.addonkeyblades"))
+                .icon(() -> new ItemStack(ModItemsRM.xephiroKeybladeChain.get()))
+                .displayItems(((params, output) -> {
+                rmKeyblades.get().forEach(output::accept);
+                rmKeychains.get().forEach(output::accept);
             }))
             .build());
+    public static final Supplier<CreativeModeTab>
+            rmEquipablesTab = TABS.register("addonarmortab", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.addonarmortab"))
+                    .icon(() -> new ItemStack(ModItemsRM.ultima_ribbon.get()))
+                    .displayItems(((params, output) -> {
+                    rmEquipables.get().forEach(output::accept);
+            }))
+            .build());
+    public static final Supplier<CreativeModeTab>
+            rmSpellsTab = TABS.register("addonmagictab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.addonmagictab"))
+            .icon(() -> new ItemStack(ModItemsRM.hasteSpell.get()))
+            .displayItems(((params, output) -> {
+                rmSpells.get().forEach(output::accept);
+            }))
+            .build());
+    public static final Supplier<CreativeModeTab>
+            rmShotlocksTab = TABS.register("addonshotlocktab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.addonshotlocktab"))
+            .icon(() -> new ItemStack(ModItemsRM.meteorShower.get()))
+            .displayItems(((params, output) -> {
+                rmShotlocks.get().forEach(output::accept);
+            }))
+            .build());
+    public static final Supplier<CreativeModeTab>
+            rmMiscTab = TABS.register("addonmisctab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.addonmisctab"))
+            .icon(() -> new ItemStack(ModItemsRM.heartCoin.get()))
+            .displayItems(((params, output) -> {
+                rmMisc.get().forEach(output::accept);
+            }))
+            .build());
+
 
     private void setup(final FMLCommonSetupEvent event){
         // Some common setup code

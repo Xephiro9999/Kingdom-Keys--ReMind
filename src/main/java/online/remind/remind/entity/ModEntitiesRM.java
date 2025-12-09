@@ -145,6 +145,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_SPARK.get(), SparkEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_RAVE_SABER.get(), InvisibleEntityRenderer::new);
 
 
         event.registerEntityRenderer(TYPE_BIO_SHOT.get(), BioShotEntityRenderer::new);

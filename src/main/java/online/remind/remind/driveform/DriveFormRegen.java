@@ -19,7 +19,8 @@ public class DriveFormRegen extends DriveForm {
 
     @Override
     public boolean displayInCommandMenu(Player player){
-        return PlayerData.get(player).isAbilityEquipped(StringsRM.Regen);
+        //return PlayerData.get(player).isAbilityEquipped(StringsRM.Regen);
+        return false;
     }
 
     @Override

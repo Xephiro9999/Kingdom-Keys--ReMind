@@ -19,31 +19,31 @@ public class ModItemsRM{
 
     public static final Supplier<Item>
             // Spell Orbs
-        hasteSpell = ITEMS.register("haste_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste")),
-        slowSpell = ITEMS.register("slow_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow")),
-        holySpell = ITEMS.register("holy_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy")),
-        ruinSpell = ITEMS.register("ruin_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin")),
-        balloonSpell = ITEMS.register("balloon_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_balloon")),
-        ultimaSpell = ITEMS.register("ultima_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ultima")),
-        cometSpell = ITEMS.register("comet_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_comet")),
-        berserkSpell = ITEMS.register("berserk_spell",() -> new MagicSpellItem(new Item.Properties(),KingdomKeysReMind.MODID+":magic_berserk")),
-        autoLifeSpell = ITEMS.register("autolife_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_auto-life")),
-        drainSpell = ITEMS.register("drain_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_drain")),
-        osmoseSpell = ITEMS.register("osmose_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_osmose")),
-        silenceSpell = ITEMS.register("silence_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_silence")),
-        esunaSpell = ITEMS.register("esuna_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_esuna")),
-        dispelSpell = ITEMS.register("dispel_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_dispel")),
-        warpSpell = ITEMS.register("warp_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_warp")),
-        faithSpell = ITEMS.register("faith_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_faith")),
-        regenSpell = ITEMS.register("regen_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
-        stealSpell = ITEMS.register("steal_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_steal")),
-        sparkSpell = ITEMS.register("spark_spell", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
-        quickBlitzAttack = ITEMS.register("quick_blitz_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_quick_blitz")),
-        slidingDashAttack = ITEMS.register("sliding_dash_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_sliding_dash")),
-        fireSurgeAttack = ITEMS.register("fire_surge_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_fire_surge")),
-        thunderSurgeAttack = ITEMS.register("thunder_surge_attack", () -> new MagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_thunder_surge")),
+        hasteSpell = ITEMS.register("haste_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste")),
+        slowSpell = ITEMS.register("slow_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow")),
+        holySpell = ITEMS.register("holy_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy")),
+        ruinSpell = ITEMS.register("ruin_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin")),
+        balloonSpell = ITEMS.register("balloon_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_balloon")),
+        ultimaSpell = ITEMS.register("ultima_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ultima")),
+        cometSpell = ITEMS.register("comet_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_comet")),
+        berserkSpell = ITEMS.register("berserk_spell",() -> new RMMagicSpellItem(new Item.Properties(),KingdomKeysReMind.MODID+":magic_berserk")),
+        autoLifeSpell = ITEMS.register("autolife_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_auto-life")),
+        drainSpell = ITEMS.register("drain_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_drain")),
+        osmoseSpell = ITEMS.register("osmose_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_osmose")),
+        silenceSpell = ITEMS.register("silence_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_silence")),
+        esunaSpell = ITEMS.register("esuna_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_esuna")),
+        dispelSpell = ITEMS.register("dispel_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_dispel")),
+        warpSpell = ITEMS.register("warp_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_warp")),
+        faithSpell = ITEMS.register("faith_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_faith")),
+        regenSpell = ITEMS.register("regen_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
+        stealSpell = ITEMS.register("steal_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_steal")),
+        sparkSpell = ITEMS.register("spark_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
+        quickBlitzAttack = ITEMS.register("quick_blitz_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_quick_blitz")),
+        slidingDashAttack = ITEMS.register("sliding_dash_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_sliding_dash")),
+        fireSurgeAttack = ITEMS.register("fire_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_fire_surge")),
+        thunderSurgeAttack = ITEMS.register("thunder_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_thunder_surge")),
 
-            // Shotlock Orbs
+        // Shotlock Orbs
         flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":flame_salvo")),
         bubbleBlaster = ITEMS.register("bubble_blaster_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":bubble_blaster")),
         thunderStorm = ITEMS.register("thunderstorm_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":thunderstorm")),
@@ -51,7 +51,7 @@ public class ModItemsRM{
         meteorShower = ITEMS.register("meteor_shower_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":meteor_shower")),
         darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":dark_divide")),
 
-            // Keyblades
+        // Keyblades
         xephiroKeyblade = ITEMS.register("xephiro_keyblade", () -> new KeybladeItem(new Item.Properties())),
         pureblood = ITEMS.register("pureblood", () -> new KeybladeItem(new Item.Properties())),
         elemental_crescendo = ITEMS.register("elemental_crescendo", () -> new KeybladeItem(new Item.Properties())),
@@ -63,7 +63,7 @@ public class ModItemsRM{
         lyric2025Tournament = ITEMS.register("lyric_2025_tournament", () -> new KeybladeItem(new Item.Properties())),
 
 
-    // Keychains
+        // Keychains
         xephiroKeybladeChain = ITEMS.register("xephiro_keyblade_chain", () -> new KeychainItem()),
         purebloodChain = ITEMS.register("pureblood_chain", () -> new KeychainItem()),
         elementalCrescendoChain = ITEMS.register("elemental_crescendo_chain", () -> new KeychainItem()),
@@ -75,18 +75,18 @@ public class ModItemsRM{
         lyric2025TournamentChain = ITEMS.register("lyric_2025_tournament_chain", () -> new KeychainItem()),
 
 
-    // Org Weapons
+        // And this is where I'd put my Org Weapons... IF I HAD ONE!
 
 
 
-            // KK Armors
+        // KK Armors
         aquaChaplet = ITEMS.register("aqua_chaplet", () -> new KKArmorItem(new Item.Properties().stacksTo(1),1, ImmutableMap.of(KKResistanceType.water,50))),
         herosGlove = ITEMS.register("heros_glove", () -> new KKArmorItem(new Item.Properties().stacksTo(1),4, ImmutableMap.of(KKResistanceType.fire,20,KKResistanceType.ice,20,KKResistanceType.darkness,20))),
         herosBelt = ITEMS.register("heros_belt", () -> new KKArmorItem(new Item.Properties().stacksTo(1),3, ImmutableMap.of(KKResistanceType.lightning,20,KKResistanceType.ice,20,KKResistanceType.darkness,20))),
         masterBelt = ITEMS.register("master_belt", () -> new KKArmorItem(new Item.Properties().stacksTo(1),7, ImmutableMap.of(KKResistanceType.darkness,20, KKResistanceType.light,20))),
         ultima_ribbon = ITEMS.register("ultima_ribbon", () -> new KKArmorItem(new Item.Properties().stacksTo(1),5, ImmutableMap.of(KKResistanceType.fire,50,KKResistanceType.ice,50,KKResistanceType.lightning,50,KKResistanceType.darkness,50, KKResistanceType.light,50, KKResistanceType.water,50, KKResistanceType.air, 50))),
 
-            // KK Accessories
+        // KK Accessories
         luckOfTheDraw = ITEMS.register("luck_of_the_draw", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 0,0,0,new String[] {Strings.luckyLucky,Strings.treasureMagnet})),
         lightHeart = ITEMS.register("light_heart", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 5,0,0,new String[] {StringsRM.wayToLight})),
         darkHeart = ITEMS.register("dark_heart", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 5,0,0,new String[] {StringsRM.darkPower})),
@@ -115,7 +115,7 @@ public class ModItemsRM{
         furyRing = ITEMS.register("fury_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),0,2,0, new String[] {Strings.berserkCharge, Strings.berserkCharge, Strings.berserkCharge, StringsRM.mpSlow, StringsRM.mpSlowra, StringsRM.mpSlowga})),
 
 
-    // Coins
+        // Coins
         copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 100, "munny")),
         silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
         goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),
