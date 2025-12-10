@@ -67,6 +67,21 @@
   "magic.kkremind.attack_thunder_surge0.name": "Thunder Surge Lv.1",
   "magic.kkremind.attack_thunder_surge1.name": "Thunder Surge Lv.2",
   "magic.kkremind.attack_thunder_surge2.name": "Thunder Surge Lv.3",
+  "magic.kkremind.attack_blizzard_surge0.name": "Blizzard Surge Lv.1",
+  "magic.kkremind.attack_blizzard_surge1.name": "Blizzard Surge Lv.2",
+  "magic.kkremind.attack_blizzard_surge2.name": "Blizzard Surge Lv.3",
+  "magic.kkremind.attack_water_surge0.name": "Water Surge Lv.1",
+  "magic.kkremind.attack_water_surge1.name": "Water Surge Lv.2",
+  "magic.kkremind.attack_water_surge2.name": "Water Surge Lv.3",
+  "magic.kkremind.attack_aero_surge0.name": "Aero Surge Lv.1",
+  "magic.kkremind.attack_aero_surge1.name": "Aero Surge Lv.2",
+  "magic.kkremind.attack_aero_surge2.name": "Aero Surge Lv.3",
+  "magic.kkremind.attack_light_surge0.name": "Light Surge Lv.1",
+  "magic.kkremind.attack_light_surge1.name": "Light Surge Lv.2",
+  "magic.kkremind.attack_light_surge2.name": "Light Surge Lv.3",
+  "magic.kkremind.attack_dark_surge0.name": "Dark Surge Lv.1",
+  "magic.kkremind.attack_dark_surge1.name": "Dark Surge Lv.2",
+  "magic.kkremind.attack_dark_surge2.name": "Dark Surge Lv.3",
 
 
 
@@ -94,6 +109,11 @@
   "item.kkremind.sliding_dash_attack": "Sliding Dash Command",
   "item.kkremind.fire_surge_attack": "Fire Surge Command",
   "item.kkremind.thunder_surge_attack": "Thunder Surge Command",
+  "item.kkremind.blizzard_surge_attack": "Blizzard Surge Command",
+  "item.kkremind.water_surge_attack": "Water Surge Command",
+  "item.kkremind.aero_surge_attack": "Aero Surge Command",
+  "item.kkremind.light_surge_attack": "Light Surge Command",
+  "item.kkremind.dark_surge_attack": "Dark Surge Command",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
@@ -193,8 +213,8 @@
   "ability.ability_xephiro.name": "Vampiric Essence",
   "ability.ability_xephiro.desc": "Makes your attacks thirst for blood. Granting HP on hit. \nScales with Darkness Boost.",
 
-  "ability.ability_regen.name": "Regen's Ability",
-  "ability.ability_regen.desc": "This is a placeholder name and description",
+  "ability.ability_regen.name": "Dimensional Gaze",
+  "ability.ability_regen.desc": "Grants access to the reaction command 'Ravenous Saber', a deadly 5-hit combo of elemental fury! \nDeals more damage with 'Spellblade' equipped. \n\nGrants access to Gaze Form. \nThis form specializes in heavy hitting attacks imbued with the power of the elements.",
 
 
   "shotlock.flame_salvo.name": "Flame Salvo",
@@ -221,7 +241,7 @@
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
   "item.kkremind.pureblood": "Pureblood",
   "item.kkremind.elemental_crescendo": "Elemental Crescendo",
-  "item.kkremind.gazing_omen": "No Heart",
+  "item.kkremind.gazing_omen": "Gazing Omen",
   "item.kkremind.crystals_light": "Crystal's Light",
   "item.kkremind.blitzers_dream": "Blitzer's Dream",
   "item.kkremind.legends_fang": "Legend's Fang",
@@ -231,7 +251,7 @@
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
   "item.kkremind.elemental_crescendo_chain": "Elemental Crescendo Chain",
-  "item.kkremind.gazing_omen_chain": "No Heart Chain",
+  "item.kkremind.gazing_omen_chain": "Gazing Omen Chain",
   "item.kkremind.crystals_light_chain": "Crystal's Light Chain",
   "item.kkremind.blitzers_dream_chain": "Blitzer's Dream Chain",
   "item.kkremind.legends_fang_chain": "Legend's Fang Chain",
@@ -311,24 +331,25 @@
   "menu_button.wallet": "Wallet",
   "menu_button.wallet.desc": "Allows you to retrieve Munny or Hearts as coins for trade use.",
 
-  "reactioncommand.rc_riskcharge.name": "Riskcharge",
-  "reactioncommand.rc_raging_burst.name": "Raging Burst",
-  "reactioncommand.rc_light_beam.name": "Light Charge",
-  "reactioncommand.rc_dark_mine.name": "Dark Mine",
-  "reactioncommand.rc_twilight.name": "Twilight's Embrace",
-  "reactioncommand.rc_dual_shot.name": "Dual Shot",
-  "reactioncommand.rc_dark_firaga.name": "Dark Firaga",
+  "reactioncommand.kkremind.rc_riskcharge.name": "Riskcharge",
+  "reactioncommand.kkremind.rc_rage.name": "Rage Form",
+  "reactioncommand.kkremind.rc_raging_burst.name": "Raging Burst",
+  "reactioncommand.kkremind.rc_light_beam.name": "Light Charge",
+  "reactioncommand.kkremind.rc_dark_mine.name": "Dark Mine",
+  "reactioncommand.kkremind.rc_twilight.name": "Twilight's Embrace",
+  "reactioncommand.kkremind.rc_dual_shot.name": "Dual Shot",
+  "reactioncommand.kkremind.rc_dark_firaga.name": "Dark Firaga",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 
-  "reactioncommand.kkremind.rc_regen.name": "????",
+  "reactioncommand.kkremind.rc_regen.name": "Ravenous Saber",
 
 
-  "reactioncommand.rc_counter_hammer.name": "Counter Hammer",
-  "reactioncommand.rc_counter_blast.name": "Counter Blast",
-  "reactioncommand.rc_counter_rush.name": "Counter Rush",
+  "reactioncommand.kkremind.rc_counter_hammer.name": "Counter Hammer",
+  "reactioncommand.kkremind.rc_counter_blast.name": "Counter Blast",
+  "reactioncommand.kkremind.rc_counter_rush.name": "Counter Rush",
 
-  "reactioncommand.rc_test.name": "Does nothing",
+  "reactioncommand.kkremind.rc_test.name": "Does nothing",
 
   "key.categories.kkremind": "Kingdom Keys - Re:Mind",
 

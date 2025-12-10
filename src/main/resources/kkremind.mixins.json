@@ -5,7 +5,7 @@
   "refmap": "kkremind.refmap.json",
   "plugin": "online.remind.remind.mixin.KKRMMixinPlugin",
   "mixins": [
-    //"GuardSkillMixin",
+    "GuardSkillMixin",
     "KKDriveFormMixin"
   ],
   "client": [],

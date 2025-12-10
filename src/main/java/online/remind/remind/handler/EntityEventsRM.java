@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -32,7 +33,6 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-//import online.kingdomkeys.kingdomkeys.integration.epicfight.PatchedDriveLayerRenderer;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -53,19 +53,6 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import yesman.epicfight.network.EpicFightNetworkManager;
-import yesman.epicfight.registry.entries.EpicFightSkills;
-import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillSlots;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-//import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
-//import yesman.epicfight.server.commands.PlayerSkillCommand;
-//import yesman.epicfight.skill.*;
-//import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-//import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-//import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.*;
 
@@ -84,33 +71,40 @@ public class EntityEventsRM {
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 		if (playerData != null) {
-			if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
-				playerData.addAbility(StringsRM.renewalBlock, true);
+			if (KingdomKeysReMind.efmLoaded) {
+				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
+					playerData.addAbility(StringsRM.renewalBlock, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.focusBlock)) {
+					playerData.addAbility(StringsRM.focusBlock, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.royalGuard)) {
+					playerData.addAbility(StringsRM.royalGuard, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.stopBlock)) {
+					playerData.addAbility(StringsRM.stopBlock, true);
+				}
+
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.counterHammer)) {
+					playerData.addAbility(StringsRM.counterHammer, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.counterBlast)) {
+					playerData.addAbility(StringsRM.counterBlast, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
+					playerData.addAbility(StringsRM.counterRush, true);
+				}
 			}
 
-			if (!playerData.getAbilityMap().containsKey(StringsRM.focusBlock)) {
-				playerData.addAbility(StringsRM.focusBlock, true);
-			}
-
-			if (!playerData.getAbilityMap().containsKey(StringsRM.royalGuard)) {
-				playerData.addAbility(StringsRM.royalGuard, true);
-			}
-
-			if (!playerData.getAbilityMap().containsKey(StringsRM.stopBlock)) {
-				playerData.addAbility(StringsRM.stopBlock, true);
-			}
-
-
-			if (!playerData.getAbilityMap().containsKey(StringsRM.counterHammer)) {
-				playerData.addAbility(StringsRM.counterHammer, true);
-			}
-
-			if (!playerData.getAbilityMap().containsKey(StringsRM.counterBlast)) {
-				playerData.addAbility(StringsRM.counterBlast, true);
-			}
-
-			if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
-				playerData.addAbility(StringsRM.counterRush, true);
+			// In case the value is NOT what it should be. i.e '-1' or anything over 1
+			if(globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
+				globalData.setCanCounter(0);
 			}
 
 
@@ -177,7 +171,7 @@ public class EntityEventsRM {
 
 				if (!globalData.getDonorGiven()) {
 					if (ALLOWED_UUIDS.containsKey(player.getUUID())) {
-						System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
+						//System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 						UUID uuid = player.getUUID();
 						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 						ItemStack item = new ItemStack(ALLOWED_UUIDS.get(uuid));
@@ -246,78 +240,6 @@ public class EntityEventsRM {
 				}
 			}
 
-			if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
-				PlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-				SkillContainer skillContainer = playerPatch.getPlayerSkills().getSkillContainerFor(SkillSlots.GUARD);
-				if (playerPatch.getSkill(SkillSlots.GUARD).isEmpty()){
-					playerPatch.getSkill(SkillSlots.GUARD).setSkill(EpicFightSkills.GUARD.get());
-
-					if (!player.level().isClientSide) {
-						EpicFightNetworkManager.sendToAllPlayerTrackingThisEntity(skillContainer.createSyncPacketToRemotePlayer(), player);
-						EpicFightNetworkManager.sendToPlayer(skillContainer.createSyncPacketToLocalPlayer(), (ServerPlayer) player);
-					}
-				}
-
-
-			}
-
-			if(event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())){
-				if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
-			}
-
-			if(event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())){
-				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
-			}
-
-			if(event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())){
-				if(playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-					playerData.unequipAbility(StringsRM.royalGuard, 0);
-				}
-			}
-
-			if(event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())){
-				if (playerData.isAbilityEquipped(StringsRM.renewalBlock)|| playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)) {
-					playerData.unequipAbility(StringsRM.renewalBlock, 0);
-					playerData.unequipAbility(StringsRM.stopBlock, 0);
-					playerData.unequipAbility(StringsRM.focusBlock, 0);
-				}
-			}
-
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
-				if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-					playerData2.setCanCounter(0);
-					playerData.unequipAbility(StringsRM.counterBlast, 0);
-					playerData.unequipAbility(StringsRM.counterRush, 0);
-				}
-			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())){
-			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-				playerData2.setCanCounter(0);
-				playerData.unequipAbility(StringsRM.counterHammer, 0);
-				playerData.unequipAbility(StringsRM.counterRush, 0);
-			}
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)){
-				playerData2.setCanCounter(0);
-				playerData.unequipAbility(StringsRM.counterHammer,0);
-				playerData.unequipAbility(StringsRM.counterBlast,0);
-			}
-		}
-
 		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
 			playerData.unequipAbility(StringsRM.lightStep, 0);
 		}
@@ -383,7 +305,9 @@ public class EntityEventsRM {
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			playerData2.remCanCounter(1);
+			if(playerData2.getCanCounter() >= 1 || playerData2.getCanCounter() < 0) {
+				playerData2.setCanCounter(0);
+			}
 			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), playerData2);
 		}
 
@@ -410,10 +334,12 @@ public class EntityEventsRM {
 							globalData.setCanCounter(0);
 							ticks = 0;
 						}
+					} else if (globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
+						globalData.setCanCounter(0);
+						ticks = 0;
 					}
 				}
 			}
-
 
 			// Form Shotlock Change Test
 			if (event.getEntity() instanceof Player player) {
@@ -644,6 +570,8 @@ public class EntityEventsRM {
 				if (globalData.getRCCooldownTicks() > 0) {
 					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 				}
+
+
 
 			/*
 			if (globalData.getBlockedTicks() > 0){

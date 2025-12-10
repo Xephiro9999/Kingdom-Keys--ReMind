@@ -138,7 +138,6 @@ jar {
     sourceSets {
         main {
             java {
-                //exclude '**/integration/epicfight/**'
                 exclude '**/integration/kubejs/**'
                 exclude '**/integration/jer/**'
             }

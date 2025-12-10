@@ -1,4 +1,3 @@
-//TODO No EFM 1.21
 package online.remind.remind.mixin;
 
 import net.minecraft.world.effect.MobEffectInstance;
@@ -41,7 +40,7 @@ public class GuardSkillMixin {
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
         globalData.setCanCounter(1);
-        //System.out.println("Can Counter! " + globalData.getCanCounter());
+        //System.out.println("Debugging Message: Can Counter? " + globalData.getCanCounter());
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
 

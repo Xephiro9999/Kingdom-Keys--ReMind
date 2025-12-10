@@ -6,17 +6,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.entity.attacks.fireSurgeCollider;
-import online.remind.remind.entity.attacks.thunderSurgeCollider;
+import online.remind.remind.entity.attacks.waterSurgeCollider;
 
-public class attackThunderSurge extends Magic {
+public class attackWaterSurge extends Magic {
 
 
-    public attackThunderSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
+    public attackWaterSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
         super(registryName, hasToSelect, maxLevel, null);
     }
 
@@ -26,13 +24,13 @@ public class attackThunderSurge extends Magic {
 
         switch(level){
             case 0:
-                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.1f);
                 break;
             case 1:
-                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.1f);
                 break;
             case 2:
-                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.1f);
                 break;
         }
 
@@ -52,12 +50,12 @@ public class attackThunderSurge extends Magic {
         caster.hurtMarked = true;
         caster.fallDistance = 0;
 
-        thunderSurgeCollider surge = new thunderSurgeCollider(caster.level(), caster, dmg);
+        waterSurgeCollider surge = new waterSurgeCollider(caster.level(), caster, dmg);
         caster.level().addFreshEntity(surge);
     }
 
         @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
-            player.level().playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1F, 1F);
+            player.level().playSound(null, player.blockPosition(), SoundEvents.WATER_AMBIENT, SoundSource.PLAYERS, 1F, 1F);
     }
 }

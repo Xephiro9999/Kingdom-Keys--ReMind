@@ -27,7 +27,11 @@ public class RageFormRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
         if (conditionsToAppear(player, player)) {
+            PlayerData playerData = PlayerData.get(player);
             DriveForm rageForm = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.rageForm));
+            if (playerData.getDriveFormLevel(ModDriveFormsRM.RAGE.get().getRegistryName().toString()) == 0) {
+                playerData.setDriveFormLevel(ModDriveFormsRM.RAGE.get().getRegistryName().toString(), 1);
+            }
             rageForm.initDrive(player);
         }
     }

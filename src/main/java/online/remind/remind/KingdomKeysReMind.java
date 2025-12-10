@@ -38,6 +38,7 @@ import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 
+import online.remind.remind.integration.epicfight.EpicFightEvents;
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
 import online.remind.remind.item.ICreativeTabRM;
 import online.remind.remind.item.ModItemsRM;
@@ -70,12 +71,7 @@ public class KingdomKeysReMind {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
 
-        if (ModList.get().isLoaded("epicfight")) {
-            efmLoaded = true;
-            EpicFightIntegrationRM.initIntegrationRM(modEventBus);
-            //KKRMSkills.SKILLS.register(modEventBus);
-            //NeoForge.EVENT_BUS.register(new EpicFightEvents()); // <--- No longer exists but may in the future?
-        }
+
 
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
@@ -94,8 +90,13 @@ public class KingdomKeysReMind {
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
 
-
-
+        if (ModList.get().isLoaded("epicfight")) {
+            efmLoaded = true;
+            NeoForge.EVENT_BUS.register(new EpicFightEvents());
+            EpicFightIntegrationRM.initIntegrationRM(modEventBus);
+            //KKRMSkills.SKILLS.register(modEventBus);
+            //NeoForge.EVENT_BUS.register(new EpicFightEvents()); // <--- No longer exists but may in the future?
+        }
 
         modContainer.registerConfig(ModConfig.Type.COMMON, ModConfigs.COMMON_SPEC);
     }

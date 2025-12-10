@@ -6,17 +6,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.entity.attacks.fireSurgeCollider;
-import online.remind.remind.entity.attacks.thunderSurgeCollider;
+import online.remind.remind.entity.attacks.aeroSurgeCollider;
 
-public class attackThunderSurge extends Magic {
+public class attackAeroSurge extends Magic {
 
 
-    public attackThunderSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
+    public attackAeroSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
         super(registryName, hasToSelect, maxLevel, null);
     }
 
@@ -52,12 +50,12 @@ public class attackThunderSurge extends Magic {
         caster.hurtMarked = true;
         caster.fallDistance = 0;
 
-        thunderSurgeCollider surge = new thunderSurgeCollider(caster.level(), caster, dmg);
+        aeroSurgeCollider surge = new aeroSurgeCollider(caster.level(), caster, dmg);
         caster.level().addFreshEntity(surge);
     }
 
         @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
-            player.level().playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1F, 1F);
+            player.level().playSound(null, player.blockPosition(), SoundEvents.VEX_CHARGE, SoundSource.PLAYERS, 1F, 1F);
     }
 }

@@ -27,13 +27,13 @@ public class attackFireSurge extends Magic {
 
         switch(level){
             case 0:
-                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2f);
+                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.1f);
                 break;
             case 1:
-                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2f);
+                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.1f);
                 break;
             case 2:
-                dmg = (playerData.getStrength(true) * 1.2f) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2f);
+                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.1f);
                 break;
         }
         float radius = 1.5f + (0.5f * level);

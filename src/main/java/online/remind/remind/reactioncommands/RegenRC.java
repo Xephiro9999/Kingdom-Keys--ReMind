@@ -1,6 +1,7 @@
 package online.remind.remind.reactioncommands;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.fireSurgeCollider;
 import online.remind.remind.entity.attacks.ravenousSaberCollider;
 import online.remind.remind.entity.reactioncommand.DarkMineEntity;
@@ -35,17 +37,21 @@ public class RegenRC extends ReactionCommand {
             // Damage Calculation
 
             float dmg = playerData.getStrength(true) * 0.25f + playerData.getMagic(true) * 0.25f;
-            float dmgmult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F);
+            float dmgmult = 1;
+            if (playerData.isAbilityEquipped(StringsRM.spellblade)){
+                dmgmult = 1.5f;
+            }
+
             globalData.setRCCooldownTicks(60);
             playerData.setFP(playerData.getFP() - 40);
 
             player.swing(InteractionHand.MAIN_HAND, true);
-            //player.level().playSound(null, player.blockPosition(), ModSoundsRM.DUAL_SHOT.get(), SoundSource.PLAYERS, 1F, 1F);
+            player.level().playSound(null, player.blockPosition(), ModSoundsRM.RISKCHARGE.get(), SoundSource.PLAYERS, 1F, 1F);
 
             // DEBUGGING
-            System.out.println("Base Damage: "+ dmg);
-            System.out.println("Damage Mult: "+ dmgmult);
-            System.out.println("Damage Total: "+ (dmg *dmgmult));
+            //System.out.println("Base Damage: "+ dmg);
+            //System.out.println("Damage Mult: "+ dmgmult);
+            //System.out.println("Damage Total: "+ (dmg *dmgmult));
 
             ravenousSaberCollider surge = new ravenousSaberCollider(player.level(), player, dmg);
             player.level().addFreshEntity(surge);
