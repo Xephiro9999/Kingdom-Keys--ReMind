@@ -77,7 +77,7 @@ public class InputHandlerRM {
 						 float yaw = player.getYRot();
 						 float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						 float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
-						 double power = 0.75 + (globalData.getRiskchargeCount());
+						 double power = 0.5 + (globalData.getRiskchargeCount());
 						 PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.rageStepType));
 						 player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
 						 InputHandler.qrCooldown = 15 - globalData.getRiskchargeCount();
@@ -89,12 +89,13 @@ public class InputHandlerRM {
 					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) || playerData.isAbilityEquipped(StringsRM.lightStep) && playerData.isAbilityEquipped(Strings.quickRun)  && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && !playerData.isAbilityEquipped(StringsRM.darkStep)) {						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
-						double power = lightLevel + 1;
+						double power = lightLevel;
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.lightStepType));
 						// Light Form
 						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)) {
 							player.level().playSound(player, player.blockPosition(), ModSoundsRM.LIGHTSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
-							player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
+
+							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
 						} else if (playerData.isAbilityEquipped(StringsRM.lightStep)) {
 							if (lightLevel > 2) {
@@ -109,13 +110,14 @@ public class InputHandlerRM {
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
-						double power = darkLevel + 1;
+						double power = darkLevel;
 
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.darkStepType));
 						// Dark Mode
 						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
 							player.level().playSound(player, player.blockPosition(), ModSoundsRM.DARKSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
-							player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
+
+							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
 						} else if (playerData.isAbilityEquipped(StringsRM.darkStep)) {
 							if (darkLevel > 2) {

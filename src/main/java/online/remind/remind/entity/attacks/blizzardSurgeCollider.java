@@ -64,10 +64,12 @@ public class blizzardSurgeCollider extends ThrowableProjectile {
                 e -> e != caster && e.isAlive());
 
         for (LivingEntity target : entities) {
-            target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE,this, this.getOwner()), damage);
-            target.invulnerableTime = 0; // allow multiple hits per tick
+            if (target != null) {
+                target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, this, this.getOwner()), damage);
+                target.invulnerableTime = 0; // allow multiple hits per tick
+            }
         }
-        // Ring of fire particles
+        // Ring of particles
         if (tickCount > 1) {
             if (caster.level() instanceof ServerLevel serverLevel) {
 

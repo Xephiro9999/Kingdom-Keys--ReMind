@@ -84,9 +84,10 @@ public class thunderSurgeCollider extends ThrowableProjectile {
                 e -> e != caster && e.isAlive());
 
         for (LivingEntity target : entities) {
-            target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING,this, this.getOwner()), damage);
-            target.invulnerableTime = 0; // allow multiple hits per tick
-
+            if (target != null) {
+                target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, this, this.getOwner()), damage);
+                target.invulnerableTime = 0; // allow multiple hits per tick
+            }
             level().addParticle(ParticleTypes.ELECTRIC_SPARK,
                     target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
                     0, 0.1, 0);
