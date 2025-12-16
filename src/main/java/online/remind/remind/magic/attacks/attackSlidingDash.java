@@ -6,8 +6,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.entity.attacks.quickBlitzCollider;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.entity.attacks.slidingDashCollider;
 
 public class attackSlidingDash extends Magic {
@@ -44,7 +45,13 @@ public class attackSlidingDash extends Magic {
         double dx = -Math.sin(yawRad) * speed;
         double jump = 0.175;
         double dz = Math.cos(yawRad) * speed;
-        caster.setDeltaMovement(dx, jump, dz);
+
+        if (KingdomKeysReMind.efmLoaded){
+            caster.setDeltaMovement(dx/2.5, jump, dz/2.5);
+        } else {
+            caster.setDeltaMovement(dx, jump, dz);
+        }
+
         caster.hurtMarked = true;
         caster.fallDistance = 0;
 

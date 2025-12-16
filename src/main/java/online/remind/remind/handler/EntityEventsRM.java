@@ -166,14 +166,14 @@ public class EntityEventsRM {
 				MinecraftServer server = player.getServer();
 				if (server != null && server.getPlayerList().isOp(player.getGameProfile())) {
 					// Player is OP
-					player.sendSystemMessage(Component.literal("Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
+					player.sendSystemMessage(Component.literal("[Re:Mind] Hey! Letting you know that the config for Re:Mind Donators getting their Keyblades is set to true! If you do not wish for this to be active, please go set the config to 'false'."));
 				}
 
 				if (!globalData.getDonorGiven()) {
 					if (ALLOWED_UUIDS.containsKey(player.getUUID())) {
 						//System.out.println(player.getName().getString() + " is on the list of Donators and has not yet received their Keyblade.");
 						UUID uuid = player.getUUID();
-						player.sendSystemMessage(Component.literal("Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
+						player.sendSystemMessage(Component.literal("[Re:Mind] Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 						ItemStack item = new ItemStack(ALLOWED_UUIDS.get(uuid));
 						player.addItem(item);
 						globalData.setDonorGiven(true);
@@ -182,7 +182,7 @@ public class EntityEventsRM {
 					}
 				}
 			} else {
-				player.sendSystemMessage(Component.literal("The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
+				player.sendSystemMessage(Component.literal("[Re:Mind] The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
 				}
 			}
         }
@@ -570,15 +570,6 @@ public class EntityEventsRM {
 				if (globalData.getRCCooldownTicks() > 0) {
 					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 				}
-
-
-
-			/*
-			if (globalData.getBlockedTicks() > 0){
-				globalData.setBlockedTicks(globalData.getBlockedTicks() - 1);
-				System.out.println(globalData.getBlockedTicks());
-			}
-			*/
 
 				// Step Ticks
 				if (globalData.getStepTicks() > 0) {

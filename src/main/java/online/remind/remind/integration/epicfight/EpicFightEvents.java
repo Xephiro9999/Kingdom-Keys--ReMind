@@ -1,18 +1,23 @@
 package online.remind.remind.integration.epicfight;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
  import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.network.EpicFightNetworkManager;
 import yesman.epicfight.registry.entries.EpicFightSkills;
 import yesman.epicfight.skill.SkillContainer;
@@ -21,6 +26,13 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 public class EpicFightEvents {
+
+    private LivingEntity target;
+    ResourceLocation name;
+    float dmg;
+    double speed;
+
+
     @SubscribeEvent
     public void onDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -32,6 +44,45 @@ public class EpicFightEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onPlayerTick(PlayerTickEvent.Pre event){
+
+        Player player = event.getEntity();
+        if (KingdomKeysReMind.efmLoaded) {
+            PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+
+            PlayerData playerData = PlayerData.get(player);
+            if (playerpatch.isEpicFightMode()) {
+                if (playerData != null) {
+                    if (playerData.getCastedMagic() != null) {
+
+                        //player.sendSystemMessage(Component.literal(playerData.getCastedMagic().magic().getRegistryName().toString()));
+                        String spellName = playerData.getCastedMagic().magic().getRegistryName().toString();
+                        int spellLevel = playerData.getCastedMagic().level();
+
+
+                        if (spellName.equals("kkremind:attack_sliding_dash")) {
+
+                            playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+
+                            //player.sendSystemMessage(Component.literal("Sliding Dash"));
+
+                        }
+                        if (spellName.equals("kkremind:attack_quick_blitz")) {
+
+                            playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(),0.1f);
+
+                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
+
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public void equipAbility(AbilityEvent.Equip event){

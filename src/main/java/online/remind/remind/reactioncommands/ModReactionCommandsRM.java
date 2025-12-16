@@ -25,6 +25,7 @@ public class ModReactionCommandsRM {
         RAGE_FORM = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"rage", () -> new RageFormRC(ResourceLocation.parse(StringsRM.RageRC),true)),
         DARK_FIRAGA_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dark_firaga", () -> new DarkFiragaRC( ResourceLocation.parse(StringsRM.DarkFiragaRC),true)),
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC( ResourceLocation.parse(StringsRM.XemnasRC),true)),
+        ZEXION_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"zexion", () -> new XemnasRC( ResourceLocation.parse(StringsRM.ZexionRC),true)),
 
         // Commission RCs
 

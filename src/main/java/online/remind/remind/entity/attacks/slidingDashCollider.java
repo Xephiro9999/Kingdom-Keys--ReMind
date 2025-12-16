@@ -1,7 +1,10 @@
 package online.remind.remind.entity.attacks;
 
+import net.minecraft.core.particles.DustColorTransitionOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -12,7 +15,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.entity.ModEntitiesRM;
+import org.joml.Vector3f;
+import yesman.epicfight.particle.HitParticleType;
+import yesman.epicfight.registry.entries.EpicFightParticles;
+import yesman.epicfight.registry.entries.EpicFightSounds;
 
 public class slidingDashCollider extends ThrowableProjectile {
 
@@ -55,6 +63,23 @@ public class slidingDashCollider extends ThrowableProjectile {
 
         this.setPos(caster.getX(), caster.getY() + 0.5, caster.getZ());
 
+        if (tickCount > 2){
+            AABB hitBox = this.getBoundingBox().inflate(2.0); // easier to land
+        }
+
+        if (tickCount > 1) {
+            if (caster.level() instanceof ServerLevel serverLevel) {
+
+                serverLevel.sendParticles(ParticleTypes.CRIT,
+                        caster.getX(),
+                        caster.getY()+1,
+                        caster.getZ(),
+                        1, 0, 0, 0, 0);
+            }
+        }
+
+
+
         // Check Collision
         for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)){
             LivingEntity target = (LivingEntity) entity;
@@ -68,6 +93,14 @@ public class slidingDashCollider extends ThrowableProjectile {
             }
             target.level().playSound(null, target.getX(), target.getY(), target.getZ(),
                     SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0F, 1.0F);
+            if (KingdomKeysReMind.efmLoaded){
+                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
+                target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+            } else {
+                level().addParticle(ParticleTypes.CRIT,
+                        target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
+                        0, 0.1, 0);
+            }
         }
         super.tick();
     }

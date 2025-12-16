@@ -125,6 +125,13 @@ public class ClientEventsRM {
 						}
 					}
 
+					// Regen Form Active
+					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.REGEN.get().getRegistryName().toString())){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0f,0f,0f),1),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						player.level().addParticle(new DustParticleOptions(new Vector3f(1f,1f,1f),1),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+
+					}
+
 					// Twilight Form Active
 					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString())){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45F,0.45F,0.45F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);

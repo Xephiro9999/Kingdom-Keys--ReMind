@@ -8,7 +8,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.quickBlitzCollider;
 
@@ -45,9 +47,15 @@ public class attackQuickBlitz extends Magic {
         double yawRad = Math.toRadians(player.getYRot());
         double dx = -Math.sin(yawRad) * speed;
         double dz = Math.cos(yawRad) * speed;
-        caster.setDeltaMovement(dx, jump, dz);
+
         caster.hurtMarked = true;
         caster.fallDistance = 0;
+
+        if (KingdomKeysReMind.efmLoaded){
+            caster.setDeltaMovement(dx/2.25, jump, dz/2.25);
+        } else {
+            caster.setDeltaMovement(dx, jump, dz);
+        }
 
         quickBlitzCollider quickBlitz = new quickBlitzCollider(player.level(), player, dmg);
         caster.level().addFreshEntity(quickBlitz);
