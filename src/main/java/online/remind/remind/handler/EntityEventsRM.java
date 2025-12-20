@@ -378,6 +378,7 @@ public class EntityEventsRM {
 					updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID + ":" + StringsRM.darkForm);
 					updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID + ":" + StringsRM.rageForm);
 					updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID + ":" + StringsRM.lightForm);
+					updateDriveAbilities(player, StringsRM.roadToDawn, KingdomKeysReMind.MODID+":"+ StringsRM.twilight);
 					updateDriveAbilities(player, StringsRM.Regen, KingdomKeysReMind.MODID + ":" + StringsRM.regenForm);
 
 					// Light/Darkness Within
