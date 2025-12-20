@@ -6,6 +6,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -99,8 +101,10 @@ public class CometEntity extends ThrowableProjectile {
                                                 if(this.getOwner() instanceof Player) {
                                                         List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((Player) this.getOwner(), this, radius,radius,radius);
                                                         for(LivingEntity e : targetList) {
-                                                                e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg * dmgMult);
-                                                                e.invulnerableTime = 0;
+                                                                if (Utils.isHostile(e) || e instanceof Slime || e instanceof EnderMan) {
+                                                                        e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg * dmgMult);
+                                                                        e.invulnerableTime = 0;
+                                                                }
                                                         }
                                                 }
                                                 if (!meteor) {

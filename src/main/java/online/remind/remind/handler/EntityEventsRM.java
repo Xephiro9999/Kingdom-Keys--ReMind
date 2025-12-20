@@ -199,7 +199,7 @@ public class EntityEventsRM {
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
 		PlayerData playerData = PlayerData.get(player);
 
-		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use dark form is equipped
+		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use x form is equipped
 			if(!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}

@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -120,7 +121,7 @@ public class UltimaEntity extends ThrowableProjectile {
 						for (int i = 0; i < list.size(); i++) {
 							Entity e = (Entity) list.get(i);
 							if (e instanceof LivingEntity) {
-								if (Utils.isHostile(e) || e instanceof Slime) {
+								if (Utils.isHostile(e) || e instanceof Slime || e instanceof EnderMan) {
 									float dmg = this.getOwner() instanceof Player ? (DamageCalculation.getMagicDamage((Player) this.getOwner()) / 4F) : 2;
 									dmg = Math.min(dmg, 99);
 									e.hurt(e.damageSources().indirectMagic(this, this.getOwner()), dmg * dmgMult);

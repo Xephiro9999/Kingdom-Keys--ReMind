@@ -73,8 +73,8 @@ public class EpicFightEvents {
                             }
                             if (spellName.equals("kkremind:attack_quick_blitz")) {
                                 if (animationsPlayed <= 1) {
-                                    animationsPlayed++;
                                     playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                    animationsPlayed++;
                                 }
                                 //player.sendSystemMessage(Component.literal("Quick Blitz"));
                             }

@@ -1,5 +1,6 @@
 package online.remind.remind.magic;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +19,7 @@ public class magicHoly extends Magic {
 
 	@Override
 	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+
 		// IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
 		float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
