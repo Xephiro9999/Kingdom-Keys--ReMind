@@ -31,6 +31,7 @@ public class EpicFightEvents {
     ResourceLocation name;
     float dmg;
     double speed;
+    int animationsPlayed;
 
 
     @SubscribeEvent
@@ -51,32 +52,38 @@ public class EpicFightEvents {
         Player player = event.getEntity();
         if (KingdomKeysReMind.efmLoaded) {
             PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-
             PlayerData playerData = PlayerData.get(player);
             if (playerpatch.isEpicFightMode()) {
                 if (playerData != null) {
                     if (playerData.getCastedMagic() != null) {
-
                         //player.sendSystemMessage(Component.literal(playerData.getCastedMagic().magic().getRegistryName().toString()));
                         String spellName = playerData.getCastedMagic().magic().getRegistryName().toString();
                         int spellLevel = playerData.getCastedMagic().level();
 
 
-                        if (spellName.equals("kkremind:attack_sliding_dash")) {
 
-                            playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+                            if (spellName.equals("kkremind:attack_sliding_dash")) {
+                                if (animationsPlayed < 1){
+                                    playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+                                    animationsPlayed++;
+                                }
 
-                            //player.sendSystemMessage(Component.literal("Sliding Dash"));
+                                //player.sendSystemMessage(Component.literal("Sliding Dash"));
 
-                        }
-                        if (spellName.equals("kkremind:attack_quick_blitz")) {
+                            }
+                            if (spellName.equals("kkremind:attack_quick_blitz")) {
+                                if (animationsPlayed <= 1) {
+                                    animationsPlayed++;
+                                    playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                }
+                                //player.sendSystemMessage(Component.literal("Quick Blitz"));
+                            }
 
-                            playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(),0.1f);
+                            //TODO: Add more attacks and spells later!
 
-                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
 
-                        }
-
+                    } else {
+                        animationsPlayed = 0; // to prevent animations not going off again
                     }
                 }
             }

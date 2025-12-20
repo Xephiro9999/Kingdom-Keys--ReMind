@@ -19,27 +19,36 @@ public class DriveFormTwilight extends DriveForm {
 
     @Override
     public boolean isSlotVisible(Player player) {
-    	PlayerData playerData = PlayerData.get(player);
-    	if (playerData != null) {
-			if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
+		PlayerData playerData = PlayerData.get(player);
+		if (playerData != null) {
+			if (playerData.isAbilityEquipped(StringsRM.roadToDawn)) {
+				return true;
+			} else if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
 				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm))
-					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oblivionChain.get()){
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oblivionChain.get()) {
 						return true;
 					}
-				
-				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm))
-					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oathkeeperChain.get()){
-						return true;
-				}
 
-                return playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight);
+				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm))
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oathkeeperChain.get()) {
+						return true;
+					}
+
+				return playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight);
 			}
+
 		}
-    	return false;
-    }
+		return false;
+	}
 
 	@Override
 	public boolean displayInCommandMenu(Player player) {
+		PlayerData playerData = PlayerData.get(player);
+		if (playerData != null) {
+			if (playerData.isAbilityEquipped(StringsRM.roadToDawn)){
+				return true;
+			}
+		}
 		return false;
 	}
 }

@@ -125,6 +125,8 @@
   "ability.ability_dark_power.desc": "Allows you to embrace the power of Darkness and access Dark Form.",
   "ability.ability_way_to_light.name": "Way to Light",
   "ability.ability_way_to_light.desc": "Allows you to embrace the power of Light and access Light Form.",
+  "ability.ability_road_to_dawn.name": "Road to Dawn",
+  "ability.ability_road_to_dawn.desc": "You've walked both paths. One of Light and one of Darkness -- mastered them. \nAllows you to access Twilight Form freely.",
   "ability.ability_light_boost.name": "Light Boost",
   "ability.ability_light_boost.desc": "Increases damage done with light-based attacks.",
   "ability.ability_adrenaline.name": "Adrenaline",
@@ -203,6 +205,12 @@
   "ability.ability_one_hp.desc": "It's... in the name...",
   "ability.ability_ribbon.name": "Ribbon",
   "ability.ability_ribbon.desc": "Grants immunity to all negative status effects.",
+  "ability.ability_light_infusion.name": "Light Infusion",
+  "ability.ability_light_infusion.desc": "Enhances your spells and abilities with the power of Light! \nDoes not apply to spells that are already Light based.",
+  "ability.ability_dark_infusion.name": "Dark Infusion",
+  "ability.ability_dark_infusion.desc": "Enhances your spells and abilities with the power of Darkness! \nDoes not apply to spells that are already Darkness based.",
+  "ability.ability_twilight_infusion.name": "Dawn Infusion",
+  "ability.ability_twilight_infusion.desc": "Enhances your spells and abilities with the power of Light and Darkness!",
 
 
   "ability.ability_lyric1.name": "Volt Absorb",

@@ -41,6 +41,7 @@ public class StringsRM {
         rageAwakened = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"rage_awakened",
         darkPower = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_power",
         wayToLight = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"way_to_light",
+        roadToDawn = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"road_to_dawn",
         lightStep = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"light_step",
         darkStep = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_step",
         adrenaline = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"adrenaline",
@@ -65,6 +66,9 @@ public class StringsRM {
         poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
         royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
+        lightInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"light_infusion",
+        darkInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_infusion",
+        twilightInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"twilight_infusion",
 
         mpSlow = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slow",
         mpSlowra = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slowra",

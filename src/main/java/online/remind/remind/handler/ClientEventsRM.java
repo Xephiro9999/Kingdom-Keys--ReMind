@@ -31,7 +31,8 @@ public class ClientEventsRM {
 					if(globalData.getStepTicks() > 0) {
 						event.setCanceled(true);
 						player.invulnerableTime = globalData.getStepTicks();
-						if (globalData.getStepType() == StringsRM.orgStepType) {
+
+                        if (globalData.getStepType() == StringsRM.orgStepType) {
 							if (playerData.getAlignment().equals(Utils.OrgMember.XEMNAS)){
 								player.level().addAlwaysVisibleParticle(ParticleTypes.END_ROD, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
 								player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);

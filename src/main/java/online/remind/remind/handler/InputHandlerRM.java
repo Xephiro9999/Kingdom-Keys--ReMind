@@ -152,9 +152,12 @@ public class InputHandlerRM {
 	@SubscribeEvent
 	public void handleKeyInputEvent(InputEvent.Key event) {
 		InputHandlerRM.Keybinds key = getPressedKey();
+
 		if(key != null) {
 			switch (key) {
 				//case SUMMONSPIRIT -> summonSpirit();
+
+
 			}
 
 		}

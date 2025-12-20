@@ -24,6 +24,7 @@ public class ModAbilitiesRM extends ModAbilities{
     	DARK_PASSAGE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_passage").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.darkPassage), 3, Ability.AbilityType.ACTION, order++)),
         RAGE_AWAKENED = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"rage_awakened").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.rageAwakened), 3,Ability.AbilityType.ACTION, order++)),
         WAY_TO_LIGHT = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"way_to_light").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.wayToLight), 3, Ability.AbilityType.ACTION, order++)),
+        ROAD_TO_DAWN = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"road_to_dawn").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.roadToDawn), 3, Ability.AbilityType.ACTION, order++)),
         DARK_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_power").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.darkPower), 3, Ability.AbilityType.ACTION, order++)),
         RISKCHARGE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"riskcharge").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.riskCharge), 0, Ability.AbilityType.ACTION, order++)),
 
@@ -58,9 +59,14 @@ public class ModAbilitiesRM extends ModAbilities{
         FRIEND_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"friends_power").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.friendsPower), 3, Ability.AbilityType.SUPPORT, order++)),
         SPELLBLADE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"spellblade").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.spellblade), 0, Ability.AbilityType.SUPPORT, order++)),
 
+        LIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.lightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
+        DARK_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.darkInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
+        TWILIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"twilight_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.twilightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
 
 
-        HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
+
+
+    HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         MP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         FOCUS_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"focus_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.focusWalker),10,Ability.AbilityType.SUPPORT, order++)),
         HEART_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"heart_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.heartWalker),10,Ability.AbilityType.SUPPORT, order++)),

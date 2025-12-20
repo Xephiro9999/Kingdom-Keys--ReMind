@@ -24,11 +24,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
@@ -204,7 +206,9 @@ public class EntityEventsRM {
 		}
 
 		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){
-			playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 7);
+			if (playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString()) == 0) {
+				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 1);
+			}
 		}
 	}
 
@@ -578,13 +582,15 @@ public class EntityEventsRM {
 						PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (GlobalDataRM) globalData);
 						if (event.getEntity() instanceof Player player) {
 							PlayerData playerData = PlayerData.get(player);
+
+							player.invulnerableTime = globalData.getStepTicks();
+
 							if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())) {
 								player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 							}
 							if (playerData.isAbilityEquipped(StringsRM.lightStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
 								player.level().playSound(null, player.blockPosition(), ModSoundsRM.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 							}
-							player.invulnerableTime = 4;
 						}
 					}
 				}
@@ -746,6 +752,26 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
+	public void onKnockback(LivingKnockBackEvent event){
+		if (event.getEntity() instanceof Player player){
+			PlayerData playerData = PlayerData.get(player);
+			IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
+
+			if (playerData == null)
+				return;
+			if (globalData == null)
+				return;
+
+			if (globalData.getStepTicks() > 0 ){
+				event.setCanceled(true);
+			}
+		}
+	}
+
+
+
+
+	@SubscribeEvent
 	public void onEffectAdded(MobEffectEvent.Added event){
 		if (event.getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
@@ -758,7 +784,7 @@ public class EntityEventsRM {
 					}
 					//System.out.println(effect.getEffect().value());
 					if (effect.getEffect().getKey() == ModMobEffects.FREEZE.getKey()){
-						System.out.println("Freeze!");
+						//System.out.println("Freeze!");
 						player.removeEffect(effectHolder);
 					}
 				}
@@ -789,12 +815,21 @@ public class EntityEventsRM {
 
 	}
 
+
 	@SubscribeEvent
 	public void hurtEvent(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
+			IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+			if (globalData == null)
+				return;
 			if(playerData == null)
 				return;
+
+			if (globalData.getStepTicks() > 0){
+				event.setNewDamage(0);
+			}
 
 			double missingHP = player.getHealth() / playerData.getMaxHP();
 			//System.out.println(missingHP);
@@ -894,7 +929,7 @@ public class EntityEventsRM {
 				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
 				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F); //player
 
-				if (event.getSource().type().msgId().equals("player")) {
+				if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
 
 					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
 						Map<String, Integer> boosts = Map.of(
@@ -969,6 +1004,7 @@ public class EntityEventsRM {
 						}
 					}
 
+
 					// Xephiro Keyblade Buff - Me Exclusive
 					if (playerData.getEquippedKeychain(DriveForm.NONE) != null) {
 						if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get()) {
@@ -981,6 +1017,29 @@ public class EntityEventsRM {
 							}
 						}
 					}
+				}
+
+				if (!event.getSource().type().msgId().equals("player")) { // Applies on any damage source that ISN'T melee
+
+					//player.sendSystemMessage(Component.literal("Damage Type: "+ event.getSource().type().msgId())); // Debugging Message
+
+					if (playerData.isAbilityEquipped(StringsRM.lightInfusion)){
+						if (!event.getSource().type().msgId().equals("light")){
+							//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
+							event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) lightBoosts / 2) * dmg));
+							}
+						}
+					}
+				if (playerData.isAbilityEquipped(StringsRM.darkInfusion)){
+					if (!event.getSource().type().msgId().equals("darkness") && !event.getSource().type().msgId().equals("explosion.player")){
+						//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg));
+					}
+				}
+				if (playerData.isAbilityEquipped(StringsRM.twilightInfusion)) {
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
+						event.getEntity().invulnerableTime = 0;
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 				}
 			}
 		}

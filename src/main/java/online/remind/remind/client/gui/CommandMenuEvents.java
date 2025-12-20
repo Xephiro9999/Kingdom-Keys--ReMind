@@ -30,6 +30,8 @@ public class CommandMenuEvents {
                 event.getItem().setVisible(false);
             }
         }
+
+
     }
 
 }
