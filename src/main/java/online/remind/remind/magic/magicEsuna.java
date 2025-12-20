@@ -22,8 +22,8 @@ import java.util.List;
 
 public class magicEsuna extends Magic {
 
-	public magicEsuna(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicEsuna(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

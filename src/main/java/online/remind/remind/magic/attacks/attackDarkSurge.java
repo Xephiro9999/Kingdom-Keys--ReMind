@@ -16,8 +16,8 @@ import online.remind.remind.lib.StringsRM;
 public class attackDarkSurge extends Magic {
 
 
-    public attackDarkSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackDarkSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {

@@ -13,8 +13,8 @@ import online.remind.remind.entity.attacks.slidingDashCollider;
 
 public class attackSlidingDash extends Magic {
 
-    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     private LivingEntity target;

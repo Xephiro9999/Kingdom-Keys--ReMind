@@ -12,8 +12,8 @@ import online.remind.remind.entity.magic.OsmoseEntity;
 
 public class magicOsmose extends Magic {
 
-	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

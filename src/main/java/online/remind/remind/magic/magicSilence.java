@@ -11,7 +11,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.SilenceEntity;
 
 public class magicSilence extends Magic {
-	public magicSilence(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
+	public magicSilence(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
 		super(registryName, hasToSelect, maxLevel, null);
 	}
 

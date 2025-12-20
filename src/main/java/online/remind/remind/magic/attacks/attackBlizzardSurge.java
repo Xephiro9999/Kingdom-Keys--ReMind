@@ -14,8 +14,8 @@ import online.remind.remind.entity.attacks.blizzardSurgeCollider;
 public class attackBlizzardSurge extends Magic {
 
 
-    public attackBlizzardSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackBlizzardSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {

@@ -24,8 +24,8 @@ import java.util.List;
 
 public class magicHaste extends Magic {
 
-	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

@@ -15,8 +15,8 @@ import online.remind.remind.entity.magic.BalloongaEntity;
 
 public class magicBalloon extends Magic {
 
-	public magicBalloon(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicBalloon(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

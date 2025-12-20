@@ -15,6 +15,8 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.entity.ModEntitiesRM;
 
 import java.util.List;
@@ -83,11 +85,21 @@ public class thunderSurgeCollider extends ThrowableProjectile {
                         getX() + radius, getY() + 1, getZ() + radius),
                 e -> e != caster && e.isAlive());
 
+        this.setOwner(caster);
         for (LivingEntity target : entities) {
-            if (target != null) {
-                target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, this, this.getOwner()), damage);
-                target.invulnerableTime = 0; // allow multiple hits per tick
+            if (target != getOwner()) {
+                Party p = null;
+                if (getOwner() != null) {
+                    p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
+                }
+
+                if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
+                    //getOwner().sendSystemMessage(Component.literal("Entity: " + target));
+                    target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.AIR, this, this.getOwner()), damage);
+                    target.invulnerableTime = 0; // allow multiple hits per tick
+                }
             }
+
             level().addParticle(ParticleTypes.ELECTRIC_SPARK,
                     target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
                     0, 0.1, 0);

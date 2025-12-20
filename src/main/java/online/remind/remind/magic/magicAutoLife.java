@@ -16,8 +16,8 @@ import online.remind.remind.network.PacketHandlerRM;
 public class magicAutoLife extends Magic {
 
 
-    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     @Override

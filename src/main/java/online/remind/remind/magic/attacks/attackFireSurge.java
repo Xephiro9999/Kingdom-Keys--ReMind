@@ -17,8 +17,8 @@ import online.remind.remind.entity.attacks.fireSurgeCollider;
 public class attackFireSurge extends Magic {
 
 
-    public attackFireSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackFireSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {

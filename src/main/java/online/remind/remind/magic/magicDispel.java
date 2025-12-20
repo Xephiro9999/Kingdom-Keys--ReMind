@@ -25,8 +25,8 @@ import java.util.List;
 
 public class magicDispel extends Magic {
 
-	public magicDispel(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicDispel(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

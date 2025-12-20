@@ -19,8 +19,8 @@ import online.remind.remind.network.PacketHandlerRM;
 
 public class magicBerserk extends Magic {
 
-	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

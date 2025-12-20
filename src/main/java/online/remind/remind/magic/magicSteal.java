@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class magicSteal extends Magic {
 
-    public magicSteal(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
+    public magicSteal(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
         super(registryName, hasToSelect, maxLevel, null);
     }
 

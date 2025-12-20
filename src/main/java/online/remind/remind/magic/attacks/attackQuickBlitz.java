@@ -16,8 +16,8 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 
 public class attackQuickBlitz extends Magic {
 
-    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     private LivingEntity target;

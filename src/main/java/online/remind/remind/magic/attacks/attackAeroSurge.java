@@ -14,8 +14,8 @@ import online.remind.remind.entity.attacks.aeroSurgeCollider;
 public class attackAeroSurge extends Magic {
 
 
-    public attackAeroSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public attackAeroSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {

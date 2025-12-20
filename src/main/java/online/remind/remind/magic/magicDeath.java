@@ -16,8 +16,8 @@ import online.remind.remind.client.sound.ModSoundsRM;
 
 public class magicDeath extends Magic {
 
-    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
     @Override
     public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {

@@ -12,8 +12,8 @@ import online.remind.remind.entity.magic.DrainEntity;
 
 public class magicDrain extends Magic {
 
-	public magicDrain(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicDrain(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+		super(registryName, hasToSelect, maxLevel, gmAbility);
 	}
 
 	@Override

@@ -15,6 +15,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.entity.ModEntitiesRM;
 import org.joml.Vector3f;
@@ -81,25 +84,36 @@ public class slidingDashCollider extends ThrowableProjectile {
 
 
         // Check Collision
-        for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)){
-            LivingEntity target = (LivingEntity) entity;
-            target.hurt(caster.damageSources().playerAttack((caster)), damage);
-            caster.setDeltaMovement(0,0,0);
-            caster.swing(InteractionHand.MAIN_HAND);
-            target.invulnerableTime = 0;
-            hits++;
-            if (hits == 2){
-                this.remove(RemovalReason.KILLED);
-            }
-            target.level().playSound(null, target.getX(), target.getY(), target.getZ(),
-                    SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0F, 1.0F);
-            if (KingdomKeysReMind.efmLoaded){
-                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
-                target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
-            } else {
-                level().addParticle(ParticleTypes.CRIT,
-                        target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
-                        0, 0.1, 0);
+
+        this.setOwner(caster);
+
+        for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)) {
+            if (entity != getOwner()) {
+                Party p = null;
+                if (getOwner() != null) {
+                    p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
+                }
+                LivingEntity target = (LivingEntity) entity;
+                if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())){
+                    target.hurt(caster.damageSources().playerAttack((caster)), damage);
+                    caster.setDeltaMovement(0, 0, 0);
+                    caster.swing(InteractionHand.MAIN_HAND);
+                    target.invulnerableTime = 0;
+                    hits++;
+                    if (hits == 2) {
+                        this.remove(RemovalReason.KILLED);
+                    }
+                    target.level().playSound(null, target.getX(), target.getY(), target.getZ(),
+                            SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    if (KingdomKeysReMind.efmLoaded) {
+                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
+                        target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+                    } else {
+                        level().addParticle(ParticleTypes.CRIT,
+                                target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
+                                0, 0.1, 0);
+                    }
+                }
             }
         }
         super.tick();

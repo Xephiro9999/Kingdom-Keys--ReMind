@@ -16,8 +16,8 @@ import online.remind.remind.effect.ModMobEffectsRM;
 public class magicRegen extends Magic {
 
 
-    public magicRegen(ResourceLocation registryName, boolean hasToSelect, int maxLevel) {
-        super(registryName, hasToSelect, maxLevel, null);
+    public magicRegen(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+        super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
     @Override
