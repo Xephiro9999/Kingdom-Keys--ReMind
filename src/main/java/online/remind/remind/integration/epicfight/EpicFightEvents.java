@@ -31,7 +31,7 @@ public class EpicFightEvents {
     ResourceLocation name;
     float dmg;
     double speed;
-    int animationsPlayed;
+    boolean animationsPlayed;
 
 
     @SubscribeEvent
@@ -61,20 +61,19 @@ public class EpicFightEvents {
                         int spellLevel = playerData.getCastedMagic().level();
 
 
-
                             if (spellName.equals("kkremind:attack_sliding_dash")) {
-                                if (animationsPlayed < 1){
+                                if (!animationsPlayed){
                                     playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
-                                    animationsPlayed++;
+                                    animationsPlayed = true;
                                 }
 
                                 //player.sendSystemMessage(Component.literal("Sliding Dash"));
 
                             }
                             if (spellName.equals("kkremind:attack_quick_blitz")) {
-                                if (animationsPlayed <= 1) {
+                                if (!animationsPlayed){
                                     playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
-                                    animationsPlayed++;
+                                    animationsPlayed = true;
                                 }
                                 //player.sendSystemMessage(Component.literal("Quick Blitz"));
                             }
@@ -82,8 +81,8 @@ public class EpicFightEvents {
                             //TODO: Add more attacks and spells later!
 
 
-                    } else {
-                        animationsPlayed = 0; // to prevent animations not going off again
+                    } else if (playerData.getCastedMagic() == null){
+                        animationsPlayed = false; // to prevent animations not going off again and a reset
                     }
                 }
             }
