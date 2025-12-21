@@ -38,7 +38,7 @@ public class ModMagicsRM {
             FAITH = MAGIC.register(ResourceLocation.parse("magic_faith").getPath(), () -> new magicFaith(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_faith"), 1, null)),
             DEATH = MAGIC.register(ResourceLocation.parse("magic_death").getPath(), () -> new magicDeath(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_death"), false, 1, null)),
             SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null)),
-            MINE_SQUARE = MAGIC.register(ResourceLocation.parse("magic_mine_square").getPath(), () -> new magicMineSquare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_mine_square"), false, 3, StringsRM.seekerMine)),
+            MINE_SQUARE = MAGIC.register(ResourceLocation.parse("magic_mine_square").getPath(), () -> new magicMineSquare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_mine_square"), false, 3, null)),
 
 
     // "Spells"

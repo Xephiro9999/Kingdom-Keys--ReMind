@@ -23,7 +23,7 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class MineEntity extends ThrowableProjectile {
-    int maxTicks = 200;
+    private int maxTicks = 200;
     float dmg;
     float dmgMult;
     private String caster;
@@ -83,6 +83,11 @@ public class MineEntity extends ThrowableProjectile {
     public boolean isSettled(){
         return this.seeker;
     }
+
+    public void setMaxTicks(int setMax){
+        this.maxTicks = setMax;
+    }
+
 
 
 

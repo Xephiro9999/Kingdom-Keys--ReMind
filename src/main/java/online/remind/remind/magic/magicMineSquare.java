@@ -41,9 +41,11 @@ public class magicMineSquare extends Magic {
                             .add(right.scale(i * spacing));
 
                     MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                    mine.setMaxTicks(200);
                     mine.setCaster(player.getDisplayName().getString());
                     mine.setPos(spawnPos.x,player.getY(),spawnPos.z);
                     player.level().addFreshEntity(mine);
+
                 }
                 break;
             case 1:
@@ -53,10 +55,10 @@ public class magicMineSquare extends Magic {
                             .add(right.scale(i * spacing));
 
                     MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                    mine.setMaxTicks(220);
                     mine.setCaster(player.getDisplayName().getString());
                     mine.setPos(spawnPos.x,player.getY(),spawnPos.z);
                     player.level().addFreshEntity(mine);
-
                 }
                 break;
             case 2:
@@ -72,11 +74,12 @@ public class magicMineSquare extends Magic {
                     Vec3 spawnPos = player.position().add(x, 0, z);
 
                     MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                    mine.setMaxTicks(240);
                     mine.setCaster(player.getDisplayName().getString());
                     mine.setPos(spawnPos.x, player.getY(), spawnPos.z);
                     player.level().addFreshEntity(mine);
-                    break;
                 }
+                break;
             case 3:
                 int seekerMineCount = 8;
                 radius = 2.5F;
@@ -90,12 +93,14 @@ public class magicMineSquare extends Magic {
                     Vec3 spawnPos = player.position().add(x, 0, z);
 
                     MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                    mine.setMaxTicks(150);
                     mine.setCaster(player.getDisplayName().getString());
                     mine.setPos(spawnPos.x, player.getY(), spawnPos.z);
                     mine.setSeeker(true);
                     player.level().addFreshEntity(mine);
+
                 }
-                    break;
+                break;
         }
 
 
