@@ -535,7 +535,7 @@ public class WikiMenu extends MenuBackground {
                             (int) width + 90,
                             Utils.translateToLocal(""),
                             "",
-                            0x754e1a
+                            0xC47A2C
                     )
             );
         } else {
@@ -575,7 +575,7 @@ public class WikiMenu extends MenuBackground {
                             (int) width + 90,
                             Utils.translateToLocal(""),
                             "",
-                            0x754e1a
+                            0xC47A2C
                     )
             );
         } else {
@@ -614,7 +614,7 @@ public class WikiMenu extends MenuBackground {
                             (int) width + 90,
                             Utils.translateToLocal(""),
                             "",
-                            0x754e1a
+                            0xC47A2C
                     )
             );
         } else {
@@ -655,7 +655,7 @@ public class WikiMenu extends MenuBackground {
                             (int) width + 90,
                             Utils.translateToLocal(""),
                             "",
-                            0x754e1a
+                            0xC47A2C
                     )
             );
         } else {
