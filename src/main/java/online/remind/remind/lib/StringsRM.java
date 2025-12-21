@@ -151,6 +151,7 @@ public class StringsRM {
         Gui_Menu_Button_Panel = StringsRM.MENU_Prefix + ".panel",
         Gui_Menu_Button_Wiki = StringsRM.MENU_Prefix + ".wiki",
         Gui_Menu_Button_Keyblades = StringsRM.MENU_Prefix + ".keyblades",
+        Gui_Menu_Button_Attack = StringsRM.MENU_Prefix + ".attack",
         Gui_Menu_Button_Magic = StringsRM.MENU_Prefix + ".magic",
         Gui_Menu_Button_Ability = StringsRM.MENU_Prefix + ".ability",
         Gui_Menu_Button_Forms = StringsRM.MENU_Prefix + ".forms",
