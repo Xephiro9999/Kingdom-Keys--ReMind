@@ -51,6 +51,7 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<FaithEntity>> TYPE_FAITH = createEntityType(FaithEntity::new, MobCategory.MISC,"entity_faith", 1.5F, 1.5F);
     public static final Supplier<EntityType<MeteorEntity>> TYPE_METEOR = createEntityType(MeteorEntity::new, MobCategory.MISC,"entity_meteor", 1.5F, 1.5F);
     public static final Supplier<EntityType<SparkEntity>> TYPE_SPARK = createEntityType(SparkEntity::new, MobCategory.MISC,"entity_spark", 1.5F, 1.5F);
+    public static final Supplier<EntityType<MineEntity>> TYPE_MINE = createEntityType(MineEntity::new, MobCategory.MISC,"entity_mine", 1.0F, 1.0F);
 
     // Attack Commands
     public static final Supplier<EntityType<quickBlitzCollider>> TYPE_QUICK_BLITZ = createEntityType(quickBlitzCollider::new, MobCategory.MISC,"quick_blitz_collider", 1.5F, 1.5F);
@@ -117,6 +118,7 @@ public class ModEntitiesRM {
         event.registerLayerDefinition(SilenceModel.LAYER_LOCATION, SilenceModel::createBodyLayer);
         event.registerLayerDefinition(WarpModel.LAYER_LOCATION, WarpModel::createBodyLayer);
         event.registerLayerDefinition(SparkModel.LAYER_LOCATION, SparkModel::createBodyLayer);
+        event.registerLayerDefinition(mineModel.LAYER_LOCATION, mineModel::createBodyLayer);
 
         event.registerLayerDefinition(BerserkAuraModel.LAYER_LOCATION, BerserkAuraModel::createBodyLayer);
         event.registerLayerDefinition(AutoLifeModel.LAYER_LOCATION, AutoLifeModel::createBodyLayer);
@@ -144,6 +146,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_FAITH.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_METEOR.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SPARK.get(), SparkEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_MINE.get(), MineEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_RAVE_SABER.get(), InvisibleEntityRenderer::new);

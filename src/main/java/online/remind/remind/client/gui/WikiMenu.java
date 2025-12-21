@@ -672,7 +672,7 @@ public class WikiMenu extends MenuBackground {
                     new MenuColourBox(
                             col2X + 400, button_statsY + (c++ * spacer),
                             (int) width + 90,
-                            Utils.translateToLocal("You don't have this spell."),
+                            Utils.translateToLocal("You don't have this command."),
                             "Found via Synthesis",
                             0x232324
                     )
@@ -1487,6 +1487,210 @@ public class WikiMenu extends MenuBackground {
         }
     }
 
+    private void renderDrive(int x, int y, float width){
+
+        final PlayerData playerData = PlayerData.get(minecraft.player);
+
+        float topBarHeight = (float) height * 0.17F;
+        int button_statsY = (int) topBarHeight;
+        int button_stats_playerY = button_statsY;
+
+        float buttonPosX = (float) width * 0.03F;
+        float subButtonPosX = buttonPosX + 10;
+
+        float buttonWidth = ((float) width * 0.1744F);
+        float subButtonWidth = buttonWidth - 10;
+
+
+        float dataWidth = ((float) width * 0.1744F);
+
+        int col1X = (int) (subButtonPosX + buttonWidth + 40), col2X=(int) (col1X + dataWidth * 2) ;
+
+        int i = 0;
+
+
+        int c = 0;
+        int d = 0;
+        int spacer = 14;
+
+        addRenderableWidget(
+                new MenuColourBox(
+                        col1X + 200, button_stats_playerY + (d++ * spacer),
+                        (int) width + 70,
+                        Utils.translateToLocal("Drive Form:"),
+                        "Ability:",
+                        0xfefc6a
+                )
+        );
+        addRenderableWidget(
+                new MenuColourBox(
+                        col2X +400, button_statsY + (c++ * spacer),
+                        (int) width + 70,
+                        Utils.translateToLocal("Description:"),
+                        "",
+                        0xd68e2f
+                )
+        );
+
+        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) > 0){
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Light Form"),
+                            "Way to Light",
+                            0xFFF2A8
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            " Level by defeating enemies and using the RC",
+                            0xC47A2C
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "Found via Synthesis or Keyblade",
+                            0x232324
+                    )
+            );
+        }
+        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) > 0){
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Dark Form"),
+                            "Dark Power",
+                            0x2A0A3D
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            " Level by defeating enemies and using the RC",
+                            0xC47A2C
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "Found via Synthesis or Keyblade",
+                            0x232324
+                    )
+            );
+        }
+
+        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm) > 0){
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Rage Form"),
+                            "Rage Awakened",
+                            0x8f0303
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "",
+                            0xC47A2C
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "Found via Synthesis or Keyblade",
+                            0x232324
+                    )
+            );
+        }
+        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.twilight) > 0){
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Twilight Form"),
+                            "Road to Dawn",
+                            0x9E9E9E
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "Defeat Bosses and use the RC",
+                            0xC47A2C
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal(""),
+                            "Found via ??????",
+                            0x232324
+                    )
+            );
+        }
+    }
+
 
     @Override
     public void init() {
@@ -1552,6 +1756,7 @@ public class WikiMenu extends MenuBackground {
             case KEYBLADES -> renderKeyblades(col2X, button_statsY, dataWidth);
             case ATTACK -> renderAttack(col2X, button_statsY, dataWidth);
             case MAGIC -> renderMagic(col2X,button_statsY, dataWidth);
+            case FORMS -> renderDrive(col2X, button_statsY, dataWidth);
         }
 
     }

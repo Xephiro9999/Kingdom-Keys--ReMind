@@ -22,6 +22,7 @@ public class StringsRM {
         ACMA_Prefix = "accessory_",
         MENU_Prefix = "menu_button",
         RCMA_Prefix = "rc_",
+        MAMA_Prefix = "magic_",
 
 
         //Forms
@@ -30,6 +31,9 @@ public class StringsRM {
         lightForm = StringsRM.DFMA_Prefix+"light",
         twilight = StringsRM.DFMA_Prefix+"twilight",
         regenForm = StringsRM.DFMA_Prefix+"regen",
+
+        // Magic
+        Magic_Mine_Square = StringsRM.MAMA_Prefix+"mine_square",
 
 
         //Ability List
@@ -75,6 +79,9 @@ public class StringsRM {
         mpSlowga = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_slowga",
         oneHP = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"one_hp",
         ribbon = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ribbon",
+
+        // Grand Magics
+        seekerMine = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"seeker_mine",
 
         // FF Keyblade Abilities
         Tidus = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"tidus",

@@ -5,6 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.lib.StringsRM;
 import online.remind.remind.magic.attacks.*;
 
 import java.util.function.Supplier;
@@ -37,6 +38,7 @@ public class ModMagicsRM {
             FAITH = MAGIC.register(ResourceLocation.parse("magic_faith").getPath(), () -> new magicFaith(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_faith"), 1, null)),
             DEATH = MAGIC.register(ResourceLocation.parse("magic_death").getPath(), () -> new magicDeath(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_death"), false, 1, null)),
             SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null)),
+            MINE_SQUARE = MAGIC.register(ResourceLocation.parse("magic_mine_square").getPath(), () -> new magicMineSquare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_mine_square"), false, 3, StringsRM.seekerMine)),
 
 
     // "Spells"

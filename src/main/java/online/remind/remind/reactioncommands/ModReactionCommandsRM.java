@@ -5,6 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
+import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionMagic;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 

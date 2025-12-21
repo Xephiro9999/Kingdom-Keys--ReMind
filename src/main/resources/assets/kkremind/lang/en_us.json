@@ -82,6 +82,9 @@
   "magic.kkremind.attack_dark_surge0.name": "Dark Surge Lv.1",
   "magic.kkremind.attack_dark_surge1.name": "Dark Surge Lv.2",
   "magic.kkremind.attack_dark_surge2.name": "Dark Surge Lv.3",
+  "magic.kkremind.magic_mine_square0.name": "Mine Square Lv.1",
+  "magic.kkremind.magic_mine_square1.name": "Mine Square Lv.2",
+  "magic.kkremind.magic_mine_square2.name": "Mine Square Lv.3",
 
 
 
@@ -329,7 +332,7 @@
   "menu_button.attack.desc": "Tells you about Attack Commands found in Re:Mind.",
   "menu_button.magic": "Magic Commands",
   "menu_button.magic.desc": "Tells you about Magic found in Re:Mind.",
-  "menu_button.forms": "Addon Forms",
+  "menu_button.forms": "Add-on Forms",
   "menu_button.forms.desc": "Tells you about new Forms added with Re:Mind.",
   "menu_button.armor": "Armor",
   "menu_button.accessory": "Accessories",
