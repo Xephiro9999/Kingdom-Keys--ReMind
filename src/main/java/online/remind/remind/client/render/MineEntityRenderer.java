@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -51,6 +52,11 @@ public class MineEntityRenderer extends EntityRenderer<ThrowableProjectile> {
 
 
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+    }
+
+
+    protected int getBlockLightLevel(MineEntity entity, BlockPos pos) {
+        return 15; // full glow
     }
 
 

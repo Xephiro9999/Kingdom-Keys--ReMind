@@ -33,37 +33,67 @@ public class magicMineSquare extends Magic {
         float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F;
         dmgMult *= fullMPBlastMult;
 
-        switch (level){
+        switch (level) {
             case 0:
-                for (int i = -1; i <= 1; i++) {
-                    Vec3 spawnPos = player.position()
-                            .add(forward.scale(forwardOffset))
-                            .add(right.scale(i * spacing));
+                 spacing = 1.4F;
 
-                    MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                Vec3 base = player.position();
+
+                Vec3[] offsets = {
+                        new Vec3( spacing, 0,  spacing),
+                        new Vec3( spacing, 0, -spacing),
+                        new Vec3(-spacing, 0,  spacing),
+                        new Vec3(-spacing, 0, -spacing)
+                };
+
+                for (Vec3 off : offsets) {
+                    Vec3 spawnPos = base.add(off);
+
+                    MineEntity mine = new MineEntity(
+                            player.level(),
+                            player,
+                            0,
+                            dmgMult
+                    );
+
                     mine.setMaxTicks(200);
                     mine.setCaster(player.getDisplayName().getString());
-                    mine.setPos(spawnPos.x,player.getY(),spawnPos.z);
+                    mine.setPos(spawnPos.x, player.getY(), spawnPos.z);
                     player.level().addFreshEntity(mine);
-
                 }
+
                 break;
             case 1:
-                for (int i = -2; i <= 2; i++) {
-                    Vec3 spawnPos = player.position()
-                            .add(forward.scale(forwardOffset))
-                            .add(right.scale(i * spacing));
+                int mineCount = 6;
+                double radius = 2.0D;
 
-                    MineEntity mine = new MineEntity(player.level(), player, i, dmgMult);
+                base = player.position();
+
+                for (int i = 0; i < mineCount; i++) {
+                    double angle = (Math.PI * 2 / mineCount) * i;
+
+                    double x = Math.cos(angle) * radius;
+                    double z = Math.sin(angle) * radius;
+
+                    Vec3 spawnPos = base.add(x, 0, z);
+
+                    MineEntity mine = new MineEntity(
+                            player.level(),
+                            player,
+                            0,
+                            dmgMult
+                    );
+
                     mine.setMaxTicks(220);
                     mine.setCaster(player.getDisplayName().getString());
-                    mine.setPos(spawnPos.x,player.getY(),spawnPos.z);
+                    mine.setPos(spawnPos.x, player.getY() + 1.2D, spawnPos.z);
+
                     player.level().addFreshEntity(mine);
                 }
                 break;
             case 2:
-                int mineCount = 8;      // BBS feels ~8
-                float radius = 2.5F;
+                mineCount = 8;      // BBS feels ~8
+                radius = 2.75F;
 
                 for (int i = 0; i < mineCount; i++) {
                     double angle = (Math.PI * 2 / mineCount) * i;
@@ -102,8 +132,6 @@ public class magicMineSquare extends Magic {
                 }
                 break;
         }
-
-
     }
 
     @Override
