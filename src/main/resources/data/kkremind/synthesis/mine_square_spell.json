@@ -1,0 +1,27 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:blazing_shard",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mythril_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:blazing_gem",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:pulsing_stone",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:mine_square_spell",
+    "quantity": 1
+  },
+  "tier": 5
+}
