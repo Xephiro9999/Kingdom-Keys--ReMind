@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Friends Are Power",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Gain a bonus scaling with the amount of $(thing)party members$() you have. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/friendbinder)Friend Heartbinder$(/l) accessory."
 		}
 	]
 }

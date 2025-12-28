@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Stop Block",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Upon a successful Parry, inflict $(thing)Stop$() on the attacker. Restores $(thing)more$() upon successful parry! $(p)Requires EFM Guard Skill. $(p)Costs 0 AP."
 		}
 	]
 }

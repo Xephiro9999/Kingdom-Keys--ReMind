@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Critical Surge",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Increases your magic stat when you're low on HP. $(p)Costs 4 AP."
 		}
 	]
 }

@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Way to Light",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Allows you to embrace the power of Light and access $(l:kingdomkeys:drive/light)Light Form$(/l). $(p)Costs 3 AP."
 		}
 	]
 }

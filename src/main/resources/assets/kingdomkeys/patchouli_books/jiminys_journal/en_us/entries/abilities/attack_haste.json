@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Attack Haste",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Increases attack speed. Equip more to increase the effect. $(p)Costs 3 AP."
 		}
 	]
 }

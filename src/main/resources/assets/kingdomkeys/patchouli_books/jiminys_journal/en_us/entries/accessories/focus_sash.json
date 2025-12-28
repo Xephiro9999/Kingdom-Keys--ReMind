@@ -1,12 +1,16 @@
 {
-	"name": "Luck of the Draw",
-	"icon": "kkremind:luck_of_the_draw",
+	"name": "Focus Sash",
+	"icon": "kkremind:focus_sash",
 	"sortnum": 1,
 	"category": "kingdomkeys:accessories_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "$(thing)AP: 3$() $(p)$(item)Magic: 3$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/focus_walker)Focus Walker$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:focus_sash"
 		}
 	]
 }

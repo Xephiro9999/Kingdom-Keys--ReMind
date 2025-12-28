@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Volt Absorb",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "When equipped and hit with Lightning or Thunder based magic, take 10%% less damage and gain Haste and Speed for 5 seconds. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:keyblades/wrongful_inheritor)Wrongful Inheritor$(/l) keyblade."
 		}
 	]
 }

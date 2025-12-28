@@ -1,12 +1,16 @@
 {
-	"name": "Luck of the Draw",
-	"icon": "kkremind:luck_of_the_draw",
+	"name": "Light Ring",
+	"icon": "kkremind:light_ring",
 	"sortnum": 1,
 	"category": "kingdomkeys:accessories_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 5$() $(p)$(item)Magic: 5$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/light_boost)Light Boost$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:light_ring"
 		}
 	]
 }

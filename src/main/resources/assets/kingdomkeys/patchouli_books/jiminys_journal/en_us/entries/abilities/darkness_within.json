@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Darkness Within",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Empowers you with the power of $(thing)Darkness!$() Equip $(l:kingdomkeys:abilities/darkness_boost)Darkness Boost$(/l) to increase the effect."
 		}
 	]
 }

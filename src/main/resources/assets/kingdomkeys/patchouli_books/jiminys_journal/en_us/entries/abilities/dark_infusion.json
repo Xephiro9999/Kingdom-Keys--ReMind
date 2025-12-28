@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Dark Infusion",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Enhances your spells and abilities with the power of Darkness! $(p)Does not apply to spells that are already Darkness based. $(p)$(item)Exclusive$() to $(l:kingdomkeys:drive/dark)Dark Form.$(/l)"
 		}
 	]
 }

@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Light Within",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Empowers you with the power of $(thing)Light$()! Equip $(l:kingdomkeys:abilities/light_boost)Light Boost$(/l) to increase the effect."
 		}
 	]
 }

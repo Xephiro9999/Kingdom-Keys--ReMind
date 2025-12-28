@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Dimensional Gaze",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Grants access to the reaction command 'Ravenous Saber', a deadly 5-hit combo of elemental fury! Deals more damage with $(l:kingdomkeys:abilities/spellblade)Spellblade$(/l) equipped. $(p)Grants access to Gaze Form. <br>This form specializes in heavy hitting attacks imbued with the power of the elements. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:keyblades/gazing_omen)Gazing Omen$(/l) keyblade."
 		}
 	]
 }

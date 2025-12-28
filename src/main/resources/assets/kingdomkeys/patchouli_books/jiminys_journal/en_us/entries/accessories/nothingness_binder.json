@@ -1,0 +1,16 @@
+{
+	"name": "Nothing's Binder",
+	"icon": "kkremind:nothingness_binder",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 10$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/hearts_are_power)Hearts Are Power$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:nothingness_binder"
+		}
+	]
+}

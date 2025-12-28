@@ -1,12 +1,16 @@
 {
-	"name": "Luck of the Draw",
-	"icon": "kkremind:luck_of_the_draw",
+	"name": "Forest Clasp",
+	"icon": "kkremind:forest_clasp",
 	"sortnum": 1,
 	"category": "kingdomkeys:accessories_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "$(thing)AP: 8$() $(p)$(#f00)Strength: 2$() $(p)$(item)Magic: 3$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/hp_walker)HP Walker$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:forest_clasp"
 		}
 	]
 }

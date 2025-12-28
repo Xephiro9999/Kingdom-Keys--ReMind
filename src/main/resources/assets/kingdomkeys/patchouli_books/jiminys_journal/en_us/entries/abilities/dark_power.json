@@ -1,12 +1,12 @@
 {
-	"name": "Dark Passage",
-	"icon": "kkremind:esuna_spell",
+	"name": "Dark Power",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Allows you to use Dark Corridors without being apart of the Organization."
+			"text": "Allows you to embrace the power of Darkness and access $(l:kingdomkeys:drive/dark)Dark Form$(/l). $(p)Costs 3 AP."
 		}
 	]
 }

@@ -6,7 +6,11 @@
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "Defense: 1"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:aqua_chaplet"
 		}
 	]
 }

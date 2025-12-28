@@ -6,7 +6,11 @@
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "Defense: 3 $(p)$(#42c7c7)Blizzard Resistance: 20%%$() $(p)$(#bdbd3f)Thunder Resistance: 20%%$() $(p)Dark Resistance: 20%%$()"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:heros_belt"
 		}
 	]
 }

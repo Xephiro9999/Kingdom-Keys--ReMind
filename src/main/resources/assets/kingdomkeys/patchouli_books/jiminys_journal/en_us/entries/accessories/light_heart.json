@@ -1,12 +1,16 @@
 {
-	"name": "Luck of the Draw",
-	"icon": "kkremind:luck_of_the_draw",
+	"name": "Light Heart",
+	"icon": "kkremind:light_heart",
 	"sortnum": 1,
 	"category": "kingdomkeys:accessories_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "$(thing)AP: 5$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/way_to_light)Way to Light$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:light_heart"
 		}
 	]
 }

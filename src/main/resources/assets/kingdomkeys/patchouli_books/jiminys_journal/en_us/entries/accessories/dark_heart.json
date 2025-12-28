@@ -1,12 +1,16 @@
 {
-	"name": "Luck of the Draw",
-	"icon": "kkremind:luck_of_the_draw",
+	"name": "Dark Heart",
+	"icon": "kkremind:dark_heart",
 	"sortnum": 1,
 	"category": "kingdomkeys:accessories_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "$(thing)AP: 5$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/dark_power)Dark Power$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:dark_heart"
 		}
 	]
 }

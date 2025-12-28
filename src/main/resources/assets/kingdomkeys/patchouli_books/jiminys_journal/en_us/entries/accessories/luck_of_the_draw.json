@@ -6,7 +6,11 @@
 	"pages": [
 		{
 			"type": "text",
-			"text": "Desc."
+			"text": "Abilities: $(li)Lucky Strike $(li)Treasure Magnet"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:luck_of_the_draw"
 		}
 	]
 }

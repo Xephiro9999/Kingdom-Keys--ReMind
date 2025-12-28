@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Focus Walker",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Recover $(thing)Focus$() as you run. Equip more to increase the effect. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/focus_sash)Focus Sash$(/l) accessory."
 		}
 	]
 }

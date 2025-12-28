@@ -1,12 +1,12 @@
 {
-	"name": "Darkness Boost",
-	"icon": "kkremind:esuna_spell",
+	"name": "Ribbon",
+	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
 	"pages": [
 		{
 			"type": "text",
-			"text": "Increases damage done with dark-based attacks."
+			"text": "Grants $(thing)immunity$() to $(item)all negative status effects$(). $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/ribbon_ff7)Ribbon (FF7)$(/l) accessory."
 		}
 	]
 }
