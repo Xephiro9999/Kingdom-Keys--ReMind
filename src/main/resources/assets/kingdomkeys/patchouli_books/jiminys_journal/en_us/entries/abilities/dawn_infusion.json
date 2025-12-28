@@ -3,6 +3,7 @@
 	"icon": "kingdomkeys:apboost",
 	"sortnum": 1,
 	"category": "kingdomkeys:abilities_rm",
+	"advancement": "kingdomkeys:hundred_level_up",
 	"pages": [
 		{
 			"type": "text",

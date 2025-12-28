@@ -3,7 +3,7 @@
 	"icon": "kkremind:light_heart",
 	"sortnum": 4,
 	"category": "kingdomkeys:drive_rm",
-	"advancement": "kingdomkeys:obtain_drive",
+	"advancement": "kingdomkeys:hundred_level_up",
 	"pages": [
 		{
 			"type": "text",
