@@ -24,21 +24,28 @@ public class chirithyModel<T extends Entity> extends EntityModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "chirithy"), "main");
 	private final ModelPart chirithy;
 	private final ModelPart head;
+	private final ModelPart LArm, RArm, LLeg, RLeg, tail, cloak;
 
 	public chirithyModel(ModelPart root) {
 		this.chirithy = root.getChild("Main");
-        this.head = chirithy.getChild("head");
+		this.head = chirithy.getChild("head");
+		this.LArm = chirithy.getChild("arms").getChild("LArm");
+		this.RArm = chirithy.getChild("arms").getChild("RArm");
+		this.LLeg = chirithy.getChild("legs").getChild("LLeg");
+		this.RLeg = chirithy.getChild("legs").getChild("RLeg");
+		this.tail = chirithy.getChild("body").getChild("tail");
+		this.cloak = chirithy.getChild("body").getChild("cloak");
     }
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
+		PartDefinition root = meshdefinition.getRoot();
 
-		PartDefinition Main = partdefinition.addOrReplaceChild("Main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition Main = root.addOrReplaceChild("Main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition head = Main.addOrReplaceChild("head", CubeListBuilder.create().texOffs(1, 112).addBox(-4.025F, -4.65F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-				.texOffs(37, 116).addBox(-4.275F, -4.95F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
-				.texOffs(37, 116).addBox(2.325F, -4.95F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.025F, -14.35F, 0.0F, 3.1416F, 0.0F, 3.1416F));
+		PartDefinition head = Main.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(1, 112).addBox(-4.025F, -4.65F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(0.0F, -14.35F, 0.0F));
 
 		PartDefinition mouth_r1 = head.addOrReplaceChild("mouth_r1", CubeListBuilder.create().texOffs(35, 122).addBox(-3.0F, -2.0F, -1.0F, 6.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.025F, 1.35F, 4.0F, -0.2182F, 0.0F, 0.0F));
 
@@ -69,23 +76,50 @@ public class chirithyModel<T extends Entity> extends EntityModel<T> {
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
+		// Reset pose
+		this.chirithy.getAllParts().forEach(ModelPart::resetPose);
 
-		this.animateWalk(ModAnimationDefinitions.CHIRITHY_WALK, limbSwing, limbSwingAmount,2f, 2.5f);
-		//this.animate(((ChirithyEntity) entity).idleAnimationState, ModAnimationDefinitions.CHIRITHY_IDLE, ageInTicks, 1f);
-		this.animateCast(((ChirithyEntity) entity).attackAnim, ModAnimationDefinitions.CHIRITHY_CAST, ageInTicks, 1f);
+		// Head rotation
+		this.head.yRot = netHeadYaw * ((float)Math.PI / 180F) + (float)Math.PI; // add 180° to yaw
+		this.head.xRot = -headPitch * ((float)Math.PI / 180F);
+		this.head.zRot = 0f;
+
+		// Walking animation
+		this.RLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.LLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+		this.RArm.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.5F * limbSwingAmount;
+		this.LArm.xRot = Mth.cos(limbSwing * 0.6662F) * 0.5F * limbSwingAmount;
+
+		// Tail idle sway
+		this.tail.yRot = Mth.sin(ageInTicks * 0.1F) * 0.2F;
+
+		// Cloak sway
+		this.cloak.xRot = Mth.sin(ageInTicks * 0.1F) * 0.05F;
+
+		// Optional: simple idle arm movement
+		this.LArm.zRot = Mth.sin(ageInTicks * 0.1F) * 0.05F;
+		this.RArm.zRot = -Mth.sin(ageInTicks * 0.1F) * 0.05F;
+
+
+		ChirithyEntity chirithyEntity = (ChirithyEntity) entity;
+		// Cast animation
+		if (chirithyEntity.castAnimationState.isStarted()) {
+			animateCast(ageInTicks, chirithyEntity);
+		}
+
+
 	}
 
-	private void animateWalk(AnimationDefinition chirithyWalk, float limbSwing, float limbSwingAmount, float v, float v1) {
+	private void animateCast(float ageInTicks, ChirithyEntity chirithy) {
+		float progress = chirithy.castAnimationState.getAccumulatedTime() / 10f; // 10 ticks duration
+		if (progress > 1f) progress = 1f;
+
+		// Interpolate arm rotation from start to end
+		LArm.xRot = -30f * progress;
+		LArm.yRot = 10f * progress;
+		LArm.zRot = 5f * progress;
 	}
 
-	private void animateCast(float attackAnim, AnimationDefinition cast, float ageInTicks, float v) {
-	}
-
-	private void animate(AnimationState idleAnimationState, AnimationDefinition idle, float ageInTicks, float v) {
-
-	}
 
 
 	private void applyHeadRotation(float pNetHeadYaw, float pHeadPitch, float pAgeInTicks){

@@ -37,7 +37,7 @@ public class ChirithyRenderer extends MobRenderer<ChirithyEntity, chirithyModel<
 
     @Override
     public ResourceLocation getTextureLocation(ChirithyEntity entity){
-        return SPIRIT_TEXTURE;
+        return entity.getVariant() == 1 ? SPIRIT_TEXTURE : NIGHTMARE_TEXTURE;
     }
 
     @Override

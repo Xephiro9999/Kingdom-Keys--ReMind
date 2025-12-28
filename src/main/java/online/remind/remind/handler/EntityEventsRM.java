@@ -110,9 +110,6 @@ public class EntityEventsRM {
 				globalData.setCanCounter(0);
 			}
 
-			if (globalData.hasDreamEaterSummoned()){
-				globalData.setHasDreamEaterSummoned(false);
-			}
 
 
 			// To initialize the toggle feature
