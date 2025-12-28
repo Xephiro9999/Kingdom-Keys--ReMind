@@ -1,13 +1,21 @@
 package online.remind.remind.client.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 
 import java.awt.*;
+import java.util.UUID;
 
 public class DreamEaterMenu extends MenuBackground {
 
@@ -21,6 +29,9 @@ public class DreamEaterMenu extends MenuBackground {
         super("Dream Eaters", new Color(236, 85, 236));
         minecraft = Minecraft.getInstance();
     }
+
+
+
 
     protected void action(String string) {
         if (string.equals("back")) {
@@ -36,6 +47,8 @@ public class DreamEaterMenu extends MenuBackground {
 
     @Override
     public void init() {
+
+
         super.init();
         this.renderables.clear();
 

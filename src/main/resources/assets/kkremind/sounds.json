@@ -173,5 +173,15 @@
     "sounds": [
       "kkremind:death_hit"
     ]
+  },
+  "spirit_summon": {
+    "sounds": [
+      "kkremind:spirit_summon"
+    ]
+  },
+  "spirit_desummon": {
+    "sounds": [
+      "kkremind:spirit_desummon"
+    ]
   }
 }

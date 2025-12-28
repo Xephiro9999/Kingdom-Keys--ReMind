@@ -73,7 +73,7 @@ public class chirithyModel<T extends Entity> extends EntityModel<T> {
 		this.applyHeadRotation(netHeadYaw, headPitch, ageInTicks);
 
 		this.animateWalk(ModAnimationDefinitions.CHIRITHY_WALK, limbSwing, limbSwingAmount,2f, 2.5f);
-		this.animate(((ChirithyEntity) entity).idleAnimationState, ModAnimationDefinitions.CHIRITHY_IDLE, ageInTicks, 1f);
+		//this.animate(((ChirithyEntity) entity).idleAnimationState, ModAnimationDefinitions.CHIRITHY_IDLE, ageInTicks, 1f);
 		this.animateCast(((ChirithyEntity) entity).attackAnim, ModAnimationDefinitions.CHIRITHY_CAST, ageInTicks, 1f);
 	}
 

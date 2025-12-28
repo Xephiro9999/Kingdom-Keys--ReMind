@@ -51,7 +51,15 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
+        }
+    }
 }
+
 
 base {
     archivesName = mod_id
@@ -93,7 +101,7 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     implementation "curse.maven:kingdom-keys-re-coded-242862:7297617"
-    implementation "curse.maven:geckolib-388172:7023453"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "curse.maven:epic-fight-mod-405076:7213644"
 }
 

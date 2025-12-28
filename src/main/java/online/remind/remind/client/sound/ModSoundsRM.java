@@ -40,6 +40,9 @@ public class ModSoundsRM {
             ROYAL_GUARD = registerSound("royal_block"),
             ROYAL_PARRY = registerSound("royal_parry"),
 
+            SPIRIT_SUMMON = registerSound("spirit_summon"),
+            SPIRIT_DESUMMON = registerSound("spirit_desummon"),
+
 
 
 

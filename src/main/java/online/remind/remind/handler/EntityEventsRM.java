@@ -110,6 +110,10 @@ public class EntityEventsRM {
 				globalData.setCanCounter(0);
 			}
 
+			if (globalData.hasDreamEaterSummoned()){
+				globalData.setHasDreamEaterSummoned(false);
+			}
+
 
 			// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
@@ -796,12 +800,10 @@ public class EntityEventsRM {
 
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		Player player = event.getEntity();
-		IGlobalDataRM data = ModDataRM.getGlobal(player);
+		IGlobalDataRM data = ModDataRM.getGlobal(event.getEntity());
 		if (data != null) {
 			data.setHasDreamEaterSummoned(false);
 			data.setDreamEaterUUID(null);
-			data.setDreamEaterSummonedID(-1);
 		}
 	}
 
@@ -822,25 +824,8 @@ public class EntityEventsRM {
 						player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
 					}
 				}
-
-				ServerLevel world = (ServerLevel) player.level();
-				if (globalData != null) {
-					if (globalData.hasDreamEaterSummoned()) {
-						UUID dreamEaterUUID = globalData.getDreamEaterUUID();
-						if (dreamEaterUUID != null){
-							Entity entity = world.getEntity(dreamEaterUUID);
-							if (entity != null){
-								entity.discard();
-							}
-						}
-						//globalData.setHasDreamEaterSummoned(false);
-						//globalData.setDreamEaterUUID(null);
-						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-					}
-				}
-		}
+			}
 		// Dream Eater Death Event
-
 
 	}
 

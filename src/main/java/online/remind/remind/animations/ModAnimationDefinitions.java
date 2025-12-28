@@ -1,4 +1,4 @@
-package online.remind.remind.animations;// Save this class in your mod and generate all required imports
+package online.remind.remind.animations;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
