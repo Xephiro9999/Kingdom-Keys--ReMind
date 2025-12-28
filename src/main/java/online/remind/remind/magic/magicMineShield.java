@@ -96,7 +96,7 @@ public class magicMineShield extends Magic {
                             0,
                             dmgMult
                     );
-                    
+
                     mine.setMaxTicks(240);
                     mine.setCaster(player.getDisplayName().getString());
                     mine.setPos(spawnPos.x, player.getY(), spawnPos.z);

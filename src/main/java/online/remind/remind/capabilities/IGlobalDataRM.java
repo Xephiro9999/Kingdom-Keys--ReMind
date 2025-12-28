@@ -4,6 +4,8 @@ package online.remind.remind.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
+import java.util.UUID;
+
 public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
 
     //Haste
@@ -112,6 +114,9 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
 
     boolean hasDreamEaterSummoned();
     void setHasDreamEaterSummoned(boolean val);
+
+    UUID getDreamEaterUUID();
+    void setDreamEaterUUID(UUID uuid);
 
     int getDreamEaterSummonedID();
 

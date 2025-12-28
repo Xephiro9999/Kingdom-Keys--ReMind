@@ -155,7 +155,7 @@ public class InputHandlerRM {
 
 		if(key != null) {
 			switch (key) {
-				//case SUMMONSPIRIT -> summonSpirit();
+				case SUMMONSPIRIT -> summonSpirit();
 
 
 			}

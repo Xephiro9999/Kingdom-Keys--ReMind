@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
@@ -793,6 +794,17 @@ public class EntityEventsRM {
 		}
 	}
 
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+		Player player = event.getEntity();
+		IGlobalDataRM data = ModDataRM.getGlobal(player);
+		if (data != null) {
+			data.setHasDreamEaterSummoned(false);
+			data.setDreamEaterUUID(null);
+			data.setDreamEaterSummonedID(-1);
+		}
+	}
+
 
 	
 	@SubscribeEvent
@@ -808,6 +820,22 @@ public class EntityEventsRM {
 						player.removeAllEffects();
 						player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
 						player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+					}
+				}
+
+				ServerLevel world = (ServerLevel) player.level();
+				if (globalData != null) {
+					if (globalData.hasDreamEaterSummoned()) {
+						UUID dreamEaterUUID = globalData.getDreamEaterUUID();
+						if (dreamEaterUUID != null){
+							Entity entity = world.getEntity(dreamEaterUUID);
+							if (entity != null){
+								entity.discard();
+							}
+						}
+						//globalData.setHasDreamEaterSummoned(false);
+						//globalData.setDreamEaterUUID(null);
+						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 					}
 				}
 		}

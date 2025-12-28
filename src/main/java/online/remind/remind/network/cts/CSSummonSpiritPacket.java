@@ -4,13 +4,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.network.PacketHandlerRM;
+
+import java.util.UUID;
 
 public class CSSummonSpiritPacket implements CustomPacketPayload {
     public static final Type<CSSummonSpiritPacket> TYPE = new Type(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_summon_spirit"));
@@ -36,23 +41,19 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 return;
 
-            if(!playerData.hasDreamEaterSummoned()) {
-            ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
-            owner.level().addFreshEntity(dreamEater);
-            dreamEater.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
-            dreamEater.getUUID();
-            playerData.setHasDreamEaterSummoned(true);
-            System.out.println(playerData.hasDreamEaterSummoned());
-            playerData.setDreamEaterSummonedID(+1);
-            PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
-            }
-            else if (playerData.hasDreamEaterSummoned()){
+            if (!playerData.hasDreamEaterSummoned()) {
+                ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
+                dreamEater.setOwnerUUID(owner.getUUID());
+                dreamEater.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
+                owner.level().addFreshEntity(dreamEater);
 
+                playerData.setHasDreamEaterSummoned(true);
+            } else {
                 playerData.setHasDreamEaterSummoned(false);
-                playerData.setDreamEaterSummonedID(-1);
-                PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
-                System.out.println(playerData.hasDreamEaterSummoned());
             }
+
+            PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
+
         });
     }
 
