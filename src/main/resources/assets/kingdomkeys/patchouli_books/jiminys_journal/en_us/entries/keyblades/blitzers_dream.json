@@ -1,0 +1,12 @@
+{
+	"name": "Blitzer's Dream",
+	"icon": "kkremind:blitzers_dream_chain",
+	"sortnum": 6,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Inspired by Tidus from FINAL FANTASY X."
+		}
+	]
+}

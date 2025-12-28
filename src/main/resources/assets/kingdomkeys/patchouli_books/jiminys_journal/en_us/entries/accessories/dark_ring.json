@@ -1,0 +1,16 @@
+{
+	"name": "Dark Ring",
+	"icon": "kkremind:dark_ring",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 5$() $(p)$(item)Magic: 5$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/darkness_boost)Darkness Boost$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:dark_ring"
+		}
+	]
+}

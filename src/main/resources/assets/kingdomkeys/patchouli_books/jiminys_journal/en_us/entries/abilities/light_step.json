@@ -1,0 +1,12 @@
+{
+	"name": "Light Step",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Engulf yourself in Darkness and dash with the Action Button while sprinting! Requires Quick Run Equipped!"
+		}
+	]
+}

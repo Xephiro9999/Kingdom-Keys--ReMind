@@ -1,0 +1,16 @@
+{
+	"name": "Haste Bracer",
+	"icon": "kkremind:haste_bracer",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 3$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/attack_haste)Attack Haste$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:haste_bracer"
+		}
+	]
+}

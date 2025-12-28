@@ -1,0 +1,12 @@
+{
+	"name": "Counter Blast",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Upon a successful guard, counter attack with a burst! Scales with Max MP! $(p)Costs 0 AP."
+		}
+	]
+}

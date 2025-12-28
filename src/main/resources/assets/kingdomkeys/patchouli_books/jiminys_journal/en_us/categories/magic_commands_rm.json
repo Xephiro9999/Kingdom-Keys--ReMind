@@ -1,0 +1,7 @@
+{
+  "name": "Magic Commands",
+  "description": "patchouli.kingdomkeys.remind.magic_commands.desc",
+  "icon": "kkremind:haste_spell",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 103
+}

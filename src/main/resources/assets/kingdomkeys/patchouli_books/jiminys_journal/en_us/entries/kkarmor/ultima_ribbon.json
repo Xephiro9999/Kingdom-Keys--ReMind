@@ -1,0 +1,16 @@
+{
+	"name": "Ultima Ribbon",
+	"icon": "kkremind:ultima_ribbon",
+	"sortnum": 5,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Defense: 5 $(p)$(#f00)Fire Resistance: 50%%$() $(p)$(#42c7c7)Blizzard Resistance: 50%%$() $(p)$(#bdbd3f)Thunder Resistance: 50%%$() $(p)Dark Resistance: 50%%$() $(p)$(#717171)Light Resistance: 50%%$()"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:ultima_ribbon"
+		}
+	]
+}

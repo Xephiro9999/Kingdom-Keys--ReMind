@@ -1,0 +1,12 @@
+{
+	"name": "Way to Light",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Allows you to embrace the power of Light and access $(l:kingdomkeys:drive/light)Light Form$(/l). $(p)Costs 3 AP."
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Road to Dawn",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "You've walked both paths. One of Light and one of Darkness -- mastered them. $(p)Allows you to access $(l:kingdomkeys:drive/twilight)Twilight Form$(/l) freely. $(p)Costs 3 AP."
+		}
+	]
+}

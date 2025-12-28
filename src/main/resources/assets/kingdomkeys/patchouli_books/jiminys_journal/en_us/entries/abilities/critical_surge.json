@@ -1,0 +1,12 @@
+{
+	"name": "Critical Surge",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Increases your magic stat when you're low on HP. $(p)Costs 4 AP."
+		}
+	]
+}

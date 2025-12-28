@@ -1,0 +1,12 @@
+{
+	"name": "Bubble Blaster",
+	"icon": "kkremind:bubble_blaster_shotlock",
+	"sortnum": 2,
+	"category": "kingdomkeys:shotlocks_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"name": "Hero's Glove",
+	"icon": "kkremind:heros_glove",
+	"sortnum": 2,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Defense: 4 $(p)$(#f00)Fire Resistance: 20%%$() $(p)$(#42c7c7)Blizzard Resistance: 20%%$() $(p)Dark Resistance: 20%%$()"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:heros_glove"
+		}
+	]
+}

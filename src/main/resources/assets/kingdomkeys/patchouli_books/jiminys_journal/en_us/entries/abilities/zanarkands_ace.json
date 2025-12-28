@@ -1,0 +1,12 @@
+{
+	"name": "Zanarkand's Ace",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "The Spirit of Tidus bursts forth! Gain strength and speed when underwater, additionally you cannot drown! $(p)$(item)Exclusive$() to the $(l:kingdomkeys:keyblades/blitzers_dream)Blitzer's Dream$(/l) keyblade."
+		}
+	]
+}

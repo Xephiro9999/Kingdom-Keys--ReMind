@@ -1,0 +1,12 @@
+{
+	"name": "Counter Rush",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Upon a successful guard, counter attack with a flurry of blows! Scales with $(l:kingdomkeys:abilities/attack_haste)Attack Haste!$(/l) $(p)Costs 0 AP."
+		}
+	]
+}

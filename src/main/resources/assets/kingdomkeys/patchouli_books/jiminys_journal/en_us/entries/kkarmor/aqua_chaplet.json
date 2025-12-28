@@ -1,0 +1,16 @@
+{
+	"name": "Aqua Chaplet",
+	"icon": "kkremind:aqua_chaplet",
+	"sortnum": 1,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Defense: 1"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:aqua_chaplet"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Holy/Holyra/Holyga",
+	"icon": "kkremind:holy_spell",
+	"sortnum": 11,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Shoots orbs of piercing Light!"
+		}
+	]
+}

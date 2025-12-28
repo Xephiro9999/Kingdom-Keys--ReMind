@@ -1,0 +1,12 @@
+{
+	"name": "One HP",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "It's... in the name... $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/daredevil)Daredevil$(/l) accessory."
+		}
+	]
+}

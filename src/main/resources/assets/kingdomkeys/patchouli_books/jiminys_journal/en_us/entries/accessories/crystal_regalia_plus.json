@@ -1,0 +1,16 @@
+{
+	"name": "Crystal Regalia +",
+	"icon": "kkremind:crystal_regalia_plus",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 25$() $(p)$(#f00)Strength: 6$() $(p)$(item)Magic: 6$() $(p)Abilities: $(li)MP Hastega"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:crystal_regalia_plus"
+		}
+	]
+}

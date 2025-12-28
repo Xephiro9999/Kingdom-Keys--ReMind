@@ -1,0 +1,7 @@
+{
+  "name": "Abilities",
+  "description": "patchouli.kingdomkeys.remind.abilities.desc",
+  "icon": "kingdomkeys:apboost",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 104
+}

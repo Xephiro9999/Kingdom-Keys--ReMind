@@ -1,0 +1,12 @@
+{
+	"name": "Darkness Within",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Empowers you with the power of $(thing)Darkness!$() Equip $(l:kingdomkeys:abilities/darkness_boost)Darkness Boost$(/l) to increase the effect."
+		}
+	]
+}

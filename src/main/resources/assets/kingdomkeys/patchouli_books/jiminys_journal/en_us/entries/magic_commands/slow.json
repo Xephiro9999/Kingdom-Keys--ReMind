@@ -1,0 +1,12 @@
+{
+	"name": "Slow/Slowra/Slowga",
+	"icon": "kkremind:slow_spell",
+	"sortnum": 4,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "An AoE slow-down to your enemies!"
+		}
+	]
+}

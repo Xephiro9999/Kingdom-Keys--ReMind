@@ -1,0 +1,12 @@
+{
+	"name": "Light Boost",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Increases damage done with light-based attacks. $(p)Costs 3 AP."
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Focus Block",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Upon a successful guard, restore a small amount of $(thing)Focus$(). Restores $(thing)more$() upon successful parry! $(p)Requires EFM Guard Skill. $(p)Costs 0 AP."
+		}
+	]
+}

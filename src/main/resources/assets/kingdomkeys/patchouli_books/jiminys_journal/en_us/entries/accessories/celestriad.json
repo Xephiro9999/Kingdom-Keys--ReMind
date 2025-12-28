@@ -1,0 +1,16 @@
+{
+	"name": "Celestriad",
+	"icon": "kkremind:celestriad",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 2$() $(p)$(item)Magic: 3$() $(p)Abilities: $(li)Fire Boost $(li)Blizzard Boost $(li)Thunder Boost"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:celestriad"
+		}
+	]
+}

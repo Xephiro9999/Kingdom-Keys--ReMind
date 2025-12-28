@@ -1,0 +1,12 @@
+{
+	"name": "Faith",
+	"icon": "kkremind:faith_spell",
+	"sortnum": 16,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Rains down piercing Light!"
+		}
+	]
+}

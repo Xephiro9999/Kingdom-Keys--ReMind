@@ -1,0 +1,16 @@
+{
+	"name": "Silver Armlet",
+	"icon": "kkremind:silver_armlet",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 10$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/spellblade)Spellblade$(/l) $(li)$(l:kingdomkeys:abilities/mp_boost)MP Boost$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:silver_armlet"
+		}
+	]
+}

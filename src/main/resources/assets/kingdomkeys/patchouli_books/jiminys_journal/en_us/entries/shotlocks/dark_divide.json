@@ -1,0 +1,12 @@
+{
+	"name": "Dark Divide",
+	"icon": "kkremind:dark_divide_shotlock",
+	"sortnum": 6,
+	"category": "kingdomkeys:shotlocks_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

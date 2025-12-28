@@ -1,0 +1,12 @@
+{
+	"name": "Light Within",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Empowers you with the power of $(thing)Light$()! Equip $(l:kingdomkeys:abilities/light_boost)Light Boost$(/l) to increase the effect."
+		}
+	]
+}

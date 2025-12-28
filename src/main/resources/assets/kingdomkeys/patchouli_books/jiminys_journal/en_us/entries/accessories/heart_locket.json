@@ -1,0 +1,16 @@
+{
+	"name": "Heart Locket",
+	"icon": "kkremind:heart_locket",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 1$() $(p)$(item)Magic: 1$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/heart_walker)Heart Walker$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:heart_locket"
+		}
+	]
+}

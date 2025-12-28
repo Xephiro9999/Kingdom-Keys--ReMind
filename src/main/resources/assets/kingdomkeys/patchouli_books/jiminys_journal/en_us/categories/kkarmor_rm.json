@@ -1,0 +1,7 @@
+{
+  "name": "Armor",
+  "description": "patchouli.kingdomkeys.remind.kkarmor.desc",
+  "icon": "kkremind:aqua_chaplet",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 106
+}

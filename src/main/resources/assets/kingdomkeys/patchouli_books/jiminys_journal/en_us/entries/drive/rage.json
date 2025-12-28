@@ -1,0 +1,13 @@
+{
+	"name": "Rage Form",
+	"icon": "kkremind:raging_heart",
+	"sortnum": 3,
+	"category": "kingdomkeys:drive_rm",
+	"advancement": "kingdomkeys:obtain_drive",
+	"pages": [
+		{
+			"type": "text",
+			"text": "There is no known method to level this form."
+		}
+	]
+}

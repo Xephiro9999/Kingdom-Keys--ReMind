@@ -1,0 +1,12 @@
+{
+	"name": "Gazing Omen",
+	"icon": "kkremind:gazing_omen_chain",
+	"sortnum": 4,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "A Keyblade with deadly elemental strikes."
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"name": "Mickey Clasp",
+	"icon": "kkremind:mickey_clasp",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(#f00)Strength: 3$() $(p)$(item)Magic: 5$() $(p)Abilities: $(li)MP Hastega $(li)Endless Magic"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:mickey_clasp"
+		}
+	]
+}

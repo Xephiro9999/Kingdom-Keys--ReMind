@@ -1,0 +1,12 @@
+{
+	"name": "Spellblade",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary! $(p)Please note, only 1 bonus may be active at a time. $(p)Requires 4 of a certain boost to activate."
+		}
+	]
+}

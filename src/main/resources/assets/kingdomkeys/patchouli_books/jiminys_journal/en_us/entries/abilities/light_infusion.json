@@ -1,0 +1,12 @@
+{
+	"name": "Light Infusion",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Enhances your spells and abilities with the power of Light! $(p)Does not apply to spells that are already Light based."
+		}
+	]
+}

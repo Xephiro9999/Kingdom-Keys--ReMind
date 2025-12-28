@@ -1,0 +1,12 @@
+{
+	"name": "Legend's Fang",
+	"icon": "kkremind:legends_fang_chain",
+	"sortnum": 7,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Inspired by Jecht from FINAL FANTASY X."
+		}
+	]
+}

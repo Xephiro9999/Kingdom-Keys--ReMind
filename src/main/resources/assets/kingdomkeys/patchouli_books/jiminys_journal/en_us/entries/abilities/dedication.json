@@ -1,0 +1,12 @@
+{
+	"name": "Dedication",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Gain bonus stats, scaling with your level, depending on what path you chose. $(p)Costs 0 AP."
+		}
+	]
+}

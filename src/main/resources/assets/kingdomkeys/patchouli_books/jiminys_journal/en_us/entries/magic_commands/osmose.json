@@ -1,0 +1,12 @@
+{
+	"name": "Osmose/Osmosera/Osmosega",
+	"icon": "kkremind:osmose_spell",
+	"sortnum": 9,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Steals MP from your foe!"
+		}
+	]
+}

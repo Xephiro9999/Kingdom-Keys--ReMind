@@ -1,0 +1,12 @@
+{
+	"name": "Dark Power",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Allows you to embrace the power of Darkness and access $(l:kingdomkeys:drive/dark)Dark Form$(/l). $(p)Costs 3 AP."
+		}
+	]
+}

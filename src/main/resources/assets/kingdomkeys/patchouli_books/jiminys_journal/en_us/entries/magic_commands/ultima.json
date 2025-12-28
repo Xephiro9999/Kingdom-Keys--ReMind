@@ -1,0 +1,12 @@
+{
+	"name": "Ultima",
+	"icon": "kkremind:ultima_spell",
+	"sortnum": 19,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "The ultimate spell in range and destruction."
+		}
+	]
+}

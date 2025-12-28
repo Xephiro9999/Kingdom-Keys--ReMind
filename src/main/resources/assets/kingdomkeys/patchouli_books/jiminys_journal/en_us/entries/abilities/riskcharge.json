@@ -1,0 +1,12 @@
+{
+	"name": "Riskcharge",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Unleashes fighting spirit by pressing your $(thing)Reaction Command$() button, consuming $(item)HP$() in the process. This empowers your strength."
+		}
+	]
+}

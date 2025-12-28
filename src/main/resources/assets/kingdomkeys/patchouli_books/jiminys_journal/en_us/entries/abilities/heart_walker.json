@@ -1,0 +1,12 @@
+{
+	"name": "Heart Walker",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Gain $(thing)Hearts$() as you run. Equip more to increase the effect. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/heart_locket)Heart Locket$(/l) accessory."
+		}
+	]
+}

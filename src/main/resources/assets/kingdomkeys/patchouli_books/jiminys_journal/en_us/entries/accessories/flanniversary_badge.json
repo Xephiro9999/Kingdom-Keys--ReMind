@@ -1,0 +1,16 @@
+{
+	"name": "Flanniversary Badge",
+	"icon": "kkremind:flanniversary_badge",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(#f00)Strength: 4$() $(p)$(item)Magic: 4$() $(p)Abilities: $(li)MP Hastera $(li)MP Thrift"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:flanniversary_badge"
+		}
+	]
+}

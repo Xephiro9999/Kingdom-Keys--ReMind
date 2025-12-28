@@ -1,0 +1,12 @@
+{
+	"name": "Hearts Are Power",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(item)ORGANIZATION XIII ONLY!$() The fleeting hearts you've collected are granting you power. <br>This effect scales with $(thing)Hearts$() obtained. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/nothingness_binder)Nothing's Heartbinder$(/l) accessory."
+		}
+	]
+}

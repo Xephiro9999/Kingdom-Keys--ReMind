@@ -1,0 +1,12 @@
+{
+	"name": "Steal",
+	"icon": "kkremind:steal_spell",
+	"sortnum": 5,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Steals from your foe! [WIP]"
+		}
+	]
+}

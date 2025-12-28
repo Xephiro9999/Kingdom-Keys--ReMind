@@ -1,0 +1,16 @@
+{
+	"name": "Daredevil",
+	"icon": "kkremind:daredevil",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Abilities: $(li)$(l:kingdomkeys:abilities/one_hp)One HP$(/l) $(li)Experience Boost $(li)Experience Boost"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:daredevil"
+		}
+	]
+}

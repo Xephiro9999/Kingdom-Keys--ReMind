@@ -1,0 +1,12 @@
+{
+	"name": "Quick Blitz",
+	"icon": "kkremind:quick_blitz_attack",
+	"sortnum": 1,
+	"category": "kingdomkeys:attack_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Description."
+		}
+	]
+}

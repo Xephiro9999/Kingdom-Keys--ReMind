@@ -1,0 +1,12 @@
+{
+	"name": "Royal Guard",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Upon a successful guard, restore a small amount of $(thing)Drive$(). Restores $(thing)Form Gauge$() if done while in a form. Restores $(thing)more$() upon successful parry! $(p)Requires EFM Guard Skill. $(p)Costs 0 AP."
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Flash and Thunder",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "A Thunderous counter. <br>Scales with Thunder Boost. <br>Requires $(l:kingdomkeys:abilities/counter_blast)Counter Blast$(/l) and EFM Guard Skill.  $(p)$(item)Exclusive$() to the $(l:kingdomkeys:keyblades/wrongful_inheritor)Wrongful Inheritor$(/l) keyblade."
+		}
+	]
+}

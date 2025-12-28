@@ -1,0 +1,16 @@
+{
+	"name": "Breakthrough",
+	"icon": "kkremind:breakthrough",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 15$() $(p)$(#f00)Strength: 7$()"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:breakthrough"
+		}
+	]
+}

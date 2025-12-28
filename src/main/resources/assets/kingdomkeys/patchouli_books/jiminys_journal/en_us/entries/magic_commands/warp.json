@@ -1,0 +1,12 @@
+{
+	"name": "Warp",
+	"icon": "kkremind:warp_spell",
+	"sortnum": 18,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Chance to teleport foe afar or kill them!"
+		}
+	]
+}

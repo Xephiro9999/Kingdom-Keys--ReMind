@@ -1,0 +1,12 @@
+{
+	"name": "Vampiric Essence",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Makes your attacks thirst for blood. Granting HP on hit. Scales with $(l:kingdomkeys:abilities/darkness_boost)Darkness Boost$(/l). $(p)$(item)Exclusive$() to the $(l:kingdomkeys:keyblades/sanguine_gaze)Sanguine Gaze$(/l) keyblade."
+		}
+	]
+}

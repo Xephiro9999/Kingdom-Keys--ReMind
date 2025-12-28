@@ -1,0 +1,16 @@
+{
+	"name": "Raging Heart",
+	"icon": "kkremind:raging_heart",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/rage_awakened)Rage Awakened$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:raging_heart"
+		}
+	]
+}

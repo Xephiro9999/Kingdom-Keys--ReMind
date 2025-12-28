@@ -1,0 +1,12 @@
+{
+	"name": "MP Slow/Slowra/Slowga",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Decreases MP restoration speed after MP is fully consumed. $(p)Costs 3/4/5 AP."
+		}
+	]
+}

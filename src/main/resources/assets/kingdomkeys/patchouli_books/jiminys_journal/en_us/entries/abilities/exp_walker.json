@@ -1,0 +1,12 @@
+{
+	"name": "EXP Walker",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Gain $(thing)EXP$() as you run. Equip more to increase the effect. $(p)$(item)Exclusive$() to the $(l:kingdomkeys:accessories/exp_ring)EXP Ring$(/l) accessory."
+		}
+	]
+}

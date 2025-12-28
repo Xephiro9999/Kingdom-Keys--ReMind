@@ -1,0 +1,12 @@
+{
+	"name": "Brutal Blitzer",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped! $(p)$(item)Exclusive$() to $(l:kingdomkeys:keyblades/legends_fang)Legend's Fang$(/l) keyblade."
+		}
+	]
+}

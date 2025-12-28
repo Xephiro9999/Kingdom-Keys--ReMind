@@ -1,0 +1,12 @@
+{
+	"name": "Light Surge",
+	"icon": "kkremind:quick_blitz_attack",
+	"sortnum": 8,
+	"category": "kingdomkeys:attack_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Description."
+		}
+	]
+}

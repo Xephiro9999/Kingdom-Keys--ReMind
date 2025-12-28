@@ -1,0 +1,16 @@
+{
+	"name": "EXP Ring",
+	"icon": "kkremind:exp_ring",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 5$() $(p)$(#f00)Strength: 1$() $(p)$(item)Magic: 1$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/exp_walker)EXP Walker$(/l) $(li)Experience Boost"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:exp_ring"
+		}
+	]
+}

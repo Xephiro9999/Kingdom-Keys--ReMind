@@ -1,0 +1,12 @@
+{
+	"name": "Sanguine Gaze",
+	"icon": "kkremind:xephiro_keyblade_chain",
+	"sortnum": 1,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "A Keyblade whose focus is fast vampiric strikes."
+		}
+	]
+}

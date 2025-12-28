@@ -1,0 +1,12 @@
+{
+	"name": "MP Boost",
+	"icon": "kingdomkeys:apboost",
+	"sortnum": 1,
+	"category": "kingdomkeys:abilities_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Increases your $(thing)Max MP$(). Equip more to increase the effect."
+		}
+	]
+}

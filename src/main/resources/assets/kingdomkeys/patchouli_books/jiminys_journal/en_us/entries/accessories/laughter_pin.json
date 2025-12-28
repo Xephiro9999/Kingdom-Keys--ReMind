@@ -1,0 +1,16 @@
+{
+	"name": "Laughter Pin",
+	"icon": "kkremind:laughter_pin",
+	"sortnum": 1,
+	"category": "kingdomkeys:accessories_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)AP: 6$() $(p)$(#f00)Strength: 3$() $(p)$(item)Magic: 2$() $(p)Abilities: $(li)$(l:kingdomkeys:abilities/mp_walker)MP Walker$(/l)"
+		},
+		{
+			"type": "patchouli:spotlight",
+			"item": "kkremind:laughter_pin"
+		}
+	]
+}
