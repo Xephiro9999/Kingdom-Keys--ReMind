@@ -1,0 +1,12 @@
+{
+	"name": "Sliding Dash",
+	"icon": "kkremind:quick_blitz_attack",
+	"sortnum": 2,
+	"category": "kingdomkeys:attack_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Description."
+		}
+	]
+}

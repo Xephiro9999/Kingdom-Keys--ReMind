@@ -1,0 +1,12 @@
+{
+	"name": "Hero's Belt",
+	"icon": "kkremind:heros_belt",
+	"sortnum": 3,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

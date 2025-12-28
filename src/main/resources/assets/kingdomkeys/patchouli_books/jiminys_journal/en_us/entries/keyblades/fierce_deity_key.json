@@ -1,0 +1,12 @@
+{
+	"name": "Fierce Deity Key",
+	"icon": "kkremind:fierce_deity_key_chain",
+	"sortnum": 8,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Inspired by Fierce Deity Link."
+		}
+	]
+}

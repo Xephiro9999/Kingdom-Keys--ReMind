@@ -1,0 +1,12 @@
+{
+	"name": "Esuna",
+	"icon": "kkremind:esuna_spell",
+	"sortnum": 1,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "$(thing)Removes$() ALL $(item)debuffs$() from yourself or party members, including Stop."
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Drain/Drainra/Drainga",
+	"icon": "kkremind:drain_spell",
+	"sortnum": 8,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Steals HP from your foe!"
+		}
+	]
+}

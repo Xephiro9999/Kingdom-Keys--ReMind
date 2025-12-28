@@ -1,0 +1,7 @@
+{
+  "name": "Abilities",
+  "description": "patchouli.kingdomkeys.remind.abilities.desc",
+  "icon": "minecraft:diamond_sword",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 104
+}

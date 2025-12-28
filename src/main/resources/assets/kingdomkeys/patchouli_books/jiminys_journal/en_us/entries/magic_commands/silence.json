@@ -1,0 +1,12 @@
+{
+	"name": "Silence/Silencera/Silencega",
+	"icon": "kkremind:silence_spell",
+	"sortnum": 10,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Prevents others from casting magic!"
+		}
+	]
+}

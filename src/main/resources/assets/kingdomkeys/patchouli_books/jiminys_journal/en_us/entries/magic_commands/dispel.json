@@ -1,0 +1,12 @@
+{
+	"name": "Dispel",
+	"icon": "kkremind:dispel_spell",
+	"sortnum": 2,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Removes ALL buffs from enemies!"
+		}
+	]
+}

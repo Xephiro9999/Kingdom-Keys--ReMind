@@ -1,0 +1,7 @@
+{
+  "name": "Keyblades",
+  "description": "patchouli.kingdomkeys.remind.keyblades.desc",
+  "icon": "kkremind:xephiro_keyblade_chain",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 101
+}

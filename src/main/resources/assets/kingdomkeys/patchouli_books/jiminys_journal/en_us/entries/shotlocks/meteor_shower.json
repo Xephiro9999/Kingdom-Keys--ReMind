@@ -1,0 +1,12 @@
+{
+	"name": "Meteor Shower",
+	"icon": "kkremind:meteor_shower_shotlock",
+	"sortnum": 5,
+	"category": "kingdomkeys:shotlocks_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

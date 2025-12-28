@@ -1,0 +1,7 @@
+{
+  "name": "Shotlocks",
+  "description": "patchouli.kingdomkeys.remind.shotlocks.desc",
+  "icon": "kkremind:dark_divide_shotlock",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 108
+}

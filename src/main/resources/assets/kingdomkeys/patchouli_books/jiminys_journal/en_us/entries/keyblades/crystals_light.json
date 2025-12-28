@@ -1,0 +1,12 @@
+{
+	"name": "Crystal's Light",
+	"icon": "kkremind:crystals_light_chain",
+	"sortnum": 5,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Inspired by WoL from FINAL FANTASY I."
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Blizzard Surge",
+	"icon": "kkremind:quick_blitz_attack",
+	"sortnum": 4,
+	"category": "kingdomkeys:attack_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Description."
+		}
+	]
+}

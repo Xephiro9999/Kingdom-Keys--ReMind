@@ -1,0 +1,12 @@
+{
+	"name": "Master Belt",
+	"icon": "kkremind:master_belt",
+	"sortnum": 4,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

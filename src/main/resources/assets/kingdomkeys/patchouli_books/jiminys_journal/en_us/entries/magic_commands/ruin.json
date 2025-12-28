@@ -1,0 +1,12 @@
+{
+	"name": "Ruin/Ruinra/Ruinga",
+	"icon": "kkremind:ruin_spell",
+	"sortnum": 12,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Shoots an orb of exploding Darkness!"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Thunderstorm",
+	"icon": "kkremind:thunderstorm_shotlock",
+	"sortnum": 3,
+	"category": "kingdomkeys:shotlocks_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

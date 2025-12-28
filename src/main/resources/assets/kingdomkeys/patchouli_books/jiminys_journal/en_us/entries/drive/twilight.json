@@ -1,0 +1,13 @@
+{
+	"name": "Twilight Form",
+	"icon": "kkremind:light_heart",
+	"sortnum": 4,
+	"category": "kingdomkeys:drive_rm",
+	"advancement": "kingdomkeys:obtain_drive",
+	"pages": [
+		{
+			"type": "text",
+			"text": "This form gains XP for $(thing)every boss struck down$() while in this form. Leveling this form will reward you with permanent access to the $(item)Road to Dawn ability$()."
+		}
+	]
+}

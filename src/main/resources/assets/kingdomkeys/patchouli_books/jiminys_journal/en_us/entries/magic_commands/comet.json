@@ -1,0 +1,12 @@
+{
+	"name": "Comet/Meteor",
+	"icon": "kkremind:comet_spell",
+	"sortnum": 17,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Rain down the stars upon your enemies!"
+		}
+	]
+}

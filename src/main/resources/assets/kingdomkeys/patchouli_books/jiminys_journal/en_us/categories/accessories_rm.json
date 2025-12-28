@@ -1,0 +1,7 @@
+{
+  "name": "Accessories",
+  "description": "patchouli.kingdomkeys.remind.accessories.desc",
+  "icon": "kkremind:exp_ring",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 107
+}

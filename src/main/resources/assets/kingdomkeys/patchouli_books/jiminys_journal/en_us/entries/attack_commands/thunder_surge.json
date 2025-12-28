@@ -1,0 +1,12 @@
+{
+	"name": "Thunder Surge",
+	"icon": "kkremind:quick_blitz_attack",
+	"sortnum": 5,
+	"category": "kingdomkeys:attack_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Description."
+		}
+	]
+}

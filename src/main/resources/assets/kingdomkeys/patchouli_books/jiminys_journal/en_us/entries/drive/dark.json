@@ -1,0 +1,13 @@
+{
+	"name": "Dark Form",
+	"icon": "kkremind:dark_heart",
+	"sortnum": 2,
+	"category": "kingdomkeys:drive_rm",
+	"advancement": "kingdomkeys:obtain_drive",
+	"pages": [
+		{
+			"type": "text",
+			"text": "This form gains XP for $(thing)every mob struck down$() and $(thing)Reaction Command used$() while in this form. Leveling this form will reward you with permanent access to the $(item)Dark Step$() and $(item)Dark Power abilities$()."
+		}
+	]
+}

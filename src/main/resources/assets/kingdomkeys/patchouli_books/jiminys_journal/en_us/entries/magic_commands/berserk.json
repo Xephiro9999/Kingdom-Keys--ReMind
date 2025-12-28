@@ -1,0 +1,12 @@
+{
+	"name": "Berserk/Berserkra/Berserkga",
+	"icon": "kkremind:berserk_spell",
+	"sortnum": 7,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Gives strength in exchange for defense!"
+		}
+	]
+}

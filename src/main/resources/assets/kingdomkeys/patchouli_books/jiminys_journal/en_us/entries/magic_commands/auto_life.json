@@ -1,0 +1,12 @@
+{
+	"name": "Auto-Life",
+	"icon": "kkremind:autolife_spell",
+	"sortnum": 14,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Saves you from death itself!"
+		}
+	]
+}

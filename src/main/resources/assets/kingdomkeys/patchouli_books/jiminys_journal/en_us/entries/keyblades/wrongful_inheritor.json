@@ -1,0 +1,12 @@
+{
+	"name": "Wrongful Inheritor",
+	"icon": "kkremind:lyric_2025_tournament_chain",
+	"sortnum": 9,
+	"category": "kingdomkeys:keyblades_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "A Keyblade overcharged with Lightning."
+		}
+	]
+}

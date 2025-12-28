@@ -1,0 +1,12 @@
+{
+	"name": "Spark/Sparkra/Sparkga",
+	"icon": "kkremind:spark_spell",
+	"sortnum": 6,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Surrounds you with orbs of Light!"
+		}
+	]
+}

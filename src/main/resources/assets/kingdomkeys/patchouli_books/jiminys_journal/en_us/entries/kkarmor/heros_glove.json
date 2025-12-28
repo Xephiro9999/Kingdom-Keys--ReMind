@@ -1,0 +1,12 @@
+{
+	"name": "Hero's Glove",
+	"icon": "kkremind:heros_glove",
+	"sortnum": 2,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

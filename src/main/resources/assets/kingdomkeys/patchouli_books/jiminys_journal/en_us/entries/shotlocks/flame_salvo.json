@@ -1,0 +1,12 @@
+{
+	"name": "Flame Salvo",
+	"icon": "kkremind:flame_salvo_shotlock",
+	"sortnum": 1,
+	"category": "kingdomkeys:shotlocks_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

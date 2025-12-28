@@ -1,0 +1,12 @@
+{
+	"name": "Ultima Ribbon",
+	"icon": "kkremind:ultima_ribbon",
+	"sortnum": 5,
+	"category": "kingdomkeys:kkarmor_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Desc."
+		}
+	]
+}

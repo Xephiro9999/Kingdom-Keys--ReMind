@@ -1,0 +1,7 @@
+{
+  "name": "Attack Commands",
+  "description": "patchouli.kingdomkeys.remind.attack_commands.desc",
+  "icon": "kkremind:quick_blitz_attack",
+  "parent": "kingdomkeys:remind",
+  "sortnum": 102
+}

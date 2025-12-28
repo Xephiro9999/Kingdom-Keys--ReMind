@@ -1,0 +1,12 @@
+{
+	"name": "Regen/Regenra/Regenga",
+	"icon": "kkremind:regen_spell",
+	"sortnum": 15,
+	"category": "kingdomkeys:magic_commands_rm",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Gradually restores HP, MP, and even Focus at higher levels"
+		}
+	]
+}
