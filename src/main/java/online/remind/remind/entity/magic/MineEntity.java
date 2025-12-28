@@ -61,6 +61,9 @@ public class MineEntity extends ThrowableProjectile {
     }
 
 
+    public boolean getSeeker(){return seeker;}
+
+
 
     @Override
     public void push(double x, double y, double z) {
@@ -144,10 +147,18 @@ public class MineEntity extends ThrowableProjectile {
         }
 
 
+
+
         //world.addParticle(ParticleTypes.ENTITY_EFFECT, getPosX(), getPosY(), getPosZ(), 1, 1, 0);
         if(tickCount > 0) {
-            level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.5F,0.5F,0.0F),1F),getX() + level().random.nextDouble() - 0.5D, getY()+ level().random.nextDouble() *2D, getZ() + level().random.nextDouble() - 0.5D, 0, 0, 0);
-            level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0.5F,0F),1F),getX() + level().random.nextDouble() - 0.5D, getY()+ level().random.nextDouble() *2D, getZ() + level().random.nextDouble() - 0.5D, 0, 0, 0);
+
+            level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.0F, 1F, 0.0F), 1F), getX() + level().random.nextDouble() - 0.5D, getY() + level().random.nextDouble() * 2D, getZ() + level().random.nextDouble() - 0.5D, 0, 0, 0);
+            if (!seeker) {
+                level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F, 1F, 0F), 1F), getX() + level().random.nextDouble() - 0.5D, getY() + level().random.nextDouble() * 2D, getZ() + level().random.nextDouble() - 0.5D, 0, 0, 0);
+            } else {
+
+                level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F, 0F, 0F), 1F), getX() + level().random.nextDouble() - 0.5D, getY() + level().random.nextDouble() * 2D, getZ() + level().random.nextDouble() - 0.5D, 0, 0, 0);
+            }
         }
 
 

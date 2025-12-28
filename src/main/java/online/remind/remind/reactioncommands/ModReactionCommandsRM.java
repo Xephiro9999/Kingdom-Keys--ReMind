@@ -28,7 +28,7 @@ public class ModReactionCommandsRM {
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC( ResourceLocation.parse(StringsRM.XemnasRC),true)),
         ZEXION_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"zexion", () -> new XemnasRC( ResourceLocation.parse(StringsRM.ZexionRC),true)),
 
-        MINE = REACTION_COMMANDS.register(ResourceLocation.parse(StringsRM.Magic_Mine_Square).getPath(), () -> new ReactionMagic(ResourceLocation.parse(StringsRM.Magic_Mine_Square))),
+        //MINE = REACTION_COMMANDS.register(ResourceLocation.parse(StringsRM.Magic_Mine_Square).getPath(), () -> new ReactionMagic(ResourceLocation.parse(StringsRM.Magic_Mine_Square))),
 
 
     // Commission RCs

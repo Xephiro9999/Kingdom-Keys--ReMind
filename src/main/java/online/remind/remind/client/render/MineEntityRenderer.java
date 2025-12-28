@@ -51,7 +51,7 @@ public class MineEntityRenderer extends EntityRenderer<ThrowableProjectile> {
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(spin));
 
 
-        super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, 0xF000F0);
     }
 
 

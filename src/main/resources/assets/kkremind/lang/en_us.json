@@ -85,8 +85,11 @@
   "magic.kkremind.magic_mine_square0.name": "Mine Square Lv.1",
   "magic.kkremind.magic_mine_square1.name": "Mine Square Lv.2",
   "magic.kkremind.magic_mine_square2.name": "Mine Square Lv.3",
-  "magic.kkremind.magic_mine_square3.name": "Seeker Mine",
-
+  "magic.kkremind.magic_mine_square3.name": "Mine Square - Seeker",
+  "magic.kkremind.magic_mine_shield0.name": "Mine Shield Lv.1",
+  "magic.kkremind.magic_mine_shield1.name": "Mine Shield Lv.2",
+  "magic.kkremind.magic_mine_shield2.name": "Mine Shield Lv.3",
+  "magic.kkremind.magic_mine_shield3.name": "Mine Shield - Seeker",
 
 
 
@@ -109,6 +112,7 @@
   "item.kkremind.regen_spell": "Regen Spell",
   "item.kkremind.spark_spell": "Spark Spell",
   "item.kkremind.mine_square_spell": "Mine Square Spell",
+  "item.kkremind.mine_shield_spell": "Mine Shield Spell",
   "item.kkremind.steal_spell": "Steal Command",
   "item.kkremind.quick_blitz_attack": "Quick Blitz Command",
   "item.kkremind.sliding_dash_attack": "Sliding Dash Command",

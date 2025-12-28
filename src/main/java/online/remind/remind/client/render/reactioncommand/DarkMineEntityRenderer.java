@@ -2,6 +2,7 @@ package online.remind.remind.client.render.reactioncommand;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -34,6 +35,9 @@ public class DarkMineEntityRenderer extends EntityRenderer<ThrowableProjectile> 
         {
             VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             matrixStackIn.scale(2, 2, 2);
+
+            float spin = (entity.tickCount + partialTicks) *16f;
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(spin));
             this.darkMineModel.renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
         }
 
