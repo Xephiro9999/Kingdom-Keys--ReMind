@@ -142,6 +142,8 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int dreamEaterSummonedID;
     private boolean donorGiven;
 
+    private boolean darkMode;
+
 
 
     //Haste
@@ -533,6 +535,16 @@ public class GlobalDataRM implements IGlobalDataRM {
     @Override
     public void setDonorGiven(boolean i){
         donorGiven = i;
+    }
+
+    @Override
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    @Override
+    public void setDarkMode(boolean value) {
+        this.darkMode = value;
     }
 
 

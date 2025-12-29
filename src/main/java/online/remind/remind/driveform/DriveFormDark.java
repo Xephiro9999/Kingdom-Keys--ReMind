@@ -1,5 +1,6 @@
 package online.remind.remind.driveform;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.monster.Monster;
@@ -57,7 +58,7 @@ public class DriveFormDark extends DriveForm {
     public void endDrive(Player player) {
         super.endDrive(player);
         PlayerData playerData = PlayerData.get(player);
-        playerData.setEquippedShotlock("");
+
     }
 
 
@@ -65,16 +66,27 @@ public class DriveFormDark extends DriveForm {
     @Override
     public ResourceLocation getTextureLocation(Player player) {
         PlayerData playerData = PlayerData.get(player);
+        IGlobalDataRM global = ModDataRM.getGlobal(player);
+        if (global != null){
+            if(global.isDarkMode()){
 
-        if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
+                return ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/dark_mode.png");
+            } else {
+                return ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/dark.png");
+            }
+        }
+
+        /*if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
             if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.keybladeOfPeoplesHeartsChain.get()) {
                 this.skinRL = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/dark_mode.png");
             } else {
                 this.skinRL = ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/dark.png");
             }
-        }
+        }*/
             return super.getTextureLocation(player);
     }
+
+
 
 }
 

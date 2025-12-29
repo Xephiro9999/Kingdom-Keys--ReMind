@@ -1,13 +1,18 @@
 package online.remind.remind.mixin;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.network.PacketHandlerRM;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,7 +27,16 @@ public class KKDriveFormMixin {
         if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
             if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
                 if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.keybladeOfPeoplesHeartsChain.get()) {
+
                     player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MODE.get(), SoundSource.MASTER, 1.0f, 1.0f);
+                    IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+                    globalData.setDarkMode(true);
+                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+                    if (globalData.isDarkMode()){
+                        player.sendSystemMessage(Component.literal("DARKNESS!"));
+                    }
+
                 }
             }
         }

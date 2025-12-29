@@ -107,6 +107,9 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void setCanCounter(int i);
     void remCanCounter(int use);
 
+    boolean isDarkMode();
+    void setDarkMode(boolean value);
+
 
 
     // Dream Eater Stuff

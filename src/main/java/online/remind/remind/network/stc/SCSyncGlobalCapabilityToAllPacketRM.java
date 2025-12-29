@@ -16,7 +16,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
-    public boolean donorGiven;
+    public boolean donorGiven, darkMode;
     public byte stepType;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
@@ -46,6 +46,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.panelsStatus = capability.getPanelsEnabled();
         this.ngpStatus = capability.getNGPEnabled();
         this.donorGiven = capability.getDonorGiven();
+        this.darkMode = capability.isDarkMode();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -71,6 +72,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.panelsStatus);
         buffer.writeInt(message.ngpStatus);
         buffer.writeBoolean(message.donorGiven);
+        buffer.writeBoolean(message.darkMode);
 
     }
 
@@ -98,6 +100,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.panelsStatus = buffer.readInt();
         msg.ngpStatus = buffer.readInt();
         msg.donorGiven = buffer.readBoolean();
+        msg.darkMode = buffer.readBoolean();
 
 
         return msg;
@@ -129,6 +132,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setPanelsEnabled(message.panelsStatus);
                 globalData.setNGPEnabled(message.ngpStatus);
                 globalData.setDonorGiven(message.donorGiven);
+                globalData.setDarkMode(message.darkMode);
 			}
 		});
     }
