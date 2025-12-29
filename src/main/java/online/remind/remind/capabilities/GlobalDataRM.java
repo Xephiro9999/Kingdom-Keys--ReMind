@@ -48,7 +48,7 @@ public class GlobalDataRM implements IGlobalDataRM {
             storage.putUUID("DreamEaterUUID", this.getDreamEaterUUID());
         }
         storage.putBoolean("dreamEaterSummoned", this.hasDreamEaterSummoned());
-        storage.putInt("dreamEaterSummonedID", this.getDreamEaterSummonedID());
+        storage.putInt("dreamEaterID", this.getDreamEaterID());
 
         // Donor Grant
         storage.putBoolean("donor_grant", this.getDonorGiven());
@@ -90,6 +90,7 @@ public class GlobalDataRM implements IGlobalDataRM {
         } else {
             this.dreamEaterUUID = null;
         }
+        this.setDreamEaterID(properties.getInt("dreamEaterID"));
 
        // this.setPanelChoice(properties.getString("Panels_Choice"));
 
@@ -139,7 +140,7 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     private boolean dreamEaterSummoned = false;
     private UUID dreamEaterUUID;
-    private int dreamEaterSummonedID;
+    private int dreamEaterID;
     private boolean donorGiven;
 
     private boolean darkMode;
@@ -517,13 +518,13 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
 
     @Override
-    public int getDreamEaterSummonedID() {
+    public int getDreamEaterID() {
 
-        return dreamEaterSummonedID;
+        return this.dreamEaterID;
     }
 
     @Override
-    public void setDreamEaterSummonedID(int i) {
+    public void setDreamEaterID(int i) {
 
     }
 

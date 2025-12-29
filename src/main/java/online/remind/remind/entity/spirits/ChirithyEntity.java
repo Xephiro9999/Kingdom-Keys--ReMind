@@ -1,6 +1,7 @@
 package online.remind.remind.entity.spirits;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -43,7 +44,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.UUID;
 
-public class ChirithyEntity extends TamableAnimal implements GeoEntity {
+public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     
     Player owner;
 
@@ -145,7 +146,6 @@ public class ChirithyEntity extends TamableAnimal implements GeoEntity {
             if (data != null) {
                 data.setHasDreamEaterSummoned(false);
                 data.setDreamEaterUUID(null);
-                data.setDreamEaterSummonedID(-1);
                 PacketHandlerRM.syncGlobalToAllAround(owner, data);
             }
             this.discard();
@@ -311,14 +311,14 @@ public class ChirithyEntity extends TamableAnimal implements GeoEntity {
         return Mob.createLivingAttributes()
                 .add(Attributes.FOLLOW_RANGE, 50.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
-                .add(Attributes.MAX_HEALTH, 35.0D)
+                .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1000.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, 0.5D);
     }
 
     public int getMagic(){
-        return 10;
+        return (int) chirithyMagic;
     }
 
     public int getDefence(){
@@ -390,5 +390,17 @@ public class ChirithyEntity extends TamableAnimal implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return null;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        // TODO Stats
+
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        // TODO Stats
+
     }
 }

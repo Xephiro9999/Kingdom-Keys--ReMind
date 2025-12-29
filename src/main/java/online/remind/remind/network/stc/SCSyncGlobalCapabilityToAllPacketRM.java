@@ -15,7 +15,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus, dreamEaterID;
     public boolean donorGiven, darkMode;
     public byte stepType;
 
@@ -47,6 +47,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.ngpStatus = capability.getNGPEnabled();
         this.donorGiven = capability.getDonorGiven();
         this.darkMode = capability.isDarkMode();
+        this.dreamEaterID = capability.getDreamEaterID();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -73,6 +74,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.ngpStatus);
         buffer.writeBoolean(message.donorGiven);
         buffer.writeBoolean(message.darkMode);
+        buffer.writeInt(message.dreamEaterID);
 
     }
 
@@ -101,6 +103,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.ngpStatus = buffer.readInt();
         msg.donorGiven = buffer.readBoolean();
         msg.darkMode = buffer.readBoolean();
+        msg.dreamEaterID = buffer.readInt();
 
 
         return msg;
@@ -133,6 +136,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setNGPEnabled(message.ngpStatus);
                 globalData.setDonorGiven(message.donorGiven);
                 globalData.setDarkMode(message.darkMode);
+                globalData.getDreamEaterID();
 			}
 		});
     }

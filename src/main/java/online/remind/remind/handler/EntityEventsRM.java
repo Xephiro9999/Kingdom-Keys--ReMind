@@ -105,7 +105,10 @@ public class EntityEventsRM {
 				}
 			}
 
-			// In case the value is NOT what it should be. i.e '-1' or anything over 1
+			// Spirit Assignment on Join
+
+
+            // In case the value is NOT what it should be. i.e '-1' or anything over 1
 			if(globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
 				globalData.setCanCounter(0);
 			}

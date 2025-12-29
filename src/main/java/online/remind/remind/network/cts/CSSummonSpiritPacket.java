@@ -2,7 +2,6 @@ package online.remind.remind.network.cts;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +17,6 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
-import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -56,9 +54,22 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 return;
 
-                if (!playerData.hasDreamEaterSummoned() && playerData.getDreamEaterUUID() == null) {
+            if (!playerData.hasDreamEaterSummoned() && playerData.getDreamEaterUUID() == null) {
                     // Spawn
                     if (!(owner.level() instanceof ServerLevel serverLevel)) return;
+
+                        // Todo: Make dynamic system for reading what Dream Eater should be summoned
+                            // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
+
+                    switch(playerData.getDreamEaterID()){
+                        case 0:
+                            // Tell Player that they do not have a Spirit
+                            break;
+                        case 1:
+                            // Chirithy Summon
+                            break;
+
+                    }
 
                     ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
                     dreamEater.setOwnerUUID(owner.getUUID());
