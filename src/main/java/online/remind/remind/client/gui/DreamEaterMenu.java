@@ -10,12 +10,14 @@ import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
+import online.remind.remind.entity.spirits.BaseDreamEaterEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 
 import java.awt.*;
@@ -95,22 +97,31 @@ public class DreamEaterMenu extends MenuBackground {
 
 
         // Display Dream Eater Information
-        IGlobalDataRM playerData = ModDataRM.getGlobal(minecraft.player);
+        IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
+        PlayerData playerData = PlayerData.get(minecraft.player);
 
-        if (playerData != null){
-            if (playerData.hasDreamEaterSummoned()){
-                if (playerData.getDreamEaterUUID() != null){
-                    UUID dreamEaterUUID = playerData.getDreamEaterUUID();
+        if (global != null){
+            String spiritName = "";
+            int id = global.getDreamEaterID();
+            switch(id){
+                case 0:
+                    addRenderableWidget(name = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "Name:","N/A", 0xffffff));
+                    break;
+                case 1:
+                    addRenderableWidget(name = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "Name:","Chirithy", 0xffffff));
+                    addRenderableWidget(spiritHP = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "Max HP:",""+(int) (20 + (playerData.getMaxHP() / 2f)), 0x31bf14));
+                    addRenderableWidget(spiritSTR = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "STR:",""+(int) (2 + (playerData.getStrengthStat().getStat() / 5)), 0xbf1414));
+                    addRenderableWidget(spiritMAG = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "MAG:",""+(int) ( 5 + (playerData.getMagicStat().getStat() * 0.75)), 0x000088));
+                    addRenderableWidget(spiritDEF = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "DEF:",""+(int) (2 + (playerData.getDefenseStat().getStat() / 2)), 0xbf8d14));
+                    break;
+            }
 
 
-                }
-            } else {
-                // Display this if there is not a Dream Eater Summoned
-                addRenderableWidget(none = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, "","", 0x000088));
 
             }
+
         }
 
 
     }
-}
+

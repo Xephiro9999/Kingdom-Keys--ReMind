@@ -18,7 +18,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus,dreamEaterID;
-    public boolean donorGiven, darkMode;
+    public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
     public UUID dreamEaterUUID;
 
@@ -50,6 +50,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.ngpStatus = capability.getNGPEnabled();
         this.donorGiven = capability.getDonorGiven();
         this.darkMode = capability.isDarkMode();
+        this.dreamEaterSummoned = capability.hasDreamEaterSummoned();
         this.dreamEaterUUID = capability.getDreamEaterUUID();
         this.dreamEaterID = capability.getDreamEaterID();
 
@@ -79,13 +80,15 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.ngpStatus);
         buffer.writeBoolean(message.donorGiven);
         buffer.writeBoolean(message.darkMode);
+        buffer.writeBoolean(message.dreamEaterSummoned);
+        buffer.writeInt(message.dreamEaterID);
         if (message.dreamEaterUUID != null) {
             buffer.writeBoolean(true);
             buffer.writeUUID(message.dreamEaterUUID);
         } else {
             buffer.writeBoolean(false);
         }
-        buffer.writeInt(message.dreamEaterID);
+
 
 
     }
@@ -115,10 +118,12 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.ngpStatus = buffer.readInt();
         msg.donorGiven = buffer.readBoolean();
         msg.darkMode = buffer.readBoolean();
+        msg.dreamEaterSummoned = buffer.readBoolean();
+        msg.dreamEaterID = buffer.readInt();
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
-        msg.dreamEaterID = buffer.readInt();
+
 
 
 
@@ -152,6 +157,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setNGPEnabled(message.ngpStatus);
                 globalData.setDonorGiven(message.donorGiven);
                 globalData.setDarkMode(message.darkMode);
+                globalData.setHasDreamEaterSummoned(message.dreamEaterSummoned);
                 globalData.setDreamEaterUUID(message.dreamEaterUUID);
                 globalData.setDreamEaterID(message.dreamEaterID);
 			}

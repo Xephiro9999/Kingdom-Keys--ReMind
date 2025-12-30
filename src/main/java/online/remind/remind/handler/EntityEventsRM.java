@@ -226,9 +226,17 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM  playerData2 = ModDataRM.getGlobal(event.getPlayer());
+		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		Player player = event.getPlayer();
+
+			if (event.getAbility().equals(ModAbilitiesRM.CHIRITHY.get())){
+				remindData.setDreamEaterID(1);
+				// Unequip future ones below
+
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			}
+
 
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 				playerData.addMaxMP(12.5);
@@ -288,8 +296,16 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM  playerData2 = ModDataRM.getGlobal(event.getPlayer());
+		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
+
+		if (event.getAbility().equals(ModAbilitiesRM.CHIRITHY.get())){
+			remindData.setDreamEaterID(0);
+
+			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
+		}
+
+
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 			playerData.addMaxMP(-12.5);
 
@@ -314,10 +330,10 @@ public class EntityEventsRM {
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if(playerData2.getCanCounter() >= 1 || playerData2.getCanCounter() < 0) {
-				playerData2.setCanCounter(0);
+			if(remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
+				remindData.setCanCounter(0);
 			}
-			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), playerData2);
+			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
 		}
 
 	}
@@ -349,6 +365,10 @@ public class EntityEventsRM {
 					}
 				}
 			}
+
+
+
+
 
 			// Form Shotlock Change Test
 			if (event.getEntity() instanceof Player player) {

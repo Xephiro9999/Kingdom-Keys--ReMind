@@ -67,10 +67,14 @@ public class ModAbilitiesRM extends ModAbilities{
         SEEKER_MINE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"seeker_mine").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.seekerMine), 0, Ability.AbilityType.SUPPORT, order++)),
 
 
+        // Placeholders for Spirit System
+        CHIRITHY = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"chirithy").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.chirithy), 0, Ability.AbilityType.ACTION, order++)),
 
 
 
-        HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
+
+
+    HP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         MP_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpWalker),10,Ability.AbilityType.SUPPORT, order++)),
         FOCUS_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"focus_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.focusWalker),10,Ability.AbilityType.SUPPORT, order++)),
         HEART_WALKER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"heart_walker").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.heartWalker),10,Ability.AbilityType.SUPPORT, order++)),

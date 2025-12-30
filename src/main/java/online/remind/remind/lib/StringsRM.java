@@ -80,6 +80,9 @@ public class StringsRM {
         oneHP = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"one_hp",
         ribbon = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ribbon",
 
+        //Placeholders for Spirit System
+        chirithy = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"chirithy",
+
         // Grand Magics
         seekerMine = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"seeker_mine",
 

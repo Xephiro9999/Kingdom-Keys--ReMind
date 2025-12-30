@@ -63,12 +63,33 @@ public class BaseDreamEaterEntity extends TamableAnimal {
             this.hp = hp;
         }
 
+        public CompoundTag getDreamEaterStats() {
+            CompoundTag tag = new CompoundTag();
+            tag.putInt("hp", hp);
+            tag.putInt("str", str);
+            tag.putInt("mag", mag);
+            tag.putInt("def", def);
+            tag.putInt("lvl", lvl);
+            return tag;
+        }
+
         public void readAdditionalSaveData(CompoundTag tag){
             hp = tag.getInt("hp");
             str = tag.getInt("str");
             mag = tag.getInt("mag");
             def = tag.getInt("def");
+            lvl = tag.getInt("lvl");
             super.readAdditionalSaveData(tag);
+        }
+
+        @Override
+        public void addAdditionalSaveData(CompoundTag tag) {
+            super.addAdditionalSaveData(tag);
+            tag.putInt("hp", hp);
+            tag.putInt("str", str);
+            tag.putInt("mag", mag);
+            tag.putInt("def", def);
+            tag.putInt("lvl", lvl);
         }
 
         public CompoundTag serializeNBT(){
@@ -77,6 +98,7 @@ public class BaseDreamEaterEntity extends TamableAnimal {
             tag.putInt("str", str);
             tag.putInt("mag", mag);
             tag.putInt("def", def);
+            tag.putInt("lvl", lvl);
             return tag;
         }
 

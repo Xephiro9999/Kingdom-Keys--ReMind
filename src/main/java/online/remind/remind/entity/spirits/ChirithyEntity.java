@@ -103,7 +103,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             // Attribute Scaling
             this.hp = (int) (20 + (ownerData.getMaxHP() / 2D));
             this.str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-            this.mag = (int) ( 5 + (ownerData.getMagicStat().getStat() / 0.8D));
+            this.mag = (int) ( 5 + (ownerData.getMagicStat().getStat() * 0.75D));
             this.def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
 
             this.setHealth((float) hp);

@@ -525,7 +525,7 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     @Override
     public void setDreamEaterID(int i) {
-
+        dreamEaterID = i;
     }
 
     @Override
