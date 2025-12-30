@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -20,16 +19,13 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.magic.ModMagic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCAeroSoundPacket;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -105,24 +101,24 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             PlayerData ownerData = PlayerData.get(owner);
 
             // Attribute Scaling
-            this.chirithyHP = 20 + (ownerData.getMaxHP() / 2D);
-            this.chirithyStrength = 2 + (ownerData.getStrengthStat().getStat() / 5D);
-            this.chirithyMagic = 5 + (ownerData.getMagicStat().getStat() / 0.8D);
-            this.chirithyDefense = 2 + (ownerData.getDefenseStat().getStat() / 2D);
+            this.hp = (int) (20 + (ownerData.getMaxHP() / 2D));
+            this.str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
+            this.mag = (int) ( 5 + (ownerData.getMagicStat().getStat() / 0.8D));
+            this.def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
 
-            this.setHealth((float) chirithyHP);
+            this.setHealth((float) hp);
         }
     }
 
     public void updateStatsFromOwner() {
         if (owner != null) {
             PlayerData ownerData = PlayerData.get(owner);
-            chirithyHP = 20 + (ownerData.getMaxHP() / 2D);
-            chirithyStrength = 2 + (ownerData.getStrengthStat().getStat() / 5D);
-            chirithyMagic = 5 + (ownerData.getMagicStat().getStat() / 0.8D);
-            chirithyDefense = 2 + (ownerData.getDefenseStat().getStat() / 2D);
+            hp = (int) (20 + (ownerData.getMaxHP() / 2D));
+            str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
+            mag = (int) (5 + (ownerData.getMagicStat().getStat() / 0.8D));
+            def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
 
-            this.setHealth((float) chirithyHP);
+            this.setHealth((float) hp);
         }
     }
 
@@ -392,15 +388,13 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         return null;
     }
 
+    BaseDreamEaterEntity data;
+
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         // TODO Stats
-
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        // TODO Stats
+        compound.put("data", data.serializeNBT());
+        super.addAdditionalSaveData(compound);
 
     }
 }

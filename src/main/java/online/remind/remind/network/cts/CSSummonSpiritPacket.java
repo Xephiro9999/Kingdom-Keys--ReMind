@@ -54,54 +54,53 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 return;
 
-            if (!playerData.hasDreamEaterSummoned() && playerData.getDreamEaterUUID() == null) {
+                if (!playerData.hasDreamEaterSummoned() && playerData.getDreamEaterUUID() == null) {
                     // Spawn
                     if (!(owner.level() instanceof ServerLevel serverLevel)) return;
 
-                        // Todo: Make dynamic system for reading what Dream Eater should be summoned
-                            // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
+                    // Todo: Make dynamic system for reading what Dream Eater should be summoned
+                    // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
+                        /*switch (playerData.getDreamEaterID()) {
+                            case 0:
+                                // Tell Player that they do not have a Spirit
+                                break;
+                            case 1:
+                                // Chirithy Summon
+                                break;
 
-                    switch(playerData.getDreamEaterID()){
-                        case 0:
-                            // Tell Player that they do not have a Spirit
-                            break;
-                        case 1:
-                            // Chirithy Summon
-                            break;
+                        }*/
 
-                    }
-
-                    ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
-                    dreamEater.setOwnerUUID(owner.getUUID());
-                    dreamEater.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
-                    owner.level().addFreshEntity(dreamEater);
-                    if (kkData.getAlignment() != Utils.OrgMember.NONE) {
-                        dreamEater.setVariant(0);
-                    } else {
-                        dreamEater.setVariant(1);
-                    }
-                    playerData.setDreamEaterUUID(dreamEater.getUUID());
-                    owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_SUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
-                    playerData.setHasDreamEaterSummoned(true);
-                    spawnArmorParticles(dreamEater);
-                } else {
-                    // Despawn
-                    UUID dreamEaterUUID = playerData.getDreamEaterUUID();
-                    if (dreamEaterUUID != null && owner.level() instanceof ServerLevel serverLevel) {
-                        Entity entity = serverLevel.getEntity(dreamEaterUUID);
-                        if (entity != null) {
-                            entity.discard();
+                        ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
+                        dreamEater.setOwnerUUID(owner.getUUID());
+                        dreamEater.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
+                        owner.level().addFreshEntity(dreamEater);
+                        if (kkData.getAlignment() != Utils.OrgMember.NONE) {
+                            dreamEater.setVariant(0);
+                        } else {
+                            dreamEater.setVariant(1);
                         }
+                        playerData.setDreamEaterUUID(dreamEater.getUUID());
+                        owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_SUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
+                        playerData.setHasDreamEaterSummoned(true);
+                        spawnArmorParticles(dreamEater);
+                    } else {
+                    // Despawn
+                    if (playerData.getDreamEaterUUID() != null) {
+                        UUID dreamEaterUUID = playerData.getDreamEaterUUID();
+                        if (dreamEaterUUID != null && owner.level() instanceof ServerLevel serverLevel) {
+                            Entity entity = serverLevel.getEntity(dreamEaterUUID);
+                            if (entity != null) {
+                                entity.discard();
+                            }
+                        }
+                        owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_DESUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
+                        playerData.setDreamEaterUUID(null);
+                        playerData.setHasDreamEaterSummoned(false);
+
                     }
-                    owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_DESUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
-                    playerData.setDreamEaterUUID(null);
-                    playerData.setHasDreamEaterSummoned(false);
                 }
-
-
-                PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
-
-        });
+                    PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
+                });
     }
 
     @Override

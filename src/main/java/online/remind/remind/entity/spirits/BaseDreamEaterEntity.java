@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,12 +11,24 @@ import org.jetbrains.annotations.Nullable;
 
 public class BaseDreamEaterEntity extends TamableAnimal {
 
-        int hp, str, mag, def;
+    int hp, str, mag, def, lvl;
 
     public BaseDreamEaterEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
 
     }
+
+    public int getLvl() {
+        return lvl;
+    }
+
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
+
+
+
+
 
     public int getStr() {
             return str;
@@ -52,12 +63,12 @@ public class BaseDreamEaterEntity extends TamableAnimal {
             this.hp = hp;
         }
 
-        public BaseDreamEaterEntity(CompoundTag tag){
+        public void readAdditionalSaveData(CompoundTag tag){
             hp = tag.getInt("hp");
             str = tag.getInt("str");
             mag = tag.getInt("mag");
             def = tag.getInt("def");
-
+            super.readAdditionalSaveData(tag);
         }
 
         public CompoundTag serializeNBT(){

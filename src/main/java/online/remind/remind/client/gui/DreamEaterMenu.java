@@ -2,13 +2,17 @@ package online.remind.remind.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
@@ -24,6 +28,9 @@ public class DreamEaterMenu extends MenuBackground {
     }
 
     private MenuButton backButton, changeSpirit, createSpirit, abilityLinks;
+
+    MenuColourBox level, spiritHP, spiritSTR, spiritMAG,  spiritDEF, name, none;
+    MenuColourBox[] spiritWidgets = {level, spiritHP, spiritSTR, spiritMAG, spiritDEF, name, none};
 
     public DreamEaterMenu() {
         super("Dream Eaters", new Color(236, 85, 236));
@@ -69,6 +76,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         int i = 0;
 
+        int c = 0;
+        int d = 0;
+        int spacer = 14;
+
         addRenderableWidget(changeSpirit = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Change Spirit", MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("changeSpirit");
         }));
@@ -81,5 +92,25 @@ public class DreamEaterMenu extends MenuBackground {
         addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY +60, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
+
+
+        // Display Dream Eater Information
+        IGlobalDataRM playerData = ModDataRM.getGlobal(minecraft.player);
+
+        if (playerData != null){
+            if (playerData.hasDreamEaterSummoned()){
+                if (playerData.getDreamEaterUUID() != null){
+                    UUID dreamEaterUUID = playerData.getDreamEaterUUID();
+
+
+                }
+            } else {
+                // Display this if there is not a Dream Eater Summoned
+                addRenderableWidget(none = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth*2, "","", 0x000088));
+
+            }
+        }
+
+
     }
 }
