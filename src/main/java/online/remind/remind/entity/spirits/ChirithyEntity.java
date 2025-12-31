@@ -26,6 +26,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCAeroSoundPacket;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -54,6 +55,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private int aeroCooldown;
     private int esunaCooldown;
     private int castCooldown;
+
+    public int dreamEaterID = 1;
 
     public static final int
             IDLE = 0,
@@ -136,9 +139,11 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
 
         Player owner = this.level().getPlayerByUUID(this.getOwnerUUID());
+        IGlobalDataRM data = ModDataRM.getGlobal(owner);
 
+        // Sorry gamer, but if I die, you die.
         if (owner == null || owner.isDeadOrDying()) {
-            IGlobalDataRM data = ModDataRM.getGlobal(owner);
+
             if (data != null) {
                 data.setHasDreamEaterSummoned(false);
                 data.setDreamEaterUUID(null);
@@ -146,6 +151,16 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             }
             this.discard();
             return;
+        }
+
+        // Desummon if player's data doesn't match the current ID
+        if (data != null) {
+            if (data.getDreamEaterID() != dreamEaterID) {
+                data.setHasDreamEaterSummoned(false);
+                data.setDreamEaterUUID(null);
+                PacketHandlerRM.syncGlobalToAllAround(owner, data);
+                this.discard();
+            }
         }
 
         //this.setNoGravity(true);
