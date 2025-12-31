@@ -183,5 +183,10 @@
     "sounds": [
       "kkremind:spirit_desummon"
     ]
+  },
+  "dream_eaters": {
+    "sounds": [
+      "kkremind:dream_eaters"
+    ]
   }
 }

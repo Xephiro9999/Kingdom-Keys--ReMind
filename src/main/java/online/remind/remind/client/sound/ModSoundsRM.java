@@ -54,7 +54,10 @@ public class ModSoundsRM {
             TWILIGHT_STEP = registerSound("twilight_step"),
             DUAL_SHOT = registerSound("dual_shot"),
             HEARTLESS_ANGEL = registerSound("heartless_angel"),
-            DARK_MODE = registerSound("darkness");
+            DARK_MODE = registerSound("darkness"),
+
+            // Music
+            DREAM_EATERS = registerSound("dream_eaters");
 
 
     public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {

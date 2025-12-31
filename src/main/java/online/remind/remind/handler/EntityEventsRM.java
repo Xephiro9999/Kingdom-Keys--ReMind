@@ -230,12 +230,6 @@ public class EntityEventsRM {
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		Player player = event.getPlayer();
 
-			if (event.getAbility().equals(ModAbilitiesRM.CHIRITHY.get())){
-				remindData.setDreamEaterID(1);
-				// Unequip future ones below
-
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			}
 
 
 			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
@@ -298,12 +292,6 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
-
-		if (event.getAbility().equals(ModAbilitiesRM.CHIRITHY.get())){
-			remindData.setDreamEaterID(0);
-
-			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
-		}
 
 
 		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {

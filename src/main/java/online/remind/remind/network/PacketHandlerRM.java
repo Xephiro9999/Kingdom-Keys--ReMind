@@ -44,6 +44,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSBoostPacket.TYPE, CSBoostPacket.STREAM_CODEC, CSBoostPacket::handle);
         registrar.playToServer(CSOpenAddonMenu.TYPE,CSOpenAddonMenu.STREAM_CODEC,CSOpenAddonMenu::handle);
         registrar.playToServer(CSTakeCoins.TYPE,CSTakeCoins.STREAM_CODEC,CSTakeCoins::handle);
+        registrar.playToServer(CSChangeSpiritPacket.TYPE,CSChangeSpiritPacket.STREAM_CODEC,CSChangeSpiritPacket::handle);
     }
 
         public static void sendToServer(CustomPacketPayload msg) {

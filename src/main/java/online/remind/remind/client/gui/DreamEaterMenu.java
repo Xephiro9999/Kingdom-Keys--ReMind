@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -17,6 +18,9 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
+import online.remind.remind.client.sound.DreamEaterMenuSound;
+import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.entity.spirits.BaseDreamEaterEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 
@@ -28,6 +32,8 @@ public class DreamEaterMenu extends MenuBackground {
     public DreamEaterMenu(String name, Color rgb) {
         super(name, rgb);
     }
+
+
 
     private MenuButton backButton, changeSpirit, createSpirit, abilityLinks;
 
@@ -44,6 +50,7 @@ public class DreamEaterMenu extends MenuBackground {
 
     protected void action(String string) {
         if (string.equals("back")) {
+            MusicManager.stop();
             GUIHelperRM.openAddonMenu();
         }
         if (string.equals("changeSpirit")){
@@ -52,13 +59,23 @@ public class DreamEaterMenu extends MenuBackground {
         if (string.equals("createSpirit")){
             minecraft.setScreen(new CreateSpirit());
         }
+        if (string.equals("wip")){
+            minecraft.player.playSound(ModSounds.error.get());
+        }
     }
+
+
+
+
 
     @Override
     public void init() {
-
-
         super.init();
+
+        Minecraft mc = Minecraft.getInstance();
+        MusicManager.start();
+
+
         this.renderables.clear();
 
         float topBarHeight = (float) height * 0.17F;
@@ -82,14 +99,14 @@ public class DreamEaterMenu extends MenuBackground {
         int d = 0;
         int spacer = 14;
 
-        addRenderableWidget(changeSpirit = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Change Spirit", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(changeSpirit = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Change Spirit", MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("changeSpirit");
         }));
         addRenderableWidget(createSpirit = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, "Create Spirit", MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("createSpirit");
         }));
         addRenderableWidget(abilityLinks = new MenuButton((int) buttonPosX, button_statsY +40, (int) buttonWidth, "Ability Links", MenuButton.ButtonType.BUTTON, true, (e) -> {
-            action(null);
+            action("wip");
         }));
         addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY +60, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
@@ -99,6 +116,8 @@ public class DreamEaterMenu extends MenuBackground {
         // Display Dream Eater Information
         IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
         PlayerData playerData = PlayerData.get(minecraft.player);
+
+        System.out.println(global.getDreamEaterID());
 
         if (global != null){
             String spiritName = "";
