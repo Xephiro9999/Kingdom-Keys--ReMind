@@ -1,10 +1,12 @@
 package online.remind.remind.client.sound;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 
 public class MusicManager {
     private static DreamEaterMenuSound currentSound;
+    private static SoundInstance instance;
 
     public static void start() {
         if (currentSound == null) {

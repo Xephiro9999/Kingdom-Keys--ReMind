@@ -90,6 +90,9 @@
   "magic.kkremind.magic_mine_shield1.name": "Mine Shield Lv.2",
   "magic.kkremind.magic_mine_shield2.name": "Mine Shield Lv.3",
   "magic.kkremind.magic_mine_shield3.name": "Mine Shield - Seeker",
+  "magic.kkremind.magic_confuse0.name": "Confuse Lv.1",
+  "magic.kkremind.magic_confuse1.name": "Confuse Lv.2",
+  "magic.kkremind.magic_confuse2.name": "Confuse Lv.3",
 
 
 
@@ -113,6 +116,7 @@
   "item.kkremind.spark_spell": "Spark Spell",
   "item.kkremind.mine_square_spell": "Mine Square Spell",
   "item.kkremind.mine_shield_spell": "Mine Shield Spell",
+  "item.kkremind.confuse_spell": "Confuse Spell",
   "item.kkremind.steal_spell": "Steal Command",
   "item.kkremind.quick_blitz_attack": "Quick Blitz Command",
   "item.kkremind.sliding_dash_attack": "Sliding Dash Command",
@@ -387,7 +391,9 @@
   "effect.kkremind.silence": "Silence",
   "effect.kkremind.berserk": "Berserk",
   "effect.kkremind.regen": "Regen",
-  "effect.kkremind.auto_life": "Auto-Life"
+  "effect.kkremind.auto_life": "Auto-Life",
+  "effect.kkremind.stone": "Stone",
+  "effect.kkremind.confuse": "Confuse"
 
 
 }

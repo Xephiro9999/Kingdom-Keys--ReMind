@@ -1,22 +1,35 @@
 package online.remind.remind.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import online.kingdomkeys.kingdomkeys.client.gui.StopGui;
+import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSSummonKeyblade;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.network.PacketHandlerRM;
 import org.joml.Vector3f;
 
 public class ClientEventsRM {
+
+
 	
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -177,4 +190,48 @@ public class ClientEventsRM {
 			}
 		}
 	}
-}
+
+	@SubscribeEvent
+	public void onLivingUpdate(EntityTickEvent.Pre event) {
+		if (event.getEntity() instanceof Player player) {
+			if (player.hasEffect(ModMobEffectsRM.STONE)) {
+				if (event.getEntity().level().isClientSide && player == Minecraft.getInstance().player) {
+					if (Minecraft.getInstance().screen == null)
+						Minecraft.getInstance().setScreen(new StopGui());
+				}
+				event.setCanceled(true);
+			}
+
+			PlayerData playerData = PlayerData.get(player);
+				if (playerData != null){
+					if (player.hasEffect(ModMobEffectsRM.CONFUSE)) {
+						MobEffectInstance confuse = player.getEffect(ModMobEffectsRM.CONFUSE);
+						int amp = confuse.getAmplifier();
+						RandomSource rand = player.getRandom();
+
+						if (rand.nextInt(Math.max(2, 14 - amp)) == 0) {
+							CommandMenuGui.down();
+						}
+						if (rand.nextInt(Math.max(5, 15 - amp)) == 0) {
+							CommandMenuGui.up();
+						}
+						if (rand.nextInt(Math.max(3, 18 - amp)) == 0) {
+							if (rand.nextInt(Math.max(5, 15 - amp)) != 0) {
+								if (playerData.getEquippedItems() != null) {
+									CommandMenuGui.enter();
+								}
+							}
+						}
+						if (rand.nextInt(Math.max(4, 16 - amp)) == 0) {
+							if (rand.nextInt(Math.max(5, 15 - amp)) != 0) {
+								CommandMenuGui.cancel();
+							}
+						}
+					}
+				}
+			}
+
+
+        }
+	}
+

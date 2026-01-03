@@ -16,6 +16,7 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.reactioncommand.DarkFiragaEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -36,7 +37,7 @@ public class DarkFiragaRC extends ReactionCommand {
 		playerData.remFocus(15);
 		PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-		player.level().playSound(null, player.position().x(), player.position().y(), player.position().z(), ModSounds.firaga.get(), SoundSource.PLAYERS, 1F, 0.7F);
+		player.level().playSound(null, player.position().x(), player.position().y(), player.position().z(), ModSoundsRM.DARK_FIRAGA.get(), SoundSource.PLAYERS, 1F, 0.7F);
 		ThrowableProjectile darkFiraga = new DarkFiragaEntity(player.level(), player, dmgMult);
 		player.level().addFreshEntity(darkFiraga);
 		darkFiraga.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2F, 0);

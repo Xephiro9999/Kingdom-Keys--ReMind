@@ -9,13 +9,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -27,16 +25,20 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
+import online.kingdomkeys.kingdomkeys.handler.InputHandler;
+import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
@@ -640,7 +642,110 @@ public class EntityEventsRM {
 				if (event.getEntity() instanceof Player player) {
 					PlayerData playerData = PlayerData.get(player);
 					if (player.hasEffect(ModMobEffectsRM.STONE)) {
+						if (player.isCreative()){
+							event.setCanceled(true);
+						}
+						MobEffectInstance stone = player.getEffect(ModMobEffectsRM.STONE);
+						int amp = stone.getAmplifier();
 
+						playerData.setMagicCooldownTicks(5);
+
+						float wobbleYaw = (player.getRandom().nextFloat() - 0.5f) * (2.0f + amp * 1.5f); // stronger = more struggle
+						player.setYRot(player.getYRot() + wobbleYaw);
+						player.yRotO = player.getYRot();
+
+						float wobblePitch = (player.getRandom().nextFloat() - 0.5f) * (1.0f + amp * 0.75f);
+						player.setXRot(player.getXRot() + wobblePitch);
+						player.xRotO = player.getXRot();
+
+						player.setDeltaMovement(0,0,0);
+						player.hurtMarked = true;
+
+					}
+				}
+
+				if (event.getEntity() instanceof Mob mob){
+					if (mob.hasEffect(ModMobEffectsRM.STONE)) {
+						MobEffectInstance stone = mob.getEffect(ModMobEffectsRM.STONE);
+						int amp = stone.getAmplifier();
+						float wobbleYaw = (mob.getRandom().nextFloat() - 0.5f) * (2.0f + amp * 1.5f); // stronger = more struggle
+						mob.setYRot(mob.getYRot() + wobbleYaw);
+						mob.yRotO = mob.getYRot();
+
+						float wobblePitch = (mob.getRandom().nextFloat() - 0.5f) * (1.0f + amp * 0.75f);
+						mob.setXRot(mob.getXRot() + wobblePitch);
+						mob.xRotO = mob.getXRot();
+						mob.setTarget(null);
+						mob.setDeltaMovement(0,0,0);
+						mob.hurtMarked = true;
+					}
+				}
+
+				// Confuse - Mob Logic
+				if (event.getEntity() instanceof Mob mob) {
+					if (mob.hasEffect(ModMobEffectsRM.CONFUSE)) {
+						MobEffectInstance confuse = mob.getEffect(ModMobEffectsRM.CONFUSE);
+
+						int amp = confuse.getAmplifier();
+						if (mob.getRandom().nextInt(20) == 0) {
+							mob.setTarget(null);
+							mob.setLastHurtByMob(null);
+
+						}
+
+						if (mob.onGround() && mob.getRandom().nextInt(12) == 0) {
+							double dx = (mob.getRandom().nextDouble() - 0.5D) * 0.35D;
+							double dz = (mob.getRandom().nextDouble() - 0.5D) * 0.35D;
+							mob.push(dx, 0, dz);
+
+						}
+
+						int retargetChance = Math.max(6, 14 - amp * 4); // amp makes it more chaotic
+						if (mob.getTarget() == null && mob.getRandom().nextInt(retargetChance) == 0) {
+
+							List<LivingEntity> nearby = mob.level().getEntitiesOfClass(
+									LivingEntity.class,
+									mob.getBoundingBox().inflate(8.0D),
+									e -> e.isAlive() && e != mob && !(e instanceof Player p && p.isCreative())
+							);
+
+							if (!nearby.isEmpty()) {
+								LivingEntity pick = nearby.get(mob.getRandom().nextInt(nearby.size()));
+								mob.setTarget(pick);
+
+							}
+						}
+					}
+				}
+
+				// Confuse - Player Logic
+				if (event.getEntity() instanceof Player player) {
+					if (player.hasEffect(ModMobEffectsRM.CONFUSE)) {
+						MobEffectInstance confuse = player.getEffect(ModMobEffectsRM.CONFUSE);
+						int amp = confuse.getAmplifier();
+						RandomSource rand = player.getRandom();
+
+
+						if (rand.nextInt(Math.max(10, 6 - amp)) == 0){
+							double strafe = (rand.nextDouble() - 0.5D) * 0.75D;
+							double forward = (rand.nextDouble() - 0.5D) * 0.75D;
+							player.moveRelative(0.75F, new Vec3(strafe, 0, forward));
+						}
+
+						if (rand.nextInt(20) == 0) {
+							float yaw = (rand.nextFloat() - 0.15F) * (5 + amp * 4);
+							player.setYRot(player.getYRot() + yaw);
+							player.yRotO = player.getYRot();
+						}
+
+						if (rand.nextInt(Math.max(6, 12 - amp * 2)) == 0) {
+							//event.setCanceled(true);
+							if (player.onGround()) {
+								player.jumpFromGround();
+							} else {
+								player.isCrouching();
+							}
+						}
 					}
 				}
 
@@ -760,6 +865,15 @@ public class EntityEventsRM {
 		if (event.getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
 			if (playerData.isAbilityEquipped(StringsRM.oneHP)){
+				event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerAttack(AttackEntityEvent event){
+		if (event.getEntity() instanceof Player player){
+			if (player.hasEffect(ModMobEffectsRM.STONE)){
 				event.setCanceled(true);
 			}
 		}

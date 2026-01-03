@@ -40,6 +40,7 @@ public class ModItemsRM{
         sparkSpell = ITEMS.register("spark_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
         mineSquareSpell = ITEMS.register("mine_square_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
         mineShieldSpell = ITEMS.register("mine_shield_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
+        confuseSpell = ITEMS.register("confuse_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse")),
 
 
         // Attack Orbs

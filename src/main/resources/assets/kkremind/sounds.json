@@ -188,5 +188,30 @@
     "sounds": [
       "kkremind:dream_eaters"
     ]
+  },
+  "spark": {
+    "sounds": [
+      "kkremind:spark"
+    ]
+  },
+  "sparkra": {
+    "sounds": [
+      "kkremind:sparkra"
+    ]
+  },
+  "sparkga": {
+    "sounds": [
+      "kkremind:sparkga"
+    ]
+  },
+  "confuse": {
+    "sounds": [
+      "kkremind:confuse"
+    ]
+  },
+  "dark_firaga": {
+    "sounds": [
+      "kkremind:dark_firaga"
+    ]
   }
 }

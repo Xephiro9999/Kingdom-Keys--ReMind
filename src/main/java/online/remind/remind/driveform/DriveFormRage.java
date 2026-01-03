@@ -35,7 +35,7 @@ public class DriveFormRage extends DriveForm {
 				PlayerData playerData = PlayerData.get(player);
 				IGlobalDataRM formData = ModDataRM.getGlobal(player);
 
-				if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm)) {
+				if (playerData != null && playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
 					if (playerData.isAbilityEquipped(StringsRM.rageAwakened)) {
 						//double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);
 						double mult = 2;

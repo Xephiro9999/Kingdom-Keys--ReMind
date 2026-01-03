@@ -1,10 +1,12 @@
 package online.remind.remind.magic;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.SparkEntity;
 import online.remind.remind.lib.StringsRM;
 
@@ -39,7 +41,9 @@ public class magicSpark extends Magic {
                     spark.setOrbitSpeed(speed);
                     spark.setVerticalOffset(baseHeight + 0.5);
                     player.level().addFreshEntity(spark);
+
                 }
+                player.level().playSound(null, player.blockPosition(), ModSoundsRM.SPARK.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
 
             case 1:
@@ -55,6 +59,7 @@ public class magicSpark extends Magic {
                     spark.setVerticalOffset(baseHeight + 0.5);
                     player.level().addFreshEntity(spark);
 
+
                     // pair 2: E/W → offset by 90°
                     SparkEntity spark2 = new SparkEntity(player.level(), player, i + 2, dmgMult);
                     spark2.setCaster(player.getDisplayName().getString());
@@ -64,7 +69,9 @@ public class magicSpark extends Magic {
                     spark2.setOrbitSpeed(speed + 0.5);
                     spark2.setVerticalOffset(baseHeight);
                     player.level().addFreshEntity(spark2);
+
                 }
+                player.level().playSound(null, player.blockPosition(), ModSoundsRM.SPARKRA.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
 
             case 2:
@@ -83,6 +90,7 @@ public class magicSpark extends Magic {
                         player.level().addFreshEntity(spark);
                     }
                 }
+                player.level().playSound(null, player.blockPosition(), ModSoundsRM.SPARKGA.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
         }
     }
@@ -91,5 +99,6 @@ public class magicSpark extends Magic {
             @Override
     protected void playMagicCastSound(Player player, Player player1, int i) {
         // sound handled elsewhere if desired
+
     }
 }
