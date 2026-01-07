@@ -72,6 +72,8 @@ public class ModItemsRM{
         legendsFang = ITEMS.register("legends_fang", () -> new KeybladeItem(new Item.Properties())),
         fierceDeityKey = ITEMS.register("fierce_deity_key", () -> new KeybladeItem(new Item.Properties())),
         lyric2025Tournament = ITEMS.register("lyric_2025_tournament", () -> new KeybladeItem(new Item.Properties())),
+        voidlight = ITEMS.register("voidlight", () -> new KeybladeItem(new Item.Properties())),
+        kingdomKeyNightmare = ITEMS.register("kingdom_key_n", () -> new KeybladeItem(new Item.Properties())),
 
 
         // Keychains
@@ -84,6 +86,8 @@ public class ModItemsRM{
         legendsFangChain = ITEMS.register("legends_fang_chain", () -> new KeychainItem()),
         fierceDeityKeyChain = ITEMS.register("fierce_deity_key_chain", () -> new KeychainItem()),
         lyric2025TournamentChain = ITEMS.register("lyric_2025_tournament_chain", () -> new KeychainItem()),
+        voidlightChain = ITEMS.register("voidlight_chain", () -> new KeychainItem()),
+        kingdomKeyNightmareChain = ITEMS.register("kingdom_key_n_chain", () -> new KeychainItem()),
 
 
         // And this is where I'd put my Org Weapons... IF I HAD ONE!

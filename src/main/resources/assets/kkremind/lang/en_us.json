@@ -268,6 +268,8 @@
   "item.kkremind.legends_fang": "Legend's Fang",
   "item.kkremind.fierce_deity_key": "Fierce Deity Key",
   "item.kkremind.lyric_2025_tournament": "Wrongful Inheritor",
+  "item.kkremind.voidlight": "Voidlight",
+  "item.kkremind.kingdom_key_n": "Kingdom Key Nightmare",
 
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
@@ -278,6 +280,8 @@
   "item.kkremind.legends_fang_chain": "Legend's Fang Chain",
   "item.kkremind.fierce_deity_key_chain": "Fierce Deity Key Chain",
   "item.kkremind.lyric_2025_tournament_chain": "Wrongful Inheritor Chain",
+  "item.kkremind.voidlight_chain": "Voidlight Chain",
+  "item.kkremind.kingdom_key_n_chain": "Kingdom Key Nightmare Chain",
 
   "item.kkremind.aqua_chaplet": "Aqua Chaplet",
   "item.kkremind.heros_glove": "Hero's Glove",
