@@ -73,7 +73,6 @@ public class ModItemsRM{
         fierceDeityKey = ITEMS.register("fierce_deity_key", () -> new KeybladeItem(new Item.Properties())),
         lyric2025Tournament = ITEMS.register("lyric_2025_tournament", () -> new KeybladeItem(new Item.Properties())),
         voidlight = ITEMS.register("voidlight", () -> new KeybladeItem(new Item.Properties())),
-        kingdomKeyNightmare = ITEMS.register("kingdom_key_n", () -> new KeybladeItem(new Item.Properties())),
 
 
         // Keychains
