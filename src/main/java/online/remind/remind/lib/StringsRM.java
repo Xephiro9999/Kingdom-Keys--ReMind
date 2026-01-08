@@ -22,6 +22,7 @@ public class StringsRM {
         ACMA_Prefix = "accessory_",
         MENU_Prefix = "menu_button",
         RCMA_Prefix = "rc_",
+        ATMA_Prefix = "attack_",
         MAMA_Prefix = "magic_",
 
 
@@ -33,7 +34,21 @@ public class StringsRM {
         regenForm = StringsRM.DFMA_Prefix+"regen",
 
         // Magic
+        Magic_Auto_Life = StringsRM.MAMA_Prefix+"auto-life",
+        Magic_Balloon = StringsRM.MAMA_Prefix+"balloon",
+        Magic_Berserk = StringsRM.MAMA_Prefix+"berserk",
+        Magic_Comet = StringsRM.MAMA_Prefix+"comet",
+        Magic_Confuse = StringsRM.MAMA_Prefix+"confuse",
+        Magic_Death = StringsRM.MAMA_Prefix+"death",
+        Magic_Dispel= StringsRM.MAMA_Prefix+"dispel",
+        Magic_Drain= StringsRM.MAMA_Prefix+"drain",
+        Magic_Esuna= StringsRM.MAMA_Prefix+"esuna",
+        Magic_Faith= StringsRM.MAMA_Prefix+"faith",
+        Magic_Haste= StringsRM.MAMA_Prefix+"haste",
+        Magic_Holy= StringsRM.MAMA_Prefix+"holy",
+        Magic_Mine_Shield = StringsRM.MAMA_Prefix+"mine_shield",
         Magic_Mine_Square = StringsRM.MAMA_Prefix+"mine_square",
+
 
 
         //Ability List

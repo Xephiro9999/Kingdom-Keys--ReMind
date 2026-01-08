@@ -14,7 +14,7 @@ public class DreamEaterMenuSound extends AbstractTickableSoundInstance {
     private boolean fadingOut = false;
 
     public DreamEaterMenuSound(SoundEvent sound){
-        super(sound, SoundSource.MUSIC, SoundInstance.createUnseededRandom());
+        super(sound, SoundSource.MASTER, SoundInstance.createUnseededRandom());
         this.looping = true;
         this.volume = 0.5f;
         this.pitch = 1.0f;

@@ -640,7 +640,7 @@ public class WikiMenu extends MenuBackground {
             );
         }
 
-        // SS Tier Spells
+
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"))) {
             addRenderableWidget(
                     new MenuColourBox(
@@ -1287,6 +1287,86 @@ public class WikiMenu extends MenuBackground {
                     )
             );
         }
+        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"))) {
+
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Mine Shield"),
+                            "Fire",
+                            0xE6452D
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 90,
+                            Utils.translateToLocal("Places mines that explode after a while!"),
+                            "",
+                            0x754e1a
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 90,
+                            Utils.translateToLocal("You don't have this spell."),
+                            "Found via Synthesis",
+                            0x232324
+                    )
+            );
+        }
+        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"))) {
+
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("Mine Square"),
+                            "Fire",
+                            0xE6452D
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 90,
+                            Utils.translateToLocal("Places mines that explode after a while!"),
+                            "",
+                            0x754e1a
+                    )
+            );
+        } else {
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col1X + 200, button_stats_playerY + (d++ * spacer),
+                            (int) width + 70,
+                            Utils.translateToLocal("????"),
+                            "????",
+                            0x232324
+                    )
+            );
+            addRenderableWidget(
+                    new MenuColourBox(
+                            col2X + 400, button_statsY + (c++ * spacer),
+                            (int) width + 90,
+                            Utils.translateToLocal("You don't have this spell."),
+                            "Found via Synthesis",
+                            0x232324
+                    )
+            );
+        }
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_regen"))) {
             addRenderableWidget(
                     new MenuColourBox(
@@ -1445,6 +1525,46 @@ public class WikiMenu extends MenuBackground {
                             0x232324
                     )
             );
+
+            if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_confuse"))) {
+                addRenderableWidget(
+                        new MenuColourBox(
+                                col1X + 200, button_stats_playerY + (d++ * spacer),
+                                (int) width + 70,
+                                Utils.translateToLocal("Confuse"),
+                                "Debuff",
+                                0xB03060
+                        )
+                );
+                addRenderableWidget(
+                        new MenuColourBox(
+                                col2X + 400, button_statsY + (c++ * spacer),
+                                (int) width + 90,
+                                Utils.translateToLocal("Disorientates your foes!"),
+                                "",
+                                0x754e1a
+                        )
+                );
+            } else {
+                addRenderableWidget(
+                        new MenuColourBox(
+                                col1X + 200, button_stats_playerY + (d++ * spacer),
+                                (int) width + 70,
+                                Utils.translateToLocal("????"),
+                                "????",
+                                0x232324
+                        )
+                );
+                addRenderableWidget(
+                        new MenuColourBox(
+                                col2X + 400, button_statsY + (c++ * spacer),
+                                (int) width + 90,
+                                Utils.translateToLocal("You don't have this spell."),
+                                "Found via Synthesis",
+                                0x232324
+                        )
+                );
+            }
         }
         // SSS Tier Spells
 

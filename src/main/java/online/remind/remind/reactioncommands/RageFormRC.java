@@ -42,14 +42,14 @@ public class RageFormRC extends ReactionCommand {
         float playerMaxHP = player.getMaxHealth();
         float currentHP = player.getHealth();
         float missingHP = (currentHP / playerMaxHP) * 100;
-        double baseChance = ModConfigs.rageFormPercent;
 
         if (playerData != null) {
             RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
-            if (!playerData.getActiveDriveForm().equals(StringsRM.rageForm)) {
+            if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
                 if (player.getHealth() <= (playerMaxHP * 0.25f)) {
                     if (!state.hasRolled) {
                         double chance = calculateDynamicChance(missingHP);
+                        //System.out.println("Chance: " + chance + "Roll Chance: " + state.shouldAppear);
                         state.shouldAppear = rollChance(chance);
                         state.hasRolled = true;
                     }

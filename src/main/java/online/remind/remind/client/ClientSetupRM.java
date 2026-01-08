@@ -1,7 +1,9 @@
 package online.remind.remind.client;
 
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
@@ -19,6 +21,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import online.remind.remind.client.render.AutoLifeLayerRenderer;
 import online.remind.remind.client.render.BerserkLayerRenderer;
+import online.remind.remind.client.render.ConfuseLayerRenderer;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.ClientEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
@@ -52,9 +55,33 @@ public class ClientSetupRM {
         renderer.addLayer(new BerserkLayerRenderer<>(renderer, event.getEntityModels()));
         renderer.addLayer(new AutoLifeLayerRenderer<>(renderer, event.getEntityModels()));
 
+
         renderer = event.getSkin(PlayerSkin.Model.SLIM);
         renderer.addLayer(new BerserkLayerRenderer<>(renderer, event.getEntityModels()));
         renderer.addLayer(new AutoLifeLayerRenderer<>(renderer, event.getEntityModels()));
+
+        // Players (both skins)
+        event.getSkins().forEach(skin -> {
+            LivingEntityRenderer<?, ?> renderer1 =
+                    (LivingEntityRenderer<?, ?>) event.getSkin(skin);
+
+            renderer1.addLayer(new ConfuseLayerRenderer<>(
+                    (RenderLayerParent) renderer1,
+                    event.getEntityModels()
+            ));
+        });
+
+        // ALL mobs
+        event.getEntityTypes().forEach(entityType -> {
+            EntityRenderer<?> renderer1 = event.getRenderer(entityType);
+
+            if (renderer1 instanceof LivingEntityRenderer<?, ?> livingRenderer) {
+                livingRenderer.addLayer(new ConfuseLayerRenderer<>(
+                        (RenderLayerParent) livingRenderer,
+                        event.getEntityModels()
+                ));
+            }
+        });
     }
 
     @OnlyIn(Dist.CLIENT)

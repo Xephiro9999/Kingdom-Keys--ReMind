@@ -40,6 +40,7 @@ public class ModMagicsRM {
             SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_spark"), false, 3, null)),
             MINE_SQUARE = MAGIC.register(ResourceLocation.parse("magic_mine_square").getPath(), () -> new magicMineSquare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_mine_square"), false, 4, null)),
             MINE_SHIELD = MAGIC.register(ResourceLocation.parse("magic_mine_shield").getPath(), () -> new magicMineShield(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_mine_shield"), false, 4, null)),
+            CONFUSE = MAGIC.register(ResourceLocation.parse("magic_confuse").getPath(), () -> new magicConfuse(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_confuse"), false, 3, null)),
 
 
     // "Spells"

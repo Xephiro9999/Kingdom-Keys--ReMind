@@ -1,10 +1,12 @@
 package online.remind.remind.client.gui.dreameaters;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.client.gui.DreamEaterMenu;
+import online.remind.remind.client.sound.MusicManager;
 
 import java.awt.*;
 
@@ -16,6 +18,15 @@ public class CreateSpirit extends MenuBackground {
     }
     private MenuButton backButton;
 
+    public void onClose(){
+        super.onClose();
+
+        Screen next = Minecraft.getInstance().screen;
+
+        if (!(next instanceof DreamEaterMenu || next instanceof ChangeSpirit || next instanceof CreateSpirit)){
+            MusicManager.stop();
+        }
+    }
 
 
     public CreateSpirit() {

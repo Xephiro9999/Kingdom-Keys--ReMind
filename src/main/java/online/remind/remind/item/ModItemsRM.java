@@ -40,6 +40,7 @@ public class ModItemsRM{
         sparkSpell = ITEMS.register("spark_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
         mineSquareSpell = ITEMS.register("mine_square_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
         mineShieldSpell = ITEMS.register("mine_shield_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
+        confuseSpell = ITEMS.register("confuse_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse")),
 
 
         // Attack Orbs
@@ -71,6 +72,7 @@ public class ModItemsRM{
         legendsFang = ITEMS.register("legends_fang", () -> new KeybladeItem(new Item.Properties())),
         fierceDeityKey = ITEMS.register("fierce_deity_key", () -> new KeybladeItem(new Item.Properties())),
         lyric2025Tournament = ITEMS.register("lyric_2025_tournament", () -> new KeybladeItem(new Item.Properties())),
+        voidlight = ITEMS.register("voidlight", () -> new KeybladeItem(new Item.Properties())),
 
 
         // Keychains
@@ -83,6 +85,8 @@ public class ModItemsRM{
         legendsFangChain = ITEMS.register("legends_fang_chain", () -> new KeychainItem()),
         fierceDeityKeyChain = ITEMS.register("fierce_deity_key_chain", () -> new KeychainItem()),
         lyric2025TournamentChain = ITEMS.register("lyric_2025_tournament_chain", () -> new KeychainItem()),
+        voidlightChain = ITEMS.register("voidlight_chain", () -> new KeychainItem()),
+        kingdomKeyNightmareChain = ITEMS.register("kingdom_key_n_chain", () -> new KeychainItem()),
 
 
         // And this is where I'd put my Org Weapons... IF I HAD ONE!

@@ -18,5 +18,6 @@ public class ModMobEffectsRM {
             SILENCE = MOB_EFFECTS.register("silence", () -> new SilenceEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
             AUTO_LIFE = MOB_EFFECTS.register("auto_life", () -> new AutoLifeEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
             REGEN = MOB_EFFECTS.register("regen", () -> new RegenEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
-            STONE = MOB_EFFECTS.register("stone", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF));
+            STONE = MOB_EFFECTS.register("stone", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
+            CONFUSE = MOB_EFFECTS.register("confuse", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF));
 }

@@ -239,7 +239,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                         if (owner.hurtTime > 0) {
                             int aeroLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
                             int time = (int) (chirithyMagic * 100) * (1 + aeroLevel);
-                            owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time, aeroLevel, false, false, false));
+                            owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time, aeroLevel, false, false, true));
                             PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
                             owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSounds.aero1.get(), SoundSource.PLAYERS, 1F, 1F);
                             owner.sendSystemMessage(Component.literal("<Chirithy> Winds guard you!"));

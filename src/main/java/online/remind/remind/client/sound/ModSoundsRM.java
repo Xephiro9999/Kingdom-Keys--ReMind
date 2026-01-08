@@ -39,6 +39,11 @@ public class ModSoundsRM {
             DEATH_HIT = registerSound("death_hit"),
             ROYAL_GUARD = registerSound("royal_block"),
             ROYAL_PARRY = registerSound("royal_parry"),
+            SPARK = registerSound("spark"),
+            SPARKRA = registerSound("sparkra"),
+            SPARKGA = registerSound("sparkga"),
+            CONFUSE = registerSound("confuse"),
+            DARK_FIRAGA = registerSound("dark_firaga"),
 
             SPIRIT_SUMMON = registerSound("spirit_summon"),
             SPIRIT_DESUMMON = registerSound("spirit_desummon"),

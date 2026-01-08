@@ -1,6 +1,8 @@
 package online.remind.remind.magic;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -51,7 +53,7 @@ public class magicDispel extends Magic {
 			}
 		} else {
 			// IDK do some area of effect or something like slow or haste
-			float radius = 16;
+			float radius = 4;
 			List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(radius));
 			Party casterParty = WorldData.get(player.getServer()).getPartyFromMember(player.getUUID());
 
@@ -59,6 +61,20 @@ public class magicDispel extends Magic {
 				for (Party.Member m : casterParty.getMembers()) {
 					list.remove(player.level().getPlayerByUUID(m.getUUID()));
 				}
+			}
+
+			int particleCount = 40; // number of particles in the ring
+
+			for (int i = 0; i < particleCount; i++) {
+				double angle = 2 * Math.PI * i / particleCount;
+				double xOffset = Math.cos(angle) * radius;
+				double zOffset = Math.sin(angle) * radius;
+				double yOffset = 1.0 + player.getRandom().nextDouble() * 0.5; // slightly above ground, around head
+
+				((ServerLevel) player.level()).sendParticles(ParticleTypes.SCULK_SOUL.getType(), player.getX() + xOffset, player.getY() + yOffset, player.getZ() + zOffset, 0, 0.02, 0,0, 1d);
+
+				((ServerLevel) player.level()).sendParticles(ParticleTypes.SOUL_FIRE_FLAME.getType(), player.getX() + xOffset, player.getY() + yOffset, player.getZ() + zOffset, 0, 0.02, 0,0, 0);
+
 			}
 
 			if (!list.isEmpty()) {
