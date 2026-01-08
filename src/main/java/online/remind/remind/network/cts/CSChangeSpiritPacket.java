@@ -42,24 +42,10 @@ public class CSChangeSpiritPacket implements CustomPacketPayload {
             Player player = ctx.player();
 
             IGlobalDataRM globalData = ModDataRM.getGlobal(player);
-            PlayerData playerData = PlayerData.get(player);
 
-            switch(message.id){
-                case 0:
-
-                    globalData.setDreamEaterID(0);
-                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-                    break;
-                case 1:
-
-                    globalData.setDreamEaterID(1);
-                    PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-                    break;
-
-            }
+            globalData.setDreamEaterID(message.id);
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-
         });
     }
     @Override

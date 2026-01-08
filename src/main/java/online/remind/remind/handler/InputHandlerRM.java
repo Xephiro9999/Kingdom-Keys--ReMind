@@ -133,19 +133,6 @@ public class InputHandlerRM {
 					// PacketHandlerRM.sendToServer(new CSSetStepTicksPacket());
 				}
 			}
-		} else if(event.getKeybind() == InputHandler.Keybinds.OPENMENU) {
-            PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-            PacketHandlerRM.sendToServer(new CSSyncAllClientDataPacketRM());
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (PlayerData.get(player).getSoAState() != SoAState.COMPLETE) {
-                if (player.level().dimension() != ModDimensions.DIVE_TO_THE_HEART) {
-                    Minecraft.getInstance().setScreen(new NoChoiceMenuPopup());
-                }
-            } else {
-                GUIHelperRM.openAddonMenu();
-                //return;
-            }
-			event.setCanceled(true);
 		}
 	}
 
@@ -156,14 +143,9 @@ public class InputHandlerRM {
 		if(key != null) {
 			switch (key) {
 				case SUMMONSPIRIT -> summonSpirit();
-
-
 			}
-
 		}
-
 	}
-
 
 	public void summonSpirit(){
 		PacketHandlerRM.sendToServer(new CSSummonSpiritPacket());

@@ -139,7 +139,7 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int riskchargeCount;
 
     private boolean dreamEaterSummoned = false;
-    private UUID dreamEaterUUID;
+    private UUID dreamEaterUUID = new UUID(0L, 0L);
     private int dreamEaterID;
     private boolean donorGiven;
 

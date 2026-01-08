@@ -6,6 +6,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
@@ -51,7 +53,7 @@ public class WikiMenu extends MenuBackground {
 
     protected void action(String string) {
         switch(string) {
-            case "back" -> GUIHelperRM.openAddonMenu();
+            case "back" -> PacketHandler.sendToServer(new CSOpenMenu());
             case "keyblades" -> setPage(Wiki.KEYBLADES);
             case "attack" -> setPage(Wiki.ATTACK);
             case "magic" -> setPage(Wiki.MAGIC);

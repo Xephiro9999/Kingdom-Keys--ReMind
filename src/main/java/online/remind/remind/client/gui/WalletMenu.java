@@ -21,6 +21,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuScrollBar;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuStockItem;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.item.RMCoinItem;
@@ -87,7 +89,7 @@ public class WalletMenu extends MenuFilterable {
                 //PacketHandler.sendToServer(new CSDepositMaterials(parent.invFile, parent.name, parent.moogle));
                 break;*/
             case "back":
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSOpenMenu());
                 break;
             case "take":
                 int amountSet = Integer.parseInt(amountBox.getValue());

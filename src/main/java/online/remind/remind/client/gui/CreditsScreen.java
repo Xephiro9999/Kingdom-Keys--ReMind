@@ -5,6 +5,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 
 import java.awt.*;
@@ -24,7 +26,7 @@ public class CreditsScreen extends MenuBackground {
 
     protected void action(String string) {
         if (string.equals("back"))
-            GUIHelperRM.openAddonMenu();
+            PacketHandler.sendToServer(new CSOpenMenu());
     }
 
     @Override

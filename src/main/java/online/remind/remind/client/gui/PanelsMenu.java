@@ -3,6 +3,7 @@ package online.remind.remind.client.gui;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
@@ -52,7 +53,9 @@ public class PanelsMenu extends MenuBackground {
         IGlobalDataRM globalData = ModDataRM.getGlobal(minecraft.player);
 
         switch(string){
-            case "back" -> GUIHelperRM.openAddonMenu();
+            case "back" ->
+                PacketHandler.sendToServer(new CSOpenMenu());
+
             case "reg" -> {
                 minecraft.setScreen(new PanelsMenu());
                 minecraft.player.playSound(ModSounds.error.get());
@@ -135,22 +138,22 @@ public class PanelsMenu extends MenuBackground {
             case "rejectOrg" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(14));
                 //PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSOpenMenu());
             }
             case "reset" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(11));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSOpenMenu());
             }
             case "toggleOff" -> {
                 PacketHandlerRM.sendToServer(new CSBoostPacket(2));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSOpenMenu());
             }
             case "toggleOn" -> {
                 PacketHandlerRM.sendToServer(new CSBoostPacket(4));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                GUIHelperRM.openAddonMenu();
+                PacketHandler.sendToServer(new CSOpenMenu());
             }
 
         }

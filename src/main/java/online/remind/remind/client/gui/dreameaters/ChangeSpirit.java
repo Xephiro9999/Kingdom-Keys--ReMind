@@ -2,6 +2,9 @@ package online.remind.remind.client.gui.dreameaters;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -15,26 +18,55 @@ import online.remind.remind.client.gui.GUIHelperRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSChangeSpiritPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class ChangeSpirit extends MenuBackground {
 
-
     public ChangeSpirit(String name, Color rgb) {
         super(name, rgb);
     }
-    private MenuButton backButton, selected, none, chirithy; //TODO: add more later when the system is created
+    private MenuButton backButton, selected, none, chirithy, meowwow; //TODO: add more later when the system is created
 
-    int ticks = 0;
+    public enum DreamEaterType {
+        NONE(0, "none"),
+        CHIRITHY(1, "chirithy"),
+        MEOWWOW(2, "meowwow");
 
-    @Override
-    public void tick() {
-        super.tick();
-        ticks++;
-        init();
+        private final int id;
+        private MenuButton button;
+        private final String key;
 
+        DreamEaterType(int id, String key) {
+            this.id = id;
+            this.key = key;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public MenuButton getButton() {
+            return button;
+        }
+        public void setButton(MenuButton button){
+            this.button = button;
+        }
+        public String getKey() {
+            return key;
+        }
+
+        public static DreamEaterType getById(int id) {
+            for (DreamEaterType type : values()) {
+                if (type.id == id) return type;
+            }
+            return NONE;
+        }
     }
+
+
+    IGlobalDataRM globalData;
 
     public ChangeSpirit() {
         super("Change Spirit", new Color(241, 115, 24));
@@ -44,34 +76,25 @@ public class ChangeSpirit extends MenuBackground {
     public void reloadMenu(){
         minecraft.setScreen(new ChangeSpirit());
     }
+    protected void select(DreamEaterType type) {
+        globalData.setDreamEaterID(type.id);
+        PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(type.id));
+        PacketHandlerRM.syncGlobalToAllAround(minecraft.player, globalData);
+        reloadMenu();
+    }
 
     protected void action(String string) {
-        IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
-        PlayerData playerData = PlayerData.get(minecraft.player);
+        if(globalData == null)
+            return;
 
         if (string.equals("back")) {
             minecraft.setScreen(new DreamEaterMenu());
         }
-        if (string.equals("none")){
-            PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(0));
-            PacketHandlerRM.syncGlobalToAllAround(minecraft.player, global);
-            init();
-        }
-        if (string.equals("selected")){
-            init();
-        }
-        if (string.equals("chirithy")) {
-            PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(1));
-            PacketHandlerRM.syncGlobalToAllAround(minecraft.player, global);
-            init();
-        }
-
     }
 
     @Override
     public void init() {
         super.init();
-        ticks = 0;
         this.renderables.clear();
 
         float topBarHeight = (float) height * 0.17F;
@@ -91,34 +114,43 @@ public class ChangeSpirit extends MenuBackground {
 
         int i = 0;
 
-        IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
-        PlayerData playerData = PlayerData.get(minecraft.player);
+        globalData = ModDataRM.getGlobal(minecraft.player);
 
-
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
-        if (global.getDreamEaterID() != 0) {
-            addRenderableWidget(none = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, ("None"), MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("none");
-            }));
-        } else {
-            addRenderableWidget(selected = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, (ChatFormatting.GOLD + "None"), MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("selected");
-            }));
-        }
-        if (global.getDreamEaterID() == 1){
-            addRenderableWidget(selected = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, (ChatFormatting.GOLD + "Chirithy"), MenuButton.ButtonType.BUTTON, true, (e) -> {
-                action("selected");
-            }));
-        } else {
-            addRenderableWidget(chirithy = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, ("Chirithy"), MenuButton.ButtonType.BUTTON, true, (e) -> {
-                action("chirithy");
-            }));
-        }
+
+        addRenderableWidget(none = new MenuButton((int) buttonPosX, button_statsY + 18 + i++, (int) buttonWidth, ("None"), MenuButton.ButtonType.BUTTON, false, (e) -> {
+            select(DreamEaterType.NONE);
+        }));
+
+        addRenderableWidget(chirithy = new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, "Chirithy", MenuButton.ButtonType.BUTTON, true, (e) -> {
+            select(DreamEaterType.CHIRITHY);
+        }));
+
+        addRenderableWidget(meowwow = new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, "Meow Wow", MenuButton.ButtonType.BUTTON, true, (e) -> {
+            select(DreamEaterType.MEOWWOW);
+        }));
+
+        //Add the buttons to the ENUM so they can be colored gold in the render method
+        DreamEaterType.NONE.button = none;
+        DreamEaterType.CHIRITHY.button = chirithy;
+        DreamEaterType.MEOWWOW.button = meowwow;
     }
 
 
+    public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
+        if(globalData == null)
+            return;
+        System.out.println(globalData.getDreamEaterID());
+        //Read every type and if it's the selected one render it in gold
+        for (DreamEaterType type : DreamEaterType.values()) {
+            if(type.id == globalData.getDreamEaterID()){
+                type.button.setMessage(Component.literal(ChatFormatting.GOLD + type.button.getMessage().getString()));
+            }
+        }
+        super.render(gui, mouseX, mouseY, partialTicks);
+    }
 
 
 }

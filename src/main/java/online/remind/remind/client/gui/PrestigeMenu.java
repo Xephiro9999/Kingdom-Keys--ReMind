@@ -11,6 +11,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.item.KKAccessoryItem;
 import online.kingdomkeys.kingdomkeys.item.KKArmorItem;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -47,7 +49,7 @@ public class PrestigeMenu extends MenuBackground {
 
     protected void action(String string) {
         if (string.equals("back"))
-            GUIHelperRM.openAddonMenu();
+            PacketHandler.sendToServer(new CSOpenMenu());
         if (string.equals("confirm")) {
             PacketHandlerRM.sendToServer(new CSPrestigePacket());
             minecraft.setScreen(null);
@@ -55,11 +57,11 @@ public class PrestigeMenu extends MenuBackground {
         }
         if (string.equals("toggleOff")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(1));
-            GUIHelperRM.openAddonMenu();
+            PacketHandler.sendToServer(new CSOpenMenu());
         }
         if (string.equals("toggleOn")) {
             PacketHandlerRM.sendToServer(new CSBoostPacket(3));
-            GUIHelperRM.openAddonMenu();
+            PacketHandler.sendToServer(new CSOpenMenu());
         }
     }
 

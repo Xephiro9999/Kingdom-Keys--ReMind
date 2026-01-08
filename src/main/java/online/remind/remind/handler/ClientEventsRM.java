@@ -1,23 +1,91 @@
 package online.remind.remind.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import online.kingdomkeys.kingdomkeys.api.event.client.MenuButtonRegisterEvent;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.gui.*;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+
 public class ClientEventsRM {
-	
+    public enum RMButtons {
+        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
+    }
+
+    @SubscribeEvent
+    public void menuButton(MenuButtonRegisterEvent event){
+        MenuScreen screen = event.getScreen();
+        ArrayList<MenuButton> buttons = event.getButtons();
+
+        int index = buttons.size();
+
+        float topBarHeight = (float) screen.height * 0.17F;
+        int start = (int)(topBarHeight) +5;
+        int pos = 0;
+
+        float buttonPosX = (float) screen.width * 0.80F;
+        float buttonWidth = ((float) screen.width * 0.1744F) - 22;
+
+        if (ModConfigs.ngpEnabled) {
+            buttons.add(new MenuButton((int) buttonPosX, start, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Prestige), MenuButton.ButtonType.BUTTON, true, (e) -> {
+                action(RMButtons.PRESTIGE);
+            }));
+        }
+
+        buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_DreamEater), MenuButton.ButtonType.BUTTON, true, (e) -> {
+            action(RMButtons.DREAMEATER);
+        }));
+
+        // Panel
+        if (ModConfigs.panelsEnabled) {
+            if (PlayerData.get(Minecraft.getInstance().player).getAlignment() != Utils.OrgMember.NONE) {
+                buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Panel), MenuButton.ButtonType.BUTTON, true, (e) -> {
+                    action(RMButtons.PANEL);
+                }));
+            }
+        }
+
+        // Wiki
+        buttons.add(new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wiki), MenuButton.ButtonType.BUTTON, true, (e) -> {
+            action(RMButtons.WIKI);
+        }));
+        // Wallet
+        buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Wallet), MenuButton.ButtonType.BUTTON, true, (e) -> {
+            action(RMButtons.WALLET);
+        }));
+        // Credits
+        buttons.add(new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Credits), MenuButton.ButtonType.BUTTON, false, (e) -> {
+            action(RMButtons.CREDITS);
+        }));
+    }
+
+    protected void action(RMButtons buttonID){
+        switch (buttonID){
+            case PRESTIGE -> Minecraft.getInstance().setScreen(new PrestigeMenu());
+            case DREAMEATER -> Minecraft.getInstance().setScreen(new DreamEaterMenu());
+            case CREDITS -> Minecraft.getInstance().setScreen(new CreditsScreen());
+            case PANEL -> Minecraft.getInstance().setScreen(new PanelsMenu());
+            case WIKI -> Minecraft.getInstance().setScreen(new WikiMenu());
+            case WALLET -> Minecraft.getInstance().setScreen(new WalletMenu());
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void RenderEntity(RenderLivingEvent.Pre event){

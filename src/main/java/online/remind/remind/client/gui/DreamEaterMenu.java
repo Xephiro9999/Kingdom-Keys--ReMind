@@ -13,6 +13,8 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -51,7 +53,7 @@ public class DreamEaterMenu extends MenuBackground {
     protected void action(String string) {
         if (string.equals("back")) {
             MusicManager.stop();
-            GUIHelperRM.openAddonMenu();
+            PacketHandler.sendToServer(new CSOpenMenu());
         }
         if (string.equals("changeSpirit")){
             minecraft.setScreen(new ChangeSpirit());
