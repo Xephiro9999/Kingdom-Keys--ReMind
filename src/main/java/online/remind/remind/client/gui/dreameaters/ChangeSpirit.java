@@ -3,6 +3,7 @@ package online.remind.remind.client.gui.dreameaters;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
@@ -15,6 +16,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
 import online.remind.remind.client.gui.GUIHelperRM;
+import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSChangeSpiritPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
@@ -71,6 +73,16 @@ public class ChangeSpirit extends MenuBackground {
     public ChangeSpirit() {
         super("Change Spirit", new Color(241, 115, 24));
         minecraft = Minecraft.getInstance();
+    }
+
+    public void onClose(){
+        super.onClose();
+
+        Screen next = Minecraft.getInstance().screen;
+
+        if (!(next instanceof DreamEaterMenu || next instanceof ChangeSpirit || next instanceof CreateSpirit)){
+            MusicManager.stop();
+        }
     }
 
     public void reloadMenu(){
