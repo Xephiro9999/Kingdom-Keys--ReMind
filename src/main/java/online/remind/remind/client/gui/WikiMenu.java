@@ -68,38 +68,24 @@ public class WikiMenu extends MenuBackground {
     }
 
     private void addKeyblades(int col1X, int y, float width) {
-
         float topBarHeight = (float) height * 0.17F;
         int button_statsY = (int) topBarHeight;
         int button_stats_playerY = button_statsY;
 
-        float buttonPosX = (float) width * 0.03F;
-        float subButtonPosX = buttonPosX + 10;
-
-        float buttonWidth = ((float) width * 0.1744F);
-        float subButtonWidth = buttonWidth - 10;
-
-
-        float dataWidth = ((float) width * 0.1744F);
+        float dataWidth = width * 0.1744F;
 
         int col2X = (int) (col1X + dataWidth * 2);
-
-        int i = 0;
-
 
         int c = 0;
         int d = 0;
         int spacer = 14;
 
-        keybladesList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Keyblade Name"), "Origin", 0xaa190f));
-        keybladesList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Description:"), "", 0xd68e2f));
+        addElementPair(keybladesList, col1X+200, 0, (int)width + 70, "Keyblade Name", "Origin", 0xaa190f, 10, (int)width+90,"Description","", 0xaa190f);
 
-        keybladesList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Sanguine Gaze"), "Xephiro's Keyblade", 0x380000));
-        keybladesList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("A Keyblade whose focus is Fast Vampiric Strikes"), "", 0x754e1a));
+        addElementPair(keybladesList, col1X+200, 0, (int)width + 70, "Sanguine Gaze", "Xephiro's Keyblade", 0x380000, 10, (int)width+90,"A Keyblade whose focus is Fast Vampiric Strikes","", 0x754e1a);
+        addElementPair(keybladesList, col1X+200, 0, (int)width + 70, "Pureblood", "", 0x380000, 10, (int)width+90,"A Keyblade swelling with Darkness","", 0x754e1a);
 
-        keybladesList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Pureblood"), "", 0x380000));
-        keybladesList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("A Keyblade swelling with Darkness"), "", 0x754e1a));
-
+        //TODO the rest with the method
         keybladesList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Elemental Crescendo"), "Requested by Goblex", 0x380000));
         keybladesList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("A Keyblade with a knack for spells"), "", 0x754e1a));
 
@@ -123,6 +109,25 @@ public class WikiMenu extends MenuBackground {
 
     }
 
+    private void addElement(ArrayList<MenuColourBox> list, int x, int y, int w, String name, String value, int color) {
+        list.add(new MenuColourBox(x, y, w, name, value, color));
+    }
+
+    private void addElementPair(ArrayList<MenuColourBox> list, int xLeft, int y, int wLeft, String nameLeft, String valueLeft, int colorLeft, int gap, int wRight, String nameRight, String valueRight, int colorRight) {
+        list.add(new MenuColourBox(xLeft, y, wLeft, nameLeft, valueLeft, colorLeft));
+        list.add(new MenuColourBox(xLeft+wLeft+gap, y, wRight, nameRight, valueRight, colorRight));
+    }
+
+    private void addHiddenElementPair(ArrayList<MenuColourBox> list, int xLeft, int y, int wLeft, String keyLeft, String valueLeft, int colorLeft, int gap, int wRight, String keyRight, String valueRight, int colorRight, boolean condition, String hiddenName, String hiddenValue) {
+        if(condition) {
+            addElement(list,xLeft, y, wLeft, keyLeft, valueLeft, colorLeft);
+            addElement(list,xLeft + wLeft + gap, y, wRight, keyRight, valueRight, colorRight);
+        } else {
+            addElement(list,xLeft, y, wLeft, "???", "???", 0x232324); //Hidden color
+            addElement(list,xLeft+wLeft+gap, y, wRight, hiddenName, hiddenValue, 0x232324);
+        }
+    }
+
     private void addAttacks(int col1X, int y, float width) {
 
         final PlayerData playerData = PlayerData.get(minecraft.player);
@@ -131,19 +136,9 @@ public class WikiMenu extends MenuBackground {
         int button_statsY = (int) topBarHeight;
         int button_stats_playerY = button_statsY;
 
-        float buttonPosX = (float) width * 0.03F;
-        float subButtonPosX = buttonPosX + 10;
-
-        float buttonWidth = ((float) width * 0.1744F);
-        float subButtonWidth = buttonWidth - 10;
-
-
-        float dataWidth = ((float) width * 0.1744F);
+        float dataWidth = width * 0.1744F;
 
         int col2X = (int) (col1X + dataWidth * 2);
-
-        int i = 0;
-
 
         int c = 0;
         int d = 0;
@@ -214,7 +209,6 @@ public class WikiMenu extends MenuBackground {
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_light_surge"))) {
             attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Light Surge"), "Light", 0xFFF2A8));
             attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-
         } else {
             attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
             attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
@@ -223,7 +217,6 @@ public class WikiMenu extends MenuBackground {
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"))) {
             attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Dark Surge"), "Darkness", 0x2A0A3D));
             attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-
         } else {
             attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
             attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this command."), "Found via Synthesis", 0x232324));
@@ -238,19 +231,14 @@ public class WikiMenu extends MenuBackground {
         int button_statsY = (int) topBarHeight;
         int button_stats_playerY = button_statsY;
 
-        float buttonPosX = (float) width * 0.03F;
-        float subButtonPosX = buttonPosX + 10;
+        float buttonPosX = width * 0.03F;
+        float buttonWidth = width * 0.1744F;
 
-        float buttonWidth = ((float) width * 0.1744F);
-        float subButtonWidth = buttonWidth - 10;
-
-
-        float dataWidth = ((float) width * 0.1744F);
+        float dataWidth = width * 0.1744F;
 
         int col2X = (int) (col1X + dataWidth * 2);
 
         int i = 0;
-
 
         int c = 0;
         int d = 0;
@@ -260,13 +248,9 @@ public class WikiMenu extends MenuBackground {
         magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Description:"), "", 0xd68e2f));
 
         // D Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Esuna"), "Buff", 0xB03060));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Removes ALL debuffs!"), "Includes Stop from KK!", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
+        boolean condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"));
+        addHiddenElementPair(magicList,col1X+200, 0, (int) width + 70,"Esuna", "Buff", 0xB03060, 20, (int) width + 90,"Removes ALL debuffs!","Includes Stop from KK!", 0x754e1a, condition, "You don't have this spell.", "Found via synthesis");
+//TODO rest of them
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_dispel"))) {
             magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Dispel"), "Debuff", 0xB03060));
             magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Removes ALL buffs from enemies!"), "", 0x754e1a));
@@ -361,20 +345,12 @@ public class WikiMenu extends MenuBackground {
         }
 
         // S Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Auto-Life"), "Buff", 0x4CD964));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Saves you from death itself!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Mine Shield"), "Fire", 0xE6452D));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Places mines that explode after a while!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"));
+        addHiddenElementPair(magicList,col1X+200, 0, (int) width + 70,"Auto-Life", "Buff", 0x4CD964, 20, (int) width + 90,"Saves you from death itself!","", 0x754e1a, condition, "You don't have this spell.", "Found via synthesis");
+
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"));
+        addHiddenElementPair(magicList,col1X+200, 0, (int) width + 70,"Mine Shield", "Fire", 0xE6452D, 20, (int) width + 90,"Places mines that explode after a while!","", 0x754e1a, condition, "You don't have this spell.", "Found via synthesis");
+
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"))) {
             magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Mine Square"), "Fire", 0xE6452D));
             magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Places mines that explode after a while!"), "", 0x754e1a));
@@ -440,14 +416,7 @@ public class WikiMenu extends MenuBackground {
         int button_statsY = (int) topBarHeight;
         int button_stats_playerY = button_statsY;
 
-        float buttonPosX = (float) width * 0.03F;
-        float subButtonPosX = buttonPosX + 10;
-
-        float buttonWidth = ((float) width * 0.1744F);
-        float subButtonWidth = buttonWidth - 10;
-
-
-        float dataWidth = ((float) width * 0.1744F);
+        float dataWidth = width * 0.1744F;
 
         int col2X = (int) (col1X + dataWidth * 2);
 
@@ -510,13 +479,11 @@ public class WikiMenu extends MenuBackground {
 
         float topBarHeight = (float) height * 0.17F;
         int button_statsY = (int) topBarHeight + 5;
-        int button_stats_playerY = button_statsY;
 
         float buttonPosX = (float) width * 0.03F;
         float subButtonPosX = buttonPosX + 10;
 
         float buttonWidth = ((float) width * 0.1744F) - 20;
-        float subButtonWidth = buttonWidth - 10;
 
         float dataWidth = ((float) width * 0.1744F) - 10;
 
@@ -530,35 +497,34 @@ public class WikiMenu extends MenuBackground {
 
         addRenderableWidget(scrollBar);
 
-
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY+18*i++, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
 
-        addRenderableWidget(keyblades = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Keyblades), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(keyblades = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Keyblades), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("keyblades");
         }));
 
-        addRenderableWidget(attack = new MenuButton((int) buttonPosX, button_statsY + 40, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Attack), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(attack = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Attack), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("attack");
         }));
 
-        addRenderableWidget(magic = new MenuButton((int) buttonPosX, button_statsY + 60, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Magic), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(magic = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Magic), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("magic");
         }));
-        addRenderableWidget(ability = new MenuButton((int) buttonPosX, button_statsY + 80, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Ability), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(ability = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Ability), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("ability");
         }));
-        addRenderableWidget(forms = new MenuButton((int) buttonPosX, button_statsY + 100, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Forms), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(forms = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Forms), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("forms");
         }));
-        addRenderableWidget(armor = new MenuButton((int) buttonPosX, button_statsY + 120, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Armor), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(armor = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Armor), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("armor");
         }));
-        addRenderableWidget(accessory = new MenuButton((int) buttonPosX, button_statsY + 140, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Accessories), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(accessory = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Accessories), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("accessory");
         }));
-        addRenderableWidget(shotlock = new MenuButton((int) buttonPosX, button_statsY + 160, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Shotlocks), MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(shotlock = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Shotlocks), MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("shotlock");
         }));
 
@@ -617,36 +583,17 @@ public class WikiMenu extends MenuBackground {
     }
 
     private ArrayList<MenuColourBox> getListFromPage() {
-        switch (activePage) {
-            case NONE -> {
-                return new ArrayList();
-            }
-            case KEYBLADES -> {
-                return keybladesList;
-            }
-            case ATTACK -> {
-                return attackList;
-            }
-            case MAGIC -> {
-                return magicList;
-            }
-            case FORMS -> {
-                return formsList;
-            }
-            case ARMOR -> {
-                return armorList;
-            }
-            case ACCESSORIES -> {
-                return accessoriesList;
-            }
-            case ABILITIES -> {
-                return abilitiesList;
-            }
-            case SHOTLOCKS -> {
-                return shotlocksList;
-            }
-        }
-        return new ArrayList();
+        return switch (activePage) {
+            case NONE -> new ArrayList();
+            case KEYBLADES -> keybladesList;
+            case ATTACK -> attackList;
+            case MAGIC -> magicList;
+            case FORMS -> formsList;
+            case ARMOR -> armorList;
+            case ACCESSORIES -> accessoriesList;
+            case ABILITIES -> abilitiesList;
+            case SHOTLOCKS -> shotlocksList;
+        };
     }
 
     @Override
@@ -669,11 +616,9 @@ public class WikiMenu extends MenuBackground {
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
-
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         scrollBar.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
         return false;
     }
-
 }
