@@ -1,0 +1,26 @@
+package online.remind.remind.dreameater;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.entity.spirits.ChirithyEntity;
+import online.remind.remind.lib.StringsRM;
+
+import java.util.function.Supplier;
+
+public class ModDreamEaters {
+
+    public static DeferredRegister<DreamEaters> DREAM_EATERS = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "dream_eaters"), KingdomKeysReMind.MODID);
+    public static Registry<DreamEaters> registry = DREAM_EATERS.makeRegistry(builder -> builder.sync(true));
+
+    static int order = 0;
+    // 0 = None, 1 = Chirithy, 2 = ???
+
+    //TODO: Create system like the shotlocks/magics/drives for better Dream Eater Tracking?
+    /*public static final Supplier<DreamEaters>
+        CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new ChirithyEntity(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy),order++, 1));
+
+     */
+}
+
