@@ -3,6 +3,7 @@ package online.remind.remind.capabilities;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import online.remind.remind.lib.StringsRM;
 
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class GlobalDataRM implements IGlobalDataRM {
         storage.putInt("haste_level", this.getHasteLevel());
         storage.putInt("slow_ticks", this.getSlowTicks());
         storage.putInt("slow_level", this.getSlowLevel());
-        storage.putInt("berserk_ticks",this.getBerserkTicks());
+        storage.putInt("berserk_ticks", this.getBerserkTicks());
         storage.putInt("berserk_level", this.getBerserkLevel());
         storage.putInt("autolife_active", this.getAutoLifeActive());
         storage.putInt("can_counter", this.getCanCounter());
@@ -48,7 +49,7 @@ public class GlobalDataRM implements IGlobalDataRM {
             storage.putUUID("DreamEaterUUID", this.getDreamEaterUUID());
         }
         storage.putBoolean("dreamEaterSummoned", this.hasDreamEaterSummoned());
-        storage.putInt("dreamEaterID", this.getDreamEaterID());
+        storage.putString("dreamEaterRL", this.getDreamEaterRL());
 
         // Donor Grant
         storage.putBoolean("donor_grant", this.getDonorGiven());
@@ -56,7 +57,7 @@ public class GlobalDataRM implements IGlobalDataRM {
         return storage;
     }
 
-	@Override
+    @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         CompoundTag properties = nbt;
         this.setHasteTicks(properties.getInt("haste_ticks"), properties.getInt("haste_level"));
@@ -90,10 +91,9 @@ public class GlobalDataRM implements IGlobalDataRM {
         } else {
             this.dreamEaterUUID = null;
         }
-        this.setDreamEaterID(properties.getInt("dreamEaterID"));
+        this.setDreamEaterRL(properties.getString("dreamEaterRL"));
 
-       // this.setPanelChoice(properties.getString("Panels_Choice"));
-
+        // this.setPanelChoice(properties.getString("Panels_Choice"));
 
 
     }
@@ -140,33 +140,32 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     private boolean dreamEaterSummoned = false;
     private UUID dreamEaterUUID = new UUID(0L, 0L);
-    private int dreamEaterID;
+    private String dreamEaterRL = StringsRM.none;
     private boolean donorGiven;
 
     private boolean darkMode;
 
-
-
     //Haste
     public int getHasteLevel() {
-
         return hasteLevel;
     }
+
     @Override
     public void setHasteLevel(int level) {
-
         this.hasteLevel = level;
     }
+
     @Override
     public int getHasteTicks() {
-
         return hasteTicks;
     }
+
     @Override
     public void setHasteTicks(int i, int level) {
-            hasteTicks = i;
-            hasteLevel = level;
+        hasteTicks = i;
+        hasteLevel = level;
     }
+
     @Override
     public void remHasteTicks(int ticks) {
 
@@ -190,11 +189,13 @@ public class GlobalDataRM implements IGlobalDataRM {
 
         return slowTicks;
     }
+
     @Override
     public void setSlowTicks(int i, int level) {
         slowTicks = i;
         slowLevel = level;
     }
+
     @Override
     public void remSlowTicks(int ticks) {
 
@@ -205,6 +206,7 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void setSlowCaster(String name) {
 
     }
+
     // Berserk
     @Override
     public int getBerserkLevel() {
@@ -255,12 +257,12 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
 
     @Override
-    public int getStepTicks(){
+    public int getStepTicks() {
         return stepTicks;
     }
-    
+
     @Override
-    public byte getStepType(){
+    public byte getStepType() {
         return stepType;
     }
 
@@ -375,17 +377,19 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
 
     @Override
-    public void addNGPWarriorCount(int i){
+    public void addNGPWarriorCount(int i) {
         NGPlusWarriorCount += i;
     }
+
     @Override
-    public void addNGPMysticCount(int i){
+    public void addNGPMysticCount(int i) {
         NGPlusMysticCount += i;
     }
+
     @Override
-        public void addNGPGuardianCount(int i){
-            NGPlusGuardianCount += i;
-        }
+    public void addNGPGuardianCount(int i) {
+        NGPlusGuardianCount += i;
+    }
 
     @Override
     public int getRCCooldownTicks() {
@@ -450,33 +454,42 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
 
     @Override
-    public void setPanelsEnabled(int i){panelsStatus = i;}
+    public void setPanelsEnabled(int i) {
+        panelsStatus = i;
+    }
+
     @Override
-    public void setNGPEnabled(int i){ngpStatus = i;}
+    public void setNGPEnabled(int i) {
+        ngpStatus = i;
+    }
+
     @Override
-    public int getPanelsEnabled(){return panelsStatus;}
+    public int getPanelsEnabled() {
+        return panelsStatus;
+    }
+
     @Override
-    public int getNGPEnabled(){return ngpStatus;}
+    public int getNGPEnabled() {
+        return ngpStatus;
+    }
 
 
     @Override
-    public void setPanelChoice(String choice){
+    public void setPanelChoice(String choice) {
         panelChoice = choice;
     }
+
     @Override
-    public String getPanelChoice(){
+    public String getPanelChoice() {
         return panelChoice;
     }
-
-
-
-
 
 
     @Override
     public double getMPOG() {
         return MPOG;
     }
+
     @Override
     public void setMPOG(int i) {
         this.MPOG = i;
@@ -518,23 +531,22 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
 
     @Override
-    public int getDreamEaterID() {
-
-        return this.dreamEaterID;
+    public String getDreamEaterRL() {
+        return this.dreamEaterRL;
     }
 
     @Override
-    public void setDreamEaterID(int i) {
-        dreamEaterID = i;
+    public void setDreamEaterRL(String i) {
+        dreamEaterRL = i;
     }
 
     @Override
-    public boolean getDonorGiven(){
+    public boolean getDonorGiven() {
         return donorGiven;
     }
 
     @Override
-    public void setDonorGiven(boolean i){
+    public void setDonorGiven(boolean i) {
         donorGiven = i;
     }
 

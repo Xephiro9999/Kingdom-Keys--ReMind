@@ -26,6 +26,8 @@ import online.remind.remind.client.gui.dreameaters.CreateSpirit;
 import online.remind.remind.client.sound.DreamEaterMenuSound;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.client.sound.MusicManager;
+import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.spirits.BaseDreamEaterEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 
@@ -60,9 +62,6 @@ public class DreamEaterMenu extends MenuBackground {
         }
     }
 
-
-
-
     protected void action(String string) {
         if (string.equals("back")) {
             MusicManager.stop();
@@ -78,10 +77,6 @@ public class DreamEaterMenu extends MenuBackground {
             minecraft.player.playSound(ModSounds.error.get());
         }
     }
-
-
-
-
 
     @Override
     public void init() {
@@ -132,11 +127,11 @@ public class DreamEaterMenu extends MenuBackground {
         IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
         PlayerData playerData = PlayerData.get(minecraft.player);
 
-        System.out.println(global.getDreamEaterID());
-
         if (global != null){
-            String spiritName = "";
-            int id = global.getDreamEaterID();
+            System.out.println(global.getDreamEaterRL());
+
+            DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(global.getDreamEaterRL()));
+            int id = dreamEater.getId();
             switch(id){
                 case 0:
                     addRenderableWidget(name = new MenuColourBox(col1X, button_statsY + (c++* spacer), (int) dataWidth, "Name:","N/A", 0xffffff));

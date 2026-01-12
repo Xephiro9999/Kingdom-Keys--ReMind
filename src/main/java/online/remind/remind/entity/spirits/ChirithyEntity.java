@@ -32,6 +32,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.spirits.goal.ChirithyGoal;
+import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -55,8 +56,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private int aeroCooldown;
     private int esunaCooldown;
     private int castCooldown;
-
-    public int dreamEaterID = 1;
 
     public static final int
             IDLE = 0,
@@ -155,7 +154,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         // Desummon if player's data doesn't match the current ID
         if (data != null) {
-            if (data.getDreamEaterID() != dreamEaterID) {
+            if (!data.getDreamEaterRL().equals(StringsRM.chirithy)) {
                 data.setHasDreamEaterSummoned(false);
                 data.setDreamEaterUUID(null);
                 PacketHandlerRM.syncGlobalToAllAround(owner, data);

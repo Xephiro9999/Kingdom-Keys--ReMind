@@ -121,8 +121,8 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     UUID getDreamEaterUUID();
     void setDreamEaterUUID(UUID uuid);
 
-    int getDreamEaterID();
-    void setDreamEaterID(int i);
+    String getDreamEaterRL();
+    void setDreamEaterRL(String s);
 
     // Donor Item Grant
     boolean getDonorGiven();

@@ -5,21 +5,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
-import online.remind.remind.client.gui.GUIHelperRM;
 import online.remind.remind.client.sound.MusicManager;
+import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSChangeSpiritPacket;
-import online.remind.remind.network.cts.CSPanelPacket;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -32,17 +29,17 @@ public class ChangeSpirit extends MenuBackground {
     private MenuButton backButton, selected, none, chirithy, meowwow; //TODO: add more later when the system is created
 
     public enum DreamEaterType {
-        NONE(0, "none"),
-        CHIRITHY(1, "chirithy"),
-        MEOWWOW(2, "meowwow");
+        NONE(0, KingdomKeysReMind.MODID+":"+StringsRM.none),
+        CHIRITHY(1, KingdomKeysReMind.MODID+":"+StringsRM.chirithy),
+        MEOWWOW(2, KingdomKeysReMind.MODID+":"+StringsRM.meowWow);
 
         private final int id;
         private MenuButton button;
-        private final String key;
+        private final String rl;
 
-        DreamEaterType(int id, String key) {
+        DreamEaterType(int id, String rl) {
             this.id = id;
-            this.key = key;
+            this.rl = rl;
         }
 
         public int getId() {
@@ -55,8 +52,8 @@ public class ChangeSpirit extends MenuBackground {
         public void setButton(MenuButton button){
             this.button = button;
         }
-        public String getKey() {
-            return key;
+        public String getRl() {
+            return rl;
         }
 
         public static DreamEaterType getById(int id) {
@@ -89,8 +86,8 @@ public class ChangeSpirit extends MenuBackground {
         minecraft.setScreen(new ChangeSpirit());
     }
     protected void select(DreamEaterType type) {
-        globalData.setDreamEaterID(type.id);
-        PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(type.id));
+        globalData.setDreamEaterRL(type.rl);
+        PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(type.rl));
         PacketHandlerRM.syncGlobalToAllAround(minecraft.player, globalData);
         reloadMenu();
     }
@@ -154,10 +151,11 @@ public class ChangeSpirit extends MenuBackground {
     public void render(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         if(globalData == null)
             return;
-        System.out.println(globalData.getDreamEaterID());
+        //System.out.println(globalData.getDreamEaterRL());
         //Read every type and if it's the selected one render it in gold
         for (DreamEaterType type : DreamEaterType.values()) {
-            if(type.id == globalData.getDreamEaterID()){
+            //System.out.println();
+            if(type.rl.equals(globalData.getDreamEaterRL())){
                 type.button.setMessage(Component.literal(ChatFormatting.GOLD + type.button.getMessage().getString()));
             }
         }

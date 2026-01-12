@@ -44,6 +44,7 @@ import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncGlobalData;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
@@ -53,6 +54,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
@@ -75,7 +77,15 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-		if (playerData != null) {
+        if(globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
+            globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
+        }
+
+        if(!player.level().isClientSide){
+            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+        }
+
+        if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 					playerData.addAbility(StringsRM.renewalBlock, true);
@@ -340,7 +350,7 @@ public class EntityEventsRM {
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {
-					if (globalData.getCanCounter() == 1) {
+                    if (globalData.getCanCounter() == 1) {
 						maxTicks = 200;
 						if (ticks <= maxTicks) {
 							ticks += 5;
@@ -1051,7 +1061,6 @@ public class EntityEventsRM {
 					System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
 					//System.out.println("Bonus Damage: " + bonusDamage);
 				}
-
 
 
 				// Spellblade Ability

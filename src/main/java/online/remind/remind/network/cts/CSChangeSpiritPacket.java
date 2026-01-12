@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
@@ -19,21 +18,20 @@ public class CSChangeSpiritPacket implements CustomPacketPayload {
     public static final Type<CSChangeSpiritPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_change_spirit"));
     public static final StreamCodec<FriendlyByteBuf, CSChangeSpiritPacket> STREAM_CODEC = StreamCodec.of(CSChangeSpiritPacket::encode, CSChangeSpiritPacket::decode);
 
-
-    private int id;
+    private String rl;
     public CSChangeSpiritPacket(){}
 
-    public CSChangeSpiritPacket(int id){
-        this.id = id;
+    public CSChangeSpiritPacket(String id){
+        this.rl = id;
     }
 
     public static void encode(FriendlyByteBuf buffer, CSChangeSpiritPacket message) {
-        buffer.writeInt(message.id);
+        buffer.writeUtf(message.rl,100);
     }
 
     public static CSChangeSpiritPacket decode(FriendlyByteBuf buffer) {
         CSChangeSpiritPacket msg = new CSChangeSpiritPacket();
-        msg.id = buffer.readInt();
+        msg.rl = buffer.readUtf(100);
         return msg;
     }
 
@@ -43,7 +41,7 @@ public class CSChangeSpiritPacket implements CustomPacketPayload {
 
             IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-            globalData.setDreamEaterID(message.id);
+            globalData.setDreamEaterRL(message.rl);
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
         });

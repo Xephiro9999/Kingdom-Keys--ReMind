@@ -18,6 +18,8 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -27,7 +29,8 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
     public static final Type<CSSummonSpiritPacket> TYPE = new Type(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_summon_spirit"));
     public static final StreamCodec<FriendlyByteBuf, CSSummonSpiritPacket> STREAM_CODEC = StreamCodec.of(CSSummonSpiritPacket::encode, CSSummonSpiritPacket::decode);
 
-    public CSSummonSpiritPacket(){}
+    public CSSummonSpiritPacket() {
+    }
 
     public static void encode(FriendlyByteBuf buffer, CSSummonSpiritPacket message) {
     }
@@ -39,8 +42,8 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
     private static void spawnArmorParticles(Entity spirit) {
         Vec3 spiritPos = new Vec3(spirit.getX(), spirit.getY() + 3.5, spirit.getZ());
-        ((ServerLevel)spirit.level()).sendParticles(ParticleTypes.END_ROD, spirit.getX(), spirit.getY(), spirit.getZ(), 150, 0,0,0, 0.2);
-        ((ServerLevel)spirit.level()).sendParticles(ParticleTypes.DRAGON_BREATH, spirit.getX(), spirit.getY(), spirit.getZ(), 150, 0,0,0, 0.2);
+        ((ServerLevel) spirit.level()).sendParticles(ParticleTypes.END_ROD, spirit.getX(), spirit.getY(), spirit.getZ(), 150, 0, 0, 0, 0.2);
+        ((ServerLevel) spirit.level()).sendParticles(ParticleTypes.DRAGON_BREATH, spirit.getX(), spirit.getY(), spirit.getZ(), 150, 0, 0, 0, 0.2);
     }
 
 
@@ -50,57 +53,60 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
             IGlobalDataRM playerData = ModDataRM.getGlobal(owner);
             PlayerData kkData = PlayerData.get(owner);
-            if (kkData == null) return;
-            if (playerData == null)
-
+            if (kkData == null || playerData == null)
                 return;
 
             if (!playerData.hasDreamEaterSummoned() && playerData.getDreamEaterUUID() == null) {
-                    // Spawn
-                    if (!(owner.level() instanceof ServerLevel serverLevel)) return;
+                // Spawn
+                if (!(owner.level() instanceof ServerLevel serverLevel))
+                    return;
 
-                    // Todo: Make dynamic system for reading what Dream Eater should be summoned
-                    // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
-                        switch (playerData.getDreamEaterID()) {
-                            case 0:
-                                // Tell Player that they do not have a Spirit
-                                owner.displayClientMessage(Component.translatable("You don't have a Dream Eater Equipped!"), true);
-                                break;
-                            case 1:
-                                // Chirithy Summon
-                                ChirithyEntity dreamEater = new ChirithyEntity(owner.level(), owner);
-                                dreamEater.setOwnerUUID(owner.getUUID());
-                                dreamEater.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
-                                owner.level().addFreshEntity(dreamEater);
-                                if (kkData.getAlignment() != Utils.OrgMember.NONE) {
-                                    dreamEater.setVariant(0);
-                                } else {
-                                    dreamEater.setVariant(1);
-                                }
-                                playerData.setDreamEaterUUID(dreamEater.getUUID());
-                                owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_SUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
-                                playerData.setHasDreamEaterSummoned(true);
-                                spawnArmorParticles(dreamEater);
-                                break;
+                // Todo: Make dynamic system for reading what Dream Eater should be summoned
+                // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
+                IGlobalDataRM global = ModDataRM.getGlobal(owner);
 
+                DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(global.getDreamEaterRL()));
+                int id = dreamEater.getId();
+
+                switch (id) {
+                    case 0:
+                        // Tell Player that they do not have a Spirit
+                        owner.displayClientMessage(Component.translatable("You don't have a Dream Eater Equipped!"), true);
+                        break;
+                    case 1:
+                        // Chirithy Summon
+                        ChirithyEntity dreamEaterEntity = new ChirithyEntity(owner.level(), owner);
+                        dreamEaterEntity.setOwnerUUID(owner.getUUID());
+                        dreamEaterEntity.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
+                        owner.level().addFreshEntity(dreamEaterEntity);
+                        if (kkData.getAlignment() != Utils.OrgMember.NONE) {
+                            dreamEaterEntity.setVariant(0);
+                        } else {
+                            dreamEaterEntity.setVariant(1);
                         }
-                    } else {
-                    // Despawn
-                    if (playerData.getDreamEaterUUID() != null) {
-                        UUID dreamEaterUUID = playerData.getDreamEaterUUID();
-                        if (dreamEaterUUID != null && owner.level() instanceof ServerLevel serverLevel) {
-                            Entity entity = serverLevel.getEntity(dreamEaterUUID);
-                            if (entity != null) {
-                                entity.discard();
-                            }
-                        }
-                        owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_DESUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
-                        playerData.setDreamEaterUUID(null);
-                        playerData.setHasDreamEaterSummoned(false);
-
-                    }
+                        playerData.setDreamEaterUUID(dreamEaterEntity.getUUID());
+                        owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_SUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
+                        playerData.setHasDreamEaterSummoned(true);
+                        spawnArmorParticles(dreamEaterEntity);
+                        break;
                 }
-                PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
+            } else {
+                // Despawn
+                if (playerData.getDreamEaterUUID() != null) {
+                    UUID dreamEaterUUID = playerData.getDreamEaterUUID();
+                    if (dreamEaterUUID != null && owner.level() instanceof ServerLevel serverLevel) {
+                        Entity entity = serverLevel.getEntity(dreamEaterUUID);
+                        if (entity != null) {
+                            entity.discard();
+                        }
+                    }
+                    owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_DESUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
+                    playerData.setDreamEaterUUID(null);
+                    playerData.setHasDreamEaterSummoned(false);
+
+                }
+            }
+            PacketHandlerRM.syncGlobalToAllAround(owner, playerData);
         });
     }
 

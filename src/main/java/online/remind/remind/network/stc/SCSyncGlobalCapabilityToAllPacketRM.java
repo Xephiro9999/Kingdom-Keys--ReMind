@@ -17,7 +17,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus,dreamEaterID;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public String dreamEaterRL;
     public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
     public UUID dreamEaterUUID;
@@ -52,7 +53,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.darkMode = capability.isDarkMode();
         this.dreamEaterSummoned = capability.hasDreamEaterSummoned();
         this.dreamEaterUUID = capability.getDreamEaterUUID();
-        this.dreamEaterID = capability.getDreamEaterID();
+        this.dreamEaterRL = capability.getDreamEaterRL();
 
     }
 
@@ -81,7 +82,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeBoolean(message.donorGiven);
         buffer.writeBoolean(message.darkMode);
         buffer.writeBoolean(message.dreamEaterSummoned);
-        buffer.writeInt(message.dreamEaterID);
+        buffer.writeUtf(message.dreamEaterRL,100);
         if (message.dreamEaterUUID != null) {
             buffer.writeBoolean(true);
             buffer.writeUUID(message.dreamEaterUUID);
@@ -119,14 +120,10 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.donorGiven = buffer.readBoolean();
         msg.darkMode = buffer.readBoolean();
         msg.dreamEaterSummoned = buffer.readBoolean();
-        msg.dreamEaterID = buffer.readInt();
+        msg.dreamEaterRL = buffer.readUtf(100);
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
-
-
-
-
         return msg;
     }
 
@@ -159,7 +156,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setDarkMode(message.darkMode);
                 globalData.setHasDreamEaterSummoned(message.dreamEaterSummoned);
                 globalData.setDreamEaterUUID(message.dreamEaterUUID);
-                globalData.setDreamEaterID(message.dreamEaterID);
+                globalData.setDreamEaterRL(message.dreamEaterRL);
 			}
 		});
     }

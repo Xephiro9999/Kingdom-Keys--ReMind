@@ -5,20 +5,18 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
+import online.kingdomkeys.kingdomkeys.KingdomKeys;
+import online.remind.remind.client.gui.DreamEaterHUD;
 import online.remind.remind.client.render.AutoLifeLayerRenderer;
 import online.remind.remind.client.render.BerserkLayerRenderer;
 import online.remind.remind.client.render.ConfuseLayerRenderer;
@@ -82,6 +80,10 @@ public class ClientSetupRM {
                 ));
             }
         });
+    }
+    @SubscribeEvent
+    public static void registerOverlays(RegisterGuiLayersEvent event) {
+        event.registerBelow(VanillaGuiLayers.CHAT, ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "dream_eater_info"), DreamEaterHUD.INSTANCE);
     }
 
     @OnlyIn(Dist.CLIENT)

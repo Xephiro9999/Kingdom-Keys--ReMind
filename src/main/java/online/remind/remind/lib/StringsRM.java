@@ -24,6 +24,7 @@ public class StringsRM {
         RCMA_Prefix = "rc_",
         ATMA_Prefix = "attack_",
         MAMA_Prefix = "magic_",
+        DE_Prefix = "dreameater_",
 
 
         //Forms
@@ -96,7 +97,9 @@ public class StringsRM {
         ribbon = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ribbon",
 
         //Placeholders for Spirit System
-        chirithy = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"chirithy",
+        none = "none",
+        chirithy = StringsRM.DE_Prefix+"chirithy",
+        meowWow = StringsRM.DE_Prefix+"meowwow",
 
         // Grand Magics
         seekerMine = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"seeker_mine",

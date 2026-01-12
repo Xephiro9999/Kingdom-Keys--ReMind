@@ -1,0 +1,50 @@
+package online.remind.remind.client.gui;
+
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import online.kingdomkeys.kingdomkeys.client.gui.overlay.HUDAnchorPosition;
+
+public abstract class OverlayBaseRM implements LayeredDraw.Layer {
+
+    Minecraft minecraft;
+    GuiGraphics guiGraphics;
+    Font font;
+    HUDAnchorPosition anchor;
+
+    protected OverlayBaseRM() {
+        minecraft = Minecraft.getInstance();
+        if (minecraft != null) { //datagen fails otherwise
+            font = minecraft.font;
+        }
+    }
+
+    public void blit(GuiGraphics gui, ResourceLocation texture, int x, int y, int width, int height, int u, int v, int uwidth, int vheight, int texwidth, int texheight) {
+        gui.blit(texture, x, y, width, height, u ,v, uwidth, vheight, texwidth, texheight);
+    }
+
+    public void blit(GuiGraphics gui, ResourceLocation texture, int x, int y, int u, int v, int uwidth, int vheight) {
+        gui.blit(texture, x, y, u ,v, uwidth, vheight);
+    }
+
+    public void drawString(GuiGraphics gui, Font font, Component text, int x, int y, int colour) {
+        gui.drawString(font, text, x, y, colour);
+    }
+
+    public void drawString(GuiGraphics gui, Font font, String text, int x, int y, int colour) {
+        gui.drawString(font, text, x, y, colour);
+    }
+
+    public void drawCenteredString(GuiGraphics gui, Font font, String text, int x, int y, int colour) {
+        gui.drawString(font, text, (float)(x - font.width(text) / 2), (float)y, colour, true);
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        this.guiGraphics = guiGraphics;
+    }
+}
