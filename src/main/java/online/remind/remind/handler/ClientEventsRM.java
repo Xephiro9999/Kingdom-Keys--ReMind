@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -28,6 +29,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.ClientUtilsRM;
 import online.remind.remind.client.gui.*;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.dreameater.DreamEater;
@@ -47,17 +49,25 @@ public class ClientEventsRM {
     @SubscribeEvent
     public void onTargetSelector(TargetSelectorEvent event) {
         IGlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
-        if(globalData == null || globalData.getDreamEaterRL().equals(ModDreamEaters.NONE.get().getRegistryName()) || globalData.hasDreamEaterSummoned())
+        System.out.println(globalData);
+        System.out.println(globalData.getDreamEaterRL());
+        System.out.println(globalData.hasDreamEaterSummoned());
+        if(globalData == null || globalData.getDreamEaterRL().equals(ModDreamEaters.NONE.get().getRegistryName()) || !globalData.hasDreamEaterSummoned())
             return;
         DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(globalData.getDreamEaterRL()));
         if(dreamEater == null)
             return;
 
-        event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
-                        Component.literal(ChatFormatting.AQUA+dreamEater.getTranslationKey()),
-                        item -> event.getSubmenu().getParent().getSelected().onEnter()
-                ).build(event.getSubmenu())
-        );
+        System.out.println(globalData.hasDreamEaterSummoned());
+        if(globalData.hasDreamEaterSummoned()) {
+            Entity dreamEaterEntity = ClientUtilsRM.getEntityByUUIDClient(globalData.getDreamEaterUUID());
+            int dreamEaterID = dreamEaterEntity.getId();
+            event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
+                            Component.literal(ChatFormatting.AQUA + dreamEater.getTranslationKey()),
+                            item -> event.getSubmenu().getParent().getSelected().onEnter()
+                    ).setData(dreamEaterID+"").build(event.getSubmenu())
+            );
+        }
     }
 
     @SubscribeEvent

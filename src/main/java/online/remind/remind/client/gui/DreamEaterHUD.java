@@ -64,12 +64,6 @@ public class DreamEaterHUD extends OverlayBaseRM {
         PlayerData playerData = PlayerData.get(player);
 
         //Get the actual entity from the id which is updated by the packet
-       /* if(player.level().getEntity(dreamEaterClientID) != null && player.level().getEntity(dreamEaterClientID) instanceof BaseDreamEaterEntity dreameater) {
-            dreamEaterEntity = dreameater;
-        } else {
-            return;
-        }*/
-
         if (globalData == null || playerData == null)
             return;
 
