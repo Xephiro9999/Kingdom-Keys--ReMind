@@ -1,8 +1,11 @@
 package online.remind.remind.handler;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -11,18 +14,24 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.MenuButtonRegisterEvent;
+import online.kingdomkeys.kingdomkeys.api.event.client.TargetSelectorEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.StopGui;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.CommandMenuItem;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.*;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
@@ -36,11 +45,25 @@ public class ClientEventsRM {
     }
 
     @SubscribeEvent
+    public void onTargetSelector(TargetSelectorEvent event) {
+        IGlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
+        if(globalData == null || globalData.getDreamEaterRL().equals(ModDreamEaters.NONE.get().getRegistryName()) || globalData.hasDreamEaterSummoned())
+            return;
+        DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(globalData.getDreamEaterRL()));
+        if(dreamEater == null)
+            return;
+
+        event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
+                        Component.literal(ChatFormatting.AQUA+dreamEater.getTranslationKey()),
+                        item -> event.getSubmenu().getParent().getSelected().onEnter()
+                ).build(event.getSubmenu())
+        );
+    }
+
+    @SubscribeEvent
     public void menuButton(MenuButtonRegisterEvent event){
         MenuScreen screen = event.getScreen();
         ArrayList<MenuButton> buttons = event.getButtons();
-
-        int index = buttons.size();
 
         float topBarHeight = (float) screen.height * 0.17F;
         int start = (int)(topBarHeight) +5;
