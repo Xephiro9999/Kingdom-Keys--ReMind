@@ -113,8 +113,6 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
 
 
     // Dream Eater Stuff
-
-
     boolean hasDreamEaterSummoned();
     void setHasDreamEaterSummoned(boolean val);
 

@@ -27,80 +27,77 @@ public class BaseDreamEaterEntity extends TamableAnimal {
     }
 
 
-
-
-
     public int getStr() {
-            return str;
-        }
+        return str;
+    }
 
-        public void setStr(int str) {
-            this.str = str;
-        }
+    public void setStr(int str) {
+        this.str = str;
+    }
 
 
-        public int getMag() {
-            return mag;
-        }
+    public int getMag() {
+        return mag;
+    }
 
-        public void setMag(int mag) {
-            this.mag = mag;
-        }
+    public void setMag(int mag) {
+        this.mag = mag;
+    }
 
-        public int getDef() {
-            return def;
-        }
+    public int getDef() {
+        return def;
+    }
 
-        public void setDef(int def) {
-            this.def = def;
-        }
+    public void setDef(int def) {
+        this.def = def;
+    }
 
-        public int getHp() {
-            return hp;
-        }
+    public int getHp() {
+        return hp;
+    }
 
-        public void setHp(int hp) {
-            this.hp = hp;
-        }
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
-        public CompoundTag getDreamEaterStats() {
-            CompoundTag tag = new CompoundTag();
-            tag.putInt("hp", hp);
-            tag.putInt("str", str);
-            tag.putInt("mag", mag);
-            tag.putInt("def", def);
-            tag.putInt("lvl", lvl);
-            return tag;
-        }
+    public CompoundTag getDreamEaterStats() {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("hp", hp);
+        tag.putInt("str", str);
+        tag.putInt("mag", mag);
+        tag.putInt("def", def);
+        tag.putInt("lvl", lvl);
+        return tag;
+    }
 
-        public void readAdditionalSaveData(CompoundTag tag){
-            hp = tag.getInt("hp");
-            str = tag.getInt("str");
-            mag = tag.getInt("mag");
-            def = tag.getInt("def");
-            lvl = tag.getInt("lvl");
-            super.readAdditionalSaveData(tag);
-        }
+    public void readAdditionalSaveData(CompoundTag tag) {
+        hp = tag.getInt("hp");
+        str = tag.getInt("str");
+        mag = tag.getInt("mag");
+        def = tag.getInt("def");
+        lvl = tag.getInt("lvl");
+        super.readAdditionalSaveData(tag);
+    }
 
-        @Override
-        public void addAdditionalSaveData(CompoundTag tag) {
-            super.addAdditionalSaveData(tag);
-            tag.putInt("hp", hp);
-            tag.putInt("str", str);
-            tag.putInt("mag", mag);
-            tag.putInt("def", def);
-            tag.putInt("lvl", lvl);
-        }
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("hp", hp);
+        tag.putInt("str", str);
+        tag.putInt("mag", mag);
+        tag.putInt("def", def);
+        tag.putInt("lvl", lvl);
+    }
 
-        public CompoundTag serializeNBT(){
-            CompoundTag tag = new CompoundTag();
-            tag.putInt("hp", hp);
-            tag.putInt("str", str);
-            tag.putInt("mag", mag);
-            tag.putInt("def", def);
-            tag.putInt("lvl", lvl);
-            return tag;
-        }
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("hp", hp);
+        tag.putInt("str", str);
+        tag.putInt("mag", mag);
+        tag.putInt("def", def);
+        tag.putInt("lvl", lvl);
+        return tag;
+    }
 
 
     @Override

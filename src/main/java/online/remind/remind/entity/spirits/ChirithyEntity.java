@@ -125,14 +125,12 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
     }
 
-
-
-    public void tick(){
+    public void tick() {
         super.tick();
 
         if (this.level().isClientSide) return;
 
-        if (this.getOwner() == null){
+        if (this.getOwner() == null) {
             this.discard();
             return;
         }
@@ -165,13 +163,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         //this.setNoGravity(true);
         castSupportMagic();
-
-
-
-
-
     }
-
 
 
     private void castSupportMagic(){
@@ -408,8 +400,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         // TODO Stats
+        System.out.println(data.serializeNBT());
         compound.put("data", data.serializeNBT());
         super.addAdditionalSaveData(compound);
-
     }
 }

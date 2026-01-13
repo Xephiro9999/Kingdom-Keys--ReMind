@@ -21,6 +21,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.spirits.ChirithyEntity;
+import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.UUID;
@@ -65,28 +66,25 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
                 // Todo: Make dynamic system for reading what Dream Eater should be summoned
                 // NONE - 0, Chirithy = 1, Meow-Wow = 2, etc...
                 DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(globalData.getDreamEaterRL()));
-                int id = dreamEater.getId();
 
-                switch (id) {
-                    case 0:
+                switch (dreamEater.getName()) {
+                    case StringsRM.none:
                         // Tell Player that they do not have a Spirit
                         owner.displayClientMessage(Component.translatable("You don't have a Dream Eater Equipped!"), true);
                         break;
-                    case 1:
+                    case StringsRM.chirithy:
                         // Chirithy Summon
                         ChirithyEntity dreamEaterEntity = new ChirithyEntity(owner.level(), owner);
                         dreamEaterEntity.setOwnerUUID(owner.getUUID());
                         dreamEaterEntity.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
                         owner.level().addFreshEntity(dreamEaterEntity);
-                        if (kkData.getAlignment() != Utils.OrgMember.NONE) {
-                            dreamEaterEntity.setVariant(0);
-                        } else {
-                            dreamEaterEntity.setVariant(1);
-                        }
+                        int variant = kkData.getAlignment() != Utils.OrgMember.NONE ? 0 : 1;
+                        dreamEaterEntity.setVariant(variant);
                         globalData.setDreamEaterUUID(dreamEaterEntity.getUUID());
                         owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.SPIRIT_SUMMON.get(), SoundSource.PLAYERS, 0.2f, 1.0f);
                         globalData.setHasDreamEaterSummoned(true);
                         spawnArmorParticles(dreamEaterEntity);
+                        //PacketHandlerRM.sendTo(new SCSyncDreamEater(dreamEaterEntity.getId()), player);
                         break;
                 }
             } else {

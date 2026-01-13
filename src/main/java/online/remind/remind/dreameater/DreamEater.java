@@ -19,7 +19,7 @@ public class DreamEater {
     }
 
     public String getName() {
-        return rl.toString();
+        return rl.getPath();
     }
 
     public int getId() {
@@ -29,5 +29,7 @@ public class DreamEater {
     public ResourceLocation getRegistryName() {
         return rl;
     }
+
+
 
 }
