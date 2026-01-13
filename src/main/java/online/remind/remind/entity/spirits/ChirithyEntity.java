@@ -30,6 +30,7 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.spirits.goal.ChirithyGoal;
 import online.remind.remind.lib.StringsRM;
@@ -154,7 +155,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         // Desummon if player's data doesn't match the current ID
         if (data != null) {
-            if (!data.getDreamEaterRL().equals(StringsRM.chirithy)) {
+            if (!data.getDreamEaterRL().equals(ModDreamEaters.CHIRITHY.get().getRegistryName().toString())) {
                 data.setHasDreamEaterSummoned(false);
                 data.setDreamEaterUUID(null);
                 PacketHandlerRM.syncGlobalToAllAround(owner, data);
