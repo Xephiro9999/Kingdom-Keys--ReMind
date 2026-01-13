@@ -20,8 +20,8 @@ public class magicBalloon extends Magic {
 	}
 
 	@Override
-	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.2F;
+	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.2F;
 		caster.swing(InteractionHand.MAIN_HAND);
 
 		// Levels
@@ -49,7 +49,7 @@ public class magicBalloon extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(Player player, Player caster, int level) {
+	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.BALLOON.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

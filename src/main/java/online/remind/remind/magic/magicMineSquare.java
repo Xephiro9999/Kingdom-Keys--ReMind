@@ -24,13 +24,13 @@ public class magicMineSquare extends Magic {
 
 
     @Override
-    public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
         Vec3 forward = player.getLookAngle().normalize();
         Vec3 right = forward.cross(new Vec3(0, 1, 0)).normalize();
 
         // IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
-        float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F;
+        float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F;
         dmgMult *= fullMPBlastMult;
 
         switch (level) {
@@ -135,7 +135,7 @@ public class magicMineSquare extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(Player player, Player player1, int i) {
+    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
 
     }
 }

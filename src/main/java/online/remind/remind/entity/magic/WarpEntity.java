@@ -42,7 +42,7 @@ public class WarpEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public WarpEntity(Level world, Player player, float dmgMult) {
+    public WarpEntity(Level world, LivingEntity player, float dmgMult) {
         super(ModEntitiesRM.TYPE_WARP.get(), player, world);
         this.chanceMulti = dmgMult;
     }

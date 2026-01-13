@@ -17,8 +17,8 @@ public class magicSpark extends Magic {
     }
 
     @Override
-    public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-        float dmgMult = getDamageMult(level + 1) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+        float dmgMult = getDamageMult(level + 1) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
         dmgMult *= fullMPBlastMult;
 
         double baseRadius = 1.0;
@@ -97,7 +97,7 @@ public class magicSpark extends Magic {
 
 
             @Override
-    protected void playMagicCastSound(Player player, Player player1, int i) {
+    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
         // sound handled elsewhere if desired
 
     }

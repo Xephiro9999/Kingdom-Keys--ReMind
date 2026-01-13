@@ -18,9 +18,9 @@ public class magicRuin extends Magic {
 	}
 
 	@Override
-	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		// dmg
-		float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
+		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
 		switch (level) {
@@ -43,7 +43,7 @@ public class magicRuin extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(Player player, Player caster, int level) {
+	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.RUIN.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

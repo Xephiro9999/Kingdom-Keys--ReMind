@@ -23,10 +23,10 @@ public class magicMineShield extends Magic {
 
 
     @Override
-    public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
         // IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
-        float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F;
+        float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F;
         dmgMult *= fullMPBlastMult;
 
 // Horizontal forward vector only
@@ -131,7 +131,7 @@ public class magicMineShield extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(Player player, Player player1, int i) {
+    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
 
     }
 }

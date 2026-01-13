@@ -26,7 +26,7 @@ import yesman.epicfight.registry.entries.EpicFightSounds;
 
 public class quickBlitzCollider extends ThrowableProjectile {
 
-    private Player caster;
+    private LivingEntity caster;
     private float damage;
     private int maxTicks = 20;
     private int ticks = 0;
@@ -44,7 +44,7 @@ public class quickBlitzCollider extends ThrowableProjectile {
 
     }
 
-    public quickBlitzCollider(Level level, Player caster, float damage){
+    public quickBlitzCollider(Level level, LivingEntity caster, float damage){
         this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
         this.caster = caster;
         this.damage = damage;
@@ -91,7 +91,7 @@ public class quickBlitzCollider extends ThrowableProjectile {
                 }
                 LivingEntity target = (LivingEntity) entity;
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())){
-                    target.hurt(caster.damageSources().playerAttack((caster)), damage);
+                    target.hurt(caster.damageSources().mobAttack(caster), damage);
                     caster.setDeltaMovement(0, 0, 0);
                     caster.swing(InteractionHand.MAIN_HAND);
                     target.invulnerableTime = 0;

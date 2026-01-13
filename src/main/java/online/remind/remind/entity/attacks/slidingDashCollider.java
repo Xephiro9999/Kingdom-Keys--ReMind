@@ -27,7 +27,7 @@ import yesman.epicfight.registry.entries.EpicFightSounds;
 
 public class slidingDashCollider extends ThrowableProjectile {
 
-    private Player caster;
+    private LivingEntity caster;
     private float damage;
     private int maxTicks = 30;
     private int hits = 0;
@@ -46,7 +46,7 @@ public class slidingDashCollider extends ThrowableProjectile {
 
     }
 
-    public slidingDashCollider(Level level, Player caster, float damage){
+    public slidingDashCollider(Level level, LivingEntity caster, float damage){
         this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
         this.caster = caster;
         this.damage = damage;
@@ -95,7 +95,7 @@ public class slidingDashCollider extends ThrowableProjectile {
                 }
                 LivingEntity target = (LivingEntity) entity;
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())){
-                    target.hurt(caster.damageSources().playerAttack((caster)), damage);
+                    target.hurt(caster.damageSources().mobAttack(caster), damage);
                     caster.setDeltaMovement(0, 0, 0);
                     caster.swing(InteractionHand.MAIN_HAND);
                     target.invulnerableTime = 0;

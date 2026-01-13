@@ -37,7 +37,7 @@ public class FaithEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public FaithEntity(Level world, Player player, float dmgMult, LivingEntity lockedOnEntity) {
+    public FaithEntity(Level world, LivingEntity player, float dmgMult, LivingEntity lockedOnEntity) {
         super(ModEntitiesRM.TYPE_FAITH.get(), player, world);
         setCaster(player.getUUID());
         this.dmgMult = dmgMult;

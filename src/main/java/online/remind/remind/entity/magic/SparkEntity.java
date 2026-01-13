@@ -61,7 +61,7 @@ public class SparkEntity extends ThrowableProjectile {
     }
 
     // used when spawning from magic: (world, player, index, dmgMult)
-    public SparkEntity(Level world, Player player, int index, float dmgMult) {
+    public SparkEntity(Level world, LivingEntity player, int index, float dmgMult) {
         super(ModEntitiesRM.TYPE_SPARK.get(), player, world);
         this.blocksBuilding = true;
         this.index = index;

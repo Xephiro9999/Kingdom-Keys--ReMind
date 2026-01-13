@@ -20,8 +20,8 @@ public class attackDarkSurge extends Magic {
         super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
-    public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
-        PlayerData playerData = PlayerData.get(player);
+    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+        PlayerData playerData = PlayerData.get(caster);
         float dmg = 0;
 
         switch(level){
@@ -57,7 +57,7 @@ public class attackDarkSurge extends Magic {
     }
 
         @Override
-    protected void playMagicCastSound(Player player, Player player1, int i) {
+    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
             player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MINE.get(), SoundSource.PLAYERS, 1F, 1F);
     }
 }

@@ -17,7 +17,7 @@ public class magicOsmose extends Magic {
 	}
 
 	@Override
-	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
 		float mpTaken = getDamageMult(level);
 		mpTaken *= fullMPBlastMult;
 
@@ -43,7 +43,7 @@ public class magicOsmose extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(Player player, Player caster, int level) {
+	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.OSMOSE.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

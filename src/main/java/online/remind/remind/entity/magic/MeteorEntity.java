@@ -37,7 +37,7 @@ public class MeteorEntity extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public MeteorEntity(Level world, Player player, float dmgMult, LivingEntity lockedOnEntity) {
+    public MeteorEntity(Level world, LivingEntity player, float dmgMult, LivingEntity lockedOnEntity) {
         super(ModEntitiesRM.TYPE_METEOR.get(), player, world);
         setCaster(player.getUUID());
         this.dmgMult = dmgMult;

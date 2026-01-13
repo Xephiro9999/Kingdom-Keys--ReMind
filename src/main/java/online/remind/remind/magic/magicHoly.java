@@ -17,16 +17,16 @@ public class magicHoly extends Magic {
 	}
 
 	@Override
-	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
 		// IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
-		float dmgMult = getDamageMult(level) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
 		switch (level) {
 		case 0:
 			for (int i = -1; i <= 1; i++) {
-				HolyEntity holy = new HolyEntity(player.level(), player, i, dmgMult);
+				HolyEntity holy = new HolyEntity(player.level(), caster, i, dmgMult);
 				holy.setCaster(player.getDisplayName().getString());
 				player.level().addFreshEntity(holy);
 			}
@@ -34,7 +34,7 @@ public class magicHoly extends Magic {
 			break;
 		case 1:
 			for (int i = -2; i <= 2; i++) {
-				HolyEntity holy = new HolyEntity(player.level(), player, i, dmgMult);
+				HolyEntity holy = new HolyEntity(player.level(), caster, i, dmgMult);
 				holy.setCaster(player.getDisplayName().getString());
 				player.level().addFreshEntity(holy);
 			}
@@ -42,7 +42,7 @@ public class magicHoly extends Magic {
 			break;
 		case 2:
 			for (int i = -3; i <= 3; i++) {
-				HolyEntity holy = new HolyEntity(player.level(), player, i, dmgMult);
+				HolyEntity holy = new HolyEntity(player.level(), caster, i, dmgMult);
 				holy.setCaster(player.getDisplayName().getString());
 				player.level().addFreshEntity(holy);
 			}
@@ -53,7 +53,7 @@ public class magicHoly extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(Player player, Player caster, int level) {
+	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.HOLY.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

@@ -32,7 +32,7 @@ public class magicDispel extends Magic {
 	}
 
 	@Override
-	public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
 
 		if (lockOnEntity != null) {
 			IGlobalDataRM globalData = ModDataRM.getGlobal(lockOnEntity);
@@ -102,7 +102,7 @@ public class magicDispel extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(Player player, Player caster, int level) {
+	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
 		 player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.DISPEL.get(),
 		 SoundSource.PLAYERS, 1F, 1F);
 	}

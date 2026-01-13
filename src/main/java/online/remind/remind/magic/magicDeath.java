@@ -20,7 +20,7 @@ public class magicDeath extends Magic {
         super(registryName, hasToSelect, maxLevel, gmAbility);
     }
     @Override
-    public void magicUse(Player player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData casterData = PlayerData.get(caster);
         int crisisLv = 0;
 
@@ -198,7 +198,7 @@ public class magicDeath extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(Player player, Player caster, int level) {
+    protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.DEATH_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
     }
 }
