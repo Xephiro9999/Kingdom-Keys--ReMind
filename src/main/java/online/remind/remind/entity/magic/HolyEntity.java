@@ -126,7 +126,7 @@ public class HolyEntity extends ThrowableProjectile {
 							}
 						} else {
 							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), dmg * dmgMult);
-							System.out.println(dmg * dmgMult);
+							//System.out.println(dmg * dmgMult);
 						}
 						target.invulnerableTime = 0;
 					}

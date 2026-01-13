@@ -3,6 +3,7 @@ package online.remind.remind.capabilities;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.UUID;
@@ -140,7 +141,7 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     private boolean dreamEaterSummoned = false;
     private UUID dreamEaterUUID = new UUID(0L, 0L);
-    private String dreamEaterRL = StringsRM.none;
+    private String dreamEaterRL = KingdomKeysReMind.MODID+":"+StringsRM.none;
     private boolean donorGiven;
 
     private boolean darkMode;

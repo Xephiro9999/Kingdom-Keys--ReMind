@@ -102,7 +102,7 @@ public class SilenceEntity extends ThrowableProjectile {
                         }
                         if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
                             double time = (timeMult * (casterData.getMaxMP()/2));
-                            System.out.println(time);
+                            //System.out.println(time);
                             if(this.getOwner() instanceof Player) {
                                 List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((Player) this.getOwner(), this, radius,radius,radius);
                                 for(LivingEntity e : targetList) {

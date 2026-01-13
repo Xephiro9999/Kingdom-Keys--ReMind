@@ -57,7 +57,6 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
             if (kkData == null || globalData == null)
                 return;
 
-            System.out.println(globalData.hasDreamEaterSummoned());
             if (!globalData.hasDreamEaterSummoned() && globalData.getDreamEaterUUID() == null) {
                 // Spawn
                 if (!(owner.level() instanceof ServerLevel serverLevel))

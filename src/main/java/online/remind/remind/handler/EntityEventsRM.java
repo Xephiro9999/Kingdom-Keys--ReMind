@@ -77,7 +77,7 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if(globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
+        if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
             globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
         }
 

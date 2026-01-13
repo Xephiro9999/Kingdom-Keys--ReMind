@@ -37,7 +37,7 @@ public class CounterRushRC extends ReactionCommand {
         int hitsDealt = 0;
 
         //System.out.println(dmg);
-        System.out.println(hits);
+        //System.out.println(hits);
 
         double X = player.getX();
         double Z = player.getZ();
