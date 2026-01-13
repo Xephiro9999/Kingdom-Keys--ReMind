@@ -39,6 +39,7 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ClientEventsRM {
@@ -63,9 +64,9 @@ public class ClientEventsRM {
             Entity dreamEaterEntity = ClientUtilsRM.getEntityByUUIDClient(globalData.getDreamEaterUUID());
             int dreamEaterID = dreamEaterEntity.getId();
             event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
-                            Component.literal(ChatFormatting.AQUA + dreamEater.getTranslationKey()),
+                            Component.literal(dreamEater.getTranslationKey()),
                             item -> event.getSubmenu().getParent().getSelected().onEnter()
-                    ).setData(dreamEaterID+"").build(event.getSubmenu())
+                    ).setData(dreamEaterID+"").textColour(Color.CYAN).build(event.getSubmenu())
             );
         }
     }
