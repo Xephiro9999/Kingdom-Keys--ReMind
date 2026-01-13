@@ -396,7 +396,11 @@
   "effect.kkremind.regen": "Regen",
   "effect.kkremind.auto_life": "Auto-Life",
   "effect.kkremind.stone": "Stone",
-  "effect.kkremind.confuse": "Confuse"
+  "effect.kkremind.confuse": "Confuse",
+
+  "dreameater.none.name": "None",
+  "dreameater.dreameater_chirithy.name": "Chirithy",
+  "dreameater.dreameater_meowwow.name": "Meow Wow"
 
 
 }
