@@ -1,20 +1,25 @@
 package online.remind.remind.dreameater;
 
 import net.minecraft.resources.ResourceLocation;
-import online.remind.remind.KingdomKeysReMind;
 
 public class DreamEater {
 
-    ResourceLocation name;
+    ResourceLocation rl;
     int id;
+    String translationKey;
 
     public DreamEater(ResourceLocation registryName, int id){
-        this.name = registryName;
+        this.rl = registryName;
         this.id = id;
+        translationKey = "dreameater." + registryName.getPath() + ".name";
+    }
+
+    public String getTranslationKey() {
+        return translationKey;
     }
 
     public String getName() {
-        return name.toString();
+        return rl.toString();
     }
 
     public int getId() {
@@ -22,7 +27,7 @@ public class DreamEater {
     }
 
     public ResourceLocation getRegistryName() {
-        return ResourceLocation.parse(KingdomKeysReMind.MODID+":"+name);
+        return rl;
     }
 
 }

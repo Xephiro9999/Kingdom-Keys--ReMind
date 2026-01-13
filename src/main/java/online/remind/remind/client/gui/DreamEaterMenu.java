@@ -109,16 +109,16 @@ public class DreamEaterMenu extends MenuBackground {
         int d = 0;
         int spacer = 14;
 
-        addRenderableWidget(changeSpirit = new MenuButton((int) buttonPosX, button_statsY, (int) buttonWidth, "Change Spirit", MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(changeSpirit = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, "Change Spirit", MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("changeSpirit");
         }));
-        addRenderableWidget(createSpirit = new MenuButton((int) buttonPosX, button_statsY + 20, (int) buttonWidth, "Create Spirit", MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(createSpirit = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, "Create Spirit", MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("createSpirit");
         }));
-        addRenderableWidget(abilityLinks = new MenuButton((int) buttonPosX, button_statsY +40, (int) buttonWidth, "Ability Links", MenuButton.ButtonType.BUTTON, true, (e) -> {
+        addRenderableWidget(abilityLinks = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, "Ability Links", MenuButton.ButtonType.BUTTON, true, (e) -> {
             action("wip");
         }));
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY +60, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
+        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 18*i++, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
         }));
 
@@ -128,7 +128,6 @@ public class DreamEaterMenu extends MenuBackground {
         PlayerData playerData = PlayerData.get(minecraft.player);
 
         if (global != null){
-            System.out.println(global.getDreamEaterRL());
 
             DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(global.getDreamEaterRL()));
             int id = dreamEater.getId();
