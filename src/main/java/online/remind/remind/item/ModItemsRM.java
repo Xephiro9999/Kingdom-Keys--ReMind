@@ -86,7 +86,6 @@ public class ModItemsRM{
         fierceDeityKeyChain = ITEMS.register("fierce_deity_key_chain", () -> new KeychainItem()),
         lyric2025TournamentChain = ITEMS.register("lyric_2025_tournament_chain", () -> new KeychainItem()),
         voidlightChain = ITEMS.register("voidlight_chain", () -> new KeychainItem()),
-        kingdomKeyNightmareChain = ITEMS.register("kingdom_key_n_chain", () -> new KeychainItem()),
 
 
         // And this is where I'd put my Org Weapons... IF I HAD ONE!

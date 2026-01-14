@@ -193,7 +193,7 @@
   "ability.ability_focus_block.name": "Focus Block",
   "ability.ability_focus_block.desc": "Upon a successful guard, restore a small amount of Focus. \nRestores more upon successful parry! \nRequires EFM Guard Skill.",
   "ability.ability_stop_block.name": "Stop Block",
-  "ability.ability_stop_block.desc": "Upon a successful Parry, inflict Stop on the attacker. \nRestores more upon successful parry! \nRequires EFM Guard Skill.",
+  "ability.ability_stop_block.desc": "Upon a successful Parry, inflict Stop on the attacker. \nRequires EFM Parry Skill.",
   "ability.ability_royal_guard.name": "Royal Guard",
   "ability.ability_royal_guard.desc": "Upon a successful guard, restore a small amount of Drive. \n(Restores Form Gauge if done while in a form) Restores more upon successful parry! \nRequires EFM Guard Skill.",
   "ability.ability_counter_hammer.name": "Counter Hammer",

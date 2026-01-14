@@ -69,8 +69,8 @@ public class GuardSkillMixin {
         if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
             if (event.isParried()) {
                 GlobalData target = GlobalData.get((LivingEntity) attacker);
-                if (playerData.getMP() >= 10) {
-                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP, 40, 2, false, false, false));
+                if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
+                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
                     event.getPlayerPatch().playSound(ModSounds.stop.get(), 1f, 1f);
                     playerData.remMP(10);
                 }

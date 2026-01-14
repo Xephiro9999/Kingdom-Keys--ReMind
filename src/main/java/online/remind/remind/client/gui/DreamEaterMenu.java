@@ -166,6 +166,11 @@ public class DreamEaterMenu extends MenuBackground {
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aero", "Requires Aero Unlocked", 0x000000));
                     }
+                    if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
+                        addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "LEARNED", 0x7a8487));
+                    } else {
+                        addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "Requires Auto-Life Unlocked", 0x000000));
+                    }
                     break;
             }
 

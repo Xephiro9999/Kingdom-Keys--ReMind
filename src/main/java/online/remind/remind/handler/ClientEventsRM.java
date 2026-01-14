@@ -64,7 +64,7 @@ public class ClientEventsRM {
             Entity dreamEaterEntity = ClientUtilsRM.getEntityByUUIDClient(globalData.getDreamEaterUUID());
             int dreamEaterID = dreamEaterEntity.getId();
             event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
-                            Component.literal(dreamEater.getTranslationKey()),
+                            Component.translatable(dreamEater.getTranslationKey()),
                             item -> event.getSubmenu().getParent().getSelected().onEnter()
                     ).setData(dreamEaterID+"").textColour(Color.CYAN).build(event.getSubmenu())
             );
@@ -88,10 +88,11 @@ public class ClientEventsRM {
                 action(RMButtons.PRESTIGE);
             }));
         }
-
-        buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_DreamEater), MenuButton.ButtonType.BUTTON, true, (e) -> {
-            action(RMButtons.DREAMEATER);
-        }));
+		if (ModConfigs.spiritsEnabled) {
+			buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_DreamEater), MenuButton.ButtonType.BUTTON, true, (e) -> {
+				action(RMButtons.DREAMEATER);
+			}));
+		}
 
         // Panel
         if (ModConfigs.panelsEnabled) {
@@ -111,9 +112,10 @@ public class ClientEventsRM {
             action(RMButtons.WALLET);
         }));
         // Credits
-        buttons.add(new MenuButton((int) buttonPosX, start + 18  * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Credits), MenuButton.ButtonType.BUTTON, false, (e) -> {
-            action(RMButtons.CREDITS);
-        }));
+		buttons.add(new MenuButton((int) buttonPosX, start + 18 * ++pos, (int) buttonWidth, (StringsRM.Gui_Menu_Button_Credits), MenuButton.ButtonType.BUTTON, false, (e) -> {
+			action(RMButtons.CREDITS);
+		}));
+
     }
 
     protected void action(RMButtons buttonID){

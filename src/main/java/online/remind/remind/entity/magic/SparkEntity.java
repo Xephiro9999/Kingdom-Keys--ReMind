@@ -34,7 +34,7 @@ public class SparkEntity extends ThrowableProjectile {
 
     // config / state
     private String casterName = "";
-    private float dmgMult = 1f;
+    private float dmgMult;
     private int index = 0;
 
     // orbit params (tweak these)
@@ -181,6 +181,7 @@ public class SparkEntity extends ThrowableProjectile {
         }
 
         if (!level().isClientSide && ownerPlayer != null) {
+            ownerPlayer.setDeltaMovement(0,0,0);
             double damageRange = 0.5; // radius around orb to hit entities
             AABB box = this.getBoundingBox().inflate(damageRange, damageRange, damageRange);
 
@@ -192,10 +193,12 @@ public class SparkEntity extends ThrowableProjectile {
                 if (ownerPlayer instanceof Player owner) p = WorldData.get(owner.getServer()).getPartyFromMember(owner.getUUID());
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
                     PlayerData playerData = PlayerData.get(ownerPlayer);
-                    //float dmg = ownerPlayer instanceof Player ? ((float) playerData.getMagic(true) / 3) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2f) : 4;
-                    float dmg = ownerPlayer instanceof Player ? (DamageCalculation.getMagicDamage((Player) ownerPlayer) * 0.15f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2f) : 4;
+                    float dmg = (float) playerData.getMagic(true) * 0.005f;
+                    dmgMult = (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.5f);
+                    dmg += (dmg*dmgMult);
 
-                    if (target.getType().is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE,
+
+                    /*if (target.getType().is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE,
                             net.minecraft.resources.ResourceLocation.withDefaultNamespace("undead")))) {
                         target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), (dmg * dmgMult) * 1.10F);
                     } else if (target instanceof IKHMob ikhMob) {
@@ -206,8 +209,11 @@ public class SparkEntity extends ThrowableProjectile {
                             target.hurt(this.damageSources().indirectMagic(this, ownerPlayer), dmg);
                         }
                     } else {
-                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg * dmgMult);
-                    }
+                        target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
+                    }*/
+                    target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
+                    System.out.println(dmgMult);
+                    System.out.println(dmg);
                     target.invulnerableTime = 11; // reset invulnerability so multiple hits possible
                 }
             }

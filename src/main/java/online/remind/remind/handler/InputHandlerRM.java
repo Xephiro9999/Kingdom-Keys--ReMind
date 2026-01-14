@@ -23,6 +23,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.GUIHelperRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -142,8 +143,12 @@ public class InputHandlerRM {
 
 		if(key != null) {
 			switch (key) {
-				case SUMMONSPIRIT -> summonSpirit();
-			}
+                case SUMMONSPIRIT -> {
+                    if(ModConfigs.spiritsEnabled){
+                        summonSpirit();
+                    }
+                }
+            }
 		}
 	}
 

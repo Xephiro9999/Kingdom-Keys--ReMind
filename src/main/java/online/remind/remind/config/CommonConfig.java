@@ -20,6 +20,10 @@ public class CommonConfig {
     public ModConfigSpec.IntValue panelBonus;
     public ModConfigSpec.IntValue panelLimit;
 
+    // Dream Eater Configs
+    public ModConfigSpec.BooleanValue spiritsEnabled;
+    public ModConfigSpec.DoubleValue autoLifeCD;
+
 
 
 
@@ -77,5 +81,16 @@ public class CommonConfig {
                 .comment("Sets the max stats given by the Panel System. Note: High numbers can/will break balance!")
                 .comment("Default: 50")
                 .defineInRange("Panels Cap:", 50, 1, 9999);
+
+        builder.pop();
+        builder.push("Spirits");
+        spiritsEnabled = builder
+                .comment("If set to 'true', allows the usage of the Dream Eater menus.")
+                .comment("Default: true")
+                .define("Spirits Enabled", true);
+        autoLifeCD = builder
+                .comment("Sets how long before Chirithy can cast Auto-Life on you again in minutes.")
+                .comment("Default: 5.0.")
+                .defineInRange("Chirithy Auto-Life Cooldown", 5.0,1,1000);
     }
 }

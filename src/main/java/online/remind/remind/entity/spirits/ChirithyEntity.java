@@ -30,7 +30,9 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.dreameater.ModDreamEaters;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.spirits.goal.ChirithyGoal;
 import online.remind.remind.lib.StringsRM;
@@ -56,6 +58,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private int cureCooldown;
     private int aeroCooldown;
     private int esunaCooldown;
+    private double autoLifeCooldown;
     private int castCooldown;
 
     public static final int
@@ -180,6 +183,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             esunaCooldown--;
         }
 
+        if (autoLifeCooldown > 0){
+            autoLifeCooldown--;
+        }
+
         if (castCooldown > 0){
             castCooldown--;
         }
@@ -245,8 +252,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                 // Heal Self
                 if (cureCooldown == 0) {
-                    if (this.getHealth() < this.getMaxHealth()) {
-                        this.heal((float) chirithyMagic * 1.25f);
+                    if (this.getHealth() < this.getMaxHealth() && !owner.isHurt()) {
+                        this.heal((float) chirithyMagic * 2f);
                         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), this.getX(), this.getY() + 2.3D, this.getZ(), 5, 0D, 0D, 0D, 0D);
                         this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), ModSounds.cure.get(), SoundSource.NEUTRAL, 1f, 1f);
                         owner.sendSystemMessage(Component.literal("<Chirithy> Gotta patch myself up!"));
@@ -271,6 +278,21 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                                 castCooldown = 20;
 
                             }
+                        }
+                    }
+                }
+
+                // Auto-Life
+                if (ownerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
+                    if (!owner.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
+                        if (autoLifeCooldown == 0){
+                            owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE,Integer.MAX_VALUE, 0,false,false));
+                            owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+                            owner.sendSystemMessage(Component.literal("<Chirithy> Not gonna let you die! Auto-Life!"));
+                            this.startCasting();
+                            autoLifeCooldown = ModConfigs.autoLifeCD * 1200;
+                            castCooldown = 20;
+
                         }
                     }
                 }
@@ -300,8 +322,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 5F));
         this.goalSelector.addGoal(3, new ChirithyGoal(this, 0.85d,2.0f,10.0f,false));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this,0.25D));
-        // Heal Owner
-        // Buff Owner
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         // Targeting

@@ -11,9 +11,11 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.lib.StringsRM;
 
 import java.util.List;
 
@@ -65,6 +67,14 @@ public class lightSurgeCollider extends ThrowableProjectile {
                         getX() + radius, getY() + 1, getZ() + radius),
                 e -> e != caster && e.isAlive());
 
+        PlayerData playerData = PlayerData.get(caster);
+        if (playerData != null) {
+            damage = playerData.getStrength(true) * 0.2f;
+            double dmgMult = (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost)) * 0.5f;
+            damage += (damage * dmgMult);
+        }
+
+
         this.setOwner(caster);
         for (LivingEntity target : entities) {
             if (target != getOwner()) {
@@ -76,6 +86,7 @@ public class lightSurgeCollider extends ThrowableProjectile {
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
                     //getOwner().sendSystemMessage(Component.literal("Entity: " + target));
                     target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner()), damage);
+                    System.out.println(damage);
                     target.invulnerableTime = 0; // allow multiple hits per tick
                 }
             }

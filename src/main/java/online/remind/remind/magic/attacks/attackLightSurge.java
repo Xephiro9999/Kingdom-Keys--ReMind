@@ -22,19 +22,17 @@ public class attackLightSurge extends Magic {
 
     public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
-        float dmg = 0;
+        float dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
 
-        switch(level){
-            case 0:
-                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
-                break;
-            case 1:
-                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
-                break;
-            case 2:
-                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
-                break;
+        if (level == 0){
+            dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+        } else if (level == 1){
+            dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+        } else if (level == 2){
+            dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
         }
+
+
 
         float radius = 1.5f + (0.5f * level);
 

@@ -525,8 +525,14 @@ public class EntityEventsRM {
 					// My Friends Are My Power
 					if (playerData.isAbilityEquipped(StringsRM.friendsPower)) {
 						Party party = worldData.getPartyFromMember(player.getUUID());
-						if (party != null) {
-							int friendBoost = 5 * (party.getMembers().size() - 1);
+						int friendBoost = 0;
+						if (party != null || globalData.hasDreamEaterSummoned()) {
+							if (party != null) {
+								friendBoost = 5 * (party.getMembers().size() - 1);
+							}
+							if (globalData.hasDreamEaterSummoned()){
+								friendBoost ++;
+							}
 							playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, true);
 							playerData.getMagicStat().addModifier("Friendship", friendBoost, false, true);
 							playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, true);

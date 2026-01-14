@@ -38,6 +38,9 @@ public class ModConfigs {
         panelBonus = COMMON.panelBonus.get();
         panelLimit = COMMON.panelLimit.get();
 
+        // Dream Eater Configs
+        spiritsEnabled = COMMON.spiritsEnabled.get();
+        autoLifeCD = COMMON.autoLifeCD.get();
 
     }
 
@@ -57,6 +60,10 @@ public class ModConfigs {
     public static boolean panelsEnabled;
     public static int panelBonus;
     public static int panelLimit;
+
+    // Dream Eaters
+    public static boolean spiritsEnabled;
+    public static double autoLifeCD;
 
 
     @SubscribeEvent
