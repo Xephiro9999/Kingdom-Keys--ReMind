@@ -85,75 +85,24 @@ public class WikiMenu extends MenuBackground {
 
     private void addAttackElements() {
         wikiLib.ATTACK_HEADER.add();
-
-       /* new ElementPairBuilder(attackList).setLeft("Attack Name","Element/Type", 0x6600ff).setPosition(col1X+200).setWidths((int)width+70, 10,(int)width+90).setRight("Description","", 0xd68e2f).add();
-
-// D Tier Spells
         boolean condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_quick_blitz"));
-        new ElementPairBuilder(attackList).setLeft("Quick Blitz", "Physical", 0xB03060).setPosition(col1X+200).setWidths((int)width+70, 10,(int)width+90).setRight("", "","You don't have this command.","Found via synthesis", 0x754e1a).setCondition(condition).add();
-
-
+        wikiLib.QUICK_BLITZ.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_sliding_dash"));
-        new ElementPairBuilder(attackList).setLeft("Sliding Dash", "Physical", 0xB03060).setPosition(col1X+200).setWidths((int)width+70, 10,(int)width+90).setRight("", "","You don't have this command.","Found via synthesis", 0x754e1a).setCondition(condition).add();
-
-
-// C Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_fire_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Fire Surge"), "Fire", 0xE6452D));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_blizzard_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Blizzard Surge"), "Ice", 0x7FDBFF));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_thunder_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Thunder Surge"), "Lightning", 0xF7E600));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_water_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Water Surge"), "Water", 0x1CA9C9));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_aero_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Aero Surge"), "Air", 0xBEEFFF));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_light_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Light Surge"), "Light", 0xFFF2A8));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"))) {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Dark Surge"), "Darkness", 0x2A0A3D));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            attackList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            attackList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this command."), "Found via Synthesis", 0x232324));
-        }*/
+        wikiLib.SLIDING_DASH.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_fire_surge"));
+        wikiLib.FIRE_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_thunder_surge"));
+        wikiLib.THUNDER_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_blizzard_surge"));
+        wikiLib.BLIZZARD_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_water_surge"));
+        wikiLib.WATER_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_aero_surge"));
+        wikiLib.AERO_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_light_surge"));
+        wikiLib.LIGHT_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"));
+        wikiLib.DARK_SURGE.setCondition(condition).add();
     }
 
     private void addMagicElements() {
@@ -161,17 +110,13 @@ public class WikiMenu extends MenuBackground {
         boolean condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"));
         wikiLib.ESUNA.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_dispel"));
+        wikiLib.DISPEL.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_haste"));
+        wikiLib.HASTE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_slow"));
+        wikiLib.SLOW.setCondition(condition).add();
         //TODO rest of them
         /*
-        wikiLib.DISPEL.setCondition(condition).add();
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_dispel"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Dispel"), "Debuff", 0xB03060));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Removes ALL buffs from enemies!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
         // C Tier Spells
         if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_haste"))) {
             magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Haste/Hastera/Hastega"), "Buff", 0x4CD964));
