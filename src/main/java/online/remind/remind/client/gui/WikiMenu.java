@@ -115,194 +115,59 @@ public class WikiMenu extends MenuBackground {
         wikiLib.HASTE.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_slow"));
         wikiLib.SLOW.setCondition(condition).add();
-        //TODO rest of them
-        /*
-        // C Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_haste"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Haste/Hastera/Hastega"), "Buff", 0x4CD964));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("A speed up to you and your allies!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_slow"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Slow/Slowra/Slowga"), "Debuff", 0xB03060));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("A AoE slow-down to your enemies!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_steal"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Steal"), "N/A", 0xCFCFCF));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Steals from your foe! [WIP]"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_spark"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Spark/Sparkra/Sparkga"), "Light", 0xFFF2A8));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Surrounds you with orbs of Light!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        // B Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_berserk"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Berserk/Berserkra/Berserkga"), "Buff", 0x4CD964));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Gives strength in exchange for defense!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_drain"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Drain/Drainra/Drainga"), "N/A", 0xCFCFCF));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Steals HP from your foe!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_osmose"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Osmose/Osmosera/Osmosega"), "N/A", 0xCFCFCF));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Steals MP from your foe!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        // A Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_silence"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Silence/Silencera/Silencega"), "Debuff", 0xB03060));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Prevents others from casting magic!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_holy"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Holy/Holyra/Holyga"), "Light", 0xFFF2A8));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Shoots orbs of piercing Light!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ruin"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Ruin/Ruinra/Ruinga"), "Darkness", 0x2A0A3D));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Shoots an orb of exploding Darkness!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_balloon"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Balloon/Balloonra/Balloonga"), "Water", 0x1CA9C9));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Bounces and splashes your enemies!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        // S Tier Spells
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_steal"));
+        wikiLib.STEAL.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_spark"));
+        wikiLib.SPARK.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_berserk"));
+        wikiLib.BERSERK.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_drain"));
+        wikiLib.DRAIN.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_osmose"));
+        wikiLib.OSMOSE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_silence"));
+        wikiLib.SILENCE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_holy"));
+        wikiLib.HOLY.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ruin"));
+        wikiLib.RUIN.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_balloon"));
+        wikiLib.BALLOON.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"));
-        //addHiddenElementPair(magicList,col1X+200, 0, (int) width + 70,"Auto-Life", "Buff", 0x4CD964, 20, (int) width + 90,"Saves you from death itself!","", 0x754e1a, condition, "You don't have this spell.", "Found via synthesis");
-        new ElementPairBuilder(magicList).setLeft("Auto-Life", "Buff", 0x4CD964).setPosition(col1X+200).setWidths((int)width+70, 10,(int)width+90).setRight("Saves you from death itself!", "","You don't have this spell.", "Found via synthesis", 0x754e1a).setCondition(condition).add();
-
-
+        wikiLib.AUTO_LIFE.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"));
-        //addHiddenElementPair(magicList,col1X+200, 0, (int) width + 70,"Mine Shield", "Fire", 0xE6452D, 20, (int) width + 90,"Places mines that explode after a while!","", 0x754e1a, condition, "You don't have this spell.", "Found via synthesis");
-        new ElementPairBuilder(magicList).setLeft("Mine Shield", "Fire", 0x4CD964).setPosition(col1X+200).setWidths((int)width+70, 10,(int)width+90).setRight("Places mines that explode after a while!", "", "You don't have this spell.", "Found via synthesis", 0x754e1a).setCondition(condition).add();
+        wikiLib.MINE_SHIELD.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"));
+        wikiLib.MINE_SQUARE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_regen"));
+        wikiLib.REGEN.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_faith"));
+        wikiLib.FAITH.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_comet"));
+        wikiLib.COMET.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_warp"));
+        wikiLib.WARP.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_confuse"));
+        wikiLib.CONFUSE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ultima"));
+        wikiLib.ULTIMA.setCondition(condition).add();
+        //TODO: Figure out a fun and balanced way to make Death obtainable outside of commands?
+        //condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_death"));
+        //wikiLib.DEATH.setCondition(condition).add();
 
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Mine Square"), "Fire", 0xE6452D));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Places mines that explode after a while!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_regen"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Regen/Regenra/Regenga"), "Buff", 0x4CD964));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Gradually restores HP, MP/Focus at higher levels"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_faith"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Faith"), "Light", 0xFFF2A8));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Rains down piercing Light!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        // SS Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_comet"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Comet/Meteor"), "Darkness", 0x2A0A3D));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Rain down the stars upon your enemies!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }
-
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_warp"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Warp"), "N/A", 0xCFCFCF));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Chance to TP foe afar or kill them!"), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Crafting", 0x232324));
-
-            if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_confuse"))) {
-                magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Confuse"), "Debuff", 0xB03060));
-                magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("Disorientates your foes!"), "", 0x754e1a));
-            } else {
-                magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-                magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-            }
-        }
-
-        // SSS Tier Spells
-        if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ultima"))) {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Ultima"), "N/A", 0xCFCFCF));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("The ultimate spell in range and destruction."), "", 0x754e1a));
-        } else {
-            magicList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            magicList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 90, Utils.translateToLocal("You don't have this spell."), "Found via Synthesis", 0x232324));
-        }*/
     }
 
     private void addDriveElements() {
+        wikiLib.FORMS_HEADER.add();
+        boolean condition = playerData.getDriveFormMap().containsKey((KingdomKeysReMind.MODID+":"+ "form_light"));
+        wikiLib.LIGHT.setCondition(condition).add();
+        condition = playerData.getDriveFormMap().containsKey((KingdomKeysReMind.MODID+":"+ "form_dark"));
+        wikiLib.DARK.setCondition(condition).add();
+        condition = playerData.getDriveFormMap().containsKey((KingdomKeysReMind.MODID+":"+ "form_rage"));
+        wikiLib.RAGE.setCondition(condition).add();
+        condition = playerData.getDriveFormMap().containsKey((KingdomKeysReMind.MODID+":"+ "form_twilight"));
+        wikiLib.TWILIGHT.setCondition(condition).add();
 
-       /* formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Drive Form:"), "Ability:", 0xfefc6a));
-        formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal("Description:"), "", 0xd68e2f));
-
-        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) > 0) {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Light Form"), "Way to Light", 0xFFF2A8));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), " Level by defeating enemies and using the RC", 0xC47A2C));
-        } else {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "Found via Synthesis or Keyblade", 0x232324));
-        }
-        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) > 0) {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Dark Form"), "Dark Power", 0x2A0A3D));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), " Level by defeating enemies and using the RC", 0xC47A2C));
-        } else {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "Found via Synthesis or Keyblade", 0x232324));
-        }
-
-        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm) > 0) {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Rage Form"), "Rage Awakened", 0x8f0303));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "", 0xC47A2C));
-        } else {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "Found via Synthesis or Keyblade", 0x232324));
-        }
-        if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.twilight) > 0) {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("Twilight Form"), "Road to Dawn", 0x9E9E9E));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "Defeat Bosses and use the RC", 0xC47A2C));
-        } else {
-            formsList.add(new MenuColourBox(col1X + 200, button_stats_playerY + (d++ * spacer), (int) width + 70, Utils.translateToLocal("????"), "????", 0x232324));
-            formsList.add(new MenuColourBox(col2X + 400, button_statsY + (c++ * spacer), (int) width + 70, Utils.translateToLocal(""), "Found via ??????", 0x232324));
-        }*/
     }
 
     int scrollTop, scrollBot;

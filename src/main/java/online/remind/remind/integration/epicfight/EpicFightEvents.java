@@ -5,24 +5,31 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
  import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
+import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.network.EpicFightNetworkManager;
 import yesman.epicfight.registry.entries.EpicFightSkills;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 public class EpicFightEvents {
@@ -41,13 +48,13 @@ public class EpicFightEvents {
             PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
             //System.out.println(player.level().isClientSide() + " " + playerpatch);
             if (playerpatch != null) {
-               //System.out.println(playerpatch.getSkill(SkillSlots.GUARD).getSkill());
+                //System.out.println(playerpatch.getSkill(SkillSlots.GUARD).getSkill());
             }
         }
     }
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent.Pre event){
+    public void onPlayerTick(PlayerTickEvent.Pre event) {
 
         Player player = event.getEntity();
         if (KingdomKeysReMind.efmLoaded) {
@@ -61,27 +68,27 @@ public class EpicFightEvents {
                         int spellLevel = playerData.getCastedMagic().level();
 
 
-                            if (spellName.equals("kkremind:attack_sliding_dash")) {
-                                if (!animationsPlayed){
-                                    playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
-                                    animationsPlayed = true;
-                                }
-
-                                //player.sendSystemMessage(Component.literal("Sliding Dash"));
-
-                            }
-                            if (spellName.equals("kkremind:attack_quick_blitz")) {
-                                if (!animationsPlayed){
-                                    playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
-                                    animationsPlayed = true;
-                                }
-                                //player.sendSystemMessage(Component.literal("Quick Blitz"));
+                        if (spellName.equals("kkremind:attack_sliding_dash")) {
+                            if (!animationsPlayed) {
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+                                animationsPlayed = true;
                             }
 
-                            //TODO: Add more attacks and spells later!
+                            //player.sendSystemMessage(Component.literal("Sliding Dash"));
+
+                        }
+                        if (spellName.equals("kkremind:attack_quick_blitz")) {
+                            if (!animationsPlayed) {
+                                playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                animationsPlayed = true;
+                            }
+                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
+                        }
+
+                        //TODO: Add more attacks and spells later!
 
 
-                    } else if (playerData.getCastedMagic() == null){
+                    } else if (playerData.getCastedMagic() == null) {
                         animationsPlayed = false; // to prevent animations not going off again and a reset
                     }
                 }
@@ -91,7 +98,7 @@ public class EpicFightEvents {
 
 
     @SubscribeEvent
-    public void equipAbility(AbilityEvent.Equip event){
+    public void equipAbility(AbilityEvent.Equip event) {
         if (KingdomKeysReMind.efmLoaded) {
             Player player = event.getPlayer();
             PlayerData playerData = PlayerData.get(event.getPlayer());
@@ -172,4 +179,22 @@ public class EpicFightEvents {
             }
         }
     }
+
+    public void onEffectAdded(MobEffectEvent.Added event) {
+        if (event.getEntity() instanceof Player player) {
+            PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            Animator animator = playerpatch.getAnimator();
+            while (player.hasEffect(ModMobEffects.STOP)) {
+                animator.setHardPause(true);
+            }
+        } else {
+            EntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(event.getEntity(), EntityPatch.class);
+            if (patch != null){
+                //Animator animator = patch.getAnimator();
+
+            }
+        }
+    }
 }
+
+
