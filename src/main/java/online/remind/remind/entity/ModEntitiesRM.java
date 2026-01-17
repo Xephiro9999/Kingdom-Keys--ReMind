@@ -63,6 +63,7 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<aeroSurgeCollider>> TYPE_AERO_SURGE = createEntityType(aeroSurgeCollider::new, MobCategory.MISC,"aero_surge_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<lightSurgeCollider>> TYPE_LIGHT_SURGE = createEntityType(lightSurgeCollider::new, MobCategory.MISC,"light_surge_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<darkSurgeCollider>> TYPE_DARK_SURGE = createEntityType(darkSurgeCollider::new, MobCategory.MISC,"dark_surge_collider", 1.5F, 1.5F);
+    public static final Supplier<EntityType<zantesukenCollider>> TYPE_ZANTESUKEN = createEntityType(zantesukenCollider::new, MobCategory.MISC,"zantesuken_collider", 1.5F, 1.5F);
 
 
 

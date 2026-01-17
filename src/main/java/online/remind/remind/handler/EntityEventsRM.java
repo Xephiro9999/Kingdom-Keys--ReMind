@@ -72,6 +72,23 @@ public class EntityEventsRM {
 	public static Map<UUID, Item> ALLOWED_UUIDS = new HashMap<>();
 
 	@SubscribeEvent
+	public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent e){
+		Player player = e.getEntity();
+		PlayerData playerData = PlayerData.get(player);
+		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+		if (playerData != null){
+
+		}
+
+		if (globalData != null){
+			globalData.setHasDreamEaterSummoned(false);
+			globalData.setDreamEaterUUID(null);
+			PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+		}
+	}
+
+	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
 		Player player = e.getEntity();
 		PlayerData playerData = PlayerData.get(player);
