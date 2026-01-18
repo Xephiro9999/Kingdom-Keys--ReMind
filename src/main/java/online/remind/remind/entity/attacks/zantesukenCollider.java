@@ -36,6 +36,7 @@ public class zantesukenCollider extends ThrowableProjectile {
     private float damage;
     private int maxTicks = 50;
     private int spellLevel = 0;
+    private int maxHits = 1;
 
     public zantesukenCollider(EntityType<? extends ThrowableProjectile> type, Level level){
         super(type, level);
@@ -60,7 +61,7 @@ public class zantesukenCollider extends ThrowableProjectile {
 
     public void tick() {
 
-        float radius = 4.5F;
+        float radius = 5.5F;
 
         if (caster == null || !caster.isAlive()) {
             remove(RemovalReason.KILLED);
@@ -113,67 +114,79 @@ public class zantesukenCollider extends ThrowableProjectile {
                 break;
         }
 
-        System.out.println("Chance: " + chance + ", Power: " + power); //Debugging Line
-
-        this.setOwner(caster);
-        WorldData worldData = WorldData.get(level().getServer());
-        PlayerData casterData = PlayerData.get((Player) getOwner());
-        if (getOwner() != null && worldData != null) {
-            List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(radius));
-            Party casterParty = worldData.getPartyFromMember(getOwner().getUUID());
-            if (casterParty != null && !casterParty.getFriendlyFire()){
-                for(Party.Member m : casterParty.getMembers()) {
-                    list.remove(level().getPlayerByUUID(m.getUUID()));
+        //System.out.println("Chance: " + chance + ", Power: " + power); //Debugging Line
+        if (tickCount > 30){
+            int hits = 0;
+            this.setOwner(caster);
+            WorldData worldData = WorldData.get(level().getServer());
+            PlayerData casterData = PlayerData.get((Player) getOwner());
+            if (getOwner() != null && worldData != null) {
+                List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(radius));
+                Party casterParty = worldData.getPartyFromMember(getOwner().getUUID());
+                if (casterParty != null && !casterParty.getFriendlyFire()){
+                    for(Party.Member m : casterParty.getMembers()) {
+                        list.remove(level().getPlayerByUUID(m.getUUID()));
+                    }
+                } else {
+                    list.remove(getOwner());
                 }
-            } else {
-                list.remove(getOwner());
-            }
 
-            if (!list.isEmpty()){
-                for (int i = 0; i < list.size(); i++){
-                    double rand = Math.floor(Math.random() * 100);
-                    Entity e = list.get(i);
-                    if (e instanceof LivingEntity){
-                        if(Utils.isHostile(e) || e instanceof ServerPlayer) {
-                            if (e instanceof ChirithyEntity){
-                                list.remove(e);
-                            }
-                            if (rand == chance){
-                                e.kill();
-                            } else {
-                                float dmg = (float) (casterData.getStrength(true) * power);
-                                e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS,this, this.getOwner()), dmg);
+                if (!list.isEmpty()){
+                    for (int i = 0; i < list.size(); i++){
+                        double rand = Math.floor(Math.random() * 100);
+                        Entity e = list.get(i);
+                        if (e instanceof LivingEntity){
+                            if(Utils.isHostile(e) || e instanceof ServerPlayer) {
+                                if (e instanceof ChirithyEntity) {
+                                    list.remove(e);
+                                }
+                                if (rand == chance) {
+                                    if (hits != maxHits && e.isAlive()) {
+                                        hits = 1;
+                                        System.out.println(hits);
+                                        e.kill();
+                                        System.out.println(rand);
+                                        System.out.println("Death");
+                                        if (KingdomKeysReMind.efmLoaded) {
+                                            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
+                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+                                        } else {
+                                            level().addParticle(ParticleTypes.CRIT,
+                                                    e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
+                                                    0, 0.1, 0);
+                                        }
+                                        radius = 0f;
+                                    } else {
+                                        list.remove(e);
+                                        this.remove(RemovalReason.KILLED);
+                                        radius = 0f;
+                                    }
+                                } else {
+                                    if (hits != maxHits && e.isAlive()) {
+                                        hits = 1;
+                                        System.out.println(hits +" / " + maxHits);
+                                        System.out.println(rand);
+                                        float dmg = (float) ((casterData.getStrength(true) * 0.25f) * power);
+                                        System.out.println("Damage:" + dmg);
+                                        e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg);
+                                        list.remove(e);
+                                        if (KingdomKeysReMind.efmLoaded) {
+                                            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
+                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+                                        } else {
+                                            level().addParticle(ParticleTypes.CRIT,
+                                                    e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
+                                                    0, 0.1, 0);
+                                        }
+                                        radius = 0f;
+                                    } else {
+                                        list.remove(e);
+                                        this.remove(RemovalReason.KILLED);
+                                        radius = 0f;
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-            }
-        }
-
-
-        for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)) {
-            if (entity != getOwner()) {
-                Party p = null;
-                if (getOwner() != null) {
-                    p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
-                }
-                LivingEntity target = (LivingEntity) entity;
-                if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())){
-
-                    //TODO: Math and such for an instant kill
-
-                    target.hurt(caster.damageSources().mobAttack(caster), damage);
-                    caster.setDeltaMovement(0, 0, 0);
-                    caster.swing(InteractionHand.MAIN_HAND);
-                    target.level().playSound(null, target.getX(), target.getY(), target.getZ(),
-                            SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0F, 1.0F);
-                    if (KingdomKeysReMind.efmLoaded) {
-                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
-                        target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
-                    } else {
-                        level().addParticle(ParticleTypes.CRIT,
-                                target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
-                                0, 0.1, 0);
                     }
                 }
             }
