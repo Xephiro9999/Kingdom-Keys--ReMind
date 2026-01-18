@@ -208,6 +208,8 @@
   "ability.ability_jecht.desc": "Unleash Jecht's fury! Your strikes deal extra damage according to the number of Critical Boosts equipped!",
   "ability.ability_spellblade.name": "Spellblade",
   "ability.ability_spellblade.desc": "Embrace the power of the elements! Augment your strikes with the element you most align with! Effects vary! \nPlease note, only 1 bonus may be active at a time. \nRequires 4 of a certain boost to activate.",
+  "ability.ability_ultima_weapon_ability.name": "Ultima Weapon (Ability)",
+  "ability.ability_ultima_weapon_ability.desc": "Imbues your weapon with increased Strength and Magic based on it's current values.",
   "ability.ability_mp_slow.name": "MP Slow",
   "ability.ability_mp_slow.desc": "Decreases MP restoration speed after MP is fully consumed.",
   "ability.ability_mp_slowra.name": "MP Slowra",

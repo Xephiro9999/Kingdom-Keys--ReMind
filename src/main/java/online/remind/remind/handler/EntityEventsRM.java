@@ -16,6 +16,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +43,8 @@ import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
+import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
+import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -567,6 +572,104 @@ public class EntityEventsRM {
 					} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
 						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
 					}
+
+					// Ultima Weapon Ability
+					if (playerData.isAbilityEquipped(StringsRM.ultima_weapon_ability)) {
+
+						ItemStack heldStack = player.getMainHandItem();
+						Item heldItem = heldStack.getItem();
+
+						boolean hasAttackDamage = false;
+
+						ItemAttributeModifiers component = heldStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+
+						if (component != null) {
+							for (ItemAttributeModifiers.Entry entry : component.modifiers()) {
+								if (entry.attribute().equals(Attributes.ATTACK_DAMAGE) && entry.slot().test(EquipmentSlot.MAINHAND)) {
+									if (entry.modifier().amount() > 0) {
+										hasAttackDamage = true;
+										break;
+									}
+								}
+							}
+						}
+
+						boolean validWeapon =
+								heldItem instanceof KeybladeItem ||
+								heldItem instanceof IOrgWeapon ||
+								hasAttackDamage;
+
+
+						if (validWeapon && !heldStack.isEmpty()) {
+
+							int weaponSTR = 0;
+							int weaponMAG = 0;
+
+							// Keyblade stats (uses keyblade level)
+							if (heldItem instanceof KeybladeItem kb) {
+								weaponSTR = kb.getStrength(heldStack);
+								weaponMAG = kb.getMagic(heldStack);
+							}
+
+							// Organization weapons (flat stats)
+							else if (heldItem instanceof IOrgWeapon org) {
+								weaponSTR = org.getStrength();
+								weaponMAG = org.getMagic();
+							}
+
+							// Compute bonuses based on weapon stats
+							int addSTR = 0;
+							int addMAG = 0;
+
+							// Strength logic
+							if (weaponSTR < 0) {
+								addSTR = 10 - weaponSTR;   // bring up to 10
+							} else if (weaponSTR < 20) {
+								addSTR = 20 - weaponSTR;   // bring up to 20
+							}
+
+							// Magic logic
+							if (weaponMAG < 0) {
+								addMAG = 10 - weaponMAG;   // bring up to 10
+							} else if (weaponMAG < 20) {
+								addMAG = 20 - weaponMAG;   // bring up to 20
+							}
+
+							// Remove old modifiers to prevent stacking
+							playerData.getStrengthStat().removeModifier("Ultima Weapon");
+							playerData.getMagicStat().removeModifier("Ultima Weapon");
+
+							// Apply new modifiers
+							if (addSTR != 0) {
+								playerData.getStrengthStat().addModifier(
+										"Ultima Weapon",
+										addSTR,
+										false,
+										false
+								);
+							}
+
+							if (addMAG != 0) {
+								playerData.getMagicStat().addModifier(
+										"Ultima Weapon",
+										addMAG,
+										false,
+										false
+								);
+							}
+
+						} else {
+							// Not holding a valid weapon → remove buffs
+							playerData.getStrengthStat().removeModifier("Ultima Weapon");
+							playerData.getMagicStat().removeModifier("Ultima Weapon");
+						}
+
+					} else {
+						// Ability not equipped → ensure buffs are gone
+						playerData.getStrengthStat().removeModifier("Ultima Weapon");
+						playerData.getMagicStat().removeModifier("Ultima Weapon");
+					}
+
 
 					// Tidus Keyblade
 					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
