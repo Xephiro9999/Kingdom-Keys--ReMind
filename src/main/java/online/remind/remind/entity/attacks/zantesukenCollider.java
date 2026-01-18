@@ -37,6 +37,7 @@ public class zantesukenCollider extends ThrowableProjectile {
     private int maxTicks = 50;
     private int spellLevel = 0;
     private int maxHits = 1;
+    private int hits = 0;
 
     public zantesukenCollider(EntityType<? extends ThrowableProjectile> type, Level level){
         super(type, level);
@@ -90,7 +91,7 @@ public class zantesukenCollider extends ThrowableProjectile {
             }
         }
 
-        if (tickCount > 30 && tickCount < 40){
+        if (tickCount > 20 && tickCount < 30){
             caster.setDeltaMovement(Vec3.ZERO);
         }
 
@@ -115,8 +116,8 @@ public class zantesukenCollider extends ThrowableProjectile {
         }
 
         //System.out.println("Chance: " + chance + ", Power: " + power); //Debugging Line
-        if (tickCount > 30){
-            int hits = 0;
+        if (tickCount >= 30){
+
             this.setOwner(caster);
             WorldData worldData = WorldData.get(level().getServer());
             PlayerData casterData = PlayerData.get((Player) getOwner());
@@ -140,16 +141,17 @@ public class zantesukenCollider extends ThrowableProjectile {
                                 if (e instanceof ChirithyEntity) {
                                     list.remove(e);
                                 }
-                                if (rand == chance) {
+                                if (rand <= chance) {
                                     if (hits != maxHits && e.isAlive()) {
                                         hits = 1;
-                                        System.out.println(hits);
+                                        System.out.println("Spell Level: " +spellLevel);
                                         e.kill();
                                         System.out.println(rand);
                                         System.out.println("Death");
                                         if (KingdomKeysReMind.efmLoaded) {
                                             EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
-                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 0.5F);
+                                            e.level().playSound(null, e.blockPosition(), SoundEvents.TRIDENT_RETURN, SoundSource.PLAYERS, 1f, 1f);
                                         } else {
                                             level().addParticle(ParticleTypes.CRIT,
                                                     e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
@@ -164,7 +166,7 @@ public class zantesukenCollider extends ThrowableProjectile {
                                 } else {
                                     if (hits != maxHits && e.isAlive()) {
                                         hits = 1;
-                                        System.out.println(hits +" / " + maxHits);
+                                        System.out.println("Spell Level: " +spellLevel);
                                         System.out.println(rand);
                                         float dmg = (float) ((casterData.getStrength(true) * 0.25f) * power);
                                         System.out.println("Damage:" + dmg);

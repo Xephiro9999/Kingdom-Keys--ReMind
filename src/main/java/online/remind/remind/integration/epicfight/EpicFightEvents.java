@@ -85,6 +85,14 @@ public class EpicFightEvents {
                             //player.sendSystemMessage(Component.literal("Quick Blitz"));
                         }
 
+                        if (spellName.equals("kkremind:attack_zantesuken")) {
+                            if (!animationsPlayed) {
+                                playerpatch.playAnimationSynchronized(Animations.UCHIGATANA_SHEATHING_DASH.get().getRealAnimation(), 0.5f);
+                                animationsPlayed = true;
+                            }
+                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
+                        }
+
                         //TODO: Add more attacks and spells later!
 
 

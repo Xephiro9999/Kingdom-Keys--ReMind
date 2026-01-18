@@ -33,8 +33,11 @@ public class attackZantesuken extends Magic {
 
         caster.hurtMarked = true;
         caster.fallDistance = 0;
-
+        if (KingdomKeysReMind.efmLoaded) {
+            caster.setDeltaMovement(dx/2, 0, dz/2);
+        } else{
             caster.setDeltaMovement(dx, 0, dz);
+        }
 
         zantesukenCollider zantesuken = new zantesukenCollider(player.level(), player, dmg, level);
         caster.level().addFreshEntity(zantesuken);
