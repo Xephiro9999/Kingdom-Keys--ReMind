@@ -213,5 +213,10 @@
     "sounds": [
       "kkremind:dark_firaga"
     ]
+  },
+  "zantetsuken": {
+    "sounds": [
+      "kkremind:zantetsuken"
+    ]
   }
 }

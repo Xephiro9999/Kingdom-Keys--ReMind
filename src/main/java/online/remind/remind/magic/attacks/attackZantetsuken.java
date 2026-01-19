@@ -1,19 +1,18 @@
 package online.remind.remind.magic.attacks;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.entity.attacks.quickBlitzCollider;
-import online.remind.remind.entity.attacks.zantesukenCollider;
+import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.entity.attacks.zantetsukenCollider;
 
-public class attackZantesuken extends Magic {
+public class attackZantetsuken extends Magic {
 
-    public attackZantesuken(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
         super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
@@ -32,21 +31,21 @@ public class attackZantesuken extends Magic {
         double dz = Math.cos(yawRad) * speed;
 
         caster.hurtMarked = true;
-        caster.fallDistance = 0;
-        if (KingdomKeysReMind.efmLoaded) {
-            caster.setDeltaMovement(dx/2, 0, dz/2);
-        } else{
+        if (KingdomKeysReMind.efmLoaded){
+            caster.setDeltaMovement(dx/1.25, 0, dz/1.25);
+        } else {
             caster.setDeltaMovement(dx, 0, dz);
         }
 
-        zantesukenCollider zantesuken = new zantesukenCollider(player.level(), player, dmg, level);
-        caster.level().addFreshEntity(zantesuken);
+
+        zantetsukenCollider zantetsuken = new zantetsukenCollider(player.level(), player, dmg, level);
+        caster.level().addFreshEntity(zantetsuken);
 
     }
 
     @Override
     protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1F, 1F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.ZANTETSUKEN.get(), SoundSource.PLAYERS, 1F, 1F);
 
     }
 }

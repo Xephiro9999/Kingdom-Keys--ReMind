@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,18 +27,21 @@ import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.registry.entries.EpicFightParticles;
 import yesman.epicfight.registry.entries.EpicFightSounds;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-public class zantesukenCollider extends ThrowableProjectile {
+public class zantetsukenCollider extends ThrowableProjectile {
 
     private LivingEntity caster;
     private float damage;
     private int maxTicks = 50;
     private int spellLevel = 0;
-    private int maxHits = 1;
-    private int hits = 0;
+    private final Set<UUID> hitEntities = new HashSet<>();
 
-    public zantesukenCollider(EntityType<? extends ThrowableProjectile> type, Level level){
+
+    public zantetsukenCollider(EntityType<? extends ThrowableProjectile> type, Level level){
         super(type, level);
         this.noPhysics = true;
         //this.setInvisible(true);
@@ -52,7 +54,7 @@ public class zantesukenCollider extends ThrowableProjectile {
 
     }
 
-    public zantesukenCollider(Level level, LivingEntity caster, float damage, int spellLevel){
+    public zantetsukenCollider(Level level, LivingEntity caster, float damage, int spellLevel){
         this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
         this.caster = caster;
         this.damage = damage;
@@ -62,7 +64,7 @@ public class zantesukenCollider extends ThrowableProjectile {
 
     public void tick() {
 
-        float radius = 5.5F;
+        float radius = 5F;
 
         if (caster == null || !caster.isAlive()) {
             remove(RemovalReason.KILLED);
@@ -79,13 +81,22 @@ public class zantesukenCollider extends ThrowableProjectile {
             AABB hitBox = this.getBoundingBox().inflate(2.0); // easier to land
         }
 
-        if (tickCount < 20) {
+        if (tickCount < 30) {
+            //player.getX() + player.level().random.nextDouble()
+
+
+
             if (caster.level() instanceof ServerLevel serverLevel) {
 
                 serverLevel.sendParticles(ParticleTypes.CHERRY_LEAVES,
-                        caster.getX() * random.nextInt(),
-                        caster.getY()+1,
-                        caster.getZ()* random.nextInt(),
+                        caster.getX() + caster.level().random.nextDouble() - 0.5D,
+                        caster.getY()+ caster.level().random.nextDouble() * 2D,
+                        caster.getZ() + caster.level().random.nextDouble() - 0.5D,
+                        1, 0, 0, 0, 0);
+                serverLevel.sendParticles(ParticleTypes.CHERRY_LEAVES,
+                        caster.getX() + caster.level().random.nextDouble() - 1.5D,
+                        caster.getY()+ caster.level().random.nextDouble() * 2D,
+                        caster.getZ() + caster.level().random.nextDouble() - 1.5D,
                         1, 0, 0, 0, 0);
                 caster.setDeltaMovement(Vec3.ZERO);
             }
@@ -133,7 +144,9 @@ public class zantesukenCollider extends ThrowableProjectile {
                 }
 
                 if (!list.isEmpty()){
+
                     for (int i = 0; i < list.size(); i++){
+
                         double rand = Math.floor(Math.random() * 100);
                         Entity e = list.get(i);
                         if (e instanceof LivingEntity){
@@ -141,54 +154,46 @@ public class zantesukenCollider extends ThrowableProjectile {
                                 if (e instanceof ChirithyEntity) {
                                     list.remove(e);
                                 }
+                                if (!hitEntities.contains(e.getUUID())){
                                 if (rand <= chance) {
-                                    if (hits != maxHits && e.isAlive()) {
-                                        hits = 1;
-                                        System.out.println("Spell Level: " +spellLevel);
-                                        e.kill();
-                                        System.out.println(rand);
-                                        System.out.println("Death");
-                                        if (KingdomKeysReMind.efmLoaded) {
-                                            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
-                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 0.5F);
-                                            e.level().playSound(null, e.blockPosition(), SoundEvents.TRIDENT_RETURN, SoundSource.PLAYERS, 1f, 1f);
-                                        } else {
-                                            level().addParticle(ParticleTypes.CRIT,
-                                                    e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
-                                                    0, 0.1, 0);
-                                        }
-                                        radius = 0f;
+
+                                    System.out.println("Spell Level: " + spellLevel);
+                                    e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), 999999);
+                                    System.out.println(rand);
+                                    System.out.println("Death");
+                                    if (KingdomKeysReMind.efmLoaded) {
+                                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
+                                        e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 0.5F);
+                                        e.level().playSound(null, e.blockPosition(), SoundEvents.TRIDENT_RETURN, SoundSource.PLAYERS, 1f, 1f);
+
                                     } else {
-                                        list.remove(e);
-                                        this.remove(RemovalReason.KILLED);
-                                        radius = 0f;
+                                        level().addParticle(ParticleTypes.CRIT,
+                                                e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
+                                                0, 0.1, 0);
                                     }
+                                    hitEntities.add(e.getUUID());
+
                                 } else {
-                                    if (hits != maxHits && e.isAlive()) {
-                                        hits = 1;
-                                        System.out.println("Spell Level: " +spellLevel);
-                                        System.out.println(rand);
-                                        float dmg = (float) ((casterData.getStrength(true) * 0.25f) * power);
-                                        System.out.println("Damage:" + dmg);
-                                        e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg);
-                                        list.remove(e);
-                                        if (KingdomKeysReMind.efmLoaded) {
-                                            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
-                                            e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
-                                        } else {
-                                            level().addParticle(ParticleTypes.CRIT,
-                                                    e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
-                                                    0, 0.1, 0);
-                                        }
-                                        radius = 0f;
+
+                                    System.out.println("Spell Level: " + spellLevel);
+                                    System.out.println(rand);
+                                    float dmg = (float) ((casterData.getStrength(true) * 0.25f) * power);
+                                    System.out.println("Damage:" + dmg);
+                                    e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg);
+                                    if (KingdomKeysReMind.efmLoaded) {
+                                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
+                                        e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
                                     } else {
-                                        list.remove(e);
-                                        this.remove(RemovalReason.KILLED);
-                                        radius = 0f;
+                                        level().addParticle(ParticleTypes.CRIT,
+                                                e.getX(), e.getY() + e.getBbHeight(), e.getZ(),
+                                                0, 0.1, 0);
                                     }
+                                    hitEntities.add(e.getUUID());
+
                                 }
                             }
                         }
+                    }
                     }
                 }
             }

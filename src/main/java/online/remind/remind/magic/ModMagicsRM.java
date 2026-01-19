@@ -5,7 +5,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.lib.StringsRM;
 import online.remind.remind.magic.attacks.*;
 
 import java.util.function.Supplier;
@@ -55,7 +54,7 @@ public class ModMagicsRM {
             AERO_SURGE = MAGIC.register(ResourceLocation.parse("attack_aero_surge").getPath(),() -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_aero_surge"), false, 3, null)),
             LIGHT_SURGE = MAGIC.register(ResourceLocation.parse("attack_light_surge").getPath(),() -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_light_surge"), false, 3, null)),
             DARK_SURGE = MAGIC.register(ResourceLocation.parse("attack_dark_surge").getPath(),() -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_dark_surge"), false, 3, null)),
-            ZANTESUKEN = MAGIC.register(ResourceLocation.parse("attack_zantesuken").getPath(),() -> new attackZantesuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_zantesuken"), false, 3, null));
+            ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(),() -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_zantetsuken"), false, 3, null));
 
 
 

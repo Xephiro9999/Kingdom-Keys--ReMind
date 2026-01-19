@@ -3,9 +3,12 @@ package online.remind.remind.integration.epicfight;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
  import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
@@ -70,8 +73,10 @@ public class EpicFightEvents {
 
                         if (spellName.equals("kkremind:attack_sliding_dash")) {
                             if (!animationsPlayed) {
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
-                                animationsPlayed = true;
+                                if (playerData.getMagicCasttimeTicks() == 1) {
+                                    playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+                                    animationsPlayed = true;
+                                }
                             }
 
                             //player.sendSystemMessage(Component.literal("Sliding Dash"));
@@ -79,18 +84,29 @@ public class EpicFightEvents {
                         }
                         if (spellName.equals("kkremind:attack_quick_blitz")) {
                             if (!animationsPlayed) {
-                                playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
-                                animationsPlayed = true;
+                                if (playerData.getMagicCasttimeTicks() == 1) {
+                                    playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                    animationsPlayed = true;
+                                }
                             }
-                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
                         }
 
-                        if (spellName.equals("kkremind:attack_zantesuken")) {
+                        if (spellName.equals("kkremind:attack_zantetsuken")) {
                             if (!animationsPlayed) {
-                                playerpatch.playAnimationSynchronized(Animations.UCHIGATANA_SHEATHING_DASH.get().getRealAnimation(), 0.5f);
-                                animationsPlayed = true;
+                                if (playerData.getMagicCasttimeTicks() <= 40) {
+                                    playerpatch.playAnimationSynchronized(Animations.BIPED_HOLD_UCHIGATANA.get().getRealAnimation(), 0.0f);
+                                }
+                                if (playerData.getMagicCasttimeTicks() <= 30) {
+                                    playerpatch.playAnimationSynchronized(Animations.BIPED_HOLD_UCHIGATANA_SHEATHING.get().getRealAnimation(), 0.10f);
+                                }
+                                if (playerData.getMagicCasttimeTicks() == 1) {
+                                    playerpatch.playAnimationSynchronized(Animations.UCHIGATANA_SHEATHING_AUTO.get().getRealAnimation(), 0.10f);
+                                    System.out.println("Target: " + playerpatch.getTarget());
+
+
+                                    animationsPlayed = true;
+                                }
                             }
-                            //player.sendSystemMessage(Component.literal("Quick Blitz"));
                         }
 
                         //TODO: Add more attacks and spells later!
@@ -187,6 +203,16 @@ public class EpicFightEvents {
             }
         }
     }
+
+    /*public void hurtEvent(LivingDamageEvent.Pre event) {
+        System.out.println(event.getSource());
+        if (event.getSource().getEntity() instanceof Player player) {
+            PlayerData playerData = PlayerData.get(player);
+            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+
+        }
+    }*/
 
     public void onEffectAdded(MobEffectEvent.Added event) {
         if (event.getEntity() instanceof Player player) {
