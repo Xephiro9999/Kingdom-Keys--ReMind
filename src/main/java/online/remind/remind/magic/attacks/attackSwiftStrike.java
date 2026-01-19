@@ -8,13 +8,12 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.entity.attacks.swiftStrikeCollider;
 import online.remind.remind.entity.attacks.zantetsukenCollider;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
-public class attackZantetsuken extends Magic {
+public class attackSwiftStrike extends Magic {
 
-    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackSwiftStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
         super(registryName, hasToSelect, maxLevel, gmAbility);
     }
 
@@ -27,7 +26,7 @@ public class attackZantetsuken extends Magic {
         PlayerData playerData = PlayerData.get(caster);
 
 
-        double speed = 2;
+        double speed = 3.25;
         double yawRad = Math.toRadians(player.getYRot());
         double dx = -Math.sin(yawRad) * speed;
         double dz = Math.cos(yawRad) * speed;
@@ -44,18 +43,18 @@ public class attackZantetsuken extends Magic {
             }*/
             caster.setDeltaMovement(dx * 0.5, 0, dz * 0.5);
         } else {
-            caster.setDeltaMovement(dx * 1.1, 0, dz * 1.1);
+            caster.setDeltaMovement(dx * 0.75, 0, dz * 0.75);
         }
 
 
-        zantetsukenCollider zantetsuken = new zantetsukenCollider(player.level(), player, dmg, level);
-        caster.level().addFreshEntity(zantetsuken);
+        swiftStrikeCollider swiftStrike = new swiftStrikeCollider(player.level(), player, dmg, level);
+        caster.level().addFreshEntity(swiftStrike);
 
     }
 
     @Override
     protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.ZANTETSUKEN.get(), SoundSource.PLAYERS, 1F, 1F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.SWIFT_STRIKE.get(), SoundSource.PLAYERS, 1F, 1F);
 
     }
 }

@@ -96,6 +96,7 @@
   "magic.kkremind.attack_zantetsuken0.name": "Zantetsuken Lv.1",
   "magic.kkremind.attack_zantetsuken1.name": "Zantetsuken Lv.2",
   "magic.kkremind.attack_zantetsuken2.name": "Zantetsuken Lv.MAX",
+  "magic.kkremind.attack_swift_strike0.name": "Swift Strike",
 
 
 
@@ -131,6 +132,7 @@
   "item.kkremind.aero_surge_attack": "Aero Surge Command",
   "item.kkremind.light_surge_attack": "Light Surge Command",
   "item.kkremind.dark_surge_attack": "Dark Surge Command",
+  "item.kkremind.zantetsuken_attack": "Zantetsuken Command",
 
   "ability.ability_dark_passage.name": "Dark Passage",
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",

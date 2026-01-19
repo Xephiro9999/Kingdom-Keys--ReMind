@@ -53,6 +53,7 @@ public class ModItemsRM{
         aeroSurgeAttack = ITEMS.register("aero_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_aero_surge")),
         lightSurgeAttack = ITEMS.register("light_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_light_surge")),
         darkSurgeAttack = ITEMS.register("dark_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_dark_surge")),
+        zantetsukenAttack = ITEMS.register("zantetsuken_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_zantetsuken")),
 
         // Shotlock Orbs
         flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":flame_salvo")),

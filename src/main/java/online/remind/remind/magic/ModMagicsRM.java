@@ -54,7 +54,8 @@ public class ModMagicsRM {
             AERO_SURGE = MAGIC.register(ResourceLocation.parse("attack_aero_surge").getPath(),() -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_aero_surge"), false, 3, null)),
             LIGHT_SURGE = MAGIC.register(ResourceLocation.parse("attack_light_surge").getPath(),() -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_light_surge"), false, 3, null)),
             DARK_SURGE = MAGIC.register(ResourceLocation.parse("attack_dark_surge").getPath(),() -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_dark_surge"), false, 3, null)),
-            ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(),() -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_zantetsuken"), false, 3, null));
+            ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(),() -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_zantetsuken"), false, 3, null)),
+            SWIFT_STRIKE = MAGIC.register(ResourceLocation.parse("attack_swift_strike").getPath(),() -> new attackSwiftStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_swift_strike"), false, 1, null)); // SEPHIROTH!
 
 
 

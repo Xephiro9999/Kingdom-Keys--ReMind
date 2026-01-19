@@ -91,7 +91,7 @@ public class EpicFightEvents {
                             }
                         }
 
-                        if (spellName.equals("kkremind:attack_zantetsuken")) {
+                        if (spellName.equals("kkremind:attack_zantetsuken") || spellName.equals("kkremind:attack_swift_strike")) {
                             if (!animationsPlayed) {
                                 if (playerData.getMagicCasttimeTicks() <= 40) {
                                     playerpatch.playAnimationSynchronized(Animations.BIPED_HOLD_UCHIGATANA.get().getRealAnimation(), 0.0f);
@@ -217,6 +217,7 @@ public class EpicFightEvents {
     public void onEffectAdded(MobEffectEvent.Added event) {
         if (event.getEntity() instanceof Player player) {
             PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            playerpatch.isEpicFightMode();
             Animator animator = playerpatch.getAnimator();
             while (player.hasEffect(ModMobEffects.STOP)) {
                 animator.setHardPause(true);

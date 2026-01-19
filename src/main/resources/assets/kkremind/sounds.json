@@ -218,5 +218,10 @@
     "sounds": [
       "kkremind:zantetsuken"
     ]
+  },
+  "swift_strike": {
+    "sounds": [
+      "kkremind:swift_strike"
+    ]
   }
 }

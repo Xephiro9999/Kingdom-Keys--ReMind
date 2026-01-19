@@ -103,6 +103,8 @@ public class WikiMenu extends MenuBackground {
         wikiLib.LIGHT_SURGE.setCondition(condition).add();
         condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"));
         wikiLib.DARK_SURGE.setCondition(condition).add();
+        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_zantetsuken"));
+        wikiLib.ZANTETSUKEN.setCondition(condition).add();
     }
 
     private void addMagicElements() {

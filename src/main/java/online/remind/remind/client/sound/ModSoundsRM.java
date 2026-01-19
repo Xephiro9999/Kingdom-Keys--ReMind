@@ -45,6 +45,7 @@ public class ModSoundsRM {
             CONFUSE = registerSound("confuse"),
             DARK_FIRAGA = registerSound("dark_firaga"),
             ZANTETSUKEN = registerSound("zantetsuken"),
+            SWIFT_STRIKE = registerSound("swift_strike"),
 
             SPIRIT_SUMMON = registerSound("spirit_summon"),
             SPIRIT_DESUMMON = registerSound("spirit_desummon"),
