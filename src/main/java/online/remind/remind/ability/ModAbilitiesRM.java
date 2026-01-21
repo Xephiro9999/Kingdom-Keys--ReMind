@@ -58,7 +58,8 @@ public class ModAbilitiesRM extends ModAbilities{
         HEARTS_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hearts_power").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.heartsPower), 0, Ability.AbilityType.SUPPORT, order++)),
         FRIEND_POWER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"friends_power").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.friendsPower), 3, Ability.AbilityType.SUPPORT, order++)),
         SPELLBLADE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"spellblade").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.spellblade), 0, Ability.AbilityType.SUPPORT, order++)),
-        ULTIMA_WEAPON_ABILITY = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"ultima_weapon_ability").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.ultima_weapon_ability), 0, Ability.AbilityType.SUPPORT, order++)),
+        ULTIMA_WEAPON_ABILITY = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"ultima_weapon").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.ultima_weapon_ability), 0, Ability.AbilityType.SUPPORT, order++)),
+        MUNNY_MAGIC = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"munny_magic").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.munny_magic), 10, Ability.AbilityType.SUPPORT, order++)),
 
         LIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.lightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
         DARK_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.darkInfusion), 0, Ability.AbilityType.SUPPORT, order++)),

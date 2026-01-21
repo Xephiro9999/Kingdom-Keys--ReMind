@@ -1,0 +1,31 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:mythril_shard",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mythril_gem",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mythril_stone",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:mythril_crystal",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:lucid_crystal",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:voidlight_chain",
+    "quantity": 1
+  },
+  "tier": 2
+}

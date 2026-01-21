@@ -113,15 +113,15 @@ public class zantetsukenCollider extends ThrowableProjectile {
 
         switch(spellLevel){
             case 0:
-                chance = 50;
+                chance = 40;
                 power = 4.2;
                 break;
             case 1:
-                chance = 60;
+                chance = 50;
                 power = 4.4;
                 break;
             case 2:
-                chance = 70;
+                chance = 60;
                 power = 4.6;
                 break;
         }
@@ -158,7 +158,7 @@ public class zantetsukenCollider extends ThrowableProjectile {
                                 if (rand <= chance) {
 
                                     //System.out.println("Spell Level: " + spellLevel);
-                                    e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), 999999);
+                                    e.hurt(caster.damageSources().mobAttack(caster), 999999);
                                     //System.out.println(rand);
                                     //System.out.println("Death");
                                     if (KingdomKeysReMind.efmLoaded) {
@@ -179,7 +179,8 @@ public class zantetsukenCollider extends ThrowableProjectile {
                                     //System.out.println(rand);
                                     float dmg = (float) ((casterData.getStrength(true) * 0.25f) * power);
                                     //System.out.println("Damage:" + dmg);
-                                    e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg);
+                                    //e.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner()), dmg);
+                                    e.hurt(caster.damageSources().mobAttack(caster), dmg);
                                     if (KingdomKeysReMind.efmLoaded) {
                                         EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) e.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, e, e);
                                         e.level().playSound(null, e.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);

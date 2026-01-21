@@ -226,6 +226,8 @@
   "ability.ability_one_hp.desc": "It's... in the name...",
   "ability.ability_ribbon.name": "Ribbon",
   "ability.ability_ribbon.desc": "Grants immunity to all negative status effects.",
+  "ability.ability_munny_magic.name": "Munny Magic",
+  "ability.ability_munny_magic.desc": "Lets you use magic while in MP Recharge at the cost of Munny! \nScales with the cost of the spell.",
   "ability.ability_light_infusion.name": "Light Infusion",
   "ability.ability_light_infusion.desc": "Enhances your spells and abilities with the power of Light! \nDoes not apply to spells that are already Light based.",
   "ability.ability_dark_infusion.name": "Dark Infusion",

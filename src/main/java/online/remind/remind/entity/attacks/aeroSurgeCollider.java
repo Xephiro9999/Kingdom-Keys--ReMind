@@ -43,7 +43,7 @@ public class aeroSurgeCollider extends ThrowableProjectile {
     }
 
     public aeroSurgeCollider(Level level, Player caster, float damage){
-        this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
+        this(ModEntitiesRM.TYPE_AERO_SURGE.get(),level);
         this.caster = caster;
         this.damage = damage;
         this.setPos(caster.getX(), caster.getY(), caster.getZ());

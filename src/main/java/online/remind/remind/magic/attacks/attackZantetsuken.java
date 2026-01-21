@@ -42,9 +42,9 @@ public class attackZantetsuken extends Magic {
                 caster.setDeltaMovement(dx, 0, dz);
                 System.out.println(dx + ", " + dz);
             }*/
-            caster.setDeltaMovement(dx * 0.5, 0, dz * 0.5);
+            caster.setDeltaMovement(dx * 0.55f, 0, dz * 0.55f);
         } else {
-            caster.setDeltaMovement(dx * 1.1, 0, dz * 1.1);
+            caster.setDeltaMovement(dx * 1.1f, 0, dz * 1.1f);
         }
 
 

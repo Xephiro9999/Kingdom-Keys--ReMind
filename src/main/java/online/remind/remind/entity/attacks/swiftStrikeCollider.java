@@ -8,6 +8,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,6 +45,8 @@ public class swiftStrikeCollider extends ThrowableProjectile {
     private int hits = 0;
     private int maxHits = 13;
     private final Set<UUID> hitEntities = new HashSet<>();
+    public static boolean SWIFT_STRIKE_ACTIVE = false;
+
 
 
     public swiftStrikeCollider(EntityType<? extends ThrowableProjectile> type, Level level){
@@ -59,7 +63,7 @@ public class swiftStrikeCollider extends ThrowableProjectile {
     }
 
     public swiftStrikeCollider(Level level, LivingEntity caster, float damage, int spellLevel){
-        this(ModEntitiesRM.TYPE_QUICK_BLITZ.get(),level);
+        this(ModEntitiesRM.TYPE_ZANTETSUKEN.get(),level);
         this.caster = caster;
         this.damage = damage;
         this.spellLevel = spellLevel;
@@ -68,7 +72,10 @@ public class swiftStrikeCollider extends ThrowableProjectile {
 
     public void tick() {
 
-        float radius = 6.5F;
+        float radius = 7F;
+        if (level().isClientSide) {
+            SWIFT_STRIKE_ACTIVE = true;
+        }
 
         if (caster == null || !caster.isAlive()) {
             remove(RemovalReason.KILLED);
@@ -77,6 +84,10 @@ public class swiftStrikeCollider extends ThrowableProjectile {
 
         if (this.tickCount > maxTicks) {
             this.remove(RemovalReason.KILLED);
+        }
+
+        if (this.isRemoved()){
+            SWIFT_STRIKE_ACTIVE = false;
         }
 
         this.setPos(caster.getX(), caster.getY() + 0.5, caster.getZ());
@@ -104,8 +115,43 @@ public class swiftStrikeCollider extends ThrowableProjectile {
             }
         }
 
-        if (tickCount > 20 && tickCount < 30){
+        this.setOwner(caster);
+        WorldData worldData = WorldData.get(level().getServer());
+        PlayerData casterData = PlayerData.get((Player) getOwner());
+
+        if (tickCount > 0 && tickCount < 30){
             caster.setDeltaMovement(Vec3.ZERO);
+
+            // Desperation Move effect
+
+        }
+
+        if (tickCount > 0){
+            // Desperation Move effect
+            if (getOwner() != null && worldData != null) {
+                List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(radius * 2));
+                Party casterParty = worldData.getPartyFromMember(getOwner().getUUID());
+                if (casterParty != null && !casterParty.getFriendlyFire()) {
+                    for (Party.Member m : casterParty.getMembers()) {
+                        list.remove(level().getPlayerByUUID(m.getUUID()));
+                    }
+                } else {
+                    list.remove(getOwner());
+                }
+
+                if (!list.isEmpty()) {
+
+                    for (int i = 0; i < list.size(); i++) {
+                        Entity e = list.get(i);
+                        if (e instanceof LivingEntity){
+                            ((LivingEntity) e).addEffect(new MobEffectInstance(MobEffects.DARKNESS, tickCount, 0));
+                            //((LivingEntity) e).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, tickCount, 0));
+                        }
+                    }
+                }
+            }
+
+
         }
 
         // Check Collision
@@ -125,10 +171,6 @@ public class swiftStrikeCollider extends ThrowableProjectile {
         }
 
         if (tickCount >= 30){
-
-            this.setOwner(caster);
-            WorldData worldData = WorldData.get(level().getServer());
-            PlayerData casterData = PlayerData.get((Player) getOwner());
             if (getOwner() != null && worldData != null) {
                 List<Entity> list = level().getEntities(getOwner(), getBoundingBox().inflate(radius));
                 Party casterParty = worldData.getPartyFromMember(getOwner().getUUID());
@@ -144,7 +186,6 @@ public class swiftStrikeCollider extends ThrowableProjectile {
 
                     for (int i = 0; i < list.size(); i++){
 
-                        double rand = Math.floor(Math.random() * 100);
                         Entity e = list.get(i);
                         if (e instanceof LivingEntity){
                             if(Utils.isHostile(e) || e instanceof ServerPlayer) {

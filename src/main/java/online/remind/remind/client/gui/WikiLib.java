@@ -45,7 +45,7 @@ public class WikiLib {
             AERO_SURGE = new ElementPairBuilder(attackList).setLeft("Aero Surge","Aero", 0xBEEFFF).setPosition(() -> x).setWidths(() -> width + 70, 5, ()-> width + 90).setRight("Rush the enemy while a ring of air revolves around you.","", "","",0xd68e2f),
             LIGHT_SURGE = new ElementPairBuilder(attackList).setLeft("Light Surge","Light", 0xFFF2A8).setPosition(() -> x).setWidths(() -> width + 70, 5, ()-> width + 90).setRight("Rush the enemy while a ring of light revolves around you.","", "","",0xd68e2f),
             DARK_SURGE = new ElementPairBuilder(attackList).setLeft("Dark Surge","Dark", 0x2A0A3D).setPosition(() -> x).setWidths(() -> width + 70, 5, ()-> width + 90).setRight("Rush the enemy while a ring of darkness revolves around you.","", "","", 0xd68e2f),
-            ZANTETSUKEN = new ElementPairBuilder(attackList).setLeft("Zantetsuken","Dark", 0x2A0A3D).setPosition(() -> x).setWidths(() -> width + 70, 5, ()-> width + 90).setRight("Rush with a fast strike! Can instantly kill enemies.","", "","", 0xd68e2f),
+            ZANTETSUKEN = new ElementPairBuilder(attackList).setLeft("Zantetsuken","Physical", 0x380000).setPosition(() -> x).setWidths(() -> width + 70, 5, ()-> width + 90).setRight("Rush with a fast strike! Can instantly kill enemies.","", "","", 0xd68e2f),
 
             //Magics
             MAGICS_HEADER = new ElementPairBuilder(magicList).setLeft("Spell Name:","Element/Type:", 0x6600ff).setPosition(() -> x).setWidths(() -> width + 50, 5, ()-> width + 70).setRight("Description:","", 0xd68e2f),

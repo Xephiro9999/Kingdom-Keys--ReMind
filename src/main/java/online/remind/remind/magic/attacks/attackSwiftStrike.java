@@ -2,14 +2,21 @@ package online.remind.remind.magic.attacks;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.swiftStrikeCollider;
 import online.remind.remind.entity.attacks.zantetsukenCollider;
+
+import java.util.List;
 
 public class attackSwiftStrike extends Magic {
 
@@ -24,6 +31,11 @@ public class attackSwiftStrike extends Magic {
     @Override
     public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
+
+        if (lockOnEntity != null){
+            lockOnEntity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
+        }
+
 
 
         double speed = 3.25;
@@ -41,9 +53,9 @@ public class attackSwiftStrike extends Magic {
                 caster.setDeltaMovement(dx, 0, dz);
                 System.out.println(dx + ", " + dz);
             }*/
-            caster.setDeltaMovement(dx * 0.5, 0, dz * 0.5);
+            caster.setDeltaMovement(dx * 0.6f, 0, dz * 0.6f);
         } else {
-            caster.setDeltaMovement(dx * 0.75, 0, dz * 0.75);
+            caster.setDeltaMovement(dx * 0.75f, 0, dz * 0.75f);
         }
 
 

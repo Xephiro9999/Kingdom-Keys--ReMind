@@ -151,6 +151,14 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_MINE.get(), MineEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_SLIDING_DASH.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_AERO_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_BLIZZARD_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_DARK_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_FIRE_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_LIGHT_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_WATER_SURGE.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_ZANTETSUKEN.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_RAVE_SABER.get(), InvisibleEntityRenderer::new);
 
 

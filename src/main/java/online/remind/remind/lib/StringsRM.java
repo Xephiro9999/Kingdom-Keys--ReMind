@@ -86,7 +86,9 @@ public class StringsRM {
         poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
         royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
-        ultima_weapon_ability = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ultima_weapon_ability",
+        ultima_weapon_ability = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ultima_weapon",
+        munny_magic = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"munny_magic",
+
         lightInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"light_infusion",
         darkInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_infusion",
         twilightInfusion = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"twilight_infusion",
