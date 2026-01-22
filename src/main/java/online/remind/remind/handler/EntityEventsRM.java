@@ -617,26 +617,34 @@ public class EntityEventsRM {
 								weaponMAG = org.getMagic();
 							}
 
-							// Compute bonuses based on weapon stats
+							// Initialize boost variables
 							int addSTR;
 							int addMAG;
 
+							int posSTR = ModConfigs.ultimaPositiveSTR;
+							int negSTR = ModConfigs.ultimaNegativeSTR;
+
+							int posMAG = ModConfigs.ultimaPositiveMAG;
+							int negMAG = ModConfigs.ultimaNegativeMAG;
+
 							// Strength
-							int rawSTR = 20 - weaponSTR;
+							int rawSTR = posSTR - weaponSTR;
 
 							if (weaponSTR < 0) {
-								addSTR = Math.min(Math.max(rawSTR, 0), 10);  // negative stat cap = 10
+								// Negative stat → clamp to negative cap
+								addSTR = Math.min(Math.max(rawSTR, 0), negSTR);
 							} else {
-								addSTR = Math.min(Math.max(rawSTR, 0), 20);  // normal cap = 20
+								// Normal stat → clamp to positive cap
+								addSTR = Math.min(Math.max(rawSTR, 0), posSTR);
 							}
 
 							// Magic
-							int rawMAG = 20 - weaponMAG;
+							int rawMAG = posMAG - weaponMAG;
 
 							if (weaponMAG < 0) {
-								addMAG = Math.min(Math.max(rawMAG, 0), 10);
+								addMAG = Math.min(Math.max(rawMAG, 0), negMAG);
 							} else {
-								addMAG = Math.min(Math.max(rawMAG, 0), 20);
+								addMAG = Math.min(Math.max(rawMAG, 0), posMAG);
 							}
 
 							// Remove old modifiers to prevent stacking

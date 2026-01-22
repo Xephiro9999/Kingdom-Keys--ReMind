@@ -99,7 +99,8 @@ public class CommonConfig {
                 .comment("Default: 5.0.")
                 .defineInRange("Chirithy Auto-Life Cooldown", 5.0,1,1000);
 
-        builder.push("UltimaWeapon");
+        builder.pop();
+        builder.push("Ultima Weapon Ability");
 
         ultimaPositiveSTR = builder
                 .comment("Minimum STR Ultima Weapon boosts to when STR is positive but below this value")
