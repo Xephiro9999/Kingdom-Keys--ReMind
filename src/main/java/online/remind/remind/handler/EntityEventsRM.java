@@ -618,21 +618,25 @@ public class EntityEventsRM {
 							}
 
 							// Compute bonuses based on weapon stats
-							int addSTR = 0;
-							int addMAG = 0;
+							int addSTR;
+							int addMAG;
 
-							// Strength logic
+							// Strength
+							int rawSTR = 20 - weaponSTR;
+
 							if (weaponSTR < 0) {
-								addSTR = 10 - weaponSTR;   // bring up to 10
-							} else if (weaponSTR < 20) {
-								addSTR = 20 - weaponSTR;   // bring up to 20
+								addSTR = Math.min(Math.max(rawSTR, 0), 10);  // negative stat cap = 10
+							} else {
+								addSTR = Math.min(Math.max(rawSTR, 0), 20);  // normal cap = 20
 							}
 
-							// Magic logic
+							// Magic
+							int rawMAG = 20 - weaponMAG;
+
 							if (weaponMAG < 0) {
-								addMAG = 10 - weaponMAG;   // bring up to 10
-							} else if (weaponMAG < 20) {
-								addMAG = 20 - weaponMAG;   // bring up to 20
+								addMAG = Math.min(Math.max(rawMAG, 0), 10);
+							} else {
+								addMAG = Math.min(Math.max(rawMAG, 0), 20);
 							}
 
 							// Remove old modifiers to prevent stacking
