@@ -15,6 +15,7 @@ import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
@@ -24,6 +25,7 @@ import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.effect.ModMobEffectsRM;
+import online.remind.remind.entity.attacks.slidingDashCollider;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.gameasset.Animations;
@@ -42,6 +44,8 @@ public class EpicFightEvents {
     float dmg;
     double speed;
     boolean animationsPlayed;
+    public int ticks;
+    int maxTicks;
 
 
     @SubscribeEvent
@@ -52,6 +56,34 @@ public class EpicFightEvents {
             //System.out.println(player.level().isClientSide() + " " + playerpatch);
             if (playerpatch != null) {
                 //System.out.println(playerpatch.getSkill(SkillSlots.GUARD).getSkill());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onMagicCast(MagicSpellCastEvent e){
+        LivingEntity caster = e.getCaster();
+        if (caster instanceof Player player){
+            PlayerData playerData = PlayerData.get(player);
+            if (playerData != null) {
+            if (KingdomKeysReMind.efmLoaded) {
+                PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (playerpatch.isEpicFightMode()) {
+                        String spell = String.valueOf(e.getSpellID());
+                        System.out.println(spell);
+                        switch (spell) {
+                            case "kkremind:attack_quick_blitz":
+                                playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                break;
+
+                            case "kkremind:attack_sliding_dash":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
+                                break;
+                        }
+
+
+                    }
+                }
             }
         }
     }
@@ -74,7 +106,7 @@ public class EpicFightEvents {
                         if (spellName.equals("kkremind:attack_sliding_dash")) {
                             if (!animationsPlayed) {
                                 if (playerData.getMagicCasttimeTicks() == 1) {
-                                    playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
+                                    //playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0f);
                                     animationsPlayed = true;
                                 }
                             }
@@ -85,7 +117,7 @@ public class EpicFightEvents {
                         if (spellName.equals("kkremind:attack_quick_blitz")) {
                             if (!animationsPlayed) {
                                 if (playerData.getMagicCasttimeTicks() == 1) {
-                                    playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                    //playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
                                     animationsPlayed = true;
                                 }
                             }
@@ -101,7 +133,6 @@ public class EpicFightEvents {
                                 }
                                 if (playerData.getMagicCasttimeTicks() == 1) {
                                     playerpatch.playAnimationSynchronized(Animations.UCHIGATANA_SHEATHING_AUTO.get().getRealAnimation(), 0.10f);
-                                    System.out.println("Target: " + playerpatch.getTarget());
 
 
                                     animationsPlayed = true;

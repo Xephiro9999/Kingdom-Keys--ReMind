@@ -29,7 +29,7 @@ public class slidingDashCollider extends ThrowableProjectile {
 
     private LivingEntity caster;
     private float damage;
-    private int maxTicks = 30;
+    private int maxTicks = 10;
     private int hits = 0;
     private int maxHits = 2;
 

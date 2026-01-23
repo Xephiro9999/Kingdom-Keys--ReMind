@@ -40,12 +40,14 @@ public class swiftStrikeCollider extends ThrowableProjectile {
 
     private LivingEntity caster;
     private float damage;
+    public int ticks;
     private int maxTicks = 50;
     private int spellLevel = 0;
     private int hits = 0;
     private int maxHits = 13;
     private final Set<UUID> hitEntities = new HashSet<>();
     public static boolean SWIFT_STRIKE_ACTIVE = false;
+    public int phase = 0;
 
 
 

@@ -39,6 +39,7 @@ public class zantetsukenCollider extends ThrowableProjectile {
     private int maxTicks = 50;
     private int spellLevel = 0;
     private final Set<UUID> hitEntities = new HashSet<>();
+    public int phase = 0;
 
 
     public zantetsukenCollider(EntityType<? extends ThrowableProjectile> type, Level level){

@@ -100,7 +100,7 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-    implementation name: 'kingdomkeys-1.21.1-2.7.0a'
+    implementation name: 'kingdomkeys-1.21.1-2.7.1b'
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "curse.maven:epic-fight-mod-405076:7213644"
 }
