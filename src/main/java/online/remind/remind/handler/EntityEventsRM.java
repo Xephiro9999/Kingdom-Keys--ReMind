@@ -33,6 +33,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
+import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -44,6 +46,7 @@ import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
+import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
@@ -360,6 +363,31 @@ public class EntityEventsRM {
 
 	}
 
+	@SubscribeEvent
+	public void onMagicCast(MagicSpellCastEvent e){
+		LivingEntity caster = e.getCaster();
+		if (caster instanceof Player player){
+			PlayerData playerData = PlayerData.get(player);
+
+			if (playerData != null){
+
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void equipEvent(EquipmentEvent.Keychain e){
+		LivingEntity player = e.getPlayer();
+		if (player != null){
+			PlayerData playerData = PlayerData.get((Player) player);
+				if (playerData != null){
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.ultimaWeaponKH1Chain.get()) {
+						System.out.println("Equipped Ultima Weapon (KH1)");
+					}
+			}
+		}
+	}
+
 
 
 
@@ -389,7 +417,14 @@ public class EntityEventsRM {
 			}
 
 
+			if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null){
+					if (playerData.isAbilityEquipped(StringsRM.munny_magic)){
 
+					}
+				}
+			}
 
 
 			// Form Shotlock Change Test

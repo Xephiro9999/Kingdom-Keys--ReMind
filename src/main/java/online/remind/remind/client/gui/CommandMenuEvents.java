@@ -31,6 +31,17 @@ public class CommandMenuEvents {
             }
         }
 
+        if (playerData.isAbilityEquipped(StringsRM.munny_magic)){
+            if (playerData.getRecharge()) {
+                if (item.getId().equals(CommandMenuGui.INSTANCE.magic)) {
+                    CommandMenuGui.INSTANCE.updateRootItem(item, CommandMenuGui.INSTANCE.magic, event.getGuiGraphics());
+                    event.getItem().setVisible(true);
+                }
+            }
+        }
+
+
+
 
     }
 

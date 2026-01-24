@@ -28,7 +28,7 @@ public class quickBlitzCollider extends ThrowableProjectile {
 
     private LivingEntity caster;
     private float damage;
-    private int maxTicks = 20;
+    private int maxTicks = 10;
     private int ticks = 0;
 
     public quickBlitzCollider(EntityType<? extends ThrowableProjectile> type, Level level){
