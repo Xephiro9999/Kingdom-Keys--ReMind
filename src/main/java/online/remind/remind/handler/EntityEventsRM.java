@@ -717,29 +717,6 @@ public class EntityEventsRM {
 						playerData.getMagicStat().removeModifier("Ultima Weapon");
 					}
 
-					/*System.out.println("=== HP/MP BOOST DEBUG START ===");
-					System.out.println("Player: " + player.getName().getString());
-
-					// Ability detection
-					System.out.println("HP Boost ID: " + StringsRM.hpBoost);
-					System.out.println("MP Boost ID: " + StringsRM.mpBoost);
-
-					System.out.println("HP Boost Equipped? " + playerData.isAbilityEquipped(StringsRM.hpBoost));
-					System.out.println("MP Boost Equipped? " + playerData.isAbilityEquipped(StringsRM.mpBoost));
-
-					// Count detection
-					System.out.println("HP Boost Count: " + playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost));
-					System.out.println("MP Boost Count: " + playerData.getNumberOfAbilitiesEquipped(StringsRM.mpBoost));
-
-					// Last applied values
-					System.out.println("Last HP Bonus: " + globalData.getLastHpBoostBonus());
-					System.out.println("Last MP Bonus: " + globalData.getLastMpBoostBonus());
-
-					System.out.println("Player Max HP (raw): " + player.getMaxHealth());
-					System.out.println("PlayerData Max HP: " + playerData.getMaxHP());
-
-					System.out.println("=== HP/MP BOOST DEBUG END ===");*/
-
 					// HP Boost
 					if (playerData.isAbilityEquipped(StringsRM.hpBoost)) {
 						int countHP = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost);
