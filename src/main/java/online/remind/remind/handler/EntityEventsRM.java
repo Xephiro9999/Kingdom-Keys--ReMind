@@ -269,7 +269,7 @@ public class EntityEventsRM {
 
 
 
-			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+			/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 				playerData.addMaxMP(12.5);
 			}
 
@@ -277,7 +277,7 @@ public class EntityEventsRM {
 				playerData.addMaxHP(15);
 				event.getPlayer().setHealth(playerData.getMaxHP());
 				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-			}
+			}*/
 
 			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
 
@@ -331,7 +331,7 @@ public class EntityEventsRM {
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 
 
-		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+		/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 			playerData.addMaxMP(-12.5);
 
 		}
@@ -340,7 +340,7 @@ public class EntityEventsRM {
 			playerData.addMaxHP(-15);
 			event.getPlayer().setHealth(playerData.getMaxHP());
 			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-		}
+		}*/
 
 		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
 			playerData.getStrengthStat().removeModifier("Dedication");
@@ -715,6 +715,70 @@ public class EntityEventsRM {
 						// Ability not equipped → ensure buffs are gone
 						playerData.getStrengthStat().removeModifier("Ultima Weapon");
 						playerData.getMagicStat().removeModifier("Ultima Weapon");
+					}
+
+					/*System.out.println("=== HP/MP BOOST DEBUG START ===");
+					System.out.println("Player: " + player.getName().getString());
+
+					// Ability detection
+					System.out.println("HP Boost ID: " + StringsRM.hpBoost);
+					System.out.println("MP Boost ID: " + StringsRM.mpBoost);
+
+					System.out.println("HP Boost Equipped? " + playerData.isAbilityEquipped(StringsRM.hpBoost));
+					System.out.println("MP Boost Equipped? " + playerData.isAbilityEquipped(StringsRM.mpBoost));
+
+					// Count detection
+					System.out.println("HP Boost Count: " + playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost));
+					System.out.println("MP Boost Count: " + playerData.getNumberOfAbilitiesEquipped(StringsRM.mpBoost));
+
+					// Last applied values
+					System.out.println("Last HP Bonus: " + globalData.getLastHpBoostBonus());
+					System.out.println("Last MP Bonus: " + globalData.getLastMpBoostBonus());
+
+					System.out.println("Player Max HP (raw): " + player.getMaxHealth());
+					System.out.println("PlayerData Max HP: " + playerData.getMaxHP());
+
+					System.out.println("=== HP/MP BOOST DEBUG END ===");*/
+
+					// HP Boost
+					if (playerData.isAbilityEquipped(StringsRM.hpBoost)) {
+						int countHP = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost);
+						int newHpBonus = countHP * 10;
+
+						int lastHp = globalData.getLastHpBoostBonus();
+						int diffHp = newHpBonus - lastHp;
+
+						if (diffHp != 0) {
+							playerData.addMaxHP(diffHp);
+							globalData.setLastHpBoostBonus(newHpBonus);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+						}
+					} else {
+						int lastHp = globalData.getLastHpBoostBonus();
+						if (lastHp != 0) {
+							playerData.addMaxHP(-lastHp);
+							globalData.setLastHpBoostBonus(0);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+						}
+					}
+
+					// MP Boost
+					if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
+						int countMP = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpBoost);
+						int newMpBonus = countMP * 10;
+
+						int lastMp = globalData.getLastMpBoostBonus();
+						int diffMp = newMpBonus - lastMp;
+
+						if (diffMp != 0) {
+							playerData.addMaxMP(diffMp);
+							globalData.setLastMpBoostBonus(newMpBonus);
+						}
+					} else {
+						int lastMp = globalData.getLastMpBoostBonus();
+						if (lastMp != 0) { playerData.addMaxMP(-lastMp);
+							globalData.setLastMpBoostBonus(0);
+						}
 					}
 
 

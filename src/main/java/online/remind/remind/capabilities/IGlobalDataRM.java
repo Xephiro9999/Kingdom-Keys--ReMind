@@ -74,6 +74,11 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void addNGPMysticCount(int i);
     void addNGPGuardianCount(int i);
 
+    int getLastHpBoostBonus();
+    int getLastMpBoostBonus();
+    void setLastHpBoostBonus(int i);
+    void setLastMpBoostBonus(int i);
+
     void addSTRPanel(int i);
     void addMAGPanel(int i);
     void addDEFPanel(int i);
