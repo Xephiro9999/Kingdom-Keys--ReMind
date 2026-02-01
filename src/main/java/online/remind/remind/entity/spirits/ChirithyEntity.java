@@ -60,6 +60,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private int esunaCooldown;
     private double autoLifeCooldown;
     private int castCooldown;
+    private float mpHasteMult;
 
     public static final int
             IDLE = 0,
@@ -190,21 +191,54 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
 
     private void castSupportMagic(){
+        float healAmount;
+        PlayerData ownerData = PlayerData.get(owner);
+
+        if (ownerData == null) return;
+        if (ownerData.isAbilityEquipped(Strings.mpHaste) || ownerData.isAbilityEquipped(Strings.mpHastera) || ownerData.isAbilityEquipped(Strings.mpHastega)) {
+            int mpHastes = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHaste);
+            int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastera);
+            int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastega);
+            mpHasteMult = (mpHastes * 0.15f) + (mpHasteras * 0.3f) + (mpHastegas * 0.45f);
+            //System.out.println("MP Haste Mult: " + mpHasteMult);
+        }
+
+        if (cureCooldown <= 0){
+            cureCooldown = 0;
+        }
+        if (aeroCooldown <= 0){
+            aeroCooldown = 0;
+        }
+        if (esunaCooldown <= 0){
+            esunaCooldown = 0;
+        }
+        if (autoLifeCooldown <= 0){
+            autoLifeCooldown = 0;
+        }
+
+
         if (cureCooldown > 0){
             cureCooldown--;
+            cureCooldown -= (int) mpHasteMult;
             return;
         }
 
         if (aeroCooldown > 0){
             aeroCooldown--;
+            aeroCooldown -= (int) mpHasteMult;
+            return;
         }
 
         if (esunaCooldown > 0){
             esunaCooldown--;
+            esunaCooldown -= (int) mpHasteMult;
+            return;
         }
 
         if (autoLifeCooldown > 0){
             autoLifeCooldown--;
+            autoLifeCooldown -= (int) mpHasteMult;
+            return;
         }
 
         if (castCooldown > 0){
@@ -218,8 +252,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                 //owner.sendSystemMessage(Component.literal(owner.getHealth() + ""));
                 // Cure Logic
-                float healAmount;
-                PlayerData ownerData = PlayerData.get(owner);
                 if (ownerData == null) return;
                 if (ownerData.getMagicsMap().containsKey(Strings.Magic_Cure)) {
                     if (cureCooldown == 0) {
