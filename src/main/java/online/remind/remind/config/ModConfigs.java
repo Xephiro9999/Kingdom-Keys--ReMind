@@ -42,6 +42,12 @@ public class ModConfigs {
         spiritsEnabled = COMMON.spiritsEnabled.get();
         autoLifeCD = COMMON.autoLifeCD.get();
 
+        // Ultima Weapon Ability Configs
+        ultimaPositiveSTR = COMMON.ultimaPositiveSTR.get();
+        ultimaNegativeSTR = COMMON.ultimaNegativeSTR.get();
+        ultimaPositiveMAG = COMMON.ultimaPositiveMAG.get();
+        ultimaNegativeMAG = COMMON.ultimaNegativeMAG.get();
+
     }
 
     public static boolean donorKeybladeGrant;
@@ -65,6 +71,11 @@ public class ModConfigs {
     public static boolean spiritsEnabled;
     public static double autoLifeCD;
 
+    // Ultima Weapon Ability
+    public static int ultimaPositiveSTR;
+    public static int ultimaNegativeSTR;
+    public static int ultimaPositiveMAG;
+    public static int ultimaNegativeMAG;
 
     @SubscribeEvent
     public static void configEvent(ModConfigEvent event) {

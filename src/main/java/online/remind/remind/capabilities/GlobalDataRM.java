@@ -34,6 +34,9 @@ public class GlobalDataRM implements IGlobalDataRM {
         storage.putInt("NGPlus_Mystic", this.getNGPMysticCount());
         storage.putInt("NGPlus_Guardian", this.getNGPGuardianCount());
 
+        storage.putInt("lastHpBoostBonus", this.getLastHpBoostBonus());
+        storage.putInt("lastMpBoostBonus", this.getLastMpBoostBonus());
+
         storage.putInt("Panels_STR", this.getSTRPanel());
         storage.putInt("Panels_DEF", this.getDEFPanel());
         storage.putInt("Panels_MAG", this.getMAGPanel());
@@ -75,6 +78,9 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.setNGPMysticCount(properties.getInt("NGPlus_Mystic"));
         this.setNGPGuardianCount(properties.getInt("NGPlus_Guardian"));
 
+        this.setLastHpBoostBonus(properties.getInt("lastHpBoostBonus"));
+        this.setLastMpBoostBonus(properties.getInt("lastMpBoostBonus"));
+
         this.setSTRPanel(properties.getInt("Panels_STR"));
         this.setMAGPanel(properties.getInt("Panels_MAG"));
         this.setDEFPanel(properties.getInt("Panels_DEF"));
@@ -113,6 +119,9 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int NGPlusWarriorCount;
     private int NGPlusMysticCount;
     private int NGPlusGuardianCount;
+
+    private int lastHpBoostBonus;
+    private int lastMpBoostBonus;
 
     private int strPanel;
     private int magPanel;
@@ -407,6 +416,19 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.RCCooldown = Math.max(RCCooldown - ticks, 0);
 
     }
+
+    @Override
+    public int getLastHpBoostBonus() { return lastHpBoostBonus; }
+
+    @Override
+    public int getLastMpBoostBonus() { return lastMpBoostBonus; }
+
+    @Override
+    public void setLastHpBoostBonus(int i) { lastHpBoostBonus = i; }
+
+    @Override
+    public void setLastMpBoostBonus(int i) { lastMpBoostBonus = i; }
+
 
 
     @Override

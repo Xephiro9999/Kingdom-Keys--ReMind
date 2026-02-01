@@ -270,7 +270,7 @@ public class EntityEventsRM {
 
 
 
-			if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+			/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 				playerData.addMaxMP(12.5);
 			}
 
@@ -278,7 +278,7 @@ public class EntityEventsRM {
 				playerData.addMaxHP(15);
 				event.getPlayer().setHealth(playerData.getMaxHP());
 				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-			}
+			}*/
 
 			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
 
@@ -332,7 +332,7 @@ public class EntityEventsRM {
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 
 
-		if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
+		/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
 			playerData.addMaxMP(-12.5);
 
 		}
@@ -341,7 +341,7 @@ public class EntityEventsRM {
 			playerData.addMaxHP(-15);
 			event.getPlayer().setHealth(playerData.getMaxHP());
 			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-		}
+		}*/
 
 		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
 			playerData.getStrengthStat().removeModifier("Dedication");
@@ -658,22 +658,34 @@ public class EntityEventsRM {
 								weaponMAG = org.getMagic();
 							}
 
-							// Compute bonuses based on weapon stats
-							int addSTR = 0;
-							int addMAG = 0;
+							// Initialize boost variables
+							int addSTR;
+							int addMAG;
 
-							// Strength logic
+							int posSTR = ModConfigs.ultimaPositiveSTR;
+							int negSTR = ModConfigs.ultimaNegativeSTR;
+
+							int posMAG = ModConfigs.ultimaPositiveMAG;
+							int negMAG = ModConfigs.ultimaNegativeMAG;
+
+							// Strength
+							int rawSTR = posSTR - weaponSTR;
+
 							if (weaponSTR < 0) {
-								addSTR = 10 - weaponSTR;   // bring up to 10
-							} else if (weaponSTR < 20) {
-								addSTR = 20 - weaponSTR;   // bring up to 20
+								// Negative stat → clamp to negative cap
+								addSTR = Math.min(Math.max(rawSTR, 0), negSTR);
+							} else {
+								// Normal stat → clamp to positive cap
+								addSTR = Math.min(Math.max(rawSTR, 0), posSTR);
 							}
 
-							// Magic logic
+							// Magic
+							int rawMAG = posMAG - weaponMAG;
+
 							if (weaponMAG < 0) {
-								addMAG = 10 - weaponMAG;   // bring up to 10
-							} else if (weaponMAG < 20) {
-								addMAG = 20 - weaponMAG;   // bring up to 20
+								addMAG = Math.min(Math.max(rawMAG, 0), negMAG);
+							} else {
+								addMAG = Math.min(Math.max(rawMAG, 0), posMAG);
 							}
 
 							// Remove old modifiers to prevent stacking
@@ -709,6 +721,47 @@ public class EntityEventsRM {
 						// Ability not equipped → ensure buffs are gone
 						playerData.getStrengthStat().removeModifier("Ultima Weapon");
 						playerData.getMagicStat().removeModifier("Ultima Weapon");
+					}
+
+					// HP Boost
+					if (playerData.isAbilityEquipped(StringsRM.hpBoost)) {
+						int countHP = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost);
+						int newHpBonus = countHP * 10;
+
+						int lastHp = globalData.getLastHpBoostBonus();
+						int diffHp = newHpBonus - lastHp;
+
+						if (diffHp != 0) {
+							playerData.addMaxHP(diffHp);
+							globalData.setLastHpBoostBonus(newHpBonus);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+						}
+					} else {
+						int lastHp = globalData.getLastHpBoostBonus();
+						if (lastHp != 0) {
+							playerData.addMaxHP(-lastHp);
+							globalData.setLastHpBoostBonus(0);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+						}
+					}
+
+					// MP Boost
+					if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
+						int countMP = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpBoost);
+						int newMpBonus = countMP * 10;
+
+						int lastMp = globalData.getLastMpBoostBonus();
+						int diffMp = newMpBonus - lastMp;
+
+						if (diffMp != 0) {
+							playerData.addMaxMP(diffMp);
+							globalData.setLastMpBoostBonus(newMpBonus);
+						}
+					} else {
+						int lastMp = globalData.getLastMpBoostBonus();
+						if (lastMp != 0) { playerData.addMaxMP(-lastMp);
+							globalData.setLastMpBoostBonus(0);
+						}
 					}
 
 

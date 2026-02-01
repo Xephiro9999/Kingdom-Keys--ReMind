@@ -24,6 +24,12 @@ public class CommonConfig {
     public ModConfigSpec.BooleanValue spiritsEnabled;
     public ModConfigSpec.DoubleValue autoLifeCD;
 
+    public ModConfigSpec.IntValue ultimaPositiveSTR;
+    public ModConfigSpec.IntValue ultimaNegativeSTR;
+
+    public ModConfigSpec.IntValue ultimaPositiveMAG;
+    public ModConfigSpec.IntValue ultimaNegativeMAG;
+
 
 
 
@@ -92,5 +98,27 @@ public class CommonConfig {
                 .comment("Sets how long before Chirithy can cast Auto-Life on you again in minutes.")
                 .comment("Default: 5.0.")
                 .defineInRange("Chirithy Auto-Life Cooldown", 5.0,1,1000);
+
+        builder.pop();
+        builder.push("Ultima Weapon Ability");
+
+        ultimaPositiveSTR = builder
+                .comment("Minimum STR Ultima Weapon boosts to when STR is positive but below this value")
+                .defineInRange("ultimaPositiveSTR", 20, 0, 9999);
+
+        ultimaNegativeSTR = builder
+                .comment("Minimum STR Ultima Weapon boosts to when STR is negative")
+                .defineInRange("ultimaNegativeSTR", 10, 0, 9999);
+
+        ultimaPositiveMAG = builder
+                .comment("Minimum MAG Ultima Weapon boosts to when MAG is positive but below this value")
+                .defineInRange("ultimaPositiveMAG", 20, 0, 9999);
+
+        ultimaNegativeMAG = builder
+                .comment("Minimum MAG Ultima Weapon boosts to when MAG is negative")
+                .defineInRange("ultimaNegativeMAG", 10, 0, 9999);
+
+        builder.pop();
+
     }
 }
