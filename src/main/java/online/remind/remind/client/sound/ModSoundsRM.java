@@ -46,6 +46,7 @@ public class ModSoundsRM {
             DARK_FIRAGA = registerSound("dark_firaga"),
             ZANTETSUKEN = registerSound("zantetsuken"),
             SWIFT_STRIKE = registerSound("swift_strike"),
+            SWIFT_STRIKE_EN = registerSound("swift_strike_en"),
 
             SPIRIT_SUMMON = registerSound("spirit_summon"),
             SPIRIT_DESUMMON = registerSound("spirit_desummon"),
@@ -61,6 +62,7 @@ public class ModSoundsRM {
             TWILIGHT_STEP = registerSound("twilight_step"),
             DUAL_SHOT = registerSound("dual_shot"),
             HEARTLESS_ANGEL = registerSound("heartless_angel"),
+            HEARTLESS_ANGEL_EN = registerSound("heartless_angel_en"),
             DARK_MODE = registerSound("darkness"),
 
             // Music

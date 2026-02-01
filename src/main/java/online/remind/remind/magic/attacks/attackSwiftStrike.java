@@ -66,7 +66,12 @@ public class attackSwiftStrike extends Magic {
 
     @Override
     protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.SWIFT_STRIKE.get(), SoundSource.PLAYERS, 1F, 1F);
+        double rand = Math.floor(Math.random() * 100);
+        if (rand >= 50) {
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.SWIFT_STRIKE.get(), SoundSource.PLAYERS, 1F, 1F);
+        } else {
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.SWIFT_STRIKE_EN.get(), SoundSource.PLAYERS, 1F, 1F);
+        }
 
     }
 }

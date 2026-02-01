@@ -260,6 +260,7 @@ public class EntityEventsRM {
 	}
 
 
+
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
@@ -381,8 +382,15 @@ public class EntityEventsRM {
 		if (player != null){
 			PlayerData playerData = PlayerData.get((Player) player);
 				if (playerData != null){
-					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.ultimaWeaponKH1Chain.get()) {
+					if (e.getNewStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
 						System.out.println("Equipped Ultima Weapon (KH1)");
+						if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
+							// TODO: Figure out how to get MP Boost working on Equip?
+							//playerData.addMaxMP(10);
+						}
+					}
+					if (e.getPreviousStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
+						//playerData.addMaxMP(-10);
 					}
 			}
 		}
@@ -416,13 +424,11 @@ public class EntityEventsRM {
 				}
 			}
 
-
+			// MP Boost Test
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null){
-					if (playerData.isAbilityEquipped(StringsRM.munny_magic)){
 
-					}
 				}
 			}
 

@@ -37,6 +37,11 @@ public class ShotlockHeartlessAngel extends Shotlock {
             le.setHealth(2);
         }
         //System.out.println(target);
-        player.level().playSound(null, player.blockPosition(), ModSoundsRM.HEARTLESS_ANGEL.get(), SoundSource.PLAYERS, 1F, 1F);
+        double rand = Math.floor(Math.random() * 100);
+        if (rand >= 50) {
+            player.level().playSound(null, player.blockPosition(), ModSoundsRM.HEARTLESS_ANGEL.get(), SoundSource.PLAYERS, 1F, 1F);
+        } else {
+            player.level().playSound(null, player.blockPosition(), ModSoundsRM.HEARTLESS_ANGEL_EN.get(), SoundSource.PLAYERS, 1F, 1F);
+        }
     }
 }

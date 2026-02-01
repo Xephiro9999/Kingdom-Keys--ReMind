@@ -121,10 +121,15 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             PlayerData ownerData = PlayerData.get(owner);
             hp = (int) (20 + (ownerData.getMaxHP() / 2D));
             str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-            mag = (int) (5 + (ownerData.getMagicStat().getStat() / 0.8D));
+            mag = (int) (5 + (ownerData.getMagicStat().getStat() / 0.75D));
             def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
 
+            //System.out.println(hp+ ", " + str + ", " + mag + ", " + def);
+
             this.setHealth((float) hp);
+            this.setStr(str);
+            this.setMag(mag);
+            this.setDef(def);
         }
     }
 
@@ -137,6 +142,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             this.discard();
             return;
         }
+
+        updateStatsFromOwner();
+
+
 
 
         Player owner = this.level().getPlayerByUUID(this.getOwnerUUID());
@@ -153,6 +162,17 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             this.discard();
             return;
         }
+
+
+
+
+        // If you die, I no longer am bound to you.
+        if (!this.isAlive()){
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
+        }
+
 
         // Desummon if player's data doesn't match the current ID
         if (data != null) {
@@ -194,33 +214,48 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         if (owner != null && owner.isAlive()){
             if (castCooldown == 0) {
 
+
+
                 //owner.sendSystemMessage(Component.literal(owner.getHealth() + ""));
                 // Cure Logic
+                float healAmount;
                 PlayerData ownerData = PlayerData.get(owner);
                 if (ownerData == null) return;
                 if (ownerData.getMagicsMap().containsKey(Strings.Magic_Cure)) {
                     if (cureCooldown == 0) {
-                        if (owner.isHurt()) {
+                        if (owner.isHurt() || owner.hasEffect(ModMobEffects.KO)) {
                             int cureLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
                             switch (cureLevel) {
                                 case 0:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
-                                    float healAmount = (float) (chirithyMagic);
+                                    healAmount = (float) (mag);
                                     owner.heal(healAmount);
+                                    System.out.println(healAmount);
+                                    if (owner.hasEffect(ModMobEffects.KO)){
+                                        owner.removeEffect(ModMobEffects.KO);
+                                    }
                                     owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSounds.cure.get(), SoundSource.PLAYERS, 1f, 1f);
                                     owner.sendSystemMessage(Component.literal("<Chirithy> Cure!"));
                                     break;
                                 case 1:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
-                                    healAmount = (float) (chirithyMagic * 1.25f);
+                                    healAmount = (float) (mag * 1.1f);
                                     owner.heal(healAmount);
+                                    System.out.println(healAmount);
+                                    if (owner.hasEffect(ModMobEffects.KO)){
+                                        owner.removeEffect(ModMobEffects.KO);
+                                    }
                                     owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSounds.cura.get(), SoundSource.PLAYERS, 1f, 1f);
                                     owner.sendSystemMessage(Component.literal("<Chirithy> Cura!"));
                                     break;
                                 case 2:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
-                                    healAmount = (float) (chirithyMagic * 1.5f);
+                                    healAmount = (float) (mag * 1.25f);
                                     owner.heal(healAmount);
+                                    System.out.println(healAmount);
+                                    if (owner.hasEffect(ModMobEffects.KO)){
+                                        owner.removeEffect(ModMobEffects.KO);
+                                    }
                                     owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSounds.curaga.get(), SoundSource.PLAYERS, 1f, 1f);
                                     owner.sendSystemMessage(Component.literal("<Chirithy> Curaga!"));
                             }
@@ -253,7 +288,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 // Heal Self
                 if (cureCooldown == 0) {
                     if (this.getHealth() < this.getMaxHealth() && !owner.isHurt()) {
-                        this.heal((float) chirithyMagic * 2f);
+                        this.heal((float) mag);
                         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), this.getX(), this.getY() + 2.3D, this.getZ(), 5, 0D, 0D, 0D, 0D);
                         this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), ModSounds.cure.get(), SoundSource.NEUTRAL, 1f, 1f);
                         owner.sendSystemMessage(Component.literal("<Chirithy> Gotta patch myself up!"));

@@ -144,6 +144,11 @@
       "kkremind:heartless_angel"
     ]
   },
+  "heartless_angel_en": {
+    "sounds": [
+      "kkremind:heartless_angel_en"
+    ]
+  },
   "darkness": {
     "sounds": [
       "kkremind:darkness"
@@ -222,6 +227,11 @@
   "swift_strike": {
     "sounds": [
       "kkremind:swift_strike"
+    ]
+  },
+  "swift_strike_en": {
+    "sounds": [
+      "kkremind:swift_strike_en"
     ]
   }
 }
