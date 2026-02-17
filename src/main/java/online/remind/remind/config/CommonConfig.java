@@ -24,11 +24,22 @@ public class CommonConfig {
     public ModConfigSpec.BooleanValue spiritsEnabled;
     public ModConfigSpec.DoubleValue autoLifeCD;
 
+
+    // UW Ability
     public ModConfigSpec.IntValue ultimaPositiveSTR;
     public ModConfigSpec.IntValue ultimaNegativeSTR;
 
     public ModConfigSpec.IntValue ultimaPositiveMAG;
     public ModConfigSpec.IntValue ultimaNegativeMAG;
+
+    // Coin/Wallet
+    public ModConfigSpec.IntValue copperCoinValue;
+    public ModConfigSpec.IntValue silverCoinValue;
+    public ModConfigSpec.IntValue goldCoinValue;
+    public ModConfigSpec.IntValue emeraldCoinValue;
+    public ModConfigSpec.IntValue diamondCoinValue;
+    public ModConfigSpec.IntValue netheriteCoinValue;
+    public ModConfigSpec.IntValue amethystCoinValue;
 
 
 
@@ -119,6 +130,36 @@ public class CommonConfig {
                 .defineInRange("ultimaNegativeMAG", 10, 0, 9999);
 
         builder.pop();
+
+        builder.push("Coins and Wallet Configs [WIP] - MAY NOT WORK");
+
+        copperCoinValue = builder
+                .comment("Sets the value for the Copper Coin. Default: 1")
+                .defineInRange("copperCoinValue", 1, 1, 999999);
+
+        silverCoinValue = builder
+                .comment("Sets the value for the Silver Coin. Default: 5")
+                .defineInRange("silverCoinValue", 5, 1, 999999);
+
+        goldCoinValue = builder
+                .comment("Sets the value for the Gold Coin. Default: 10")
+                .defineInRange("goldCoinValue", 10, 1, 999999);
+
+        emeraldCoinValue = builder
+                .comment("Sets the value for the Emerald Coin. Default: 50")
+                .defineInRange("emeraldCoinValue", 50, 1, 999999);
+
+        diamondCoinValue = builder
+                .comment("Sets the value for the Diamond Coin. Default: 100")
+                .defineInRange("diamondCoinCalue", 100, 1, 999999);
+
+        netheriteCoinValue = builder
+                .comment("Sets the value for the Netherite Coin. Default: 500")
+                .defineInRange("netheriteCoinValue", 500, 1, 999999);
+
+        amethystCoinValue = builder
+                .comment("Sets the value for the Amethyst Coin. Default: 1000")
+                .defineInRange("amethystCoinValue", 1000, 1, 999999);
 
     }
 }

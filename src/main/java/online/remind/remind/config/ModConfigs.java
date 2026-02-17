@@ -48,6 +48,15 @@ public class ModConfigs {
         ultimaPositiveMAG = COMMON.ultimaPositiveMAG.get();
         ultimaNegativeMAG = COMMON.ultimaNegativeMAG.get();
 
+        // Wallet/Coin Configs
+        copperCoinValue = COMMON.copperCoinValue.get();
+        silverCoinValue = COMMON.silverCoinValue.get();
+        goldCoinValue = COMMON.goldCoinValue.get();
+        emeraldCoinValue = COMMON.emeraldCoinValue.get();
+        diamondCoinValue = COMMON.diamondCoinValue.get();
+        netheriteCoinValue = COMMON.netheriteCoinValue.get();
+        amethystCoinValue = COMMON.amethystCoinValue.get();
+
     }
 
     public static boolean donorKeybladeGrant;
@@ -76,6 +85,16 @@ public class ModConfigs {
     public static int ultimaNegativeSTR;
     public static int ultimaPositiveMAG;
     public static int ultimaNegativeMAG;
+
+    // Coin/Wallet
+    public static int copperCoinValue;
+    public static int silverCoinValue;
+    public static int goldCoinValue;
+    public static int emeraldCoinValue;
+    public static int diamondCoinValue;
+    public static int netheriteCoinValue;
+    public static int amethystCoinValue;
+
 
     @SubscribeEvent
     public static void configEvent(ModConfigEvent event) {

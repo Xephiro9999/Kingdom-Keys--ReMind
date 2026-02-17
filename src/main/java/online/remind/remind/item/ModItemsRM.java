@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import online.kingdomkeys.kingdomkeys.item.*;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.function.Supplier;
@@ -16,6 +17,8 @@ import java.util.function.Supplier;
 public class ModItemsRM{
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.createItems(KingdomKeysReMind.MODID);
+
+    public static int copperCoinValue = ModConfigs.copperCoinValue;
 
     public static final Supplier<Item>
             // Spell Orbs
@@ -130,9 +133,13 @@ public class ModItemsRM{
 
 
         // Coins
-        copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 100, "munny")),
-        silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
-        goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),
+        copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1, "munny")),
+        silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 5, "munny")),
+        goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 10, "munny")),
+        emeraldCoin = ITEMS.register("emerald_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 50, "munny")),
+        diamondCoin = ITEMS.register("diamond_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 100, "munny")),
+        netheriteCoin = ITEMS.register("netherite_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
+        amethystCoin = ITEMS.register("amethyst_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),
         heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "hearts"));
 
     public static void register(IEventBus eventBus){
