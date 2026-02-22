@@ -17,11 +17,11 @@ public class ModDreamEaters {
     static int order = 0;
     // 0 = None, 1 = Chirithy, 2 = ???
 
-    //TODO: Create system like the shotlocks/magics/drives for better Dream Eater Tracking?
+    //TODO: Add More Dream Eaters
     public static final Supplier<DreamEater>
             NONE = DREAM_EATERS.register(StringsRM.none, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none), order++)),
-            CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy), order++)),
-            MEOWWOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++));
+            CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy), order++));
+            //MEOWWOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++));
 
 
 }

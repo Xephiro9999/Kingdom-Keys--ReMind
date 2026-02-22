@@ -66,7 +66,9 @@ public class ModSoundsRM {
             DARK_MODE = registerSound("darkness"),
 
             // Music
-            DREAM_EATERS = registerSound("dream_eaters");
+            DREAM_EATERS = registerSound("dream_eaters"),
+            Record_One_Winged_Angel_KH1 = registerSound("records/one-winged_angel_kh1"),
+            Record_One_Winged_Angel_KH2 = registerSound("records/one-winged_angel_kh2");
 
 
     public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {

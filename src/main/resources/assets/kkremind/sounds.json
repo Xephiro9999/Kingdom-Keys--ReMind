@@ -233,5 +233,21 @@
     "sounds": [
       "kkremind:swift_strike_en"
     ]
+  },
+  "records/one-winged_angel_kh1": {
+    "sounds": [
+      {
+        "name": "kkremind:records/one-winged_angel_kh1",
+        "stream": true
+      }
+    ]
+  },
+  "records/one-winged_angel_kh2": {
+    "sounds": [
+      {
+        "name": "kkremind:records/one-winged_angel_kh2",
+        "stream": true
+      }
+    ]
   }
 }

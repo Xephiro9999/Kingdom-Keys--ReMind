@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import online.kingdomkeys.kingdomkeys.item.*;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.client.sound.ModRMJukeboxSongs;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 
@@ -19,6 +20,9 @@ public class ModItemsRM{
             DeferredRegister.createItems(KingdomKeysReMind.MODID);
 
     public static int copperCoinValue = ModConfigs.copperCoinValue;
+    public static int silverCoinValue = ModConfigs.silverCoinValue;
+    public static int goldCoinValue = ModConfigs.goldCoinValue;
+
 
     public static final Supplier<Item>
             // Spell Orbs
@@ -141,6 +145,10 @@ public class ModItemsRM{
         netheriteCoin = ITEMS.register("netherite_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
         amethystCoin = ITEMS.register("amethyst_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),
         heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "hearts"));
+
+        // Music Discs
+
+
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
