@@ -14,18 +14,11 @@ import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKCollider;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.skills.KKSkills;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.integration.epicfight.capabilities.ReMindWeaponCapabilities;
-
-import org.checkerframework.checker.units.qual.C;
 
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.neoevent.WeaponCapabilityPresetRegistryEvent;
+import yesman.epicfight.api.event.EpicFightEventHooks;
 import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.gameasset.ColliderPreset;
-import yesman.epicfight.gameasset.Animations.*;
-import yesman.epicfight.registry.entries.EpicFightSkills;
 import yesman.epicfight.registry.entries.EpicFightSounds;
-import yesman.epicfight.skill.Skill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
@@ -84,8 +77,10 @@ public class EpicRMWeapons {
     private EpicRMWeapons() {
     }
 
-    public static void register(WeaponCapabilityPresetRegistryEvent event) {
-        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,EpicRMWeaponEnum.XEPHIRO.toString().toLowerCase()), XEPHIRO);
+    public static void register() {
+        EpicFightEventHooks.Registry.WEAPON_CAPABILITY_PRESET.registerEvent(event -> {
+            event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, EpicRMWeaponEnum.XEPHIRO.toString().toLowerCase()), XEPHIRO);
+        });
 
     }
 

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import yesman.epicfight.api.neoevent.playerpatch.TakeDamageEvent;
+import yesman.epicfight.api.event.types.entity.TakeDamageEvent;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
@@ -55,7 +55,7 @@ public class GuardSkillMixin {
                 player.heal(player.getMaxHealth() * 0.075F);
                 player.getFoodData().eat(3,3);
             }
-            event.getPlayerPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
+            event.getEntityPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
         }
 
         if(playerData.isAbilityEquipped(StringsRM.focusBlock)) {
@@ -71,7 +71,7 @@ public class GuardSkillMixin {
                 GlobalData target = GlobalData.get((LivingEntity) attacker);
                 if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
                     ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
-                    event.getPlayerPatch().playSound(ModSounds.stop.get(), 1f, 1f);
+                    event.getEntityPatch().playSound(ModSounds.stop.get(), 1f, 1f);
                     playerData.remMP(10);
                 }
             }
@@ -84,14 +84,14 @@ public class GuardSkillMixin {
                 } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
                     playerData.addDP(25);
                 }
-                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
+                event.getEntityPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
             } else {
                 if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerData.addFP(10);
                 } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
                     playerData.addDP(10);
                 }
-                event.getPlayerPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
+                event.getEntityPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
             }
 
             PacketHandler.syncToAllAround(player, playerData);
