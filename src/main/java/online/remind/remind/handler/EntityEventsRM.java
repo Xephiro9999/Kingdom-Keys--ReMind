@@ -732,18 +732,25 @@ public class EntityEventsRM {
 						int diffHp = newHpBonus - lastHp;
 
 						if (diffHp != 0) {
-							playerData.addMaxHP(diffHp);
 							globalData.setLastHpBoostBonus(newHpBonus);
-							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+
+							int baseHp = playerData.getMaxHP();
+							int boostedHp = baseHp + newHpBonus;
+
+							player.getAttribute(Attributes.MAX_HEALTH)
+									.setBaseValue(boostedHp);
 						}
 					} else {
 						int lastHp = globalData.getLastHpBoostBonus();
 						if (lastHp != 0) {
-							playerData.addMaxHP(-lastHp);
 							globalData.setLastHpBoostBonus(0);
-							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
+
+							int baseHp = playerData.getMaxHP();
+							player.getAttribute(Attributes.MAX_HEALTH)
+									.setBaseValue(baseHp);
 						}
 					}
+
 
 					// MP Boost
 					if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
