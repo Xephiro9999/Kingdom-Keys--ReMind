@@ -138,6 +138,7 @@ public class ModItemsRM{
         omegaArts = ITEMS.register("omega_arts", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,4,0,new String[] {StringsRM.hpBoost, StringsRM.hpBoost})),
         rayOfLight = ITEMS.register("ray_of_light", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,0,4,new String[] {StringsRM.hpBoost, StringsRM.mpBoost})),
         alluringSkull = ITEMS.register("alluring_skull", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,0,0,new String[] {Strings.encounterPlus, Strings.encounterPlus})),
+        whiteFang = ITEMS.register("white_fang", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 1,1,0,new String[] {Strings.criticalBoost})),
 
 
 
