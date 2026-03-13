@@ -1,5 +1,6 @@
 package online.remind.remind.entity.spirits;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -43,6 +45,9 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.RawAnimation;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
@@ -254,7 +259,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 // Cure Logic
                 if (ownerData == null) return;
                 if (ownerData.getMagicsMap().containsKey(Strings.Magic_Cure)) {
-                    if (cureCooldown == 0) {
+                    if (cureCooldown == 0 && castCooldown == 0) {
                         if (owner.isHurt() || owner.hasEffect(ModMobEffects.KO)) {
                             int cureLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
                             switch (cureLevel) {
@@ -301,7 +306,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                 // Aero Logic
                 if (ownerData.getMagicsMap().containsKey(Strings.Magic_Aero)) {
-                    if (aeroCooldown == 0) {
+                    if (aeroCooldown == 0 && castCooldown == 0) {
                         if (owner.hurtTime > 0) {
                             int aeroLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
                             int time = (int) (chirithyMagic * 100) * (1 + aeroLevel);
@@ -318,7 +323,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 }
 
                 // Heal Self
-                if (cureCooldown == 0) {
+                if (cureCooldown == 0 && castCooldown == 0) {
                     if (this.getHealth() < this.getMaxHealth() && !owner.isHurt()) {
                         this.heal((float) mag);
                         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), this.getX(), this.getY() + 2.3D, this.getZ(), 5, 0D, 0D, 0D, 0D);
@@ -334,17 +339,29 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 // Esuna Logic
 
                 if (ownerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
-                    if (esunaCooldown == 0) {
-                        for (MobEffectInstance effect : owner.getActiveEffects()) {
-                            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
-                                owner.removeEffect(effect.getEffect());
-                                owner.sendSystemMessage(Component.literal("<Chirithy> No more ailments!"));
-                                owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.ESUNA.get(), SoundSource.PLAYERS, 1F, 1F);
-                                this.startCasting();
-                                esunaCooldown = 600;
-                                castCooldown = 20;
+                    if (esunaCooldown == 0 && castCooldown == 0) {
 
+                        List<Holder<MobEffect>> toRemove = new ArrayList<>();
+
+                        Iterator<MobEffectInstance> iterator = owner.getActiveEffects().iterator();
+
+                        while (iterator.hasNext()){
+                            MobEffectInstance effect = iterator.next();
+
+                            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                                toRemove.add(effect.getEffect());
                             }
+                        }
+
+                        if (!toRemove.isEmpty()){
+                            for (Holder<MobEffect> effect : toRemove){
+                                owner.removeEffect(effect);
+                            }
+                            owner.sendSystemMessage(Component.literal("<Chirithy> No more ailments!"));
+                            owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.ESUNA.get(), SoundSource.PLAYERS, 1F, 1F);
+                            this.startCasting();
+                            esunaCooldown = 600;
+                            castCooldown = 20;
                         }
                     }
                 }
@@ -352,7 +369,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 // Auto-Life
                 if (ownerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
                     if (!owner.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
-                        if (autoLifeCooldown == 0){
+                        if (autoLifeCooldown == 0 && castCooldown == 0){
                             owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE,Integer.MAX_VALUE, 0,false,false));
                             owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
                             owner.sendSystemMessage(Component.literal("<Chirithy> Not gonna let you die! Auto-Life!"));

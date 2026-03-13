@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
+import online.kingdomkeys.kingdomkeys.client.ClientUtils;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -51,7 +52,7 @@ public class DreamEaterHUD extends OverlayBaseRM {
 
         poseStack.pushPose();
         {
-            poseStack.translate(ModConfigs.partyXPos-70, ModConfigs.partyYPos - 20, 0);
+            poseStack.translate(ClientUtils.PARTY_ELEMENT.x - 70, ClientUtils.PARTY_ELEMENT.y - 20, 0);
             DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(globalData.getDreamEaterRL()));
             renderDreamEater(guiGraphics, dreamEater, screenWidth, screenHeight, scale);
         }

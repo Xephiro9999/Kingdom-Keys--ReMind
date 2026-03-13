@@ -133,7 +133,12 @@ public class ModItemsRM{
         silverArmlet = ITEMS.register("silver_armlet", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),10,0,0, new String[] {StringsRM.spellblade,StringsRM.mpBoost})),
         daredevil = ITEMS.register("daredevil", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),0,0,0, new String[] {StringsRM.oneHP, Strings.experienceBoost, Strings.experienceBoost})),
         ribbon_ff7 = ITEMS.register("ribbon_ff7", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),10,0,0, new String[] {StringsRM.ribbon})),
-        furyRing = ITEMS.register("fury_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),0,2,0, new String[] {Strings.berserkCharge, Strings.berserkCharge, Strings.berserkCharge, StringsRM.mpSlow, StringsRM.mpSlowra, StringsRM.mpSlowga})),
+        furyRing = ITEMS.register("fury_ring", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1),0,2,0, new String[] {Strings.berserkCharge, StringsRM.mpSlow, StringsRM.mpSlowra, StringsRM.mpSlowga})),
+        braveWarrior = ITEMS.register("brave_warrior", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 2,1,0,new String[] {StringsRM.hpBoost,StringsRM.hpBoost})),
+        omegaArts = ITEMS.register("omega_arts", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,4,0,new String[] {StringsRM.hpBoost, StringsRM.hpBoost})),
+        rayOfLight = ITEMS.register("ray_of_light", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,0,4,new String[] {StringsRM.hpBoost, StringsRM.mpBoost})),
+        alluringSkull = ITEMS.register("alluring_skull", () -> new KKAccessoryItem(new Item.Properties().stacksTo(1), 3,0,0,new String[] {Strings.encounterPlus, Strings.encounterPlus})),
+
 
 
         // Coins
