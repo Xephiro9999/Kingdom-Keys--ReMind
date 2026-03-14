@@ -1,0 +1,23 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:twilight_shard",
+      "quantity": "2"
+    },
+    {
+      "material": "kingdomkeys:soothing_shard",
+      "quantity": "1"
+    },
+    {
+      "material": "kingdomkeys:pulsing_stone",
+      "quantity": "3"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:ray_of_light",
+    "quantity": 1
+  },
+  "tier": 3
+}

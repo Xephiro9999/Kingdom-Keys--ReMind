@@ -994,7 +994,7 @@ public class EntityEventsRM {
 
 						int amp = regen.getAmplifier();
 
-						switch(amp){
+						switch (amp) {
 							case 0:
 								player.heal(0.25f);
 								break;
@@ -1008,7 +1008,28 @@ public class EntityEventsRM {
 								break;
 						}
 					}
+				} else if (event.getEntity() instanceof Mob mob) {
+					if (mob.hasEffect(ModMobEffectsRM.REGEN)) {
+						MobEffectInstance regen = mob.getEffect(ModMobEffectsRM.REGEN);
 
+						int amp = regen.getAmplifier();
+
+						switch (amp) {
+							case 0:
+								mob.heal(0.25f);
+								break;
+							case 1:
+								mob.heal(0.5f);
+								break;
+							case 2:
+								mob.heal(1f);
+								break;
+						}
+					}
+				}
+
+				if (event.getEntity() instanceof Player player) {
+					PlayerData playerData = PlayerData.get(player);
 					// MP Slow Testing
 					if (playerData.isAbilityEquipped(StringsRM.mpSlow) || playerData.isAbilityEquipped(StringsRM.mpSlowra) || playerData.isAbilityEquipped(StringsRM.mpSlowga)){
 						//System.out.println(Utils.getMPHasteValue(playerData));

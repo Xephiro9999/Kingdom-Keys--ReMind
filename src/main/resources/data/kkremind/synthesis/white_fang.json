@@ -1,0 +1,19 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:pulsing_shard",
+      "quantity": "2"
+    },
+    {
+      "material": "kingdomkeys:lucid_shard",
+      "quantity": "1"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:white_fang",
+    "quantity": 1
+  },
+  "tier": 1
+}
