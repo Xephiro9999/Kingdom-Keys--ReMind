@@ -22,6 +22,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
     public UUID dreamEaterUUID;
+    public double situationValue;
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
 
@@ -55,7 +56,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.dreamEaterUUID = capability.getDreamEaterUUID();
         this.dreamEaterRL = capability.getDreamEaterRL();
         this.style = capability.getStyle();
-
+        this.situationValue = capability.getSituationValue();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -91,9 +92,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
             buffer.writeBoolean(false);
         }
         buffer.writeUtf(message.style, 100);
-
-
-
+        buffer.writeDouble(message.situationValue);
     }
 
     public static SCSyncGlobalCapabilityToAllPacketRM decode(FriendlyByteBuf buffer){
@@ -127,6 +126,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
             msg.dreamEaterUUID = buffer.readUUID();
         }
         msg.style = buffer.readUtf(100);
+        msg.situationValue = buffer.readDouble();
         return msg;
     }
 
@@ -162,6 +162,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setDreamEaterRL(message.dreamEaterRL);
 
                 globalData.setStyle(message.style);
+                globalData.setSituationValue(message.situationValue);
 			}
 		});
     }
