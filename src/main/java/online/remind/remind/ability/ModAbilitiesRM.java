@@ -50,6 +50,7 @@ public class ModAbilitiesRM extends ModAbilities{
         LIGHT_WITHIN = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_within").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.lightWithin), 5, Ability.AbilityType.SUPPORT, order++)),
         HP_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpBoost), 10, Ability.AbilityType.SUPPORT, order++)),
         MP_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpBoost), 10, Ability.AbilityType.SUPPORT, order++)),
+        SITUATION_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"situation_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.situationBoost), 2, Ability.AbilityType.SUPPORT, order++)),
         MP_SHIELD = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_shield").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpShield), 5, Ability.AbilityType.SUPPORT, order++)),
         VEHEMENCE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"vehemence").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.vehemence), 5, Ability.AbilityType.SUPPORT, order++)),
         ADRENALINE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"adrenaline").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.adrenaline), 4, Ability.AbilityType.SUPPORT, order++)),

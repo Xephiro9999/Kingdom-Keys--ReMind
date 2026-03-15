@@ -63,6 +63,7 @@ public class StringsRM {
         lightBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"light_boost",
         mpBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_boost",
         hpBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"hp_boost",
+        situationBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"situation_boost",
         rageAwakened = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"rage_awakened",
         darkPower = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_power",
         wayToLight = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"way_to_light",

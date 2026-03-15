@@ -186,6 +186,8 @@
   "ability.ability_mp_boost.desc": "Increases your Max MP. Equip more to increase the effect.",
   "ability.ability_hp_boost.name": "HP Boost",
   "ability.ability_hp_boost.desc": "Increases your Max HP. Equip more to increase the effect.",
+  "ability.ability_situation_boost.name": "Situation Boost",
+  "ability.ability_situation_boost.desc": "Fill situation command gauges more quickly. Equip more to increase the effect.",
   "ability.ability_riskcharge.name": "Riskcharge",
   "ability.ability_riskcharge.desc": "Unleashes fighting spirit by pressing your Reaction Command button, consuming HP in the process. This empowers your strength.",
   "ability.ability_attack_haste.name": "Attack Haste",

@@ -391,6 +391,9 @@ public class EntityEventsRM {
 		if (spellID.contains("thunder") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.THUNDER;
 		if (spellID.contains("water") || spellID.contains("balloon")) return SpellElement.WATER;
 		if (spellID.contains("aero")) return SpellElement.AIR;
+		if (spellID.contains("holy") || spellID.contains("faith") || spellID.contains("light") || spellID.contains("spark")) return SpellElement.LIGHT;
+		if (spellID.contains("ruin") || spellID.contains("comet") || spellID.contains("dark") || spellID.contains("zantetsuken")) return SpellElement.DARK;
+		if (spellID.contains("quick") || spellID.contains("sliding")) return SpellElement.PHYSICAL;
 
 
 		return SpellElement.NONE;
@@ -408,9 +411,21 @@ public class EntityEventsRM {
 				//TODO: Uncomment for next version
 				//int spellLvl = e.getLevel();
 
+				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
+				double situationValue = 10;
+				switch (spellID){
+					case "default":
+						situationValue = 0;
+						break;
+					case "kkremind:magic_ultima":
+						situationValue += 10;
+						System.out.println("Added "+situationValue);
+						break;
+				}
+
 
 				remindData.addSituationSpell(spellID);
-				remindData.setSituationValue(remindData.getSituationValue() + 10);
+				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
 
 				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
@@ -443,6 +458,16 @@ public class EntityEventsRM {
 						case THUNDER:
 							remindData.setStyle(majority.toString());
 							break;
+						case WATER:
+							break;
+						case AIR:
+							break;
+						case LIGHT:
+							break;
+						case DARK:
+							break;
+						case NONE:
+							remindData.setSituationValue(0);
 					}
 					PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 				}
