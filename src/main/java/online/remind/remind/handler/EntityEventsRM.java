@@ -252,6 +252,12 @@ public class EntityEventsRM {
 				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 1);
 			}
 		}
+
+		// Formchanges
+		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString(), 1);
+
 	}
 
 	private void updateEquippedAbilities(Player player){
@@ -364,13 +370,100 @@ public class EntityEventsRM {
 
 	}
 
+	// Helper Method for the Situation Gauge System
+
+	public enum SpellElement {
+		FIRE,
+		BLIZZARD,
+		THUNDER,
+		WATER,
+		AIR,
+		LIGHT,
+		DARK,
+		PHYSICAL,
+		NONE
+	}
+
+	private SpellElement getElement(String spellID){
+
+		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
+		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
+		if (spellID.contains("thunder") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.THUNDER;
+		if (spellID.contains("water") || spellID.contains("balloon")) return SpellElement.WATER;
+		if (spellID.contains("aero")) return SpellElement.AIR;
+
+
+		return SpellElement.NONE;
+	}
+
 	@SubscribeEvent
 	public void onMagicCast(MagicSpellCastEvent e){
 		LivingEntity caster = e.getCaster();
 		if (caster instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-
+			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 			if (playerData != null){
+				//System.out.println(e.getSpellID());
+				String spellID = e.getSpellID().toString();
+				//TODO: Uncomment for next version
+				//int spellLvl = e.getLevel();
+
+
+				remindData.addSituationSpell(spellID);
+				remindData.setSituationValue(remindData.getSituationValue() + 10);
+
+				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
+				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+				if (remindData.getSituationValue() >= 100){
+
+					Map<SpellElement, Integer> counts = new HashMap<>();
+					for (String s : remindData.getSituationSpells()){
+						SpellElement element = getElement(s);
+						counts.put(element, counts.getOrDefault(element, 0) +1);
+					}
+
+					SpellElement majority = SpellElement.NONE;
+					int highest = 0;
+
+					for (Map.Entry<SpellElement, Integer> entry : counts.entrySet()) {
+						if (entry.getValue() > highest) {
+							highest = entry.getValue();
+							majority = entry.getKey();
+						}
+					}
+					System.out.println(majority);
+
+					switch (majority){
+						case FIRE:
+							playerData.addReactionCommand(StringsRM.FireStormRC.toString(), (Player) caster);
+							remindData.setFirestorm(true);
+							//remindData.setSituationValue(0);
+							break;
+						case BLIZZARD:
+							playerData.addReactionCommand(StringsRM.DiamondDustRC.toString(), (Player) caster);
+							remindData.setDiamondDust(true);
+							//remindData.setSituationValue(0);
+							break;
+						case THUNDER:
+							playerData.addReactionCommand(StringsRM.ThunderBoltRC.toString(), (Player) caster);
+							remindData.setThunderBolt(true);
+							//remindData.setSituationValue(0);
+							break;
+					}
+
+
+
+
+					// Add Reaction Command?
+
+
+					// Reset Values
+
+				}
+
+
+
+				//System.out.println("Spell: " + spell);
 
 			}
 		}
@@ -827,6 +920,12 @@ public class EntityEventsRM {
 				if (globalData.getRCCooldownTicks() > 0) {
 					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 				}
+
+				// Formchange/Situation Gauge System
+
+
+
+
 
 				// Step Ticks
 				if (globalData.getStepTicks() > 0) {

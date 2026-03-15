@@ -1,0 +1,15 @@
+{
+  "cost": 0,
+  "ap": 100,
+  "can_go_anti": false,
+  "can_use_magic": true,
+  "str_mult": 1,
+  "mag_mult": 1,
+  "speed_mult": 1,
+  "level_up":[ 0, 150, 300, 450, 600, 750, 900 ],
+  "abilities": [
+    "kingdomkeys:ability_blizzard_boost","kingdomkeys:ability_blizzard_boost","kingdomkeys:ability_blizzard_boost","kingdomkeys:ability_blizzard_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kkremind:ability_spellblade"
+  ],
+  "base_levelup_abilities":[ "", "", "", "", "", "", "" ],
+  "driveform_levelup_abilities":[ "", "", "", "","","","" ]
+}

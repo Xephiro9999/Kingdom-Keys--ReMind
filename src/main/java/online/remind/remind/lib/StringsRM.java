@@ -32,6 +32,11 @@ public class StringsRM {
         darkForm = StringsRM.DFMA_Prefix+"dark",
         lightForm = StringsRM.DFMA_Prefix+"light",
         twilight = StringsRM.DFMA_Prefix+"twilight",
+
+        fireStorm = StringsRM.DFMA_Prefix+"firestorm",
+        diamondDust = StringsRM.DFMA_Prefix+"diamond_dust",
+        thunderBolt = StringsRM.DFMA_Prefix+"thunder_bolt",
+
         regenForm = StringsRM.DFMA_Prefix+"regen",
 
         // Magic
@@ -155,6 +160,10 @@ public class StringsRM {
         CounterHammerRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_hammer",
         CounterBlastRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_blast",
         CounterRushRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_rush",
+
+        FireStormRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"firestorm",
+        DiamondDustRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"diamond_dust",
+        ThunderBoltRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"thunder_bolt",
 
         RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
 

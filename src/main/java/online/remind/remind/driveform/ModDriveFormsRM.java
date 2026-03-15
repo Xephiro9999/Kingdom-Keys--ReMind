@@ -26,6 +26,11 @@ public class ModDriveFormsRM {
              RAGE = DRIVE_FORMS.register(StringsRM.DFMA_Prefix + "rage", () -> new DriveFormRage(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "rage"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/rage.png"), false, false)),
              TWILIGHT = DRIVE_FORMS.register(StringsRM.DFMA_Prefix + "twilight", () -> new DriveFormTwilight(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "twilight"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/twilight.png"), true, true)),
 
+        // Formchanges/Style Changes
+            FIRESTORM = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"firestorm", () -> new StyleFireStorm(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "firestorm"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
+            DIAMOND_DUST = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"diamond_dust", () -> new StyleDiamondDust(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "diamond_dust"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
+            THUNDER_BOLT = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"thunder_bolt", () -> new StyleThunderBolt(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "thunder_bolt"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
+
         // Commission Forms
 
             REGEN = DRIVE_FORMS.register(StringsRM.DFMA_Prefix + "regen", () -> new DriveFormRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "regen"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true));

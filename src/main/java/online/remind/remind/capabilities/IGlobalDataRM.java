@@ -4,6 +4,7 @@ package online.remind.remind.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
@@ -114,6 +115,22 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
 
     boolean isDarkMode();
     void setDarkMode(boolean value);
+
+    double getSituationValue();
+    void setSituationValue(double i);
+    void remSituationValue(double i);
+
+    List<String> getSituationSpells();
+    void addSituationSpell(String spell);
+    void clearSituationSpells();
+
+    boolean isFirestorm();
+    void setFirestorm(boolean value);
+    boolean isThunderBolt();
+    void setThunderBolt(boolean value);
+    boolean isDiamondDust();
+    void setDiamondDust(boolean value);
+
 
 
 

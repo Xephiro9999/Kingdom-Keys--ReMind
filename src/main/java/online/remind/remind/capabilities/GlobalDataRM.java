@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -47,6 +49,8 @@ public class GlobalDataRM implements IGlobalDataRM {
         //storage.putString("Panels_Choice",this.getPanelChoice().toString());
 
         storage.putInt("riskcharge_count", this.getRiskchargeCount());
+
+        storage.putDouble("situation_value", this.getSituationValue());
 
         // Dream Eater
         if (dreamEaterUUID != null) {
@@ -91,6 +95,8 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
         this.setCanCounter(properties.getInt("can_counter"));
+
+        this.setSituationValue(properties.getDouble("situation_value"));
 
         this.setDonorGiven(properties.getBoolean("donor_grant"));
         if (nbt.contains("DreamEaterUUID")) {
@@ -144,6 +150,8 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int RCCooldown;
     private int CanCounter;
 
+    private double situationValue;
+
     private int MPOG;
 
     private int riskchargeCount;
@@ -154,6 +162,10 @@ public class GlobalDataRM implements IGlobalDataRM {
     private boolean donorGiven;
 
     private boolean darkMode;
+
+    private boolean firestorm;
+    private boolean diamondDust;
+    private boolean thunderBolt;
 
     //Haste
     public int getHasteLevel() {
@@ -582,6 +594,55 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void setDarkMode(boolean value) {
         this.darkMode = value;
     }
+
+    @Override
+    public double getSituationValue(){ return situationValue;}
+
+    @Override
+    public void setSituationValue(double i){this.situationValue = i;}
+
+    @Override
+    public void remSituationValue(double i) {
+        situationValue -= i;
+    }
+
+    private final List<String> situationSpells = new ArrayList<>();
+
+    @Override
+    public List<String> getSituationSpells() {
+        return situationSpells;
+    }
+    @Override
+    public void addSituationSpell(String spell) {
+        situationSpells.add(spell);
+    }
+
+    @Override
+    public void clearSituationSpells() {
+        situationSpells.clear();
+    }
+
+    @Override
+    public boolean isFirestorm() {
+        return firestorm;
+    }
+    @Override
+    public boolean isThunderBolt(){
+        return thunderBolt;
+    }
+    @Override
+    public boolean isDiamondDust(){
+        return diamondDust;
+    }
+
+    @Override
+    public void setFirestorm(boolean value) {
+        this.firestorm = value;
+    }
+    @Override
+    public void setThunderBolt(boolean value) {this.thunderBolt = value;}
+    @Override
+    public void setDiamondDust(boolean value) {this.diamondDust = value;}
 
 
 }
