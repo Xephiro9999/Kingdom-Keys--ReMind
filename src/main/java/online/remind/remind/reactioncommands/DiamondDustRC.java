@@ -27,13 +27,17 @@ public class DiamondDustRC extends ReactionCommand {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-			DriveForm diamondDust = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.diamondDust));
-			diamondDust.initDrive(player);
-			playerData.removeReactionCommand(getRegistryName().toString());
-			remindData.setDiamondDust(false);
-			remindData.setSituationValue(0);
-			remindData.clearSituationSpells();
-			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())) {
+				DriveForm diamondDust = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.diamondDust));
+				diamondDust.initDrive(player);
+				playerData.removeReactionCommand(getRegistryName().toString());
+				remindData.setSituationValue(0);
+				remindData.clearSituationSpells();
+				remindData.setStyle("");
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			} else {
+
+			}
 
 		}
 	}
@@ -46,9 +50,11 @@ public class DiamondDustRC extends ReactionCommand {
 			if (remindData != null){
 				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.isDiamondDust()) {
+						if (remindData.getStyle().equals("BLIZZARD")) {
 							return true;
 						}
+					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())) {
+						return true;
 					}
 				}
 			}

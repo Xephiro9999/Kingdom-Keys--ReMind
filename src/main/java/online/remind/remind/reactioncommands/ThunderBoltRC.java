@@ -28,13 +28,17 @@ public class ThunderBoltRC extends ReactionCommand {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-			DriveForm thunderBolt = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.thunderBolt));
-			thunderBolt.initDrive(player);
-			playerData.removeReactionCommand(getRegistryName().toString());
-			remindData.setThunderBolt(false);
-			remindData.setSituationValue(0);
-			remindData.clearSituationSpells();
-			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) {
+				DriveForm thunderBolt = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.thunderBolt));
+				thunderBolt.initDrive(player);
+				playerData.removeReactionCommand(getRegistryName().toString());
+				remindData.setSituationValue(0);
+				remindData.clearSituationSpells();
+				remindData.setStyle("");
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			} else {
+
+			}
 		}
 	}
 
@@ -46,9 +50,11 @@ public class ThunderBoltRC extends ReactionCommand {
 			if (remindData != null){
 				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.isThunderBolt()) {
+						if (remindData.getStyle().equals("THUNDER")) {
 							return true;
 						}
+					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) {
+						return true;
 					}
 				}
 			}

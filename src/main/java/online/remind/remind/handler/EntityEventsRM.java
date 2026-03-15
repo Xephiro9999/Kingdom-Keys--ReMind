@@ -435,19 +435,13 @@ public class EntityEventsRM {
 
 					switch (majority){
 						case FIRE:
-							//playerData.addReactionCommand(StringsRM.FireStormRC.toString(), (Player) caster);
-							//remindData.setFirestorm(true);
 							remindData.setStyle(majority.toString());
 							break;
 						case BLIZZARD:
-							//playerData.addReactionCommand(StringsRM.DiamondDustRC.toString(), (Player) caster);
-							remindData.setDiamondDust(true);
-							//remindData.setSituationValue(0);
+							remindData.setStyle(majority.toString());
 							break;
 						case THUNDER:
-							//playerData.addReactionCommand(StringsRM.ThunderBoltRC.toString(), (Player) caster);
-							remindData.setThunderBolt(true);
-							//remindData.setSituationValue(0);
+							remindData.setStyle(majority.toString());
 							break;
 					}
 					PacketHandlerRM.syncGlobalToAllAround(caster, remindData);

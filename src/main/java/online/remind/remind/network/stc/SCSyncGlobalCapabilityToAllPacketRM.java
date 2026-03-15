@@ -19,7 +19,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public String dreamEaterRL, style;
-    public boolean donorGiven, darkMode, dreamEaterSummoned, firestorm, diamondDust, thunderBolt;
+    public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
     public UUID dreamEaterUUID;
 
@@ -54,9 +54,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.dreamEaterSummoned = capability.hasDreamEaterSummoned();
         this.dreamEaterUUID = capability.getDreamEaterUUID();
         this.dreamEaterRL = capability.getDreamEaterRL();
-        this.firestorm = capability.isFirestorm();
-        this.diamondDust = capability.isDiamondDust();
-        this.thunderBolt = capability.isThunderBolt();
         this.style = capability.getStyle();
 
     }
@@ -93,10 +90,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         } else {
             buffer.writeBoolean(false);
         }
-        buffer.writeBoolean(message.firestorm);
-        buffer.writeBoolean(message.diamondDust);
-        buffer.writeBoolean(message.thunderBolt);
-        buffer.writeUtf(message.style);
+        buffer.writeUtf(message.style, 100);
 
 
 
@@ -132,12 +126,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
-
-        msg.style = buffer.readUtf();
-
-        msg.firestorm = buffer.readBoolean();
-        msg.diamondDust = buffer.readBoolean();
-        msg.thunderBolt = buffer.readBoolean();
+        msg.style = buffer.readUtf(100);
         return msg;
     }
 
@@ -171,10 +160,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setHasDreamEaterSummoned(message.dreamEaterSummoned);
                 globalData.setDreamEaterUUID(message.dreamEaterUUID);
                 globalData.setDreamEaterRL(message.dreamEaterRL);
-
-                globalData.setFirestorm(message.firestorm);
-                globalData.setDiamondDust(message.diamondDust);
-                globalData.setThunderBolt(message.thunderBolt);
 
                 globalData.setStyle(message.style);
 			}

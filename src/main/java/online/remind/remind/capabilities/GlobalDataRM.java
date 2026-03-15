@@ -168,10 +168,6 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     private boolean darkMode;
 
-    private boolean firestorm;
-    private boolean diamondDust;
-    private boolean thunderBolt;
-
     //Haste
     public int getHasteLevel() {
         return hasteLevel;
@@ -621,34 +617,10 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void addSituationSpell(String spell) {
         situationSpells.add(spell);
     }
-
     @Override
     public void clearSituationSpells() {
         situationSpells.clear();
     }
-
-    @Override
-    public boolean isFirestorm() {
-        return firestorm;
-    }
-    @Override
-    public boolean isThunderBolt(){
-        return thunderBolt;
-    }
-    @Override
-    public boolean isDiamondDust(){
-        return diamondDust;
-    }
-
-    @Override
-    public void setFirestorm(boolean value) {
-        this.firestorm = value;
-    }
-    @Override
-    public void setThunderBolt(boolean value) {this.thunderBolt = value;}
-    @Override
-    public void setDiamondDust(boolean value) {this.diamondDust = value;}
-
     public String getStyle(){return style;}
     public void setStyle(String style){this.style = style;}
 

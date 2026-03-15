@@ -27,14 +27,17 @@ public class FirestormRC extends ReactionCommand {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-			DriveForm firestorm = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.fireStorm));
-			firestorm.initDrive(player);
-			playerData.removeReactionCommand(getRegistryName().toString());
-			remindData.setFirestorm(false);
-			remindData.setSituationValue(0);
-			remindData.clearSituationSpells();
-			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-
+			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) {
+				DriveForm firestorm = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.fireStorm));
+				firestorm.initDrive(player);
+				playerData.removeReactionCommand(getRegistryName().toString());
+				remindData.setSituationValue(0);
+				remindData.setStyle("");
+				remindData.clearSituationSpells();
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+			} else {
+				System.out.println("Finisher Code Here");
+			}
 		}
 	}
 
@@ -45,10 +48,13 @@ public class FirestormRC extends ReactionCommand {
 		if(playerData != null) {
 			if (remindData != null){
 				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                    // Should show the "Finisher"
+                    if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 						if (remindData.getStyle().equals("FIRE")) {
 							return true;
 						}
+					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) {
+						return true;
 					}
 				}
 			}

@@ -124,13 +124,6 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void addSituationSpell(String spell);
     void clearSituationSpells();
 
-    boolean isFirestorm();
-    void setFirestorm(boolean value);
-    boolean isThunderBolt();
-    void setThunderBolt(boolean value);
-    boolean isDiamondDust();
-    void setDiamondDust(boolean value);
-
     String getStyle();
     void setStyle(String style);
 
