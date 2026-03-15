@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.remind.remind.client.gui.DreamEaterHUD;
+import online.remind.remind.client.gui.StylesHUD;
 import online.remind.remind.client.render.AutoLifeLayerRenderer;
 import online.remind.remind.client.render.BerserkLayerRenderer;
 import online.remind.remind.client.render.ConfuseLayerRenderer;
@@ -84,6 +85,7 @@ public class ClientSetupRM {
     @SubscribeEvent
     public static void registerOverlays(RegisterGuiLayersEvent event) {
         event.registerBelow(VanillaGuiLayers.CHAT, ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "dream_eater_info"), DreamEaterHUD.INSTANCE);
+        event.registerBelow(VanillaGuiLayers.CHAT, ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "styles"), StylesHUD.INSTANCE);
     }
 
     @OnlyIn(Dist.CLIENT)

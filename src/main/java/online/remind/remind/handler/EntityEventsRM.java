@@ -414,12 +414,11 @@ public class EntityEventsRM {
 
 				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
-				if (remindData.getSituationValue() >= 100){
-
+				if (remindData.getSituationValue() >= 100) {
 					Map<SpellElement, Integer> counts = new HashMap<>();
-					for (String s : remindData.getSituationSpells()){
+					for (String s : remindData.getSituationSpells()) {
 						SpellElement element = getElement(s);
-						counts.put(element, counts.getOrDefault(element, 0) +1);
+						counts.put(element, counts.getOrDefault(element, 0) + 1);
 					}
 
 					SpellElement majority = SpellElement.NONE;
@@ -433,7 +432,7 @@ public class EntityEventsRM {
 					}
 					System.out.println(majority);
 
-					switch (majority){
+					switch (majority) {
 						case FIRE:
 							remindData.setStyle(majority.toString());
 							break;
@@ -444,8 +443,9 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 					}
-					PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 				}
+
+				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 			}
 		}
 	}
