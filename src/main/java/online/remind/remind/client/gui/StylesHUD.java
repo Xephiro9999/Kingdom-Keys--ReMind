@@ -37,6 +37,7 @@ public class StylesHUD extends OverlayBaseRM {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         super.render(guiGraphics, deltaTracker);
         Player player = minecraft.player;
+        PlayerData playerData = PlayerData.get(player);
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (globalData == null)
             return;
@@ -54,6 +55,8 @@ public class StylesHUD extends OverlayBaseRM {
 
             PoseStack poseStack = guiGraphics.pose();
 
+            String form = playerData.getActiveDriveForm();
+
             poseStack.pushPose();
             {
                 float color = 0.7F;
@@ -61,7 +64,21 @@ public class StylesHUD extends OverlayBaseRM {
                 ClientUtils.CM_ELEMENT.applyTransform(guiGraphics, screenWidth, screenHeight);
                 poseStack.translate(2, 2, 0);
                 guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu.png"), 0, 0, 0, 0, (int) val, 11);
-                guiGraphics.drawString(minecraft.font, "a", 1, 1, Color.RED.getRGB());
+                switch (form){
+                    default:
+                        guiGraphics.drawCenteredString(minecraft.font, "", 1, 1, Color.RED.getRGB());
+                        break;
+                    case "kkremind:form_firestorm":
+                        guiGraphics.drawCenteredString(minecraft.font, "FIRESTORM", 35, 2, Color.YELLOW.getRGB());
+                        break;
+                    case "kkremind:form_diamond_dust":
+                        guiGraphics.drawCenteredString(minecraft.font, "DIAMOND DUST", 35, 2, Color.CYAN.getRGB());
+                        break;
+                    case "kkremind:form_thunder_bolt":
+                        guiGraphics.drawCenteredString(minecraft.font, "THUNDER BOLT", 35, 2, Color.GREEN.getRGB());
+                        break;
+                }
+
 
                 ClientUtils.CM_ELEMENT.endTransform(guiGraphics);
             }
