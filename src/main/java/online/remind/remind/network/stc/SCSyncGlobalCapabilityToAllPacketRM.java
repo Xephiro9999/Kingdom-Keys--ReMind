@@ -19,7 +19,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public String dreamEaterRL;
-    public boolean donorGiven, darkMode, dreamEaterSummoned;
+    public boolean donorGiven, darkMode, dreamEaterSummoned, firestorm, diamondDust, thunderBolt;
     public byte stepType;
     public UUID dreamEaterUUID;
 
@@ -54,6 +54,9 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.dreamEaterSummoned = capability.hasDreamEaterSummoned();
         this.dreamEaterUUID = capability.getDreamEaterUUID();
         this.dreamEaterRL = capability.getDreamEaterRL();
+        this.firestorm = capability.isFirestorm();
+        this.diamondDust = capability.isDiamondDust();
+        this.thunderBolt = capability.isThunderBolt();
 
     }
 
@@ -89,6 +92,9 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         } else {
             buffer.writeBoolean(false);
         }
+        buffer.writeBoolean(message.firestorm);
+        buffer.writeBoolean(message.diamondDust);
+        buffer.writeBoolean(message.thunderBolt);
 
 
 
@@ -124,6 +130,9 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
+        msg.firestorm = buffer.readBoolean();
+        msg.diamondDust = buffer.readBoolean();
+        msg.thunderBolt = buffer.readBoolean();
         return msg;
     }
 
@@ -157,6 +166,10 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setHasDreamEaterSummoned(message.dreamEaterSummoned);
                 globalData.setDreamEaterUUID(message.dreamEaterUUID);
                 globalData.setDreamEaterRL(message.dreamEaterRL);
+
+                globalData.setFirestorm(message.firestorm);
+                globalData.setDiamondDust(message.diamondDust);
+                globalData.setThunderBolt(message.thunderBolt);
 			}
 		});
     }

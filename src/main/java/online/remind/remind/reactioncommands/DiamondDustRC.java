@@ -14,6 +14,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.network.PacketHandlerRM;
 
 public class DiamondDustRC extends ReactionCommand {
 
@@ -32,6 +33,8 @@ public class DiamondDustRC extends ReactionCommand {
 			remindData.setDiamondDust(false);
 			remindData.setSituationValue(0);
 			remindData.clearSituationSpells();
+			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+
 		}
 	}
 
