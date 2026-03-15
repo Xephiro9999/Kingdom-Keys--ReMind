@@ -52,6 +52,8 @@ public class GlobalDataRM implements IGlobalDataRM {
 
         storage.putDouble("situation_value", this.getSituationValue());
 
+        storage.putString("style", this.getStyle());
+
         // Dream Eater
         if (dreamEaterUUID != null) {
             storage.putUUID("DreamEaterUUID", this.getDreamEaterUUID());
@@ -97,6 +99,7 @@ public class GlobalDataRM implements IGlobalDataRM {
         this.setCanCounter(properties.getInt("can_counter"));
 
         this.setSituationValue(properties.getDouble("situation_value"));
+        this.setStyle(properties.getString("style"));
 
         this.setDonorGiven(properties.getBoolean("donor_grant"));
         if (nbt.contains("DreamEaterUUID")) {
@@ -151,6 +154,8 @@ public class GlobalDataRM implements IGlobalDataRM {
     private int CanCounter;
 
     private double situationValue;
+
+    private String style = "";
 
     private int MPOG;
 
@@ -643,6 +648,9 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void setThunderBolt(boolean value) {this.thunderBolt = value;}
     @Override
     public void setDiamondDust(boolean value) {this.diamondDust = value;}
+
+    public String getStyle(){return style;}
+    public void setStyle(String style){this.style = style;}
 
 
 }

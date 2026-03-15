@@ -46,7 +46,7 @@ public class FirestormRC extends ReactionCommand {
 			if (remindData != null){
 				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.isFirestorm()) {
+						if (remindData.getStyle().equals("FIRE")) {
 							return true;
 						}
 					}

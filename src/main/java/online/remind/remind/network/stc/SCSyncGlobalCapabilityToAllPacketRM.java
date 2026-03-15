@@ -18,7 +18,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
     public int id;
     public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
-    public String dreamEaterRL;
+    public String dreamEaterRL, style;
     public boolean donorGiven, darkMode, dreamEaterSummoned, firestorm, diamondDust, thunderBolt;
     public byte stepType;
     public UUID dreamEaterUUID;
@@ -57,6 +57,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.firestorm = capability.isFirestorm();
         this.diamondDust = capability.isDiamondDust();
         this.thunderBolt = capability.isThunderBolt();
+        this.style = capability.getStyle();
 
     }
 
@@ -95,6 +96,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeBoolean(message.firestorm);
         buffer.writeBoolean(message.diamondDust);
         buffer.writeBoolean(message.thunderBolt);
+        buffer.writeUtf(message.style);
 
 
 
@@ -130,6 +132,9 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
+
+        msg.style = buffer.readUtf();
+
         msg.firestorm = buffer.readBoolean();
         msg.diamondDust = buffer.readBoolean();
         msg.thunderBolt = buffer.readBoolean();
@@ -170,6 +175,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setFirestorm(message.firestorm);
                 globalData.setDiamondDust(message.diamondDust);
                 globalData.setThunderBolt(message.thunderBolt);
+
+                globalData.setStyle(message.style);
 			}
 		});
     }

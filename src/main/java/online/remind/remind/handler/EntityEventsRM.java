@@ -436,8 +436,8 @@ public class EntityEventsRM {
 					switch (majority){
 						case FIRE:
 							//playerData.addReactionCommand(StringsRM.FireStormRC.toString(), (Player) caster);
-							remindData.setFirestorm(true);
-							//remindData.setSituationValue(0);
+							//remindData.setFirestorm(true);
+							remindData.setStyle(majority.toString());
 							break;
 						case BLIZZARD:
 							//playerData.addReactionCommand(StringsRM.DiamondDustRC.toString(), (Player) caster);

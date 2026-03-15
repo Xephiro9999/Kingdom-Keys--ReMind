@@ -131,6 +131,9 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     boolean isDiamondDust();
     void setDiamondDust(boolean value);
 
+    String getStyle();
+    void setStyle(String style);
+
 
 
 
