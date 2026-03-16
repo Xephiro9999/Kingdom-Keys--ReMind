@@ -56,6 +56,7 @@ public class ModConfigs {
         diamondCoinValue = COMMON.diamondCoinValue.get();
         netheriteCoinValue = COMMON.netheriteCoinValue.get();
         amethystCoinValue = COMMON.amethystCoinValue.get();
+        heartCoinValue = COMMON.heartCoinValue.get();
 
     }
 
@@ -94,6 +95,7 @@ public class ModConfigs {
     public static int diamondCoinValue;
     public static int netheriteCoinValue;
     public static int amethystCoinValue;
+    public static int heartCoinValue;
 
 
     @SubscribeEvent

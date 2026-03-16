@@ -143,14 +143,14 @@ public class ModItemsRM{
 
 
         // Coins
-        copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1, "munny")),
-        silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 5, "munny")),
-        goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 10, "munny")),
-        emeraldCoin = ITEMS.register("emerald_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 50, "munny")),
-        diamondCoin = ITEMS.register("diamond_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 100, "munny")),
-        netheriteCoin = ITEMS.register("netherite_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 500, "munny")),
-        amethystCoin = ITEMS.register("amethyst_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "munny")),
-        heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), 1000, "hearts"));
+        copperCoin = ITEMS.register("copper_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.copperCoinValue, "munny")),
+        silverCoin = ITEMS.register("silver_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.silverCoinValue, "munny")),
+        goldCoin = ITEMS.register("gold_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.goldCoinValue, "munny")),
+        emeraldCoin = ITEMS.register("emerald_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.emeraldCoinValue, "munny")),
+        diamondCoin = ITEMS.register("diamond_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.diamondCoinValue, "munny")),
+        netheriteCoin = ITEMS.register("netherite_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.netheriteCoinValue, "munny")),
+        amethystCoin = ITEMS.register("amethyst_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.amethystCoinValue, "munny")),
+        heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.heartCoinValue, "hearts"));
 
         // Music Discs
 
