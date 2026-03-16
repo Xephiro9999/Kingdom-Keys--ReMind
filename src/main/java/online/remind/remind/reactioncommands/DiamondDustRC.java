@@ -37,6 +37,11 @@ public class DiamondDustRC extends ReactionCommand {
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 
+				// Leave Form
+				playerData.addFP(-1000);
+				remindData.setStyle("");
+				remindData.setSituationValue(0);
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			}
 
 		}
@@ -54,7 +59,9 @@ public class DiamondDustRC extends ReactionCommand {
 							return true;
 						}
 					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())) {
-						return true;
+						if (remindData.getSituationValue() >= 100) {
+							return true;
+						}
 					}
 				}
 			}

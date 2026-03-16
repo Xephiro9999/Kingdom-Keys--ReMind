@@ -37,7 +37,13 @@ public class ThunderBoltRC extends ReactionCommand {
 				remindData.setStyle("");
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
+				// Insert Attack Here
 
+				// Leave Form
+				playerData.addFP(-1000);
+				remindData.setStyle("");
+				remindData.setSituationValue(0);
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			}
 		}
 	}
@@ -54,7 +60,9 @@ public class ThunderBoltRC extends ReactionCommand {
 							return true;
 						}
 					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) {
-						return true;
+						if (remindData.getSituationValue() >= 100) {
+							return true;
+						}
 					}
 				}
 			}

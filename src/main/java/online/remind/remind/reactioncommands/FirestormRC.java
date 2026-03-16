@@ -37,6 +37,12 @@ public class FirestormRC extends ReactionCommand {
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 				System.out.println("Finisher Code Here");
+
+				// Leave Form
+				playerData.addFP(-1000);
+				remindData.setStyle("");
+				remindData.setSituationValue(0);
+				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			}
 		}
 	}
@@ -54,7 +60,9 @@ public class FirestormRC extends ReactionCommand {
 							return true;
 						}
 					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) {
-						return true;
+						if (remindData.getSituationValue() >= 100) {
+							return true;
+						}
 					}
 				}
 			}
