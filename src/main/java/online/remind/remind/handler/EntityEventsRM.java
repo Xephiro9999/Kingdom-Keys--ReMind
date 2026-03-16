@@ -943,9 +943,11 @@ public class EntityEventsRM {
 				if (event.getEntity() instanceof Player player) {
 					if (globalData.getSituationValue() <= 0) {
 						globalData.clearSituationSpells();
-						globalData.setStyle("NONE");
+						globalData.setStyle("");
 						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
+					} else if (globalData.getSituationValue() > 100){
+						globalData.setSituationValue(100);
 					}
 				}
 
@@ -1405,8 +1407,16 @@ public class EntityEventsRM {
 			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if(playerData != null) {
 
+
+					double situationGain = (event.getNewDamage() * 0.1);
+					float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
+					situationGain *= situationMulti;
+
+					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
+					System.out.println(situationGain);
+
 				if (remindData != null){
-					remindData.setSituationValue(remindData.getSituationValue() + 5);
+					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
 					remindData.setSCooldownTicks(60);
 					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 				}

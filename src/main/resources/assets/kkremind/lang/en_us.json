@@ -396,6 +396,7 @@
 
   "reactioncommand.kkremind.rc_regen.name": "Ravenous Saber",
 
+  "reactioncommand.kkremind.rc_finish.name": "Finish",
   "reactioncommand.kkremind.rc_firestorm.name": "Firestorm",
   "reactioncommand.kkremind.rc_diamond_dust.name": "Diamond Dust",
   "reactioncommand.kkremind.rc_thunder_bolt.name": "Thunder Bolt",

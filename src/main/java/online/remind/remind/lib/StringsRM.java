@@ -162,6 +162,7 @@ public class StringsRM {
         CounterBlastRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_blast",
         CounterRushRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_rush",
 
+        FinishRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"finish",
         FireStormRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"firestorm",
         DiamondDustRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"diamond_dust",
         ThunderBoltRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"thunder_bolt",

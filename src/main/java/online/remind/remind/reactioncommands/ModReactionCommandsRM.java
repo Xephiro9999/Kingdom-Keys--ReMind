@@ -29,6 +29,7 @@ public class ModReactionCommandsRM {
         ZEXION_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"zexion", () -> new XemnasRC( ResourceLocation.parse(StringsRM.ZexionRC),true)),
 
 
+        FINISH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"finish", () -> new FinishRC( ResourceLocation.parse(StringsRM.FinishRC),true)),
         FIRESTORM_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"firestorm", () -> new FirestormRC( ResourceLocation.parse(StringsRM.FireStormRC),true)),
         DIAMOND_DUST_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"diamond_dust", () -> new DiamondDustRC( ResourceLocation.parse(StringsRM.DiamondDustRC),true)),
         THUNDER_BOLT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"thunder_bolt", () -> new ThunderBoltRC( ResourceLocation.parse(StringsRM.ThunderBoltRC),true)),
