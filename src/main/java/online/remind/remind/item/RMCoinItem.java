@@ -14,10 +14,13 @@ import online.kingdomkeys.kingdomkeys.api.item.ItemCategory;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import java.util.function.Supplier;
+import java.util.List;
+import net.minecraft.world.item.TooltipFlag;
 
 public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
-    int value;
-    String type;
+    private final Supplier<Integer> value;
+    private final String type;
 
     @Override
     public Tab getTab() {
@@ -26,7 +29,7 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
 
 
 
-    public RMCoinItem(Properties properties, int value, String type) {
+    public RMCoinItem(Properties properties, Supplier<Integer> value, String type) {
         super(properties);
         this.value = value;
         this.type = type;
@@ -39,6 +42,7 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
             if (playerData != null ) {
 
                 int stack = player.getMainHandItem().getCount();
+                int coinValue = value.get();
 
                 if (player.isCrouching()){
                     if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
@@ -48,15 +52,15 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
                     }
                     switch (type) {
                         case "munny": {
-                            playerData.setMunny(playerData.getMunny() + value * stack);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value * stack + " Munny!"), true);
+                            playerData.setMunny(playerData.getMunny() + coinValue * stack);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue * stack + " Munny!"), true);
                             //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
 
                             break;
                         }
                         case "hearts": {
-                            playerData.addHearts(value * stack);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value * stack + " Hearts!"), true);
+                            playerData.addHearts(coinValue * stack);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue * stack + " Hearts!"), true);
                             //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
                             break;
                         }
@@ -69,15 +73,15 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
                     }
                     switch (type) {
                         case "munny": {
-                            playerData.setMunny(playerData.getMunny() + value);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Munny!"), true);
+                            playerData.setMunny(playerData.getMunny() + coinValue);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue + " Munny!"), true);
                             //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
 
                             break;
                         }
                         case "hearts": {
-                            playerData.addHearts(value);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + value + " Hearts!"), true);
+                            playerData.addHearts(coinValue);
+                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue + " Hearts!"), true);
                             //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
                             break;
                         }
@@ -91,12 +95,23 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
     }
 
     @Override
+    public void appendHoverText(ItemStack stack,
+                                Item.TooltipContext context,
+                                List<Component> tooltip,
+                                TooltipFlag flag) {
+        tooltip.add(
+                Component.literal(getCoinValue() + " " + getCoinType())
+                        .withStyle(ChatFormatting.YELLOW)
+        );
+    }
+
+    @Override
     public ItemCategory getCategory() {
         return ItemCategory.MISC;
     }
 
     public int getCoinValue() {
-        return value;
+        return value.get();
     }
 
     public String getCoinType() {

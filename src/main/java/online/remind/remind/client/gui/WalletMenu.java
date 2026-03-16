@@ -334,6 +334,22 @@ public class WalletMenu extends MenuFilterable {
         }
         matrixStack.popPose();
 
+        if (selectedItemStack.getItem() instanceof RMCoinItem coin) {
+            String valueText = coin.getCoinValue() + " " + coin.getCoinType();
+
+            matrixStack.pushPose();
+            {
+                matrixStack.translate(
+                        boxR.getX() + (boxR.getWidth() / 2.0) - minecraft.font.width(valueText) / 2.0,
+                        boxR.getY() + 15, // slightly below the name
+                        1
+                );
+                gui.drawString(minecraft.font, valueText, 0, 0, 0xFFFF55); // gold-ish color
+            }
+            matrixStack.popPose();
+        }
+
+
         matrixStack.pushPose();
         {
             float size = 80;

@@ -40,6 +40,7 @@ public class CommonConfig {
     public ModConfigSpec.IntValue diamondCoinValue;
     public ModConfigSpec.IntValue netheriteCoinValue;
     public ModConfigSpec.IntValue amethystCoinValue;
+    public ModConfigSpec.IntValue heartCoinValue;
 
 
 
@@ -151,7 +152,7 @@ public class CommonConfig {
 
         diamondCoinValue = builder
                 .comment("Sets the value for the Diamond Coin. Default: 100")
-                .defineInRange("diamondCoinCalue", 100, 1, 999999);
+                .defineInRange("diamondCoinValue", 100, 1, 999999);
 
         netheriteCoinValue = builder
                 .comment("Sets the value for the Netherite Coin. Default: 500")
@@ -161,5 +162,10 @@ public class CommonConfig {
                 .comment("Sets the value for the Amethyst Coin. Default: 1000")
                 .defineInRange("amethystCoinValue", 1000, 1, 999999);
 
+        heartCoinValue = builder
+                .comment("Sets the value for the Heart Coin. Default: 1000")
+                .defineInRange("heartCoinValue", 1000, 1, 999999);
+
+        builder.pop();
     }
 }
