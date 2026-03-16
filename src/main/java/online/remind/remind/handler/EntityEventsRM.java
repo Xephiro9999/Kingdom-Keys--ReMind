@@ -429,6 +429,9 @@ public class EntityEventsRM {
 
 				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+
+				remindData.setSCooldownTicks(60);
+
 				if (remindData.getSituationValue() >= 100) {
 					Map<SpellElement, Integer> counts = new HashMap<>();
 					for (String s : remindData.getSituationSpells()) {
@@ -929,7 +932,22 @@ public class EntityEventsRM {
 
 				// Formchange/Situation Gauge System
 
+				if (globalData.getSCooldownTicks() > 0){
+					globalData.remSCooldownTicks(1);
+					//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
+				}
 
+				if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
+					globalData.setSituationValue(globalData.getSituationValue() - 0.2);
+				}
+				if (event.getEntity() instanceof Player player) {
+					if (globalData.getSituationValue() <= 0) {
+						globalData.clearSituationSpells();
+						globalData.setStyle("NONE");
+						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
+					}
+				}
 
 
 
@@ -1384,7 +1402,14 @@ public class EntityEventsRM {
 		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
+			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if(playerData != null) {
+
+				if (remindData != null){
+					remindData.setSituationValue(remindData.getSituationValue() + 5);
+					remindData.setSCooldownTicks(60);
+					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+				}
 
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);

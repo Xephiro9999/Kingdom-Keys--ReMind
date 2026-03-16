@@ -70,19 +70,23 @@ public class StylesHUD extends OverlayBaseRM {
                         guiGraphics.drawCenteredString(minecraft.font, "", 1, 1, Color.RED.getRGB());
                         break;
                     case "kkremind:form_firestorm":
+                        guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu_firestorm.png"), 0, 0, 0, 0, (int) val, 11);
                         guiGraphics.drawCenteredString(minecraft.font, "FIRESTORM", 30, 2, Color.ORANGE.getRGB());
+
                         break;
                     case "kkremind:form_diamond_dust":
                         guiGraphics.pose().pushPose();
                             {
-                            guiGraphics.pose().scale(0.80f,1f,1f);
-                            guiGraphics.drawCenteredString(minecraft.font, "DIAMOND DUST", 38, 2, Color.CYAN.getRGB());
+                                guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu_diamond_dust.png"), 0, 0, 0, 0, (int) val, 11);
+                                guiGraphics.pose().scale(0.80f,1f,1f);
+                                guiGraphics.drawCenteredString(minecraft.font, "DIAMOND DUST", 38, 2, Color.CYAN.getRGB());
                             }
                         guiGraphics.pose().popPose();
                         break;
                     case "kkremind:form_thunder_bolt":
                         guiGraphics.pose().pushPose();
                         {
+                        guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu_thunder_bolt.png"), 0, 0, 0, 0, (int) val, 11);
                         guiGraphics.pose().scale(0.80f,1f,1f);
                         guiGraphics.drawCenteredString(minecraft.font, "THUNDER BOLT", 37, 2, Color.YELLOW.getRGB());
                         }

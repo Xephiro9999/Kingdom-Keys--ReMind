@@ -151,6 +151,7 @@ public class GlobalDataRM implements IGlobalDataRM {
     private byte stepType;
 
     private int RCCooldown;
+    private int SCooldown;
     private int CanCounter;
 
     private double situationValue;
@@ -623,6 +624,22 @@ public class GlobalDataRM implements IGlobalDataRM {
     }
     public String getStyle(){return style;}
     public void setStyle(String style){this.style = style;}
+
+    @Override
+    public int getSCooldownTicks() {
+        return this.SCooldown;
+    }
+
+    @Override
+    public void setSCooldownTicks(int ticks) {
+        this.SCooldown = ticks;
+    }
+
+    @Override
+    public void remSCooldownTicks(int ticks) {
+        this.SCooldown = Math.max(SCooldown - ticks, 0);
+
+    }
 
 
 }
