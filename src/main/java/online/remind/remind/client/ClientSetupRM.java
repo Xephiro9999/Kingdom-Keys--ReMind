@@ -85,13 +85,13 @@ public class ClientSetupRM {
     @SubscribeEvent
     public static void registerOverlays(RegisterGuiLayersEvent event) {
         event.registerBelow(VanillaGuiLayers.CHAT, ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "dream_eater_info"), DreamEaterHUD.INSTANCE);
-        event.registerBelow(VanillaGuiLayers.CHAT, ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "styles"), StylesHUD.INSTANCE);
     }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void setupClient(FMLClientSetupEvent event) {
 		NeoForge.EVENT_BUS.register(new ClientEventsRM());
+        NeoForge.EVENT_BUS.register(new StylesHUD());
     }
 
 

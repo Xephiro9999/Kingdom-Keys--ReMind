@@ -74,8 +74,6 @@ public class KingdomKeysReMind {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
 
-
-
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EntityEventsRM());
@@ -190,7 +188,7 @@ public class KingdomKeysReMind {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

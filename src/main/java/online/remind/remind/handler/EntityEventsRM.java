@@ -35,6 +35,7 @@ import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
+import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -400,16 +401,21 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
+	public void onRCCast(ReactionCommandCastEvent e){
+		System.out.println(e.getRCID());//TODO add the RC versions too
+	}
+
+	@SubscribeEvent
 	public void onMagicCast(MagicSpellCastEvent e){
 		LivingEntity caster = e.getCaster();
 		if (caster instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
+			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
 				String spellID = e.getSpellID().toString();
 				//TODO: Uncomment for next version
-				//int spellLvl = e.getLevel();
+				int spellLvl = e.getLevel();
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
 				double situationValue = 10;

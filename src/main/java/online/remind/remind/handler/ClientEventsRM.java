@@ -1,8 +1,6 @@
 package online.remind.remind.handler;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -11,13 +9,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.MenuButtonRegisterEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.TargetSelectorEvent;
@@ -26,12 +20,10 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.CommandMenuItem;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
-import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
@@ -41,7 +33,6 @@ import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.entity.attacks.swiftStrikeCollider;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 
@@ -50,10 +41,8 @@ import java.util.ArrayList;
 
 public class ClientEventsRM {
     public enum RMButtons {
-        PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
-    }
-
-
+		PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
+	}
 
     @SubscribeEvent
     public void onTargetSelector(TargetSelectorEvent event) {
@@ -351,7 +340,5 @@ public class ClientEventsRM {
                 }
             }
         }
-
-
     }
 }
