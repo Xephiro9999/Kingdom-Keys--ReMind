@@ -50,6 +50,8 @@ import online.remind.remind.magic.ModMagicsRM;
 import online.remind.remind.particle.ReMindParticles;
 import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
+import online.remind.remind.styles.data.ContributionDataReloadListener;
+import online.remind.remind.styles.data.StyleDataReloadListener;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -91,6 +93,8 @@ public class KingdomKeysReMind {
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
+        NeoForge.EVENT_BUS.register(new StyleDataReloadListener());
+        NeoForge.EVENT_BUS.register(new ContributionDataReloadListener());
 
         if (ModList.get().isLoaded("epicfight")) {
             efmLoaded = true;

@@ -1,28 +1,29 @@
 package online.remind.remind.driveform;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.lib.StringsRM;
+import online.remind.remind.styles.StyleElement;
 
-public class StyleFireStorm extends DriveForm {
-    public StyleFireStorm(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
-        super(registeryName, order, hasKeychain, baseGrowthAbilities);
+import java.util.Set;
+
+public class StyleFireStorm extends StyleForm {
+    public StyleFireStorm(
+            ResourceLocation registryName,
+            int order,
+            ResourceLocation skinRL,
+            boolean hasKeychain,
+            boolean baseGrowthAbilities
+    ) {
+        super(
+                registryName,
+                order,
+                skinRL,
+                hasKeychain,
+                baseGrowthAbilities,
+                1,                   // level
+                Set.of(StyleElement.FIRE),
+                false,               // requiresWeapons
+                Set.of()
+        );
         this.color = new float[]{1f, 0.0F, 0.0F};
-        this.skinRL = skinRL;
-    }
-
-    @Override
-    public boolean displayInCommandMenu(Player player){
-        return false;
-    }
-
-    @Override
-    public void endDrive(Player player) {
-        super.endDrive(player);
-        PlayerData playerData = PlayerData.get(player);
     }
 }
