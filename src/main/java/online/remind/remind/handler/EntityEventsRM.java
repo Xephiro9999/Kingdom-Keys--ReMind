@@ -402,7 +402,18 @@ public class EntityEventsRM {
 
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
+
 		System.out.println(e.getRCID());//TODO add the RC versions too
+		LivingEntity caster = e.getCaster();
+		if (caster instanceof Player player) {
+			PlayerData playerData = PlayerData.get(player);
+			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+			if (playerData != null) {
+
+			}
+		}
+
+
 	}
 
 	@SubscribeEvent
@@ -414,27 +425,39 @@ public class EntityEventsRM {
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
 				String spellID = e.getSpellID().toString();
-				//TODO: Uncomment for next version
-				int spellLvl = e.getLevel();
+				int spellLvl = e.getLevel() + 1;
+
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
-				double situationValue = 10;
+				double situationValue = 5 * spellLvl;
 				switch (spellID){
 					case "default":
-						situationValue = 0;
-						break;
+                        break;
 					case "kkremind:magic_ultima":
 						situationValue += 10;
-						System.out.println("Added "+situationValue);
+						//System.out.println("Added "+situationValue);
 						break;
+					case "kkremind:warp":
+						situationValue += 10;
+						break;
+					case "kkremind:magic_death":
+						situationValue += 20;
+						break;
+					case "kkremind:magic_auto-life":
+						situationValue += 10;
+						break;
+					case "kkremind:magic_comet":
+						if (spellLvl == 2){
+							situationValue += 5;
+						}
 				}
 
 
 				remindData.addSituationSpell(spellID);
 				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
 
-				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
-				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
+				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
 
@@ -483,30 +506,6 @@ public class EntityEventsRM {
 			}
 		}
 	}
-
-	@SubscribeEvent
-	public void equipEvent(EquipmentEvent.Keychain e){
-		LivingEntity player = e.getPlayer();
-		if (player != null){
-			PlayerData playerData = PlayerData.get((Player) player);
-				if (playerData != null){
-					if (e.getNewStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
-						System.out.println("Equipped Ultima Weapon (KH1)");
-						if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
-							// TODO: Figure out how to get MP Boost working on Equip?
-							//playerData.addMaxMP(10);
-						}
-					}
-					if (e.getPreviousStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
-						//playerData.addMaxMP(-10);
-					}
-			}
-		}
-	}
-
-
-
-
 
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {

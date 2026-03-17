@@ -60,9 +60,6 @@ public class StylesHUD {
         String form = playerData.getActiveDriveForm();
         DriveForm driveForm = ModDriveFormsRM.DRIVE_FORMS.getRegistry().get().get(ResourceLocation.parse(form));
 
-        //System.out.println(form);
-        //System.out.println(driveForm);
-
         poseStack.pushPose();
         {
             poseStack.translate(2, 2, 0); //Position for the bar
@@ -83,7 +80,23 @@ public class StylesHUD {
         }
 
         if (online.kingdomkeys.kingdomkeys.config.ModConfigs.cmHeaderTextVisible) {
+            //System.out.println(form);
+            switch (form){
+                default:
+                    guiGraphics.setColor(1,1,1,1);
+                    break;
+                case "kkremind:form_firestorm":
+                    guiGraphics.setColor(1,0.75f,0,1);
+                    break;
+                case "kkremind:form_diamond_dust":
+                    guiGraphics.setColor(0,0.75f,1,1);
+                    break;
+                case "kkremind:form_thunder_bolt":
+                    guiGraphics.setColor(0,1f,0,1);
+                    break;
+            }
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, title, event.getSubMenu().getX() + ((event.getSubMenu().getWidth() - 8) / 2) + 1, event.getSubMenu().getY() + 4, 0xFFFFFF);
+
         }
 
         RenderSystem.setShaderColor(1,1,1,1F);
