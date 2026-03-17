@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.client.ClientUtils;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.HUD.CMElement;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -67,9 +68,11 @@ public class StylesHUD extends OverlayBaseRM {
                 guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu.png"), 0, 0, 0, 0, (int) val, 11);
                 switch (form){
                     default:
+                        //ModConfigs.setCmHeaderTextVisible(true);
                         guiGraphics.drawCenteredString(minecraft.font, "", 1, 1, Color.RED.getRGB());
                         break;
                     case "kkremind:form_firestorm":
+                        //ModConfigs.setCmHeaderTextVisible(false);
                         guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/styles_menu_firestorm.png"), 0, 0, 0, 0, (int) val, 11);
                         guiGraphics.drawCenteredString(minecraft.font, "FIRESTORM", 30, 2, Color.ORANGE.getRGB());
 

@@ -31,7 +31,7 @@ public class ModMagicsRM {
             DRAIN = MAGIC.register(ResourceLocation.parse("magic_drain").getPath(),() -> new magicDrain( ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_drain"), false, 3, null)),
             SILENCE = MAGIC.register(ResourceLocation.parse("magic_silence").getPath(), () -> new magicSilence(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_silence"), false,3, null)),
             WARP = MAGIC.register(ResourceLocation.parse("magic_warp").getPath(), () -> new magicWarp(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_warp"), false, 1, null)),
-            ESUNA = MAGIC.register(ResourceLocation.parse("magic_esuna").getPath(), () -> new magicEsuna(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_esuna"), true, 1, null)),
+            ESUNA = MAGIC.register(ResourceLocation.parse("magic_esuna").getPath(), () -> new magicEsuna(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_esuna"), true, 2, null)),
             DISPEL = MAGIC.register(ResourceLocation.parse("magic_dispel").getPath(), () -> new magicDispel(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_dispel"), false, 1, null)),
             REGEN = MAGIC.register(ResourceLocation.parse("magic_regen").getPath(), () -> new magicRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_regen"), true, 3, null)),
             FAITH = MAGIC.register(ResourceLocation.parse("magic_faith").getPath(), () -> new magicFaith(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"magic_faith"), 1, null)),

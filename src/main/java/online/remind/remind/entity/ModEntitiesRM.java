@@ -24,6 +24,7 @@ import online.remind.remind.client.render.reactioncommand.DarkMineEntityRenderer
 import online.remind.remind.client.render.reactioncommand.LightBeamEntityRenderer;
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
 import online.remind.remind.entity.attacks.*;
+import online.remind.remind.entity.limits.firagaPillarEntity;
 import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.reactioncommand.*;
@@ -64,6 +65,9 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<lightSurgeCollider>> TYPE_LIGHT_SURGE = createEntityType(lightSurgeCollider::new, MobCategory.MISC,"light_surge_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<darkSurgeCollider>> TYPE_DARK_SURGE = createEntityType(darkSurgeCollider::new, MobCategory.MISC,"dark_surge_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<zantetsukenCollider>> TYPE_ZANTETSUKEN = createEntityType(zantetsukenCollider::new, MobCategory.MISC,"zantetsuken_collider", 1.5F, 1.5F);
+
+    // Limits
+    public static final Supplier<EntityType<firagaPillarEntity>> TYPE_FIRAGA_PILLAR = createEntityType(firagaPillarEntity::new, MobCategory.MISC,"firaga_pillar", 2f, 5f);
 
 
 
@@ -160,6 +164,9 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_WATER_SURGE.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_ZANTETSUKEN.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_RAVE_SABER.get(), InvisibleEntityRenderer::new);
+
+        event.registerEntityRenderer(TYPE_FIRAGA_PILLAR.get(), InvisibleEntityRenderer::new);
+
 
 
         event.registerEntityRenderer(TYPE_BIO_SHOT.get(), BioShotEntityRenderer::new);

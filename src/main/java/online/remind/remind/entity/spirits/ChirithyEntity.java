@@ -60,11 +60,11 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private double chirithyStrength;
     private double chirithyMagic;
     private double chirithyDefense;
-    private int cureCooldown;
-    private int aeroCooldown;
-    private int esunaCooldown;
-    private double autoLifeCooldown;
-    private int castCooldown;
+    private int cureCooldown = 60;
+    private int aeroCooldown = 60;
+    private int esunaCooldown = 60;
+    private double autoLifeCooldown = 60;
+    private int castCooldown = 60;
     private float mpHasteMult;
 
     public static final int

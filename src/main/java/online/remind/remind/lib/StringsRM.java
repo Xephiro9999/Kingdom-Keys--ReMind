@@ -24,6 +24,7 @@ public class StringsRM {
         RCMA_Prefix = "rc_",
         ATMA_Prefix = "attack_",
         MAMA_Prefix = "magic_",
+        LIMA_Prefix = "limit_",
         DE_Prefix = "dreameater_",
 
 
@@ -169,6 +170,9 @@ public class StringsRM {
 
         RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
 
+        // Limits
+
+        firagaWall = "firaga_wall",
 
 
     //Keyblades
