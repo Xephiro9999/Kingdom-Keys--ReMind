@@ -272,6 +272,11 @@
   "form.form_twilight.name": "Twilight",
   "form.form_regen.name": "????",
 
+  "form.form_firestorm.name": "Firestorm",
+  "form.form_diamond_dust.name": "Diamond Dust",
+  "form.form_thunder_bolt.name": "Thunder Bolt",
+
+
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
   "item.kkremind.pureblood": "Pureblood",
   "item.kkremind.elemental_crescendo": "Elemental Crescendo",

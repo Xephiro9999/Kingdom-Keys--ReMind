@@ -60,6 +60,9 @@ public class StylesHUD {
         String form = playerData.getActiveDriveForm();
         DriveForm driveForm = ModDriveFormsRM.DRIVE_FORMS.getRegistry().get().get(ResourceLocation.parse(form));
 
+        //System.out.println(form);
+        //System.out.println(driveForm);
+
         poseStack.pushPose();
         {
             poseStack.translate(2, 2, 0); //Position for the bar
@@ -75,7 +78,8 @@ public class StylesHUD {
         styles.add(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString());
 
         if(styles.contains(form)){
-            title = Component.literal(driveForm.getTranslationKey());
+            title = Component.translatable(driveForm.getTranslationKey()).withStyle(ClientUtils.KK_Font_EXP);
+            //System.out.println(title);
         }
 
         if (online.kingdomkeys.kingdomkeys.config.ModConfigs.cmHeaderTextVisible) {
