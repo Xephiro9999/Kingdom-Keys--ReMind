@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import online.remind.remind.styles.ContributionRegistry;
 
 import java.util.Map;
 

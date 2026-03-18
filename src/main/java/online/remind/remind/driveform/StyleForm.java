@@ -17,25 +17,16 @@ public abstract class StyleForm extends DriveForm {
     protected Set<ResourceLocation> requiredWeapons;
 
     public StyleForm(
-            ResourceLocation registryName,
+            ResourceLocation id,
             int order,
             ResourceLocation skinRL,
             boolean hasKeychain,
-            boolean baseGrowthAbilities,
-            int level,
-            Set<StyleElement> triggers,
-            boolean requiresWeapons,
-            Set<ResourceLocation> requiredWeapons
+            boolean baseGrowthAbilities
     ) {
-        super(registryName, order, hasKeychain, baseGrowthAbilities);
+        super(id, order, hasKeychain, baseGrowthAbilities);
         this.skinRL = skinRL;
-
-        this.level = level;
-        this.triggers = triggers;
-        this.requiresWeapons = requiresWeapons;
-        this.requiredWeapons = requiredWeapons;
-
     }
+
 
     public void setStyleLevel(int level) {
         this.level = level;
@@ -55,10 +46,10 @@ public abstract class StyleForm extends DriveForm {
         return false;
     }
 
-    @Override
+    /*@Override
     public void endDrive(Player player) {
         super.endDrive(player);
         PlayerData playerData = PlayerData.get(player);
-    }
+    }*/
 
 }

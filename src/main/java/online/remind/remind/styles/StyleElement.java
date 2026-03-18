@@ -25,6 +25,6 @@ public enum StyleElement {
 
     STATUS,
 
-    REPRISAL;
+    REPRISAL
 
 }

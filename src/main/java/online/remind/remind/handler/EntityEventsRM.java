@@ -373,32 +373,7 @@ public class EntityEventsRM {
 
 	// Helper Method for the Situation Gauge System
 
-	public enum SpellElement {
-		FIRE,
-		BLIZZARD,
-		THUNDER,
-		WATER,
-		AIR,
-		LIGHT,
-		DARK,
-		PHYSICAL,
-		NONE
-	}
 
-	private SpellElement getElement(String spellID){
-
-		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
-		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
-		if (spellID.contains("thunder") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.THUNDER;
-		if (spellID.contains("water") || spellID.contains("balloon")) return SpellElement.WATER;
-		if (spellID.contains("aero")) return SpellElement.AIR;
-		if (spellID.contains("holy") || spellID.contains("faith") || spellID.contains("light") || spellID.contains("spark")) return SpellElement.LIGHT;
-		if (spellID.contains("ruin") || spellID.contains("comet") || spellID.contains("dark") || spellID.contains("zantetsuken")) return SpellElement.DARK;
-		if (spellID.contains("quick") || spellID.contains("sliding")) return SpellElement.PHYSICAL;
-
-
-		return SpellElement.NONE;
-	}
 
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
@@ -417,69 +392,7 @@ public class EntityEventsRM {
 				//TODO: Uncomment for next version
 				int spellLvl = e.getLevel();
 
-				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
-				double situationValue = 10;
-				switch (spellID){
-					case "default":
-						situationValue = 0;
-						break;
-					case "kkremind:magic_ultima":
-						situationValue += 10;
-						System.out.println("Added "+situationValue);
-						break;
-				}
-
-
-				remindData.addSituationSpell(spellID);
-				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
-
-				System.out.println("Situation Gauge: "+ remindData.getSituationValue());
-				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
-
-				remindData.setSCooldownTicks(60);
-
-				if (remindData.getSituationValue() >= 100) {
-					Map<SpellElement, Integer> counts = new HashMap<>();
-					for (String s : remindData.getSituationSpells()) {
-						SpellElement element = getElement(s);
-						counts.put(element, counts.getOrDefault(element, 0) + 1);
-					}
-
-					SpellElement majority = SpellElement.NONE;
-					int highest = 0;
-
-					for (Map.Entry<SpellElement, Integer> entry : counts.entrySet()) {
-						if (entry.getValue() > highest) {
-							highest = entry.getValue();
-							majority = entry.getKey();
-						}
-					}
-					System.out.println(majority);
-
-					switch (majority) {
-						case FIRE:
-							remindData.setStyle(majority.toString());
-							break;
-						case BLIZZARD:
-							remindData.setStyle(majority.toString());
-							break;
-						case THUNDER:
-							remindData.setStyle(majority.toString());
-							break;
-						case WATER:
-							break;
-						case AIR:
-							break;
-						case LIGHT:
-							break;
-						case DARK:
-							break;
-						case NONE:
-							remindData.setSituationValue(0);
-					}
-				}
-
-				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
+				//PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 			}
 		}
 	}
@@ -938,24 +851,7 @@ public class EntityEventsRM {
 
 				// Formchange/Situation Gauge System
 
-				if (globalData.getSCooldownTicks() > 0){
-					globalData.remSCooldownTicks(1);
-					//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
-				}
 
-				if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
-					globalData.setSituationValue(globalData.getSituationValue() - 0.2);
-				}
-				if (event.getEntity() instanceof Player player) {
-					if (globalData.getSituationValue() <= 0) {
-						globalData.clearSituationSpells();
-						globalData.setStyle("");
-						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-
-					} else if (globalData.getSituationValue() > 100){
-						globalData.setSituationValue(100);
-					}
-				}
 
 
 
@@ -1413,19 +1309,6 @@ public class EntityEventsRM {
 			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if(playerData != null) {
 
-
-					double situationGain = (event.getNewDamage() * 0.1);
-					float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
-					situationGain *= situationMulti;
-
-					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
-					System.out.println(situationGain);
-
-				if (remindData != null){
-					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
-					remindData.setSCooldownTicks(60);
-					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-				}
 
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);

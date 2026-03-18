@@ -22,8 +22,24 @@ public class StyleLoader {
     }
 
     public static void load(JsonObject json, ResourceLocation id) {
-        // Required fields
-        int level = json.get("style_level").getAsInt();
+        // Required field: style_level
+        int level = 1; // default if missing
+
+        if (json.has("style_level")) {
+            try {
+                level = json.get("style_level").getAsInt();
+            } catch (Exception e) {
+                System.out.println("Warning: Style " + id + " has invalid style_level format. Defaulting to 1.");
+                level = 1;
+            }
+        }
+
+        // Clamp to minimum of 1
+        if (level < 1) {
+            System.out.println("Warning: Style " + id + " has style_level < 1. Clamping to 1.");
+            level = 1;
+        }
+
         Set<StyleElement> elements = parseElements(
                 json.has("elements") ? json.getAsJsonArray("elements") : null
         );

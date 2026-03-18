@@ -11,11 +11,9 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.bus.api.SubscribeEvent;
 
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.styles.StyleRegistry;
 
 import java.util.Map;
 
@@ -46,8 +44,11 @@ public class StyleDataReloadListener extends SimpleJsonResourceReloadListener {
         StyleLoader.clear();
 
         jsonMap.forEach((id, element) -> {
-            //System.out.println("Found JSON: " + id);
             if (!id.getNamespace().equals("kkremind"))
+                return;
+
+            // Only load actual StyleDefinitions
+            if (!id.getPath().startsWith("form_"))
                 return;
 
             if (!element.isJsonObject()) {
@@ -65,6 +66,7 @@ public class StyleDataReloadListener extends SimpleJsonResourceReloadListener {
                 KingdomKeysReMind.LOGGER.error("Failed to load Style JSON {}: {}", id, e.getMessage());
             }
         });
+
 
         StyleRegistry.applyDefinitions();
     }

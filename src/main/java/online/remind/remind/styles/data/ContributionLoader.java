@@ -18,21 +18,37 @@ public class ContributionLoader {
         DEFINITIONS.clear();
     }
 
-    public static void load(JsonObject json, ResourceLocation id) {
+    public static void load(JsonObject json, ResourceLocation fileId) {
+
+        // 1. Read namespace + id from JSON
+        if (!json.has("namespace") || !json.has("id")) {
+            throw new IllegalArgumentException("Contribution JSON " + fileId +
+                    " is missing required fields: 'namespace' and/or 'id'");
+        }
+
+        String namespace = json.get("namespace").getAsString();
+        String id = json.get("id").getAsString();
+
+        // Use the factory method instead of the private constructor
+        ResourceLocation target = ResourceLocation.fromNamespaceAndPath(namespace, id);
+
+        // 2. Parse elements
         Set<StyleElement> elements = parseElements(
                 json.has("elements") ? json.getAsJsonArray("elements") : null
         );
+
+        // 3. Parse specific styles
         Set<ResourceLocation> specificStyles = parseStyles(
                 json.has("specific_styles") ? json.getAsJsonArray("specific_styles") : null
         );
 
-        // base_value is required
+        // 4. Required: base_value
         int baseValue = json.get("base_value").getAsInt();
 
-        // These are optional, default to 0
+        // 5. Optional: per_level_bonus
         int perLevelBonus = json.has("per_level_bonus") ? json.get("per_level_bonus").getAsInt() : 0;
 
-        // Parse level overrides
+        // 6. Optional: level_overrides
         Map<Integer, Integer> overrides = new HashMap<>();
         if (json.has("level_overrides")) {
             JsonObject obj = json.getAsJsonObject("level_overrides");
@@ -41,8 +57,9 @@ public class ContributionLoader {
             }
         }
 
+        // 7. Build the new ContributionDefinition
         ContributionDefinition def = new ContributionDefinition(
-                id,
+                target,
                 elements,
                 specificStyles,
                 baseValue,
@@ -50,9 +67,10 @@ public class ContributionLoader {
                 overrides
         );
 
-        DEFINITIONS.put(id, def);
+        // Store using the actual target ID
+        DEFINITIONS.put(target, def);
 
-        System.out.println("Loaded ContributionDefinition: " + id);
+        System.out.println("Loaded ContributionDefinition for target: " + target);
     }
 
     public static Map<ResourceLocation, ContributionDefinition> all() {
