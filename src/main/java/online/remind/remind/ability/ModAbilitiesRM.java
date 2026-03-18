@@ -2,7 +2,6 @@ package online.remind.remind.ability;
 
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.ability.Ability;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
@@ -34,6 +33,7 @@ public class ModAbilitiesRM extends ModAbilities{
         STOP_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"stop_block", () -> new Ability(ResourceLocation.parse(StringsRM.stopBlock), 0, Ability.AbilityType.ACTION, order++)),
         POISON_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"poison_block", () -> new Ability(ResourceLocation.parse(StringsRM.poisonBlock), 0, Ability.AbilityType.ACTION, order++)),
         ROYAL_GUARD = ABILITIES.register(StringsRM.ABMA_Prefix+"royal_guard", () -> new Ability(ResourceLocation.parse(StringsRM.royalGuard), 0, Ability.AbilityType.ACTION, order++)),
+        BLOCK_REPLENISHER = ABILITIES.register(StringsRM.ABMA_Prefix+"block_replenisher", () -> new Ability(ResourceLocation.parse(StringsRM.blockReplenisher), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_HAMMER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_hammer").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterHammer), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_BLAST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_blast").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterBlast), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_RUSH = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_rush").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterRush), 0, Ability.AbilityType.ACTION, order++)),

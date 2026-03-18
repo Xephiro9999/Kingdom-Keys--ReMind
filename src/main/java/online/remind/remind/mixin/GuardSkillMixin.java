@@ -1,6 +1,7 @@
 package online.remind.remind.mixin;
 
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -60,11 +61,22 @@ public class GuardSkillMixin {
 
         if(playerData.isAbilityEquipped(StringsRM.focusBlock)) {
             if (!event.isParried()){
-                playerData.addFocus(10);
+                playerData.addFocus(5);
             } else {
-                playerData.addFocus(25);
+                playerData.addFocus(15);
             }
         }
+
+        if(playerData.isAbilityEquipped(StringsRM.blockReplenisher)) {
+            if (!event.isParried()){
+                playerData.addMP(5);
+            } else {
+                playerData.addMP(15);
+            }
+        }
+
+
+
         // Stop Block Code? :)
         if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
             if (event.isParried()) {
@@ -76,6 +88,18 @@ public class GuardSkillMixin {
                 }
             }
         }
+
+        if (playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
+            GlobalData target = GlobalData.get((LivingEntity) attacker);
+            if (!event.isParried()) {
+                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
+                    //event.getEntityPatch().playSound(ModSounds.stop.get(), 1f, 1f);
+            } else {
+                ((LivingEntity) attacker).addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2, true, true, true));
+            }
+        }
+
+
         // Royal Guard
         if (playerData.isAbilityEquipped(StringsRM.royalGuard)) {
             if (event.isParried()) {

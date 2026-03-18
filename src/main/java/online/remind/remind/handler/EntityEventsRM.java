@@ -129,6 +129,14 @@ public class EntityEventsRM {
 					playerData.addAbility(StringsRM.stopBlock, true);
 				}
 
+				if (!playerData.getAbilityMap().containsKey(StringsRM.poisonBlock)) {
+					playerData.addAbility(StringsRM.poisonBlock, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.blockReplenisher)) {
+					playerData.addAbility(StringsRM.blockReplenisher, true);
+				}
+
 
 				if (!playerData.getAbilityMap().containsKey(StringsRM.counterHammer)) {
 					playerData.addAbility(StringsRM.counterHammer, true);

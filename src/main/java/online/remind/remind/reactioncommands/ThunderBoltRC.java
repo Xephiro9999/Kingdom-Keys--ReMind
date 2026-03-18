@@ -122,7 +122,7 @@ public class ThunderBoltRC extends ReactionCommand {
 		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 		if(playerData != null) {
 			if (remindData != null){
-				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
+				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 						if (remindData.getStyle().equals("THUNDER")) {
 							return true;
@@ -132,7 +132,7 @@ public class ThunderBoltRC extends ReactionCommand {
 							return true;
 						}
 					}
-				}
+				//}
 			}
 		}
 		return false;

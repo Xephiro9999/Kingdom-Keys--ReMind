@@ -92,6 +92,7 @@ public class StringsRM {
         stopBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"stop_block",
         poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
         royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
+        blockReplenisher = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"block_replenisher",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
         ultima_weapon_ability = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ultima_weapon",
         munny_magic = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"munny_magic",
