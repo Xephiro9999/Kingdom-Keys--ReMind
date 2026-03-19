@@ -344,43 +344,32 @@ public class EntityEventsRM {
 
 
 	@SubscribeEvent
-	public void unequipAbility(AbilityEvent.Unequip event){
+	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
+		IGlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
-		if (playerData != null)
+		if (playerData != null){
 
 
-		/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-			playerData.addMaxMP(-12.5);
-
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
-			playerData.addMaxHP(-15);
-			event.getPlayer().setHealth(playerData.getMaxHP());
-			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-		}*/
-
-		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
-			playerData.getStrengthStat().removeModifier("Dedication");
-			playerData.getMagicStat().removeModifier("Dedication");
-			playerData.getDefenseStat().removeModifier("Dedication");
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-			playerData.getStrengthStat().removeModifier("Friendship");
-			playerData.getMagicStat().removeModifier("Friendship");
-			playerData.getDefenseStat().removeModifier("Friendship");
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if(remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
-				remindData.setCanCounter(0);
+			if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
+				playerData.getStrengthStat().removeModifier("Dedication");
+				playerData.getMagicStat().removeModifier("Dedication");
+				playerData.getDefenseStat().removeModifier("Dedication");
 			}
-			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
-		}
 
+			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
+				playerData.getStrengthStat().removeModifier("Friendship");
+				playerData.getMagicStat().removeModifier("Friendship");
+				playerData.getDefenseStat().removeModifier("Friendship");
+			}
+
+			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
+				if (remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
+					remindData.setCanCounter(0);
+				}
+				PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
+			}
+		}
 	}
 
 	// Helper Method for the Situation Gauge System
@@ -486,6 +475,9 @@ public class EntityEventsRM {
 				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
+				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+					remindData.setStyleTicks(100);
+				}
 
 				if (remindData.getSituationValue() >= 100) {
 					Map<SpellElement, Integer> counts = new HashMap<>();
@@ -983,13 +975,24 @@ public class EntityEventsRM {
 					globalData.setSituationValue(globalData.getSituationValue() - 0.2);
 				}
 				if (event.getEntity() instanceof Player player) {
-					if (globalData.getSituationValue() <= 0) {
-						globalData.clearSituationSpells();
-						globalData.setStyle("");
-						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+					PlayerData playerData = PlayerData.get(player);
+					if (playerData != null) {
+						if (globalData.getSituationValue() <= 0) {
+							globalData.clearSituationSpells();
+							globalData.setStyle("");
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+							if (globalData.getStyleTicks() > 0) {
+								globalData.remStyleTicks(1);
+								System.out.println(globalData.getStyleTicks());
+							} else if (globalData.getStyleTicks() <= 0) {
+								if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+									playerData.setActiveDriveForm(DriveForm.NONE.toString());
+								}
+							}
 
-					} else if (globalData.getSituationValue() > 100){
-						globalData.setSituationValue(100);
+						} else if (globalData.getSituationValue() > 100) {
+							globalData.setSituationValue(100);
+						}
 					}
 				}
 
@@ -1467,6 +1470,9 @@ public class EntityEventsRM {
 				if (remindData != null){
 					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
 					remindData.setSCooldownTicks(60);
+					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+						remindData.setStyleTicks(100);
+					}
 					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 				}
 

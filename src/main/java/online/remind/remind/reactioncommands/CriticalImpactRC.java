@@ -51,6 +51,7 @@ public class CriticalImpactRC extends ReactionCommand {
 				criticalImpact.initDrive(player);
 				playerData.removeReactionCommand(getRegistryName().toString());
 				remindData.setSituationValue(0);
+				remindData.setStyleTicks(100);
 				remindData.clearSituationSpells();
 				remindData.setStyle("");
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
@@ -110,6 +111,7 @@ public class CriticalImpactRC extends ReactionCommand {
 				playerData.addFP(-1000);
 				remindData.setStyle("NONE");
 				remindData.setSituationValue(0);
+
 				remindData.clearSituationSpells();
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			}

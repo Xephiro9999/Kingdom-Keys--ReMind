@@ -17,7 +17,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, sCooldown, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, sCooldown, styleTicks, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public String dreamEaterRL, style;
     public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
@@ -58,6 +58,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.dreamEaterRL = capability.getDreamEaterRL();
         this.style = capability.getStyle();
         this.situationValue = capability.getSituationValue();
+        this.styleTicks = capability.getStyleTicks();
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -95,6 +96,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         }
         buffer.writeUtf(message.style, 100);
         buffer.writeDouble(message.situationValue);
+        buffer.writeInt(message.styleTicks);
     }
 
     public static SCSyncGlobalCapabilityToAllPacketRM decode(FriendlyByteBuf buffer){
@@ -130,6 +132,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         }
         msg.style = buffer.readUtf(100);
         msg.situationValue = buffer.readDouble();
+        msg.styleTicks = buffer.readInt();
         return msg;
     }
 
@@ -167,6 +170,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
                 globalData.setStyle(message.style);
                 globalData.setSituationValue(message.situationValue);
+                globalData.setStyleTicks(message.styleTicks);
 			}
 		});
     }

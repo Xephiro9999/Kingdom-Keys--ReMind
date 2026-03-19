@@ -52,6 +52,7 @@ public class DiamondDustRC extends ReactionCommand {
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				remindData.setStyle("");
+				remindData.setStyleTicks(100);
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 				// Finisher Attack Code Below

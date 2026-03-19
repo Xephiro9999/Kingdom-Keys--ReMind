@@ -52,6 +52,7 @@ public class FeverPitchRC extends ReactionCommand {
 				playerData.removeReactionCommand(getRegistryName().toString());
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
+				remindData.setStyleTicks(100);
 				remindData.setStyle("");
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {

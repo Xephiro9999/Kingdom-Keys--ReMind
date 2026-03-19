@@ -49,6 +49,7 @@ public class SpellweaverRC extends ReactionCommand {
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				remindData.setStyle("");
+				remindData.setStyleTicks(100);
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 				// Finisher Attack Code Below
@@ -108,6 +109,7 @@ public class SpellweaverRC extends ReactionCommand {
 				// Leave Form
 				playerData.addFP(-1000);
 				remindData.setStyle("NONE");
+
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
