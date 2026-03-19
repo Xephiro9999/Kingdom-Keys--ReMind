@@ -33,6 +33,7 @@ public class ModDriveFormsRM {
 
             FEVER_PITCH = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"fever_pitch", () -> new StyleFeverPitch(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "fever_pitch"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
             CRITICAL_IMPACT = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"critical_impact", () -> new StyleCriticalImpact(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "critical_impact"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
+            SPELLWEAVER = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"spellweaver", () -> new StyleSpellweaver(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "spellweaver"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
 
         // Commission Forms
 

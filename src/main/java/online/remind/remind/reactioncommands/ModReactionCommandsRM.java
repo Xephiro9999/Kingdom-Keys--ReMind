@@ -35,6 +35,7 @@ public class ModReactionCommandsRM {
         THUNDER_BOLT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"thunder_bolt", () -> new ThunderBoltRC( ResourceLocation.parse(StringsRM.ThunderBoltRC),true)),
         FEVER_PITCH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"fever_pitch", () -> new FeverPitchRC( ResourceLocation.parse(StringsRM.FeverPitchRC),true)),
         CRITICAL_IMPACT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"critical_impact", () -> new CriticalImpactRC( ResourceLocation.parse(StringsRM.CriticalImpactRC),true)),
+        SPELLWEAVER_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"spellweaver", () -> new SpellweaverRC( ResourceLocation.parse(StringsRM.SpellweaverRC),true)),
 
 
 

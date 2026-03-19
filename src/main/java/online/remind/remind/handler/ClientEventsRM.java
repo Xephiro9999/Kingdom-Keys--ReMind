@@ -273,7 +273,12 @@ public class ClientEventsRM {
 					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.75f,0.75f,0.15F),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45f,0.45f,0f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-						//player.level().addParticle(new DustParticleOptions(new Vector3f(0f,1f,0.85F),0.25f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+
+					}
+					// Spellweaver Active
+					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.95f,0.75f,0.95F),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45f,0.65f,65f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 

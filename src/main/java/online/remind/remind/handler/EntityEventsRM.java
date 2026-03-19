@@ -268,6 +268,7 @@ public class EntityEventsRM {
 		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString(), 1);
 
 	}
 
@@ -347,6 +348,7 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
 		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
+		if (playerData != null)
 
 
 		/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
@@ -392,6 +394,7 @@ public class EntityEventsRM {
 		LIGHT,
 		DARK,
 		PHYSICAL,
+		MAGIC,
 		NONE
 	}
 
@@ -399,12 +402,13 @@ public class EntityEventsRM {
 
 		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
 		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
-		if (spellID.contains("thunder") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.THUNDER;
+		if (spellID.contains("thunder") ) return SpellElement.THUNDER;
 		if (spellID.contains("water") || spellID.contains("balloon")) return SpellElement.WATER;
 		if (spellID.contains("aero")) return SpellElement.AIR;
 		if (spellID.contains("holy") || spellID.contains("faith") || spellID.contains("light") || spellID.contains("spark")) return SpellElement.LIGHT;
 		if (spellID.contains("ruin") || spellID.contains("comet") || spellID.contains("dark") || spellID.contains("zantetsuken")) return SpellElement.DARK;
 		if (spellID.contains("quick") || spellID.contains("sliding") || spellID.contains("blitz")) return SpellElement.PHYSICAL;
+		if (spellID.contains("cure") || spellID.contains("auto-life") || spellID.contains("regen") || spellID.contains("stop")|| spellID.contains("gravity") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.MAGIC;
 
 
 		return SpellElement.NONE;
@@ -524,6 +528,9 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 						case PHYSICAL:
+							remindData.setStyle(majority.toString());
+							break;
+						case MAGIC:
 							remindData.setStyle(majority.toString());
 							break;
 						case NONE:
@@ -1219,6 +1226,13 @@ public class EntityEventsRM {
 							player.setHealth(1);
 						}
 					}
+
+					// Fever Pitch Passive
+					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
+						player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED,2,1,true,true,true));
+					}
+
+
 				}
 
 
@@ -1456,12 +1470,35 @@ public class EntityEventsRM {
 					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 				}
 
+				// Critical Impact Passive
+				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
+					if (event.getSource().type().msgId().equals("player")) {
+						float dmg = playerData.getStrength(true) * 0.15f;
+						LivingEntity target = event.getEntity();
+						target.invulnerableTime = 0;
+						target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, event.getEntity(), null), dmg);
+					}
+				}
+
+				// Spellweaver Passive
+				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
+					if (event.getSource().type().msgId().equals("player")) {
+						float dmg = playerData.getMagic(true) * 0.1f;
+						LivingEntity target = event.getEntity();
+						target.invulnerableTime = 0;
+						target.hurt(event.getEntity().damageSources().magic(), dmg);
+					}
+				}
+
+
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
 				if (playerData.isAbilityEquipped(StringsRM.Jecht)){
-					//System.out.println(addDmg);
-					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
-					event.getEntity().invulnerableTime = 0;
+					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
+						//System.out.println(addDmg);
+						event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
+						event.getEntity().invulnerableTime = 0;
+					}
 				}
 
 				// My Exclusive Ability
@@ -1474,8 +1511,10 @@ public class EntityEventsRM {
 					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
 					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
 					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
-					player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
-					player.getFoodData().eat(3,10);
+					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
+						player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
+						player.getFoodData().eat(3, 10);
+					}
 
 
 

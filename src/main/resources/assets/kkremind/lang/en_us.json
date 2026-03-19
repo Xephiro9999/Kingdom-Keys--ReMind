@@ -283,6 +283,7 @@
   "form.form_thunder_bolt.name": "Thunder Bolt",
   "form.form_fever_pitch.name": "Fever Pitch",
   "form.form_critical_impact.name": "Critical Impact",
+  "form.form_spellweaver.name": "Spellweaver",
 
 
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
@@ -416,6 +417,7 @@
   "reactioncommand.kkremind.rc_thunder_bolt.name": "Thunder Bolt",
   "reactioncommand.kkremind.rc_fever_pitch.name": "Fever Pitch",
   "reactioncommand.kkremind.rc_critical_impact.name": "Critical Impact",
+  "reactioncommand.kkremind.rc_spellweaver.name": "Spellweaver",
 
 
   "reactioncommand.kkremind.rc_counter_hammer.name": "Counter Hammer",

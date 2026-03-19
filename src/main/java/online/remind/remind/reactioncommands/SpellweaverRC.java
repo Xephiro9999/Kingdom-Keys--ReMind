@@ -1,5 +1,6 @@
 package online.remind.remind.reactioncommands;
 
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -8,31 +9,26 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
-import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.entity.reactioncommand.CounterRushCore;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import org.joml.Vector3f;
 
 import java.util.List;
 
-public class FeverPitchRC extends ReactionCommand {
+public class SpellweaverRC extends ReactionCommand {
 
-	int hits = 0;
-	int maxHits = 4;
-
-	public FeverPitchRC(ResourceLocation registryName, boolean constantCheck) {
+	public SpellweaverRC(ResourceLocation registryName, boolean constantCheck) {
 		super(registryName, constantCheck);
 	}
 
@@ -46,9 +42,9 @@ public class FeverPitchRC extends ReactionCommand {
 			double Y = player.getY();
 			double Z = player.getZ();
 
-			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
-				DriveForm feverPitch = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.feverPitch));
-				feverPitch.initDrive(player);
+			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
+				DriveForm spellweaver = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.spellweaver));
+				spellweaver.initDrive(player);
 				playerData.removeReactionCommand(getRegistryName().toString());
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
@@ -57,10 +53,13 @@ public class FeverPitchRC extends ReactionCommand {
 			} else {
 				// Finisher Attack Code Below
 
-				float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
-				float dmgMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.25f;
+				float damage = (float) playerData.getMagic(true) * 0.80f;
+				float dmgMult = (float) playerData.getMaxMP() * 0.015f;
+
+				System.out.println("Damage: "+damage+", Multi: " + dmgMult);
 
 				damage += (damage * dmgMult);
+				System.out.println("Damage (After Calc.): "+damage);
 
 				Level level = player.level();
 
@@ -73,19 +72,6 @@ public class FeverPitchRC extends ReactionCommand {
 						player.getBoundingBox().inflate(radius)
 				);
 
-				/*for (LivingEntity target : targets){
-					if (target != player){
-						Party p = null;
-						if (player != null) {
-							p = WorldData.get(player.getServer()).getPartyFromMember(player.getUUID());
-						}
-
-						if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
-							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
-							target.invulnerableTime = 0;
-						}
-					}
-				}*/
 
 				for (int t = 1; t < 360; t += 20) {
 					for (int s = 1; s < 360 ; s += 20) {
@@ -93,20 +79,27 @@ public class FeverPitchRC extends ReactionCommand {
 						double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
 						double y = Y + (radius * Math.cos(Math.toRadians(t)));
 
-						serverLevel.sendParticles(ParticleTypes.CRIT, x,y,z,2,0.05,0.05,0.05,0.01);
+						serverLevel.sendParticles(ParticleTypes.ENCHANT, x,y,z,2,0.05,0.05,0.05,0.01);
 
 					}
 				}
 
-				CounterRushCore core = new CounterRushCore(player, player.level(), targets, damage, true);
-
-				core.setPos(player.getX(), player.getY(), player.getZ());
-				player.level().addFreshEntity(core);
-
+				List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty((player), player, (float) radius, (float) radius, (float) radius);
+				for (LivingEntity e : targetList) {
+					for (int t = 1; t < 360; t += 20) {
+						for (int s = 1; s < 360; s += 20) {
+							double x = X + (radius * Math.cos(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
+							double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
+							((ServerLevel) player.level()).sendParticles(new DustParticleOptions(new Vector3f(1F,1F,1F),1F),x,player.getY() ,z,1,0,0,0,0);
+							e.knockback(2, -e.getX(),-e.getZ());
+							e.hurt(e.damageSources().indirectMagic(e, player), damage);
+						}
+					}
+				}
 				level.playSound(
 						null,
 						player.blockPosition(),
-						SoundEvents.PLAYER_ATTACK_SWEEP,
+						SoundEvents.EVOKER_CAST_SPELL,
 						SoundSource.PLAYERS,
 						1F,
 						1F
@@ -130,13 +123,13 @@ public class FeverPitchRC extends ReactionCommand {
 			if (remindData != null){
 				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("AIR")) {
+						if (remindData.getStyle().equals("MAGIC")) {
 							//Keyblade Check
-							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.waywardWindChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.lostMemoryChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.missingAcheChain.get()){
+							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.rainfellChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.stormfallChain.get()){
 								return true;
 							}
 						}
-					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
+					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
 						if (remindData.getSituationValue() >= 100) {
 							return true;
 						}

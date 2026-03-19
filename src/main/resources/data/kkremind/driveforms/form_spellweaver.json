@@ -3,12 +3,12 @@
   "ap": 100,
   "can_go_anti": false,
   "can_use_magic": true,
-  "str_mult": 1.25,
-  "mag_mult": 0.75,
+  "str_mult": 0.75,
+  "mag_mult": 1.25,
   "speed_mult": 1,
   "level_up":[ 0, 150, 300, 450, 600, 750, 900 ],
   "abilities": [
-    "kingdomkeys:ability_critical_boost","kingdomkeys:ability_critical_boost","kkremind:ability_critical_boost","kkremind:ability_critical_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost"
+    "kingdomkeys:ability_fire_boost","kingdomkeys:ability_thunder_boost","kkremind:ability_blizzard_boost","kkremind:ability_mp_hastera","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost"
   ],
   "base_levelup_abilities":[ "", "", "", "", "", "", "" ],
   "driveform_levelup_abilities":[ "", "", "", "","","","" ]
