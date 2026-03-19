@@ -6,14 +6,18 @@ import online.remind.remind.styles.StyleElement;
 import java.util.Set;
 
 /**
- * @param level             Determines the Level of the Style
- * @param triggers          Elements that contribute to this Style's weight
- * @param requiresWeapons   Boolean, determines if Style should be locked to specific weapons
- * @param requiredWeapons   List of weapons the Style is restricted to appear for
+ * @param target                   DriveForm ID this Style corresponds to
+ * @param finisher                 Reaction Command ID for this Style's finisher
+ * @param styleLevel               Determines the Style's level (0 = terminal, 1+ = chainable)
+ * @param elements                 Elements that contribute to this Style's affinity
+ * @param requiresSpecificWeapons  Whether this Style requires specific weapons
+ * @param requiredWeapons          List of weapons this Style is restricted to
  */
 public record StyleDefinition(
-        int level,
-        Set<StyleElement> triggers,
-        boolean requiresWeapons,
+        ResourceLocation target,
+        ResourceLocation finisher,
+        int styleLevel,
+        Set<StyleElement> elements,
+        boolean requiresSpecificWeapons,
         Set<ResourceLocation> requiredWeapons
 ) {}

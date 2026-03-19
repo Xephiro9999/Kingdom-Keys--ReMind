@@ -6,9 +6,5 @@
   "specific_styles": [],
 
   "base_value": 25,
-  "per_level_bonus": 5,
-
-  "level_overrides": {
-    "4": 50
-  }
+  "per_level_bonus": 5
 }

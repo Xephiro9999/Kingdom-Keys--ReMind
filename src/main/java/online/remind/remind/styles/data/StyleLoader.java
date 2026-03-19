@@ -22,45 +22,83 @@ public class StyleLoader {
     }
 
     public static void load(JsonObject json, ResourceLocation id) {
-        // Required field: style_level
-        int level = 1; // default if missing
+
+        // ------------------------------------------------------------
+        // REQUIRED FIELDS
+        // ------------------------------------------------------------
+
+        // target: DriveForm ID this Style corresponds to
+        ResourceLocation target = json.has("target")
+                ? ResourceLocation.parse(json.get("target").getAsString())
+                : id; // fallback: assume JSON filename matches DriveForm ID
+
+        // finisher: Reaction Command ID for this Style's finisher
+        ResourceLocation finisher = json.has("finisher")
+                ? ResourceLocation.parse(json.get("finisher").getAsString())
+                : null;
+
+        // style_level
+        int styleLevel = 1;
 
         if (json.has("style_level")) {
             try {
-                level = json.get("style_level").getAsInt();
+                styleLevel = json.get("style_level").getAsInt();
             } catch (Exception e) {
-                System.out.println("Warning: Style " + id + " has invalid style_level format. Defaulting to 1.");
-                level = 1;
+                System.out.println("Warning: Style " + id + " has invalid style_level. Defaulting to 1.");
             }
         }
 
-        // Clamp to minimum of 1
-        if (level < 1) {
-            System.out.println("Warning: Style " + id + " has style_level < 1. Clamping to 1.");
-            level = 1;
+
+        // Terminal Style rule: allow 0, clamp negatives
+        if (styleLevel < 0) {
+            System.out.println("Warning: Style " + id + " has style_level < 0. Clamping to 0.");
+            styleLevel = 0;
         }
 
+        // elements
         Set<StyleElement> elements = parseElements(
                 json.has("elements") ? json.getAsJsonArray("elements") : null
         );
 
-        // Optional fields with defaults
-        boolean requiresWeapons = json.has("requires_specific_weapons") ?
-                json.get("requires_specific_weapons").getAsBoolean() : false;
+        // ------------------------------------------------------------
+        // OPTIONAL FIELDS
+        // ------------------------------------------------------------
+
+        boolean requiresSpecificWeapons =
+                json.has("requires_specific_weapons") &&
+                json.get("requires_specific_weapons").getAsBoolean();
 
         Set<ResourceLocation> requiredWeapons = parseWeapons(
-                (requiresWeapons && json.has("required_weapons")) ?
-                        json.getAsJsonArray("required_weapons") : null
+                (requiresSpecificWeapons && json.has("required_weapons"))
+                        ? json.getAsJsonArray("required_weapons")
+                        : null
         );
 
-        DEFINITIONS.put(id, new StyleDefinition(level, elements, requiresWeapons, requiredWeapons));
+        // ------------------------------------------------------------
+        // STORE DEFINITION
+        // ------------------------------------------------------------
 
-        System.out.println("Loading StyleDefinition for: " + id);
+        StyleDefinition def = new StyleDefinition(
+                target,
+                finisher,
+                styleLevel,
+                elements,
+                requiresSpecificWeapons,
+                requiredWeapons
+        );
+
+        DEFINITIONS.put(id, def);
+
+        System.out.println("Loaded StyleDefinition for: " + id);
     }
 
     public static StyleDefinition get(ResourceLocation id) {
         return DEFINITIONS.get(id);
     }
+
+    // ------------------------------------------------------------
+    // HELPERS
+    // ------------------------------------------------------------
 
     private static Set<StyleElement> parseElements(JsonArray arr) {
         Set<StyleElement> set = new HashSet<>();
@@ -70,9 +108,7 @@ public class StyleLoader {
             String name = el.getAsString().toUpperCase();
             try {
                 set.add(StyleElement.valueOf(name));
-            } catch (IllegalArgumentException e) {
-                // Optional: log invalid element names
-            }
+            } catch (IllegalArgumentException ignored) {}
         }
         return set;
     }

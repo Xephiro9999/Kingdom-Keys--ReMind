@@ -21,50 +21,67 @@ public class SGaugeHandler {
 
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        // --- 1. Compute SGauge value ---
-        int totalValue = 0;
-        Set<ContributionDefinition> usedDefs = new HashSet<>();
+        // ------------------------------------------------------------
+        // 1. Determine which ContributionDefinition to use
+        // ------------------------------------------------------------
 
-        for (StyleElement element : elements) {
-            ContributionDefinition def = ContributionRegistry.getForElement(element);
-            if (def != null && usedDefs.add(def)) {
-                totalValue += def.computeValue(level);
-            }
-        }
+        ContributionDefinition def = null;
 
+        // Priority 1: specific_styles
         for (ResourceLocation styleId : specificStyles) {
-            ContributionDefinition def = ContributionRegistry.getForStyle(styleId);
-            if (def != null && usedDefs.add(def)) {
-                totalValue += def.computeValue(level);
+            def = ContributionRegistry.getForStyle(styleId);
+            if (def != null) break;
+        }
+
+        // Priority 2: first element with a definition
+        if (def == null) {
+            for (StyleElement element : elements) {
+                def = ContributionRegistry.getForElement(element);
+                if (def != null) break;
             }
         }
 
-        System.out.println("SGauge + " + totalValue + " from action (elements=" + elements + ", specific=" + specificStyles + ")");
+        // If no definition found, SGauge contribution is 0
+        int totalValue = (def != null) ? def.computeValue(level) : 0;
 
-        // --- 2. Add SGauge ---
+        System.out.println("SGauge + " + totalValue +
+                " from action (elements=" + elements + ", specific=" + specificStyles + ")");
+
+        // ------------------------------------------------------------
+        // 2. Apply SGauge value ONCE
+        // ------------------------------------------------------------
+
         double current = globalData.getSituationValue();
         double updated = current + totalValue;
         globalData.setSituationValue(updated);
 
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-        // --- 3. Add weight ---
+        // ------------------------------------------------------------
+        // 3. Add WEIGHT per element (NOT SGauge)
+        // ------------------------------------------------------------
+
         Map<ResourceLocation, Double> weightMap =
                 WEIGHTS.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
 
         for (StyleElement element : elements) {
             for (ResourceLocation styleId : StyleRegistry.getStylesForElement(element)) {
                 weightMap.merge(styleId, (double) totalValue, Double::sum);
-                System.out.println("Weight " + styleId + " += " + totalValue + " (via element " + element + ")");
+                System.out.println("Weight " + styleId + " += " + totalValue +
+                        " (via element " + element + ")");
             }
         }
 
         for (ResourceLocation styleId : specificStyles) {
             weightMap.merge(styleId, (double) totalValue, Double::sum);
-            System.out.println("Weight " + styleId + " += " + totalValue + " (via specific_style)");
+            System.out.println("Weight " + styleId + " += " + totalValue +
+                    " (via specific_style)");
         }
 
-        // --- 4. Check for activation ---
+        // ------------------------------------------------------------
+        // 4. Trigger Style selection if SGauge >= 100
+        // ------------------------------------------------------------
+
         if (updated >= 100) {
             triggerStyleSelection(player, globalData, weightMap);
         }
@@ -76,16 +93,17 @@ public class SGaugeHandler {
 
         System.out.println("SGauge reached 100 for " + player.getName().getString());
 
+        // ------------------------------------------------------------
         // Determine current Style tier
-        String currentStyleId = globalData.getStyle();
-        int currentTier = 0;
+        // ------------------------------------------------------------
 
-        if (!currentStyleId.isEmpty()) {
-            StyleDefinition def = StyleLoader.get(ResourceLocation.parse(currentStyleId));
-            if (def != null) currentTier = def.level();
-        }
+        StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
+        int currentTier = (current != null) ? current.styleLevel() : 0;
 
-        // Find eligible Styles
+        // ------------------------------------------------------------
+        // Find eligible Styles for next tier
+        // ------------------------------------------------------------
+
         double highest = 0;
         List<ResourceLocation> eligible = new ArrayList<>();
 
@@ -93,10 +111,11 @@ public class SGaugeHandler {
             ResourceLocation styleId = entry.getKey();
             double weight = entry.getValue();
 
-            StyleDefinition def = StyleLoader.get(styleId);
+            StyleDefinition def = StyleRegistry.getStyleForDriveForm(styleId);
             if (def == null) continue;
 
-            if (def.level() != currentTier + 1) continue;
+            // Must match next tier
+            if (def.styleLevel() != currentTier + 1) continue;
 
             if (weight > highest) {
                 highest = weight;
@@ -111,7 +130,10 @@ public class SGaugeHandler {
 
         // TODO: Hook into RC system
 
-        // Reset SGauge
+        // ------------------------------------------------------------
+        // Reset SGauge and weights
+        // ------------------------------------------------------------
+
         globalData.setSituationValue(0);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
