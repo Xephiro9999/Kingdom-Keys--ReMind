@@ -33,6 +33,8 @@ public class ModReactionCommandsRM {
         FIRESTORM_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"firestorm", () -> new FirestormRC( ResourceLocation.parse(StringsRM.FireStormRC),true)),
         DIAMOND_DUST_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"diamond_dust", () -> new DiamondDustRC( ResourceLocation.parse(StringsRM.DiamondDustRC),true)),
         THUNDER_BOLT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"thunder_bolt", () -> new ThunderBoltRC( ResourceLocation.parse(StringsRM.ThunderBoltRC),true)),
+        FEVER_PITCH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"fever_pitch", () -> new FeverPitchRC( ResourceLocation.parse(StringsRM.FeverPitchRC),true)),
+        CRITICAL_IMPACT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"critical_impact", () -> new CriticalImpactRC( ResourceLocation.parse(StringsRM.CriticalImpactRC),true)),
 
 
 

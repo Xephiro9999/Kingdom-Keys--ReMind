@@ -73,6 +73,8 @@ public class StylesHUD {
         styles.add(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString());
 
         if(styles.contains(form)){
             title = Component.translatable(driveForm.getTranslationKey()).withStyle(ClientUtils.KK_Font_EXP);
@@ -93,6 +95,12 @@ public class StylesHUD {
                     break;
                 case "kkremind:form_thunder_bolt":
                     guiGraphics.setColor(0,1f,0,1);
+                    break;
+                case "kkremind:form_fever_pitch":
+                    guiGraphics.setColor(0,1f,0.5f ,1);
+                    break;
+                case "kkremind:form_critical_impact":
+                    guiGraphics.setColor(0.9f,1f,0.0f ,1);
                     break;
             }
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, title, event.getSubMenu().getX() + ((event.getSubMenu().getWidth() - 8) / 2) + 1, event.getSubMenu().getY() + 4, 0xFFFFFF);

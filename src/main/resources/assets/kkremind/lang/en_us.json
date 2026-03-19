@@ -281,6 +281,8 @@
   "form.form_firestorm.name": "Firestorm",
   "form.form_diamond_dust.name": "Diamond Dust",
   "form.form_thunder_bolt.name": "Thunder Bolt",
+  "form.form_fever_pitch.name": "Fever Pitch",
+  "form.form_critical_impact.name": "Critical Impact",
 
 
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
@@ -412,6 +414,8 @@
   "reactioncommand.kkremind.rc_firestorm.name": "Firestorm",
   "reactioncommand.kkremind.rc_diamond_dust.name": "Diamond Dust",
   "reactioncommand.kkremind.rc_thunder_bolt.name": "Thunder Bolt",
+  "reactioncommand.kkremind.rc_fever_pitch.name": "Fever Pitch",
+  "reactioncommand.kkremind.rc_critical_impact.name": "Critical Impact",
 
 
   "reactioncommand.kkremind.rc_counter_hammer.name": "Counter Hammer",

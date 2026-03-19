@@ -266,6 +266,8 @@ public class EntityEventsRM {
 		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString(), 1);
 
 	}
 
@@ -402,7 +404,7 @@ public class EntityEventsRM {
 		if (spellID.contains("aero")) return SpellElement.AIR;
 		if (spellID.contains("holy") || spellID.contains("faith") || spellID.contains("light") || spellID.contains("spark")) return SpellElement.LIGHT;
 		if (spellID.contains("ruin") || spellID.contains("comet") || spellID.contains("dark") || spellID.contains("zantetsuken")) return SpellElement.DARK;
-		if (spellID.contains("quick") || spellID.contains("sliding")) return SpellElement.PHYSICAL;
+		if (spellID.contains("quick") || spellID.contains("sliding") || spellID.contains("blitz")) return SpellElement.PHYSICAL;
 
 
 		return SpellElement.NONE;
@@ -477,7 +479,7 @@ public class EntityEventsRM {
 				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
-				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
 
@@ -497,7 +499,7 @@ public class EntityEventsRM {
 							majority = entry.getKey();
 						}
 					}
-					//System.out.println(majority);
+					System.out.println(majority);
 
 					switch (majority) {
 						case FIRE:
@@ -519,6 +521,9 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 						case DARK:
+							remindData.setStyle(majority.toString());
+							break;
+						case PHYSICAL:
 							remindData.setStyle(majority.toString());
 							break;
 						case NONE:

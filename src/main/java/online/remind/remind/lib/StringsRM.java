@@ -37,6 +37,8 @@ public class StringsRM {
         fireStorm = StringsRM.DFMA_Prefix+"firestorm",
         diamondDust = StringsRM.DFMA_Prefix+"diamond_dust",
         thunderBolt = StringsRM.DFMA_Prefix+"thunder_bolt",
+        feverPitch = StringsRM.DFMA_Prefix+"fever_pitch",
+        criticalImpact = StringsRM.DFMA_Prefix+"critical_impact",
 
         regenForm = StringsRM.DFMA_Prefix+"regen",
 
@@ -169,6 +171,8 @@ public class StringsRM {
         FireStormRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"firestorm",
         DiamondDustRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"diamond_dust",
         ThunderBoltRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"thunder_bolt",
+        FeverPitchRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"fever_pitch",
+        CriticalImpactRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"critical_impact",
 
         RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
 
