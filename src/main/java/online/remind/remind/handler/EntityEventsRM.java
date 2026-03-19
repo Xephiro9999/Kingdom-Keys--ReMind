@@ -411,7 +411,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
 
-		System.out.println(e.getRCID());//TODO add the RC versions too
+		//System.out.println(e.getRCID());//TODO add the RC versions too
 		LivingEntity caster = e.getCaster();
 		if (caster instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
@@ -434,6 +434,8 @@ public class EntityEventsRM {
 				//System.out.println(e.getSpellID());
 				String spellID = e.getSpellID().toString();
 				int spellLvl = e.getLevel() + 1;
+				int cureConverterCount = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
+
 
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
@@ -452,12 +454,22 @@ public class EntityEventsRM {
 						situationValue += 20;
 						break;
 					case "kkremind:magic_auto-life":
-						situationValue += 10;
+						situationValue = 0;
 						break;
 					case "kkremind:magic_comet":
 						if (spellLvl == 2){
 							situationValue += 5;
 						}
+					case "kingdomkeys:magic_cure":
+						if (playerData.isAbilityEquipped(StringsRM.cure_converter)){
+							situationValue = 35 + ((playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter) - 1) * 15);
+							//System.out.println("Cure Converters Equipped: "+cureConverterCount);
+							//System.out.println(situationValue);
+							break;
+						} else {
+							situationValue = 0;
+						}
+						break;
 				}
 
 
@@ -485,7 +497,7 @@ public class EntityEventsRM {
 							majority = entry.getKey();
 						}
 					}
-					System.out.println(majority);
+					//System.out.println(majority);
 
 					switch (majority) {
 						case FIRE:
@@ -498,15 +510,20 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 						case WATER:
+							remindData.setStyle(majority.toString());
 							break;
 						case AIR:
+							remindData.setStyle(majority.toString());
 							break;
 						case LIGHT:
+							remindData.setStyle(majority.toString());
 							break;
 						case DARK:
+							remindData.setStyle(majority.toString());
 							break;
 						case NONE:
-							remindData.setSituationValue(0);
+							remindData.setStyle(majority.toString());
+							break;
 					}
 				}
 
@@ -1426,7 +1443,7 @@ public class EntityEventsRM {
 					situationGain *= situationMulti;
 
 					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
-					System.out.println(situationGain);
+					//System.out.println(situationGain);
 
 				if (remindData != null){
 					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
@@ -1458,8 +1475,8 @@ public class EntityEventsRM {
 
 
 
-					System.out.println("%: " + darkScaling);
-					System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
+					//System.out.println("%: " + darkScaling);
+					//System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
 					//System.out.println("Bonus Damage: " + bonusDamage);
 				}
 
@@ -1557,7 +1574,7 @@ public class EntityEventsRM {
 							if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
 
 								float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
-								System.out.println("Life Steal for " + vamp + "HP.");
+								//System.out.println("Life Steal for " + vamp + "HP.");
 
 								player.heal(vamp);
 							}

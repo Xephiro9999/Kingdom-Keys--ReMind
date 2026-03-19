@@ -108,7 +108,7 @@ public class ThunderBoltRC extends ReactionCommand {
 
 				// Leave Form
 				playerData.addFP(-1000);
-				remindData.setStyle("");
+				remindData.setStyle("NONE");
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);

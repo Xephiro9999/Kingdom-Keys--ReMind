@@ -33,7 +33,6 @@ public class ModAbilitiesRM extends ModAbilities{
         STOP_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"stop_block", () -> new Ability(ResourceLocation.parse(StringsRM.stopBlock), 0, Ability.AbilityType.ACTION, order++)),
         POISON_BLOCK = ABILITIES.register(StringsRM.ABMA_Prefix+"poison_block", () -> new Ability(ResourceLocation.parse(StringsRM.poisonBlock), 0, Ability.AbilityType.ACTION, order++)),
         ROYAL_GUARD = ABILITIES.register(StringsRM.ABMA_Prefix+"royal_guard", () -> new Ability(ResourceLocation.parse(StringsRM.royalGuard), 0, Ability.AbilityType.ACTION, order++)),
-        BLOCK_REPLENISHER = ABILITIES.register(StringsRM.ABMA_Prefix+"block_replenisher", () -> new Ability(ResourceLocation.parse(StringsRM.blockReplenisher), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_HAMMER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_hammer").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterHammer), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_BLAST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_blast").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterBlast), 0, Ability.AbilityType.ACTION, order++)),
         COUNTER_RUSH = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"counter_rush").getPath(), () -> new Ability( ResourceLocation.parse(StringsRM.counterRush), 0, Ability.AbilityType.ACTION, order++)),
@@ -51,6 +50,7 @@ public class ModAbilitiesRM extends ModAbilities{
         HP_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"hp_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.hpBoost), 10, Ability.AbilityType.SUPPORT, order++)),
         MP_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpBoost), 10, Ability.AbilityType.SUPPORT, order++)),
         SITUATION_BOOST = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"situation_boost").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.situationBoost), 2, Ability.AbilityType.SUPPORT, order++)),
+        CURE_CONVERTER = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"cure_converter").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.cure_converter), 0, Ability.AbilityType.SUPPORT, order++)),
         MP_SHIELD = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"mp_shield").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.mpShield), 5, Ability.AbilityType.SUPPORT, order++)),
         VEHEMENCE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"vehemence").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.vehemence), 5, Ability.AbilityType.SUPPORT, order++)),
         ADRENALINE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"adrenaline").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.adrenaline), 4, Ability.AbilityType.SUPPORT, order++)),
@@ -61,8 +61,10 @@ public class ModAbilitiesRM extends ModAbilities{
         SPELLBLADE = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"spellblade").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.spellblade), 0, Ability.AbilityType.SUPPORT, order++)),
         ULTIMA_WEAPON_ABILITY = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"ultima_weapon").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.ultima_weapon_ability), 0, Ability.AbilityType.SUPPORT, order++)),
         MUNNY_MAGIC = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"munny_magic").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.munny_magic), 10, Ability.AbilityType.SUPPORT, order++)),
+        BLOCK_REPLENISHER = ABILITIES.register(StringsRM.ABMA_Prefix+"block_replenisher", () -> new Ability(ResourceLocation.parse(StringsRM.blockReplenisher), 3, Ability.AbilityType.SUPPORT, order++)),
 
-        LIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.lightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
+
+    LIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"light_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.lightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
         DARK_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"dark_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.darkInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
         TWILIGHT_INFUSION = ABILITIES.register(ResourceLocation.parse(StringsRM.ABMA_Prefix+"twilight_infusion").getPath(), () -> new Ability(ResourceLocation.parse(StringsRM.twilightInfusion), 0, Ability.AbilityType.SUPPORT, order++)),
 
