@@ -1,5 +1,6 @@
 package online.remind.remind.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,12 +37,14 @@ import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
+import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
@@ -368,6 +371,22 @@ public class EntityEventsRM {
 					remindData.setCanCounter(0);
 				}
 				PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void commandMenuItemUpdate(CommandMenuEvent.ItemUpdate event){
+		Player player = Minecraft.getInstance().player;
+		PlayerData playerData = PlayerData.get(player);
+		if (ModDriveForms.registry.get(ResourceLocation.parse(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm())).getClass().getSimpleName().contains("Style")) {
+			if (event.getId().equals(CommandMenuGui.INSTANCE.revert)){
+				if (playerData != null){
+					if (playerData.getAlignment() != Utils.OrgMember.NONE){
+						event.getItem().setVisible(false);
+					}
+				}
+				event.getItem().setActive(false);
 			}
 		}
 	}
@@ -1385,6 +1404,10 @@ public class EntityEventsRM {
 		// Dream Eater Death Event
 
 	}
+
+
+
+
 
 
 	@SubscribeEvent
