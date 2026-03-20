@@ -393,7 +393,7 @@ public class EntityEventsRM {
 
 	// Helper Method for the Situation Gauge System
 
-	public enum SpellElement {
+	/*public enum SpellElement {
 		FIRE,
 		BLIZZARD,
 		THUNDER,
@@ -404,9 +404,9 @@ public class EntityEventsRM {
 		PHYSICAL,
 		MAGIC,
 		NONE
-	}
+	}*/
 
-	private SpellElement getElement(String spellID){
+	/*private SpellElement getElement(String spellID){
 
 		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
 		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
@@ -420,7 +420,7 @@ public class EntityEventsRM {
 
 
 		return SpellElement.NONE;
-	}
+	}*/
 
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
@@ -454,7 +454,7 @@ public class EntityEventsRM {
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
 				double situationValue = 5 * spellLvl;
-				switch (spellID){
+				/*switch (spellID){
 					case "default":
                         break;
 					case "kkremind:magic_ultima":
@@ -484,21 +484,21 @@ public class EntityEventsRM {
 							situationValue = 0;
 						}
 						break;
-				}
+				}*/
 
 
-				remindData.addSituationSpell(spellID);
-				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
+				//remindData.addSituationSpell(spellID);
+				//remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
-				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
 				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 					remindData.setStyleTicks(100);
 				}
 
-				if (remindData.getSituationValue() >= 100) {
+				/*if (remindData.getSituationValue() >= 100) {
 					Map<SpellElement, Integer> counts = new HashMap<>();
 					for (String s : remindData.getSituationSpells()) {
 						SpellElement element = getElement(s);
@@ -548,9 +548,9 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 					}
-				}
+				}*/
 
-				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
+				//PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 			}
 		}
 	}
@@ -1490,14 +1490,14 @@ public class EntityEventsRM {
 					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
 					//System.out.println(situationGain);
 
-				if (remindData != null){
+				/*if (remindData != null){
 					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
 					remindData.setSCooldownTicks(60);
 					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 						remindData.setStyleTicks(100);
 					}
 					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-				}
+				}*/
 
 				// Critical Impact Passive
 				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
