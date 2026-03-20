@@ -106,15 +106,15 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-		if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
-			globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
-		}
+        if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
+            globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
+        }
 
-		if(!player.level().isClientSide){
-			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-		}
+        if(!player.level().isClientSide){
+            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+        }
 
-		if (playerData != null) {
+        if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 					playerData.addAbility(StringsRM.renewalBlock, true);
@@ -157,7 +157,7 @@ public class EntityEventsRM {
 			// Spirit Assignment on Join
 
 
-			// In case the value is NOT what it should be. i.e '-1' or anything over 1
+            // In case the value is NOT what it should be. i.e '-1' or anything over 1
 			if(globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
 				globalData.setCanCounter(0);
 			}
@@ -239,9 +239,9 @@ public class EntityEventsRM {
 				}
 			} else {
 				player.sendSystemMessage(Component.literal("[Re:Mind] The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
+				}
 			}
-		}
-	}
+        }
 
 
 	/**
@@ -301,14 +301,14 @@ public class EntityEventsRM {
 				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
 			}*/
 
-		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
+			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
 
-			Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
-			if (party != null){
-				float friendBoost = party.getMembers().size() - 1;
-				//System.out.println(friendBoost);
+				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
+				if (party != null){
+					float friendBoost = party.getMembers().size() - 1;
+					//System.out.println(friendBoost);
+				}
 			}
-		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
 			playerData.unequipAbility(StringsRM.lightStep, 0);
@@ -456,7 +456,7 @@ public class EntityEventsRM {
 				double situationValue = 5 * spellLvl;
 				switch (spellID){
 					case "default":
-						break;
+                        break;
 					case "kkremind:magic_ultima":
 						situationValue += 10;
 						//System.out.println("Added "+situationValue);
@@ -563,7 +563,7 @@ public class EntityEventsRM {
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {
-					if (globalData.getCanCounter() == 1) {
+                    if (globalData.getCanCounter() == 1) {
 						maxTicks = 200;
 						if (ticks <= maxTicks) {
 							ticks += 5;
@@ -792,8 +792,8 @@ public class EntityEventsRM {
 
 						boolean validWeapon =
 								heldItem instanceof KeybladeItem ||
-										heldItem instanceof IOrgWeapon ||
-										hasAttackDamage;
+								heldItem instanceof IOrgWeapon ||
+								hasAttackDamage;
 
 
 						if (validWeapon && !heldStack.isEmpty()) {
@@ -1384,23 +1384,23 @@ public class EntityEventsRM {
 	}
 
 
-
+	
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event){
 		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
-			if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
-				if(player.getHealth() <= 0){
-					event.setCanceled(true);
-					player.setHealth(0.1F);
-					player.invulnerableTime = 10;
-					player.removeAllEffects();
-					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
-					player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+				if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
+					if(player.getHealth() <= 0){
+						event.setCanceled(true);
+						player.setHealth(0.1F);
+						player.invulnerableTime = 10;
+						player.removeAllEffects();
+						player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
+						player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+					}
 				}
 			}
-		}
 		// Dream Eater Death Event
 
 	}
@@ -1483,12 +1483,12 @@ public class EntityEventsRM {
 			if(playerData != null) {
 
 
-				double situationGain = (event.getNewDamage() * 0.1);
-				float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
-				situationGain *= situationMulti;
+					double situationGain = (event.getNewDamage() * 0.1);
+					float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
+					situationGain *= situationMulti;
 
-				//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
-				//System.out.println(situationGain);
+					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
+					//System.out.println(situationGain);
 
 				if (remindData != null){
 					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
@@ -1663,9 +1663,9 @@ public class EntityEventsRM {
 						if (!event.getSource().type().msgId().equals("light")){
 							//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
 							event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) lightBoosts / 2) * dmg));
+							}
 						}
 					}
-				}
 				if (playerData.isAbilityEquipped(StringsRM.darkInfusion)){
 					if (!event.getSource().type().msgId().equals("darkness") && !event.getSource().type().msgId().equals("explosion.player")){
 						//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
@@ -1673,9 +1673,9 @@ public class EntityEventsRM {
 					}
 				}
 				if (playerData.isAbilityEquipped(StringsRM.twilightInfusion)) {
-					event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
-					event.getEntity().invulnerableTime = 0;
-					event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
+						event.getEntity().invulnerableTime = 0;
+						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 				}
 			}
 		}

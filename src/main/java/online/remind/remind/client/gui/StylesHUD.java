@@ -60,9 +60,6 @@ public class StylesHUD {
         String form = playerData.getActiveDriveForm();
         DriveForm driveForm = ModDriveFormsRM.DRIVE_FORMS.getRegistry().get().get(ResourceLocation.parse(form));
 
-        //System.out.println(form);
-        //System.out.println(driveForm);
-
         poseStack.pushPose();
         {
             poseStack.translate(2, 2, 0); //Position for the bar
@@ -76,6 +73,9 @@ public class StylesHUD {
         styles.add(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString());
 
         if(styles.contains(form)){
             title = Component.translatable(driveForm.getTranslationKey()).withStyle(ClientUtils.KK_Font_EXP);
@@ -83,7 +83,32 @@ public class StylesHUD {
         }
 
         if (online.kingdomkeys.kingdomkeys.config.ModConfigs.cmHeaderTextVisible) {
+            //System.out.println(form);
+            switch (form){
+                default:
+                    guiGraphics.setColor(event.getSubMenu().getColour().getRed() / 255F,event.getSubMenu().getColour().getGreen() / 255F,event.getSubMenu().getColour().getBlue() / 255F,1);
+                    break;
+                case "kkremind:form_firestorm":
+                    guiGraphics.setColor(1,0.75f,0,1);
+                    break;
+                case "kkremind:form_diamond_dust":
+                    guiGraphics.setColor(0,0.75f,1,1);
+                    break;
+                case "kkremind:form_thunder_bolt":
+                    guiGraphics.setColor(0,1f,0,1);
+                    break;
+                case "kkremind:form_fever_pitch":
+                    guiGraphics.setColor(0,1f,0.5f ,1);
+                    break;
+                case "kkremind:form_critical_impact":
+                    guiGraphics.setColor(0.9f,1f,0.0f ,1);
+                    break;
+                case "kkremind:form_spellweaver":
+                    guiGraphics.setColor(0.85f,0.55f,0.85f ,1);
+                    break;
+            }
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, title, event.getSubMenu().getX() + ((event.getSubMenu().getWidth() - 8) / 2) + 1, event.getSubMenu().getY() + 4, 0xFFFFFF);
+
         }
 
         RenderSystem.setShaderColor(1,1,1,1F);

@@ -177,36 +177,52 @@ public class EpicFightEvents {
 
 
             if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+                if (playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard) || playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
                     playerData.unequipAbility(StringsRM.focusBlock, 0);
                     playerData.unequipAbility(StringsRM.stopBlock, 0);
                     playerData.unequipAbility(StringsRM.royalGuard, 0);
+                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard) || playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
                     playerData.unequipAbility(StringsRM.renewalBlock, 0);
                     playerData.unequipAbility(StringsRM.stopBlock, 0);
                     playerData.unequipAbility(StringsRM.royalGuard, 0);
+                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard) || playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
                     playerData.unequipAbility(StringsRM.renewalBlock, 0);
+                    playerData.unequipAbility(StringsRM.focusBlock, 0);
+                    playerData.unequipAbility(StringsRM.royalGuard, 0);
+                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
+                }
+            }
+
+            if (event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
+                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
+                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
+                    playerData.unequipAbility(StringsRM.stopBlock, 0);
+                    playerData.unequipAbility(StringsRM.focusBlock, 0);
+                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
+                }
+            }
+
+            if (event.getAbility().equals(ModAbilitiesRM.POISON_BLOCK.get())) {
+                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock) || playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
+                    playerData.unequipAbility(StringsRM.stopBlock, 0);
                     playerData.unequipAbility(StringsRM.focusBlock, 0);
                     playerData.unequipAbility(StringsRM.royalGuard, 0);
                 }
             }
 
-            if (event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock) || playerData.isAbilityEquipped(StringsRM.stopBlock) || playerData.isAbilityEquipped(StringsRM.focusBlock)) {
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                }
-            }
+
+
 
 
             if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {

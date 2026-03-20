@@ -1,6 +1,5 @@
 package online.remind.remind.reactioncommands;
 
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -18,20 +17,22 @@ import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
-import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.entity.reactioncommand.CounterRushCore;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import org.joml.Vector3f;
 
 import java.util.List;
 
-public class FirestormRC extends ReactionCommand {
+public class FeverPitchRC extends ReactionCommand {
 
-	public FirestormRC(ResourceLocation registryName, boolean constantCheck) {
+	int hits = 0;
+	int maxHits = 4;
+
+	public FeverPitchRC(ResourceLocation registryName, boolean constantCheck) {
 		super(registryName, constantCheck);
 	}
 
@@ -45,20 +46,21 @@ public class FirestormRC extends ReactionCommand {
 			double Y = player.getY();
 			double Z = player.getZ();
 
-			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) {
-				DriveForm firestorm = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.fireStorm));
-				firestorm.initDrive(player);
+			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
+				DriveForm feverPitch = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.feverPitch));
+				feverPitch.initDrive(player);
 				playerData.removeReactionCommand(getRegistryName().toString());
 				remindData.setSituationValue(0);
-				remindData.setStyle("");
 				remindData.clearSituationSpells();
 				remindData.setStyleTicks(100);
+				remindData.setStyle("");
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 				// Finisher Attack Code Below
 
 				float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
-				float dmgMult = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.25f;
+				float dmgMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.25f;
+
 				damage += (damage * dmgMult);
 
 				Level level = player.level();
@@ -72,7 +74,7 @@ public class FirestormRC extends ReactionCommand {
 						player.getBoundingBox().inflate(radius)
 				);
 
-				for (LivingEntity target : targets){
+				/*for (LivingEntity target : targets){
 					if (target != player){
 						Party p = null;
 						if (player != null) {
@@ -80,13 +82,11 @@ public class FirestormRC extends ReactionCommand {
 						}
 
 						if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
-							//getOwner().sendSystemMessage(Component.literal("Entity: " + target));
-							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.FIRE, player, player), damage);
+							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
 							target.invulnerableTime = 0;
-							target.igniteForTicks(5);
 						}
 					}
-				}
+				}*/
 
 				for (int t = 1; t < 360; t += 20) {
 					for (int s = 1; s < 360 ; s += 20) {
@@ -94,22 +94,24 @@ public class FirestormRC extends ReactionCommand {
 						double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
 						double y = Y + (radius * Math.cos(Math.toRadians(t)));
 
-						serverLevel.sendParticles(ParticleTypes.FLAME, x,y,z,2,0.05,0.05,0.05,0.01);
-						serverLevel.sendParticles(ParticleTypes.SMALL_FLAME, x,y,z,4,0.05,0.05,0.05,0.01);
-						serverLevel.sendParticles(ParticleTypes.ASH, x,y,z,4,0.05,0.05,0.05,0.01);
+						serverLevel.sendParticles(ParticleTypes.CRIT, x,y,z,2,0.05,0.05,0.05,0.01);
 
 					}
 				}
 
+				CounterRushCore core = new CounterRushCore(player, player.level(), targets, damage, true);
+
+				core.setPos(player.getX(), player.getY(), player.getZ());
+				player.level().addFreshEntity(core);
+
 				level.playSound(
 						null,
 						player.blockPosition(),
-						SoundEvents.BLAZE_SHOOT,
+						SoundEvents.PLAYER_ATTACK_SWEEP,
 						SoundSource.PLAYERS,
 						1F,
 						1F
 				);
-
 
 				// Leave Form
 				playerData.addFP(-1000);
@@ -124,16 +126,18 @@ public class FirestormRC extends ReactionCommand {
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
 		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 		if(playerData != null) {
 			if (remindData != null){
 				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-                    // Should show the "Finisher"
-                    if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getStyle().equals("FIRE")) {
-							return true;
+					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+						if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("AIR")) {
+							//Keyblade Check
+							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.waywardWindChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.lostMemoryChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.missingAcheChain.get()){
+								return true;
+							}
 						}
-					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) {
+					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
 						if (remindData.getSituationValue() >= 100) {
 							return true;
 						}

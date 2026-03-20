@@ -157,6 +157,7 @@ public class GlobalDataRM implements IGlobalDataRM {
     private double situationValue;
 
     private String style = "";
+    private int styleTicks;
 
     private int MPOG;
 
@@ -639,6 +640,15 @@ public class GlobalDataRM implements IGlobalDataRM {
     public void remSCooldownTicks(int ticks) {
         this.SCooldown = Math.max(SCooldown - ticks, 0);
 
+    }
+
+    @Override
+    public int getStyleTicks(){return this.styleTicks;}
+    @Override
+    public void setStyleTicks(int ticks){this.styleTicks = ticks;}
+    @Override
+    public void remStyleTicks(int ticks){
+        this.styleTicks = Math.max(styleTicks-ticks,0);
     }
 
 

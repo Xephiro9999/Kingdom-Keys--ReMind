@@ -5,6 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,6 +24,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -69,7 +72,21 @@ public class FinishRC extends ReactionCommand {
 
 					if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
 						//getOwner().sendSystemMessage(Component.literal("Entity: " + target));
-						target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
+
+						if (playerData.getChosen() == SoAState.WARRIOR) {
+							target.hurt(target.damageSources().generic(), damage);
+							player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,120,0,false,false,true));
+						}
+						if (playerData.getChosen() == SoAState.GUARDIAN) {
+							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
+							player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,120,0,false,false,true));
+							player.heal(damage * 0.15f);
+						}
+						if (playerData.getChosen() == SoAState.MYSTIC) {
+							target.hurt(target.damageSources().indirectMagic(target, player), damage);
+							System.out.println(damage);
+							playerData.addMP(damage * 0.15f);
+						}
 						target.invulnerableTime = 0;
 					}
 				}
@@ -86,15 +103,7 @@ public class FinishRC extends ReactionCommand {
 				}
 			}
 
-			if (playerData.getChosen() == SoAState.WARRIOR) {
 
-			}
-			if (playerData.getChosen() == SoAState.GUARDIAN) {
-
-			}
-			if (playerData.getChosen() == SoAState.MYSTIC) {
-
-			}
 
 			level.playSound(
 					null,
@@ -107,7 +116,7 @@ public class FinishRC extends ReactionCommand {
 
 
 			// Drain Gauge
-			remindData.setStyle("");
+			remindData.setStyle("NONE");
 			remindData.setSituationValue(0);
 			remindData.clearSituationSpells();
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
@@ -120,12 +129,10 @@ public class FinishRC extends ReactionCommand {
 		IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 		if (playerData != null) {
 			if (remindData != null) {
-				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getSituationValue() >= 100) {
-							if (remindData.getStyle().equals("")) {
-								return true;
-							}
+				if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+					if (remindData.getSituationValue() >= 100) {
+						if (remindData.getStyle().equals("NONE") || remindData.getStyle().equals("")) {
+							return true;
 						}
 					}
 				}

@@ -33,6 +33,7 @@ public class CounterRushCore extends ThrowableProjectile {
     int maxTicks = 300;
     List<LivingEntity> targetList = new ArrayList<LivingEntity>();
     float dmg;
+    boolean feverPitch;
 
 
     float radius= 5;
@@ -42,7 +43,7 @@ public class CounterRushCore extends ThrowableProjectile {
         this.blocksBuilding = true;
     }
 
-    public CounterRushCore(Player player, Level world, List<LivingEntity> targets, float dmg) {
+    public CounterRushCore(Player player, Level world, List<LivingEntity> targets, float dmg, boolean feverPitch) {
         super(ModEntitiesRM.TYPE_COUNTER_RUSH.get(), player, world);
         setCaster(player.getUUID());
         String targetIDS = "";
@@ -52,6 +53,7 @@ public class CounterRushCore extends ThrowableProjectile {
         setTarget(targetIDS.substring(1));
         this.targetList = targets;
         this.dmg = dmg;
+        this.feverPitch = feverPitch;
     }
 
     @Override
@@ -70,26 +72,38 @@ public class CounterRushCore extends ThrowableProjectile {
 
         //Since this is a temporary entity we can do the hits as a field here, otherwise we would need a capability for it
         if(hits <= 0 && getCaster() != null) //This is to prevent in every tick to refill the hits before it finishes
-
-            hits = 4 + (PlayerData.get(getCaster()).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5f);
+            if (!feverPitch) {
+                hits = 4 + (PlayerData.get(getCaster()).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5f);
+            } else {
+                hits = 4;
+            }
 
 
         if (getCaster() != null && targetList != null && !targetList.isEmpty() && hits > 0) {
             PlayerData playerData = PlayerData.get(getCaster());
-            if (tickCount % 5 == 0 && hits > 0) { //Every 0.25s deal a hit if there are hits available
-                int index = Utils.randomWithRange(0,targetList.size()-1); //Get a random mob from the list
-                Entity target = targetList.get(index);
-                if (target != null) {
-                    float dmg = (float) (playerData.getStrengthStat().get() * 0.25f);
-                    target.invulnerableTime = 0;
-                    target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);
-                    //TODO No EFM 1.21
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
-                    target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
 
-                    hits--; //Marks as that single hit being performed
+
+
+                if (tickCount % 5 == 0 && hits > 0) { //Every 0.25s deal a hit if there are hits available
+                    int index = Utils.randomWithRange(0, targetList.size() - 1); //Get a random mob from the list
+                    Entity target = targetList.get(index);
+                    if (target != null) {
+                        float dmg = (float) (playerData.getStrengthStat().get() * 0.25f);
+                        if (feverPitch){
+                            dmg = (float) (playerData.getStrengthStat().get() * 1.5f);
+                            System.out.println(dmg);
+                        }
+                        target.invulnerableTime = 1;
+                        target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);
+                        //TODO No EFM 1.21
+                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
+                        target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+
+                        hits--; //Marks as that single hit being performed
+                    }
                 }
-            }
+
+
 
 
             if(hits <= 0) { //Once reaches 0 despawn the entity as it's job it's over

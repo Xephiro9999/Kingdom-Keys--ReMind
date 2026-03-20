@@ -50,6 +50,7 @@ public class ThunderBoltRC extends ReactionCommand {
 				playerData.removeReactionCommand(getRegistryName().toString());
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
+				remindData.setStyleTicks(100);
 				remindData.setStyle("");
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
@@ -108,7 +109,7 @@ public class ThunderBoltRC extends ReactionCommand {
 
 				// Leave Form
 				playerData.addFP(-1000);
-				remindData.setStyle("");
+				remindData.setStyle("NONE");
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
@@ -122,7 +123,7 @@ public class ThunderBoltRC extends ReactionCommand {
 		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 		if(playerData != null) {
 			if (remindData != null){
-				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
+				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 						if (remindData.getStyle().equals("THUNDER")) {
 							return true;
@@ -132,7 +133,7 @@ public class ThunderBoltRC extends ReactionCommand {
 							return true;
 						}
 					}
-				}
+				//}
 			}
 		}
 		return false;

@@ -131,6 +131,11 @@ public interface IGlobalDataRM extends INBTSerializable<CompoundTag> {
     void setSCooldownTicks(int ticks);
     void remSCooldownTicks(int ticks);
 
+    int getStyleTicks();
+    void setStyleTicks(int ticks);
+    void remStyleTicks(int ticks);
+
+
 
 
 

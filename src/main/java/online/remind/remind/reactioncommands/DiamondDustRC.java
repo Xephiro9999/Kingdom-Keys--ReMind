@@ -52,6 +52,7 @@ public class DiamondDustRC extends ReactionCommand {
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				remindData.setStyle("");
+				remindData.setStyleTicks(100);
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 			} else {
 				// Finisher Attack Code Below
@@ -111,7 +112,7 @@ public class DiamondDustRC extends ReactionCommand {
 
 				// Leave Form
 				playerData.addFP(-1000);
-				remindData.setStyle("");
+				remindData.setStyle("NONE");
 				remindData.setSituationValue(0);
 				remindData.clearSituationSpells();
 				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
@@ -126,7 +127,7 @@ public class DiamondDustRC extends ReactionCommand {
 		IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 		if(playerData != null) {
 			if (remindData != null){
-				if (playerData.getAlignment() == Utils.OrgMember.NONE) {
+				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
 					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 						if (remindData.getStyle().equals("BLIZZARD")) {
 							return true;
@@ -136,7 +137,7 @@ public class DiamondDustRC extends ReactionCommand {
 							return true;
 						}
 					}
-				}
+				//}
 			}
 		}
 		return false;

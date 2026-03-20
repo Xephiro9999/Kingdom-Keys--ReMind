@@ -65,7 +65,7 @@ public class CounterRushRC extends ReactionCommand {
         }*/
 
 
-        CounterRushCore core = new CounterRushCore(player, player.level(), targetList, dmg);
+        CounterRushCore core = new CounterRushCore(player, player.level(), targetList, dmg, false);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);
 

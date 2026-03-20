@@ -37,6 +37,9 @@ public class StringsRM {
         fireStorm = StringsRM.DFMA_Prefix+"firestorm",
         diamondDust = StringsRM.DFMA_Prefix+"diamond_dust",
         thunderBolt = StringsRM.DFMA_Prefix+"thunder_bolt",
+        feverPitch = StringsRM.DFMA_Prefix+"fever_pitch",
+        criticalImpact = StringsRM.DFMA_Prefix+"critical_impact",
+        spellweaver = StringsRM.DFMA_Prefix+"spellweaver",
 
         regenForm = StringsRM.DFMA_Prefix+"regen",
 
@@ -65,6 +68,7 @@ public class StringsRM {
         mpBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"mp_boost",
         hpBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"hp_boost",
         situationBoost = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"situation_boost",
+        cure_converter = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"cure_converter",
         rageAwakened = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"rage_awakened",
         darkPower = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"dark_power",
         wayToLight = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"way_to_light",
@@ -92,6 +96,7 @@ public class StringsRM {
         stopBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"stop_block",
         poisonBlock = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"poison_block",
         royalGuard = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"royal_guard",
+        blockReplenisher = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"block_replenisher",
         spellblade = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"spellblade",
         ultima_weapon_ability = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"ultima_weapon",
         munny_magic = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"munny_magic",
@@ -167,6 +172,9 @@ public class StringsRM {
         FireStormRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"firestorm",
         DiamondDustRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"diamond_dust",
         ThunderBoltRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"thunder_bolt",
+        FeverPitchRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"fever_pitch",
+        CriticalImpactRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"critical_impact",
+        SpellweaverRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"spellweaver",
 
         RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
 
