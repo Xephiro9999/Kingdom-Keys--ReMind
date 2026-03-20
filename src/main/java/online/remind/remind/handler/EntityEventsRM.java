@@ -1,5 +1,6 @@
 package online.remind.remind.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,12 +37,14 @@ import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
+import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
@@ -103,15 +106,15 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(player);
 		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
-            globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
-        }
+		if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
+			globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
+		}
 
-        if(!player.level().isClientSide){
-            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-        }
+		if(!player.level().isClientSide){
+			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+		}
 
-        if (playerData != null) {
+		if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 					playerData.addAbility(StringsRM.renewalBlock, true);
@@ -127,6 +130,14 @@ public class EntityEventsRM {
 
 				if (!playerData.getAbilityMap().containsKey(StringsRM.stopBlock)) {
 					playerData.addAbility(StringsRM.stopBlock, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.poisonBlock)) {
+					playerData.addAbility(StringsRM.poisonBlock, true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(StringsRM.blockReplenisher)) {
+					playerData.addAbility(StringsRM.blockReplenisher, true);
 				}
 
 
@@ -146,7 +157,7 @@ public class EntityEventsRM {
 			// Spirit Assignment on Join
 
 
-            // In case the value is NOT what it should be. i.e '-1' or anything over 1
+			// In case the value is NOT what it should be. i.e '-1' or anything over 1
 			if(globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
 				globalData.setCanCounter(0);
 			}
@@ -228,9 +239,9 @@ public class EntityEventsRM {
 				}
 			} else {
 				player.sendSystemMessage(Component.literal("[Re:Mind] The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
-				}
 			}
-        }
+		}
+	}
 
 
 	/**
@@ -258,6 +269,9 @@ public class EntityEventsRM {
 		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString(), 1);
 
 	}
 
@@ -287,14 +301,14 @@ public class EntityEventsRM {
 				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
 			}*/
 
-			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
 
-				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
-				if (party != null){
-					float friendBoost = party.getMembers().size() - 1;
-					//System.out.println(friendBoost);
-				}
+			Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
+			if (party != null){
+				float friendBoost = party.getMembers().size() - 1;
+				//System.out.println(friendBoost);
 			}
+		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
 			playerData.unequipAbility(StringsRM.lightStep, 0);
@@ -333,51 +347,95 @@ public class EntityEventsRM {
 
 
 	@SubscribeEvent
-	public void unequipAbility(AbilityEvent.Unequip event){
+	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
+		IGlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
+		if (playerData != null){
 
 
-		/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-			playerData.addMaxMP(-12.5);
-
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
-			playerData.addMaxHP(-15);
-			event.getPlayer().setHealth(playerData.getMaxHP());
-			event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-		}*/
-
-		if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())){
-			playerData.getStrengthStat().removeModifier("Dedication");
-			playerData.getMagicStat().removeModifier("Dedication");
-			playerData.getDefenseStat().removeModifier("Dedication");
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-			playerData.getStrengthStat().removeModifier("Friendship");
-			playerData.getMagicStat().removeModifier("Friendship");
-			playerData.getDefenseStat().removeModifier("Friendship");
-		}
-
-		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())){
-			if(remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
-				remindData.setCanCounter(0);
+			if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
+				playerData.getStrengthStat().removeModifier("Dedication");
+				playerData.getMagicStat().removeModifier("Dedication");
+				playerData.getDefenseStat().removeModifier("Dedication");
 			}
-			PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
-		}
 
+			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
+				playerData.getStrengthStat().removeModifier("Friendship");
+				playerData.getMagicStat().removeModifier("Friendship");
+				playerData.getDefenseStat().removeModifier("Friendship");
+			}
+
+			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
+				if (remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
+					remindData.setCanCounter(0);
+				}
+				PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void commandMenuItemUpdate(CommandMenuEvent.ItemUpdate event){
+		Player player = Minecraft.getInstance().player;
+		PlayerData playerData = PlayerData.get(player);
+		if (ModDriveForms.registry.get(ResourceLocation.parse(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm())).getClass().getSimpleName().contains("Style")) {
+			if (event.getId().equals(CommandMenuGui.INSTANCE.revert)){
+				if (playerData != null){
+					if (playerData.getAlignment() != Utils.OrgMember.NONE){
+						event.getItem().setVisible(false);
+					}
+				}
+				event.getItem().setActive(false);
+			}
+		}
 	}
 
 	// Helper Method for the Situation Gauge System
 
+	public enum SpellElement {
+		FIRE,
+		BLIZZARD,
+		THUNDER,
+		WATER,
+		AIR,
+		LIGHT,
+		DARK,
+		PHYSICAL,
+		MAGIC,
+		NONE
+	}
 
+	private SpellElement getElement(String spellID){
+
+		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
+		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
+		if (spellID.contains("thunder") ) return SpellElement.THUNDER;
+		if (spellID.contains("water") || spellID.contains("balloon")) return SpellElement.WATER;
+		if (spellID.contains("aero")) return SpellElement.AIR;
+		if (spellID.contains("holy") || spellID.contains("faith") || spellID.contains("light") || spellID.contains("spark")) return SpellElement.LIGHT;
+		if (spellID.contains("ruin") || spellID.contains("comet") || spellID.contains("dark") || spellID.contains("zantetsuken")) return SpellElement.DARK;
+		if (spellID.contains("quick") || spellID.contains("sliding") || spellID.contains("blitz")) return SpellElement.PHYSICAL;
+		if (spellID.contains("cure") || spellID.contains("auto-life") || spellID.contains("regen") || spellID.contains("stop")|| spellID.contains("gravity") || spellID.contains("magnet") || spellID.contains("reflect")) return SpellElement.MAGIC;
+
+
+		return SpellElement.NONE;
+	}
 
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
-		System.out.println(e.getRCID());//TODO add the RC versions too
+
+		//System.out.println(e.getRCID());//TODO add the RC versions too
+		LivingEntity caster = e.getCaster();
+		if (caster instanceof Player player) {
+			PlayerData playerData = PlayerData.get(player);
+			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+			if (playerData != null) {
+
+			}
+		}
+
+
 	}
 
 	@SubscribeEvent
@@ -389,37 +447,113 @@ public class EntityEventsRM {
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
 				String spellID = e.getSpellID().toString();
-				//TODO: Uncomment for next version
-				int spellLvl = e.getLevel();
+				int spellLvl = e.getLevel() + 1;
+				int cureConverterCount = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
 
-				//PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
-			}
-		}
-	}
 
-	@SubscribeEvent
-	public void equipEvent(EquipmentEvent.Keychain e){
-		LivingEntity player = e.getPlayer();
-		if (player != null){
-			PlayerData playerData = PlayerData.get((Player) player);
-				if (playerData != null){
-					if (e.getNewStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
-						System.out.println("Equipped Ultima Weapon (KH1)");
-						if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
-							// TODO: Figure out how to get MP Boost working on Equip?
-							//playerData.addMaxMP(10);
+
+				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
+				double situationValue = 5 * spellLvl;
+				switch (spellID){
+					case "default":
+						break;
+					case "kkremind:magic_ultima":
+						situationValue += 10;
+						//System.out.println("Added "+situationValue);
+						break;
+					case "kkremind:warp":
+						situationValue += 10;
+						break;
+					case "kkremind:magic_death":
+						situationValue += 20;
+						break;
+					case "kkremind:magic_auto-life":
+						situationValue = 0;
+						break;
+					case "kkremind:magic_comet":
+						if (spellLvl == 2){
+							situationValue += 5;
+						}
+					case "kingdomkeys:magic_cure":
+						if (playerData.isAbilityEquipped(StringsRM.cure_converter)){
+							situationValue = 35 + ((playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter) - 1) * 15);
+							//System.out.println("Cure Converters Equipped: "+cureConverterCount);
+							//System.out.println(situationValue);
+							break;
+						} else {
+							situationValue = 0;
+						}
+						break;
+				}
+
+
+				remindData.addSituationSpell(spellID);
+				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
+
+				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
+				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+
+				remindData.setSCooldownTicks(60);
+				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+					remindData.setStyleTicks(100);
+				}
+
+				if (remindData.getSituationValue() >= 100) {
+					Map<SpellElement, Integer> counts = new HashMap<>();
+					for (String s : remindData.getSituationSpells()) {
+						SpellElement element = getElement(s);
+						counts.put(element, counts.getOrDefault(element, 0) + 1);
+					}
+
+					SpellElement majority = SpellElement.NONE;
+					int highest = 0;
+
+					for (Map.Entry<SpellElement, Integer> entry : counts.entrySet()) {
+						if (entry.getValue() > highest) {
+							highest = entry.getValue();
+							majority = entry.getKey();
 						}
 					}
-					if (e.getPreviousStack().getItem() == ModItems.ultimaWeaponKH1Chain.get()){
-						//playerData.addMaxMP(-10);
+					System.out.println(majority);
+
+					switch (majority) {
+						case FIRE:
+							remindData.setStyle(majority.toString());
+							break;
+						case BLIZZARD:
+							remindData.setStyle(majority.toString());
+							break;
+						case THUNDER:
+							remindData.setStyle(majority.toString());
+							break;
+						case WATER:
+							remindData.setStyle(majority.toString());
+							break;
+						case AIR:
+							remindData.setStyle(majority.toString());
+							break;
+						case LIGHT:
+							remindData.setStyle(majority.toString());
+							break;
+						case DARK:
+							remindData.setStyle(majority.toString());
+							break;
+						case PHYSICAL:
+							remindData.setStyle(majority.toString());
+							break;
+						case MAGIC:
+							remindData.setStyle(majority.toString());
+							break;
+						case NONE:
+							remindData.setStyle(majority.toString());
+							break;
 					}
+				}
+
+				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 			}
 		}
 	}
-
-
-
-
 
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
@@ -429,7 +563,7 @@ public class EntityEventsRM {
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {
-                    if (globalData.getCanCounter() == 1) {
+					if (globalData.getCanCounter() == 1) {
 						maxTicks = 200;
 						if (ticks <= maxTicks) {
 							ticks += 5;
@@ -658,8 +792,8 @@ public class EntityEventsRM {
 
 						boolean validWeapon =
 								heldItem instanceof KeybladeItem ||
-								heldItem instanceof IOrgWeapon ||
-								hasAttackDamage;
+										heldItem instanceof IOrgWeapon ||
+										hasAttackDamage;
 
 
 						if (validWeapon && !heldStack.isEmpty()) {
@@ -851,7 +985,35 @@ public class EntityEventsRM {
 
 				// Formchange/Situation Gauge System
 
+				if (globalData.getSCooldownTicks() > 0){
+					globalData.remSCooldownTicks(1);
+					//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
+				}
 
+				if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
+					globalData.setSituationValue(globalData.getSituationValue() - 0.2);
+				}
+				if (event.getEntity() instanceof Player player) {
+					PlayerData playerData = PlayerData.get(player);
+					if (playerData != null) {
+						if (globalData.getSituationValue() <= 0) {
+							globalData.clearSituationSpells();
+							globalData.setStyle("");
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+							if (globalData.getStyleTicks() > 0) {
+								globalData.remStyleTicks(1);
+								System.out.println(globalData.getStyleTicks());
+							} else if (globalData.getStyleTicks() <= 0) {
+								if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+									playerData.setActiveDriveForm(DriveForm.NONE.toString());
+								}
+							}
+
+						} else if (globalData.getSituationValue() > 100) {
+							globalData.setSituationValue(100);
+						}
+					}
+				}
 
 
 
@@ -1086,6 +1248,13 @@ public class EntityEventsRM {
 							player.setHealth(1);
 						}
 					}
+
+					// Fever Pitch Passive
+					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
+						player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED,2,1,true,true,true));
+					}
+
+
 				}
 
 
@@ -1215,26 +1384,30 @@ public class EntityEventsRM {
 	}
 
 
-	
+
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event){
 		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
-				if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
-					if(player.getHealth() <= 0){
-						event.setCanceled(true);
-						player.setHealth(0.1F);
-						player.invulnerableTime = 10;
-						player.removeAllEffects();
-						player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
-						player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
-					}
+			if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
+				if(player.getHealth() <= 0){
+					event.setCanceled(true);
+					player.setHealth(0.1F);
+					player.invulnerableTime = 10;
+					player.removeAllEffects();
+					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
+					player.level().playSound(null, player.blockPosition(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
 				}
 			}
+		}
 		// Dream Eater Death Event
 
 	}
+
+
+
+
 
 
 	@SubscribeEvent
@@ -1310,12 +1483,51 @@ public class EntityEventsRM {
 			if(playerData != null) {
 
 
+				double situationGain = (event.getNewDamage() * 0.1);
+				float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
+				situationGain *= situationMulti;
+
+				//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
+				//System.out.println(situationGain);
+
+				if (remindData != null){
+					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
+					remindData.setSCooldownTicks(60);
+					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+						remindData.setStyleTicks(100);
+					}
+					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
+				}
+
+				// Critical Impact Passive
+				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
+					if (event.getSource().type().msgId().equals("player")) {
+						float dmg = playerData.getStrength(true) * 0.15f;
+						LivingEntity target = event.getEntity();
+						target.invulnerableTime = 0;
+						target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, event.getEntity(), null), dmg);
+					}
+				}
+
+				// Spellweaver Passive
+				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
+					if (event.getSource().type().msgId().equals("player")) {
+						float dmg = playerData.getMagic(true) * 0.1f;
+						LivingEntity target = event.getEntity();
+						target.invulnerableTime = 0;
+						target.hurt(event.getEntity().damageSources().magic(), dmg);
+					}
+				}
+
+
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
 				float addDmg = (float) (crtBoosts * 3);
 				if (playerData.isAbilityEquipped(StringsRM.Jecht)){
-					//System.out.println(addDmg);
-					event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
-					event.getEntity().invulnerableTime = 0;
+					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
+						//System.out.println(addDmg);
+						event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
+						event.getEntity().invulnerableTime = 0;
+					}
 				}
 
 				// My Exclusive Ability
@@ -1328,14 +1540,16 @@ public class EntityEventsRM {
 					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
 					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
 					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
-					player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
-					player.getFoodData().eat(3,10);
+					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
+						player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
+						player.getFoodData().eat(3, 10);
+					}
 
 
 
 
-					System.out.println("%: " + darkScaling);
-					System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
+					//System.out.println("%: " + darkScaling);
+					//System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
 					//System.out.println("Bonus Damage: " + bonusDamage);
 				}
 
@@ -1433,7 +1647,7 @@ public class EntityEventsRM {
 							if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
 
 								float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
-								System.out.println("Life Steal for " + vamp + "HP.");
+								//System.out.println("Life Steal for " + vamp + "HP.");
 
 								player.heal(vamp);
 							}
@@ -1449,9 +1663,9 @@ public class EntityEventsRM {
 						if (!event.getSource().type().msgId().equals("light")){
 							//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
 							event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) lightBoosts / 2) * dmg));
-							}
 						}
 					}
+				}
 				if (playerData.isAbilityEquipped(StringsRM.darkInfusion)){
 					if (!event.getSource().type().msgId().equals("darkness") && !event.getSource().type().msgId().equals("explosion.player")){
 						//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
@@ -1459,9 +1673,9 @@ public class EntityEventsRM {
 					}
 				}
 				if (playerData.isAbilityEquipped(StringsRM.twilightInfusion)) {
-						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
-						event.getEntity().invulnerableTime = 0;
-						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
+					event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
+					event.getEntity().invulnerableTime = 0;
+					event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 				}
 			}
 		}
