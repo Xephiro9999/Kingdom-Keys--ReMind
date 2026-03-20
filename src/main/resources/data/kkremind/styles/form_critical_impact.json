@@ -1,4 +1,6 @@
 {
+  "target": "kkremind:form_critical_impact",
+  "finisher": "kkremind:rc_critical_impact",
   "style_level": 1,
   "elements": ["physical"],
   "requires_specific_weapons": false,

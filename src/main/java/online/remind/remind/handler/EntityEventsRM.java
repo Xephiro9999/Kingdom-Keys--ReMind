@@ -446,14 +446,14 @@ public class EntityEventsRM {
 			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
-				String spellID = e.getSpellID().toString();
+				/*String spellID = e.getSpellID().toString();
 				int spellLvl = e.getLevel() + 1;
 				int cureConverterCount = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
 
 
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
-				double situationValue = 5 * spellLvl;
+				double situationValue = 5 * spellLvl;*/
 				/*switch (spellID){
 					case "default":
                         break;
@@ -997,8 +997,8 @@ public class EntityEventsRM {
 					PlayerData playerData = PlayerData.get(player);
 					if (playerData != null) {
 						if (globalData.getSituationValue() <= 0) {
-							globalData.clearSituationSpells();
-							globalData.setStyle("");
+							//globalData.clearSituationSpells();
+							//globalData.setStyle("");
 							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 							if (globalData.getStyleTicks() > 0) {
 								globalData.remStyleTicks(1);

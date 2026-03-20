@@ -23,7 +23,7 @@ public class SGaugeEventHandler {
 
         LivingEntity caster = event.getCaster();
         if (!(caster instanceof Player player)) {
-            return; // Only players accumulate SGauge
+            return;
         }
 
         ResourceLocation spellId = event.getSpellID();
@@ -31,18 +31,14 @@ public class SGaugeEventHandler {
             return;
         }
 
-        // Convert KK's 0-based spell level to our 1-based level
-        int level = event.getLevel() + 1;
-
-        System.out.println("Spell cast: " + spellId + " | Level from event: " + level);
-
-        // Look up SGauge contribution JSON for this spell
+        // NEW: Look up contribution by spell → elements/specific styles
         ContributionDefinition def = ContributionRegistry.getForSpell(spellId);
         if (def == null) {
-            return; // No SGauge contribution defined
+            return;
         }
 
-        // Pass corrected level to SGaugeHandler
+        int level = event.getLevel() + 1;
+
         SGaugeHandler.addContribution(
                 player,
                 def.elements(),
@@ -50,4 +46,6 @@ public class SGaugeEventHandler {
                 level
         );
     }
+
+
 }

@@ -3,6 +3,7 @@ package online.remind.remind.styles;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -128,15 +129,31 @@ public class SGaugeHandler {
 
         System.out.println("Eligible Styles: " + eligible);
 
-        // TODO: Hook into RC system
+    // ------------------------------------------------------------
+    // Commit selected Style to globalData
+    // ------------------------------------------------------------
+        if (!eligible.isEmpty()) {
+            ResourceLocation chosen = eligible.get(0);
+            globalData.setStyle(chosen.toString());
+            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
+            // NEW: Add the RC to the player
+            PlayerData playerData = PlayerData.get(player);
+            StyleDefinition def = StyleRegistry.getStyleForDriveForm(chosen);
+            if (def != null && def.finisher() != null) {
+                playerData.addReactionCommand(def.finisher().toString(), player);
+            }
+
+        }
+
 
         // ------------------------------------------------------------
-        // Reset SGauge and weights
-        // ------------------------------------------------------------
-
-        globalData.setSituationValue(0);
-        PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+    // Reset SGauge and weights
+    // ------------------------------------------------------------
+        //globalData.setSituationValue(0);
+        //PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
         weightMap.clear();
+
     }
 }
