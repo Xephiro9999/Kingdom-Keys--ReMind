@@ -97,7 +97,7 @@ public abstract class StyleRC extends ReactionCommand {
 
         // Activation RC: not in any Style
         if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-            return style.equals(getStyleId()) && gauge >= 100;
+            return gauge >= 100 && styleContains(style, getStyleId());
         }
 
         // Finisher RC: already in this Style
@@ -107,4 +107,16 @@ public abstract class StyleRC extends ReactionCommand {
 
         return false;
     }
+
+    private boolean styleContains(String styleString, String styleId) {
+        if (styleString == null || styleString.isEmpty())
+            return false;
+
+        for (String s : styleString.split(",")) {
+            if (s.equals(styleId))
+                return true;
+        }
+        return false;
+    }
+
 }

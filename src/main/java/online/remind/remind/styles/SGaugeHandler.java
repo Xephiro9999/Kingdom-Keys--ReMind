@@ -10,6 +10,7 @@ import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SGaugeHandler {
 
@@ -133,24 +134,33 @@ public class SGaugeHandler {
     // Commit selected Style to globalData
     // ------------------------------------------------------------
         if (!eligible.isEmpty()) {
-            ResourceLocation chosen = eligible.get(0);
-            globalData.setStyle(chosen.toString());
+
+            // 1) Store ALL eligible styles in the style flag
+            String combined = eligible.stream()
+                    .map(ResourceLocation::toString)
+                    .collect(Collectors.joining(","));
+            globalData.setStyle(combined);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-            // NEW: Add the RC to the player
+            // 2) Add ALL eligible RCs
             PlayerData playerData = PlayerData.get(player);
-            StyleDefinition def = StyleRegistry.getStyleForDriveForm(chosen);
-            if (def != null && def.finisher() != null) {
-                playerData.addReactionCommand(def.finisher().toString(), player);
+            for (ResourceLocation styleId : eligible) {
+                StyleDefinition def = StyleRegistry.getStyleForDriveForm(styleId);
+                if (def != null && def.finisher() != null) {
+                    playerData.addReactionCommand(def.finisher().toString(), player);
+                }
             }
 
+            // 3) DO NOT reset SGauge here — RCs handle that
         }
+
+        weightMap.clear();
+
 
 
         // ------------------------------------------------------------
-    // Reset SGauge and weights
-    // ------------------------------------------------------------
-        //globalData.setSituationValue(0);
+        // Reset SGauge and weights
+        // ------------------------------------------------------------
         //PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
         weightMap.clear();
