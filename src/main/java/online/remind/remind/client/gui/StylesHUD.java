@@ -86,7 +86,7 @@ public class StylesHUD {
             //System.out.println(form);
             switch (form){
                 default:
-                    guiGraphics.setColor(1,1,1,1);
+                    guiGraphics.setColor(event.getSubMenu().getColour().getRed() / 255F,event.getSubMenu().getColour().getGreen() / 255F,event.getSubMenu().getColour().getBlue() / 255F,1);
                     break;
                 case "kkremind:form_firestorm":
                     guiGraphics.setColor(1,0.75f,0,1);
