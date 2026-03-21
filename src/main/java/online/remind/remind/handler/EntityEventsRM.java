@@ -1,7 +1,5 @@
 package online.remind.remind.handler;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -375,21 +373,7 @@ public class EntityEventsRM {
 		}
 	}
 
-	@SubscribeEvent
-	public void commandMenuItemUpdate(CommandMenuEvent.ItemUpdate event){
-		Player player = Minecraft.getInstance().player;
-		PlayerData playerData = PlayerData.get(player);
-		if (ModDriveForms.registry.get(ResourceLocation.parse(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm())).getClass().getSimpleName().contains("Style")) {
-			if (event.getId().equals(CommandMenuGui.INSTANCE.revert)){
-				if (playerData != null){
-					if (playerData.getAlignment() != Utils.OrgMember.NONE){
-						event.getItem().setVisible(false);
-					}
-				}
-				event.getItem().setActive(false);
-			}
-		}
-	}
+
 
 	// Helper Method for the Situation Gauge System
 

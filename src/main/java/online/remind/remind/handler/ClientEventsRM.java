@@ -13,6 +13,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.MenuButtonRegisterEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.TargetSelectorEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.StopGui;
@@ -21,6 +22,7 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
@@ -42,6 +44,22 @@ import java.util.ArrayList;
 public class ClientEventsRM {
     public enum RMButtons {
 		PRESTIGE, DREAMEATER, CREDITS, WIKI, PANEL, WALLET
+	}
+
+	@SubscribeEvent
+	public void commandMenuItemUpdate(CommandMenuEvent.ItemUpdate event){
+		Player player = Minecraft.getInstance().player;
+		PlayerData playerData = PlayerData.get(player);
+		if (ModDriveForms.registry.get(ResourceLocation.parse(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm())).getClass().getSimpleName().contains("Style")) {
+			if (event.getId().equals(CommandMenuGui.INSTANCE.revert)){
+				if (playerData != null){
+					if (playerData.getAlignment() != Utils.OrgMember.NONE){
+						event.getItem().setVisible(false);
+					}
+				}
+				event.getItem().setActive(false);
+			}
+		}
 	}
 
     @SubscribeEvent
