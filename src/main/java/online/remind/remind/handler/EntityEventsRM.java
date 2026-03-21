@@ -475,7 +475,7 @@ public class EntityEventsRM {
 				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
-				System.out.println("Situation Spells: "+ remindData.getSituationSpells());
+				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
 				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
@@ -498,7 +498,7 @@ public class EntityEventsRM {
 							majority = entry.getKey();
 						}
 					}
-					System.out.println(majority);
+					//System.out.println(majority);
 
 					switch (majority) {
 						case FIRE:
@@ -986,7 +986,7 @@ public class EntityEventsRM {
 							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 							if (globalData.getStyleTicks() > 0) {
 								globalData.remStyleTicks(1);
-								System.out.println(globalData.getStyleTicks());
+								//System.out.println(globalData.getStyleTicks());
 							} else if (globalData.getStyleTicks() <= 0) {
 								if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 									playerData.setActiveDriveForm(DriveForm.NONE.toString());
