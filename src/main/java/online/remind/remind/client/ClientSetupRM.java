@@ -25,7 +25,7 @@ import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.ClientEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus=EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class ClientSetupRM {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

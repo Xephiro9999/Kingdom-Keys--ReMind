@@ -65,16 +65,16 @@ public class ClientEventsRM {
     @SubscribeEvent
     public void onTargetSelector(TargetSelectorEvent event) {
         IGlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
-        System.out.println(globalData);
-        System.out.println(globalData.getDreamEaterRL());
-        System.out.println(globalData.hasDreamEaterSummoned());
+        //System.out.println(globalData);
+        //System.out.println(globalData.getDreamEaterRL());
+        //System.out.println(globalData.hasDreamEaterSummoned());
         if(globalData == null || globalData.getDreamEaterRL().equals(ModDreamEaters.NONE.get().getRegistryName()) || !globalData.hasDreamEaterSummoned())
             return;
         DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(globalData.getDreamEaterRL()));
         if(dreamEater == null)
             return;
 
-        System.out.println(globalData.hasDreamEaterSummoned());
+        //System.out.println(globalData.hasDreamEaterSummoned());
         if(globalData.hasDreamEaterSummoned()) {
             Entity dreamEaterEntity = ClientUtilsRM.getEntityByUUIDClient(globalData.getDreamEaterUUID());
             int dreamEaterID = dreamEaterEntity.getId();

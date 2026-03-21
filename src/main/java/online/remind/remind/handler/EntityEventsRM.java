@@ -645,14 +645,11 @@ public class EntityEventsRM {
 						playerData.getMagicStat().removeModifier("regen_buff");
 					}
 
-
-
 					if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
 						playerData.getStrengthStat().removeModifier("Riskcharge");
 					}
 
 					// Vehemence
-
 					if (playerData.isAbilityEquipped(StringsRM.vehemence)) {
 
 						int vehemenceSTR = (int) (playerData.getStrengthStat().getStat() * 0.25F);
@@ -755,7 +752,6 @@ public class EntityEventsRM {
 
 					// Ultima Weapon Ability
 					if (playerData.isAbilityEquipped(StringsRM.ultima_weapon_ability)) {
-
 						ItemStack heldStack = player.getMainHandItem();
 						Item heldItem = heldStack.getItem();
 
@@ -774,14 +770,9 @@ public class EntityEventsRM {
 							}
 						}
 
-						boolean validWeapon =
-								heldItem instanceof KeybladeItem ||
-								heldItem instanceof IOrgWeapon ||
-								hasAttackDamage;
-
+						boolean validWeapon = heldItem instanceof KeybladeItem || heldItem instanceof IOrgWeapon || hasAttackDamage;
 
 						if (validWeapon && !heldStack.isEmpty()) {
-
 							int weaponSTR = 0;
 							int weaponMAG = 0;
 
@@ -833,21 +824,11 @@ public class EntityEventsRM {
 
 							// Apply new modifiers
 							if (addSTR != 0) {
-								playerData.getStrengthStat().addModifier(
-										"Ultima Weapon",
-										addSTR,
-										false,
-										false
-								);
+								playerData.getStrengthStat().addModifier("Ultima Weapon", addSTR, false, false);
 							}
 
 							if (addMAG != 0) {
-								playerData.getMagicStat().addModifier(
-										"Ultima Weapon",
-										addMAG,
-										false,
-										false
-								);
+								playerData.getMagicStat().addModifier("Ultima Weapon", addMAG, false, false);
 							}
 
 						} else {
@@ -876,8 +857,7 @@ public class EntityEventsRM {
 							int baseHp = playerData.getMaxHP();
 							int boostedHp = baseHp + newHpBonus;
 
-							player.getAttribute(Attributes.MAX_HEALTH)
-									.setBaseValue(boostedHp);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(boostedHp);
 						}
 					} else {
 						int lastHp = globalData.getLastHpBoostBonus();
@@ -885,8 +865,7 @@ public class EntityEventsRM {
 							globalData.setLastHpBoostBonus(0);
 
 							int baseHp = playerData.getMaxHP();
-							player.getAttribute(Attributes.MAX_HEALTH)
-									.setBaseValue(baseHp);
+							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(baseHp);
 						}
 					}
 
@@ -909,7 +888,6 @@ public class EntityEventsRM {
 							globalData.setLastMpBoostBonus(0);
 						}
 					}
-
 
 					// Tidus Keyblade
 					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
@@ -953,22 +931,16 @@ public class EntityEventsRM {
 						playerData.getDefenseStat().removeModifier("Panel");
 						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 					}
-
-
 				}
-
 			}
 
 			if (globalData != null) {
-
 				// RC Cooldown mechanic
-
 				if (globalData.getRCCooldownTicks() > 0) {
 					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 				}
 
 				// Formchange/Situation Gauge System
-
 				if (globalData.getSCooldownTicks() > 0){
 					globalData.remSCooldownTicks(1);
 					//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
@@ -999,8 +971,6 @@ public class EntityEventsRM {
 					}
 				}
 
-
-
 				// Step Ticks
 				if (globalData.getStepTicks() > 0) {
 					globalData.remStepTicks(1);
@@ -1022,9 +992,9 @@ public class EntityEventsRM {
 				}
 
 				// Spells go Down Below
-
 				// Berserk
 				if (event.getEntity() instanceof Player player) {
+					boolean sync;
 					PlayerData playerData = PlayerData.get(player);
 					if (player.hasEffect(ModMobEffectsRM.BERSERK)){
 						MobEffectInstance berserk = player.getEffect(ModMobEffectsRM.BERSERK);
@@ -1034,21 +1004,22 @@ public class EntityEventsRM {
 						double strBonus = (playerData.getStrengthStat().getStat() * 0.15D) * (amp + 1);
 						double defDebuff = (playerData.getDefenseStat().getStat() * 0.15D) * (amp + 1);
 
+						sync = !playerData.getStrengthStat().hasModifier("berserk");
 						playerData.getStrengthStat().addModifier("berserk", strBonus, false, false);
 						playerData.getDefenseStat().addModifier("berserk", -defDebuff, false, false);
 
 					} else {
+						sync = playerData.getStrengthStat().hasModifier("berserk");
 						playerData.getStrengthStat().removeModifier("berserk");
 						playerData.getDefenseStat().removeModifier("berserk");
 
 					}
-					if(!event.getEntity().level().isClientSide) {
+					if(!event.getEntity().level().isClientSide && sync) {
 						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 				}
 
 				// Stone
-
 				if (event.getEntity() instanceof Player player) {
 					PlayerData playerData = PlayerData.get(player);
 					if (player.hasEffect(ModMobEffectsRM.STONE)) {
@@ -1238,10 +1209,7 @@ public class EntityEventsRM {
 						player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED,2,1,true,true,true));
 					}
 
-
 				}
-
-
 
 
 				// HP / MP / EXP Walker
