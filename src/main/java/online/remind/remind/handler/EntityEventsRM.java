@@ -935,41 +935,44 @@ public class EntityEventsRM {
 			}
 
 			if (globalData != null) {
+				if (event.getEntity() instanceof Player player) {
+				PlayerData playerData = PlayerData.get(player);
+				if (playerData != null) {
 				// RC Cooldown mechanic
 				if (globalData.getRCCooldownTicks() > 0) {
 					globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 				}
 
 				// Formchange/Situation Gauge System
-				if (globalData.getSCooldownTicks() > 0){
+				if (globalData.getSCooldownTicks() > 0 ){
 					globalData.remSCooldownTicks(1);
 					//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
 				}
-
-				if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
-					globalData.setSituationValue(globalData.getSituationValue() - 0.2);
-				}
-				if (event.getEntity() instanceof Player player) {
-					PlayerData playerData = PlayerData.get(player);
-					if (playerData != null) {
-						if (globalData.getSituationValue() <= 0) {
-							globalData.clearSituationSpells();
-							globalData.setStyle("");
-							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-							if (globalData.getStyleTicks() > 0) {
-								globalData.remStyleTicks(1);
-								//System.out.println(globalData.getStyleTicks());
-							} else if (globalData.getStyleTicks() <= 0) {
-								if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
-									playerData.setActiveDriveForm(DriveForm.NONE.toString());
-								}
-							}
-
-						} else if (globalData.getSituationValue() > 100) {
-							globalData.setSituationValue(100);
-						}
+				if (!player.hasEffect(ModMobEffects.STOP)){
+					if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
+						globalData.setSituationValue(globalData.getSituationValue() - 0.2);
 					}
 				}
+
+
+					if (globalData.getSituationValue() <= 0) {
+						globalData.clearSituationSpells();
+						globalData.setStyle("");
+						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+						if (globalData.getStyleTicks() > 0) {
+							globalData.remStyleTicks(1);
+							//System.out.println(globalData.getStyleTicks());
+						} else if (globalData.getStyleTicks() <= 0) {
+							if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+								playerData.setActiveDriveForm(DriveForm.NONE.toString());
+							}
+						}
+
+					} else if (globalData.getSituationValue() > 100) {
+						globalData.setSituationValue(100);
+					}
+				}
+			}
 
 				// Step Ticks
 				if (globalData.getStepTicks() > 0) {
