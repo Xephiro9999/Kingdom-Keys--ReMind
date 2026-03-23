@@ -950,6 +950,8 @@ public class EntityEventsRM {
 				}
 				if (!player.hasEffect(ModMobEffects.STOP)){
 					if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
+						// Possible Haste and Slow Interactions?
+
 						globalData.setSituationValue(globalData.getSituationValue() - 0.2);
 					}
 				}
