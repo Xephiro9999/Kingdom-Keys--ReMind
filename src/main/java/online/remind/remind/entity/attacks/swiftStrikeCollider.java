@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
+import online.kingdomkeys.kingdomkeys.entity.TrainingDummyEntity;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
@@ -190,7 +191,7 @@ public class swiftStrikeCollider extends ThrowableProjectile {
 
                         Entity e = list.get(i);
                         if (e instanceof LivingEntity){
-                            if(Utils.isHostile(e) || e instanceof ServerPlayer) {
+                            if(Utils.isHostile(e) || e instanceof ServerPlayer || e instanceof TrainingDummyEntity) {
                                 if (e instanceof ChirithyEntity) {
                                     list.remove(e);
                                 }
