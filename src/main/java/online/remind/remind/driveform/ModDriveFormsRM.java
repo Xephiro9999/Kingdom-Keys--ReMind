@@ -8,6 +8,9 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class ModDriveFormsRM {
@@ -15,7 +18,7 @@ public class ModDriveFormsRM {
 
     static int order = 10;
 
-
+    public static Set<ResourceLocation> styles = new HashSet<>();
 
      public static final Supplier<DriveForm>
 

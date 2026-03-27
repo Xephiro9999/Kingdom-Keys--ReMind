@@ -965,7 +965,7 @@ public class EntityEventsRM {
 							globalData.remStyleTicks(1);
 							//System.out.println(globalData.getStyleTicks());
 						} else if (globalData.getStyleTicks() <= 0) {
-							if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+							if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) { //Only check styles bruh
 								playerData.setActiveDriveForm(DriveForm.NONE.toString());
 							}
 						}

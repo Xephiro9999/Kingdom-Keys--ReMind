@@ -13,6 +13,7 @@ public class StyleFireStorm extends DriveForm {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[]{1f, 0.0F, 0.0F};
         this.skinRL = skinRL;
+        ModDriveFormsRM.styles.add(registeryName);
     }
 
     @Override

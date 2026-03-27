@@ -10,6 +10,7 @@ public class StyleCriticalImpact extends DriveForm {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[]{1.0f, 1.0F, 0.0F};
         this.skinRL = skinRL;
+        ModDriveFormsRM.styles.add(registeryName);
     }
 
     @Override
