@@ -74,55 +74,56 @@ public class PanelsMenu extends MenuBackground {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(2));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                //init();
+                this.reloadMenu();
             }
             case "defUp" -> {
               //  globalData.setPanelChoice("DEF");
                 PacketHandlerRM.sendToServer(new CSPanelPacket(3));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "apUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(4));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "valorUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(5));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "wisdomUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(6));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "limitUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(7));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "masterUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(8));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "finalUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(9));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
-                init();
+                this.reloadMenu();
             }
             case "lvl" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(10));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-                init();
+                this.reloadMenu();
 
             }
             case "armorUp" -> {
