@@ -1,6 +1,5 @@
 {
-  "namespace": "kingdomkeys",
-  "id": "magic_blizzard",
+  "target": "kingdomkeys:magic_blizzard",
 
   "elements": ["BLIZZARD", "MAGIC"],
   "specific_styles": [],

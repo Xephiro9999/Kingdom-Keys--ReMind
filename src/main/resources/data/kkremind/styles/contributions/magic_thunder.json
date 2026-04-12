@@ -1,6 +1,5 @@
 {
-  "namespace": "kingdomkeys",
-  "id": "magic_thunder",
+  "target": "kingdomkeys:magic_thunder",
 
   "elements": ["THUNDER", "MAGIC"],
   "specific_styles": [],

@@ -131,9 +131,7 @@ public class FinishRC extends ReactionCommand {
 			if (remindData != null) {
 				if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 					if (remindData.getSituationValue() >= 100) {
-						if (remindData.getStyle().equals("NONE") || remindData.getStyle().equals("")) {
-							return true;
-						}
+						return true;
 					}
 				}
 			}

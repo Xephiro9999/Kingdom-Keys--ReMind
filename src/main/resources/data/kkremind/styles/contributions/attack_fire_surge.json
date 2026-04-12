@@ -1,6 +1,5 @@
 {
-  "namespace": "kkremind",
-  "id": "attack_fire_surge",
+  "target": "kkremind:attack_fire_surge",
 
   "elements": ["FIRE", "LUNGE", "PHYSICAL"],
   "specific_styles": [],

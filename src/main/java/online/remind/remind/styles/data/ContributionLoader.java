@@ -20,17 +20,13 @@ public class ContributionLoader {
 
     public static void load(JsonObject json, ResourceLocation fileId) {
 
-        // 1. Read namespace + id from JSON
-        if (!json.has("namespace") || !json.has("id")) {
+        // 1. Read target from JSON
+        if (!json.has("target")) {
             throw new IllegalArgumentException("Contribution JSON " + fileId +
-                    " is missing required fields: 'namespace' and/or 'id'");
+                    " is missing required field: 'target'");
         }
 
-        String namespace = json.get("namespace").getAsString();
-        String id = json.get("id").getAsString();
-
-        // Use the factory method instead of the private constructor
-        ResourceLocation target = ResourceLocation.fromNamespaceAndPath(namespace, id);
+        ResourceLocation target = ResourceLocation.parse(json.get("target").getAsString());
 
         // 2. Parse elements
         Set<StyleElement> elements = parseElements(

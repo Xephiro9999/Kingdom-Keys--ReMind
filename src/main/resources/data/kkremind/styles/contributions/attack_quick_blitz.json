@@ -1,6 +1,5 @@
 {
-  "namespace": "kkremind",
-  "id": "attack_quick_blitz",
+  "target": "kkremind:attack_quick_blitz",
 
   "elements": ["JUMPING", "PHYSICAL"],
   "specific_styles": [],

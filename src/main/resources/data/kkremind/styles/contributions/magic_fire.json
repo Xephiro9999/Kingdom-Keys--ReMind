@@ -1,6 +1,5 @@
 {
-  "namespace": "kingdomkeys",
-  "id": "magic_fire",
+  "target": "kingdomkeys:magic_fire",
 
   "elements": ["FIRE", "MAGIC"],
   "specific_styles": [],
