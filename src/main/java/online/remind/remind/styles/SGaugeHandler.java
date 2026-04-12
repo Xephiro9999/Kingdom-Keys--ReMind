@@ -4,6 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -116,8 +117,20 @@ public class SGaugeHandler {
             StyleDefinition def = StyleRegistry.getStyleForDriveForm(styleId);
             if (def == null) continue;
 
-            // Must match next tier
-            if (def.styleLevel() != currentTier + 1) continue;
+            PlayerData playerData = PlayerData.get(player);
+            boolean notInStyle = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
+            int nextTier = currentTier + 1;
+
+            if (notInStyle) {
+                // Activation: allow Lv0 and Lv1
+                if (def.styleLevel() != 0 && def.styleLevel() != 1) continue;
+            } else {
+                // Lv0 Styles are terminal: no chain-ups
+                if (currentTier == 0) continue;
+
+                // Chain-up: must match next tier
+                if (def.styleLevel() != nextTier) continue;
+            }
 
             // ------------------------------------------------------------
             // WEAPON RESTRICTION CHECK (NEW)

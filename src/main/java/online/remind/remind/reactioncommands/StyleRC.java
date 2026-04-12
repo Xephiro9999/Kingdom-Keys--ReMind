@@ -11,6 +11,8 @@ import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.styles.data.StyleDefinition;
+import online.remind.remind.styles.data.StyleRegistry;
 
 public abstract class StyleRC extends ReactionCommand {
 
@@ -98,6 +100,19 @@ public abstract class StyleRC extends ReactionCommand {
         // Activation RC: not in any Style
         if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
             return gauge >= 100 && styleContains(style, getStyleId());
+        }
+
+        // Chain-up RC: currently in a Style, and this RC is for the next tier
+        if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+
+            StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
+            StyleDefinition target = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(getStyleId()));
+
+            if (current != null && target != null) {
+                if (target.styleLevel() == current.styleLevel() + 1) {
+                    return gauge >= 100 && styleContains(style, getStyleId());
+                }
+            }
         }
 
         // Finisher RC: already in this Style
