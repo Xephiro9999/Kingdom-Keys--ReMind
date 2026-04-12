@@ -119,6 +119,27 @@ public class SGaugeHandler {
             // Must match next tier
             if (def.styleLevel() != currentTier + 1) continue;
 
+            // ------------------------------------------------------------
+            // WEAPON RESTRICTION CHECK (NEW)
+            // ------------------------------------------------------------
+            if (def.requiresSpecificWeapons()) {
+
+                // Get the held item ID safely
+                ResourceLocation heldWeapon = player.getMainHandItem()
+                        .getItem()
+                        .builtInRegistryHolder()
+                        .key()
+                        .location();
+
+                // If the held weapon is NOT in the allowed list, skip this Style
+                if (!def.requiredWeapons().contains(heldWeapon)) {
+                    continue;
+                }
+            }
+
+            // ------------------------------------------------------------
+            // Weight comparison logic (unchanged)
+            // ------------------------------------------------------------
             if (weight > highest) {
                 highest = weight;
                 eligible.clear();
@@ -127,6 +148,7 @@ public class SGaugeHandler {
                 eligible.add(styleId);
             }
         }
+
 
         System.out.println("Eligible Styles: " + eligible);
 
@@ -153,9 +175,6 @@ public class SGaugeHandler {
 
             // 3) DO NOT reset SGauge here — RCs handle that
         }
-
-        weightMap.clear();
-
 
 
         // ------------------------------------------------------------
