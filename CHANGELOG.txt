@@ -1,0 +1,39 @@
+3.26.3
+
+Additions:
+    - Formchanges and Command Styles are now starting to be introduced! Starting with Firestorm, Diamond Dust, and Thunder Bolt from BBS!
+    - Added a base Finisher! Only accessible outside of forms.
+    - Situation Boost Ability added
+    - Esuna can now be leveled to Group Esuna!
+    - Poison Block is added! Poisons your attacker if you guard successfully with EFM! (Boosted Effects with Parry)
+    - Block Replenisher is added! Restores a small amount of MP upon a successful guard! (Boosted Effects with Parry)
+    - Cure Converter added!
+
+Fixes:
+	- Tags are now properly applied to various items, triggering advancements from KK. (Thanks to Willaby_Neko)
+	- Coin Values are now configurable (Thanks to Willaby_Neko)
+	- Chirithy now has a cooldown upon being summoned (No more free spells on summon)
+
+Adjustments:
+	- The block abilites now restore a bit less
+	- Counter Blast's damage and range have been adjusted for balance.
+	- Breakthrough now has the Cure Converter Ability!
+
+3.26.3a
+
+Additions:
+- Fever Pitch Style, a fast style that focuses on speed and lightning fast strikes. Only accessible using Ventus' keyblades.
+- Critical Impact Style, a slower and strength based style that focuses on brutal strikes. Only accessible using Terra's keyblades.
+- Spellweaver Style, a magic based style that focuses on spellcasting over using the keyblade. Only accessible using Aqua's keyblades.
+- You will now leave Styles after a moment of no attacking/casting spells.
+
+Fixes:
+- EFM Compat
+- Brutal Blitzer ability now only applies it's bonus damage on MELEE HITS
+- You can no longer manually revert from Styles
+- Org members no longer have the cursed 5th command menu option (Revert)
+- "COMMAND" text not the proper color
+- Being afflicted with Stop now stops the situation gauge from draining
+
+3.26.3b
+- Fixed Server Packet Issue that prevented loading in

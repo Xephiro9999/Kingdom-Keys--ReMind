@@ -44,14 +44,14 @@ public class BerserkLayerRenderer<T extends LivingEntity> extends RenderLayer<T,
         if (entitylivingbaseIn instanceof AbstractClientPlayer) {
             LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer = (LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((AbstractClientPlayer) entitylivingbaseIn);
             if (!((IDisabledAnimations) renderer).kingdom_Keys$isDisabled()) {
-                renderEntity(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                renderEntity(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, ageInTicks);
             }
         } else {
-            renderEntity(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            renderEntity(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, ageInTicks);
         }
     }
 
-    public void renderEntity(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void renderEntity(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float ageInTicks) {
         if (ModDataRM.getGlobal(entitylivingbaseIn) != null) {
 
             if(entitylivingbaseIn.hasEffect(ModMobEffectsRM.BERSERK)){

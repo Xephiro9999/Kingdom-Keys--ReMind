@@ -34,7 +34,7 @@ public class EpicRMWeapons {
                             case Strings.Form_Wisdom -> KKStyles.WISDOM;
                             case Strings.Form_Final -> KKStyles.FINAL;
                             default ->
-                                playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == EpicKKWeapons.EpicKKWeaponEnum.KK_KEYBLADE ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND;
+                                playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND;
                         })
                 .hitSound(EpicFightSounds.BLADE_HIT.get()).collider(KKCollider.KEYBLADE)
                 .weaponCombinationPredicator(entityPatch -> EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD)

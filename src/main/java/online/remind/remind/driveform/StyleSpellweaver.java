@@ -10,6 +10,7 @@ public class StyleSpellweaver extends DriveForm {
         super(registeryName, order, hasKeychain, baseGrowthAbilities);
         this.color = new float[]{0.5f, 1.0F, 0.0F};
         this.skinRL = skinRL;
+        ModDriveFormsRM.styles.add(registeryName);
     }
 
     @Override

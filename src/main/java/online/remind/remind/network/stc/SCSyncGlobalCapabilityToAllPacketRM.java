@@ -87,14 +87,14 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeBoolean(message.donorGiven);
         buffer.writeBoolean(message.darkMode);
         buffer.writeBoolean(message.dreamEaterSummoned);
-        buffer.writeUtf(message.dreamEaterRL,100);
+        buffer.writeUtf(message.dreamEaterRL,512);
         if (message.dreamEaterUUID != null) {
             buffer.writeBoolean(true);
             buffer.writeUUID(message.dreamEaterUUID);
         } else {
             buffer.writeBoolean(false);
         }
-        buffer.writeUtf(message.style, 100);
+        buffer.writeUtf(message.style, 512);
         buffer.writeDouble(message.situationValue);
         buffer.writeInt(message.styleTicks);
     }
@@ -126,11 +126,11 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.donorGiven = buffer.readBoolean();
         msg.darkMode = buffer.readBoolean();
         msg.dreamEaterSummoned = buffer.readBoolean();
-        msg.dreamEaterRL = buffer.readUtf(100);
+        msg.dreamEaterRL = buffer.readUtf(512);
         if (buffer.readBoolean()) {
             msg.dreamEaterUUID = buffer.readUUID();
         }
-        msg.style = buffer.readUtf(100);
+        msg.style = buffer.readUtf(512);
         msg.situationValue = buffer.readDouble();
         msg.styleTicks = buffer.readInt();
         return msg;
@@ -167,7 +167,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setHasDreamEaterSummoned(message.dreamEaterSummoned);
                 globalData.setDreamEaterUUID(message.dreamEaterUUID);
                 globalData.setDreamEaterRL(message.dreamEaterRL);
-
                 globalData.setStyle(message.style);
                 globalData.setSituationValue(message.situationValue);
                 globalData.setStyleTicks(message.styleTicks);
