@@ -25,6 +25,7 @@ public abstract class StyleForm extends DriveForm {
     ) {
         super(id, order, hasKeychain, baseGrowthAbilities);
         this.skinRL = skinRL;
+        ModDriveFormsRM.styles.add(id);
     }
 
     // ------------------------------------------------------------
