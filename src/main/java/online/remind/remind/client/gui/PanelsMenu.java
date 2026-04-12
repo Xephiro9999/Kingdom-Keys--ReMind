@@ -1,8 +1,10 @@
 package online.remind.remind.client.gui;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBox;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -21,6 +23,7 @@ import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -33,6 +36,7 @@ public class PanelsMenu extends MenuBackground {
     MenuColourBox str, mag, def, ap;
 
     MenuColourBox[] playerWidgets = {str, mag, def, ap};
+    MenuBox box;
 
 
     public PanelsMenu(String name, Color rgb) {
