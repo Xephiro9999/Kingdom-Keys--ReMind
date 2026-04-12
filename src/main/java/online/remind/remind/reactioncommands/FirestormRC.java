@@ -16,21 +16,16 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.driveform.ModDriveFormsRM;
+import online.remind.remind.lib.StringsRM;
 
 import java.util.List;
 
 public class FirestormRC extends StyleRC {
 
-	private static final String FIRESTORM_STYLE_ID = "kkremind:form_firestorm";
-
 	public FirestormRC(ResourceLocation registryName, boolean constantCheck) {
 		super(registryName, constantCheck);
-	}
-
-	@Override
-	protected String getStyleId() {
-		return FIRESTORM_STYLE_ID;
 	}
 
 	@Override

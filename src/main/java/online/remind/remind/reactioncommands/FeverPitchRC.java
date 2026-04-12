@@ -27,7 +27,7 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.List;
 
-public class FeverPitchRC extends ReactionCommand {
+public class FeverPitchRC extends StyleRC {
 
 	int hits = 0;
 	int maxHits = 4;
@@ -37,26 +37,28 @@ public class FeverPitchRC extends ReactionCommand {
 	}
 
 	@Override
-	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
-		if (conditionsToAppear(player, player)) {
+	protected String getDriveFormId() {
+		return ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString();
+	}
+
+	@Override
+	protected DriveForm getDriveForm() {
+		return ModDriveFormsRM.FEVER_PITCH.get();
+	}
+
+	@Override
+	protected int getStyleDuration() {
+		return 100;
+	}
+
+	@Override
+	public void performFinisher(Player player) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
 			double Z = player.getZ();
-
-			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
-				DriveForm feverPitch = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.feverPitch));
-				feverPitch.initDrive(player);
-				playerData.removeReactionCommand(getRegistryName().toString());
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				remindData.setStyleTicks(100);
-				remindData.setStyle("");
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			} else {
-				// Finisher Attack Code Below
 
 				float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
 				float dmgMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.25f;
@@ -112,39 +114,5 @@ public class FeverPitchRC extends ReactionCommand {
 						1F,
 						1F
 				);
-
-				// Leave Form
-				playerData.addFP(-1000);
-				remindData.setStyle("NONE");
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			}
-		}
-	}
-
-	@Override
-	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-		if(playerData != null) {
-			if (remindData != null){
-				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("AIR")) {
-							//Keyblade Check
-							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.waywardWindChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.lostMemoryChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.missingAcheChain.get()){
-								return true;
-							}
-						}
-					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
-						if (remindData.getSituationValue() >= 100) {
-							return true;
-						}
-					}
-				//}
-			}
-		}
-		return false;
 	}
 }

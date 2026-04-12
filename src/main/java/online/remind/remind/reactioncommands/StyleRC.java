@@ -22,9 +22,6 @@ public abstract class StyleRC extends ReactionCommand {
 
     // --------- ABSTRACTS: subclasses must define these ---------
 
-    /** Style flag written by SGaugeHandler (e.g. "kkremind:form_firestorm") */
-    protected abstract String getStyleId();
-
     /** DriveForm ID string (e.g. ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString()) */
     protected abstract String getDriveFormId();
 
@@ -99,18 +96,18 @@ public abstract class StyleRC extends ReactionCommand {
 
         // Activation RC: not in any Style
         if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-            return gauge >= 100 && styleContains(style, getStyleId());
+            return gauge >= 100 && styleContains(style, driveId);
         }
 
         // Chain-up RC: currently in a Style, and this RC is for the next tier
         if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 
             StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
-            StyleDefinition target = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(getStyleId()));
+            StyleDefinition target = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(driveId));
 
             if (current != null && target != null) {
                 if (target.styleLevel() == current.styleLevel() + 1) {
-                    return gauge >= 100 && styleContains(style, getStyleId());
+                    return gauge >= 100 && styleContains(style, driveId);
                 }
             }
         }

@@ -28,33 +28,35 @@ import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.List;
 
-public class ThunderBoltRC extends ReactionCommand {
+public class ThunderBoltRC extends StyleRC {
 
 	public ThunderBoltRC(ResourceLocation registryName, boolean constantCheck) {
 		super(registryName, constantCheck);
 	}
 
 	@Override
-	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
-		if (conditionsToAppear(player, player)) {
+	protected String getDriveFormId() {
+		return ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString();
+	}
+
+	@Override
+	protected DriveForm getDriveForm() {
+		return ModDriveFormsRM.THUNDER_BOLT.get();
+	}
+
+	@Override
+	protected int getStyleDuration() {
+		return 100;
+	}
+
+	@Override
+	protected void performFinisher(Player player) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
 			double Z = player.getZ();
-
-			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) {
-				DriveForm thunderBolt = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.thunderBolt));
-				thunderBolt.initDrive(player);
-				playerData.removeReactionCommand(getRegistryName().toString());
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				remindData.setStyleTicks(100);
-				remindData.setStyle("");
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			} else {
-				// Finisher Attack Code Below
 
 				float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
 				float dmgMult = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.25f;
@@ -106,36 +108,5 @@ public class ThunderBoltRC extends ReactionCommand {
 						1F,
 						1F
 				);
-
-				// Leave Form
-				playerData.addFP(-1000);
-				remindData.setStyle("NONE");
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			}
-		}
-	}
-
-	@Override
-	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-		if(playerData != null) {
-			if (remindData != null){
-				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getStyle().equals("THUNDER")) {
-							return true;
-						}
-					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) {
-						if (remindData.getSituationValue() >= 100) {
-							return true;
-						}
-					}
-				//}
-			}
-		}
-		return false;
 	}
 }

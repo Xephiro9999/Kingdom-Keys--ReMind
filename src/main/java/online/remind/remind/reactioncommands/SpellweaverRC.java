@@ -26,33 +26,35 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class SpellweaverRC extends ReactionCommand {
+public class SpellweaverRC extends StyleRC {
 
 	public SpellweaverRC(ResourceLocation registryName, boolean constantCheck) {
 		super(registryName, constantCheck);
 	}
 
 	@Override
-	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
-		if (conditionsToAppear(player, player)) {
+	protected String getDriveFormId() {
+		return ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString();
+	}
+
+	@Override
+	protected DriveForm getDriveForm() {
+		return ModDriveFormsRM.SPELLWEAVER.get();
+	}
+
+	@Override
+	protected int getStyleDuration() {
+		return 100;
+	}
+
+	@Override
+	public void performFinisher(Player player) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
 			double Z = player.getZ();
-
-			if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
-				DriveForm spellweaver = ModDriveForms.registry.get(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.spellweaver));
-				spellweaver.initDrive(player);
-				playerData.removeReactionCommand(getRegistryName().toString());
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				remindData.setStyle("");
-				remindData.setStyleTicks(100);
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			} else {
-				// Finisher Attack Code Below
 
 				float damage = (float) playerData.getMagic(true) * 0.80f;
 				float dmgMult = (float) playerData.getMaxMP() * 0.015f;
@@ -105,40 +107,5 @@ public class SpellweaverRC extends ReactionCommand {
 						1F,
 						1F
 				);
-
-				// Leave Form
-				playerData.addFP(-1000);
-				remindData.setStyle("NONE");
-
-				remindData.setSituationValue(0);
-				remindData.clearSituationSpells();
-				PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-			}
-		}
-	}
-
-	@Override
-	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
-		if(playerData != null) {
-			if (remindData != null){
-				//if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-					if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-						if (remindData.getStyle().equals("MAGIC")) {
-							//Keyblade Check
-							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.rainfellChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.stormfallChain.get()){
-								return true;
-							}
-						}
-					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
-						if (remindData.getSituationValue() >= 100) {
-							return true;
-						}
-					}
-				//}
-			}
-		}
-		return false;
 	}
 }

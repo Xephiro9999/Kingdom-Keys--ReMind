@@ -40,11 +40,6 @@ public class CriticalImpactRC extends StyleRC {
 	// ------------------------------------------------------------
 
 	@Override
-	protected String getStyleId() {
-		return CRITICAL_IMPACT_STYLE_ID;
-	}
-
-	@Override
 	protected String getDriveFormId() {
 		return ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString();
 	}
