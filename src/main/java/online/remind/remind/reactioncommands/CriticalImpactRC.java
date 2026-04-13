@@ -32,7 +32,7 @@ public class CriticalImpactRC extends StyleRC {
 	private static final String CRITICAL_IMPACT_STYLE_ID = "kkremind:form_critical_impact";
 
 	public CriticalImpactRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	// ------------------------------------------------------------

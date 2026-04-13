@@ -24,7 +24,7 @@ import online.remind.remind.network.PacketHandlerRM;
 public class DarkFiragaRC extends ReactionCommand {
 
 	public DarkFiragaRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, -1);
 	}
 
 	@Override

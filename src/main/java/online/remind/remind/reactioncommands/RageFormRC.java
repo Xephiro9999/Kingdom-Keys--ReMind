@@ -21,7 +21,7 @@ public class RageFormRC extends ReactionCommand {
     private static final WeakHashMap<Player, RageFormChance> playerStates = new WeakHashMap<>();
 
     public RageFormRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, 30 * 20);
     }
 
     @Override

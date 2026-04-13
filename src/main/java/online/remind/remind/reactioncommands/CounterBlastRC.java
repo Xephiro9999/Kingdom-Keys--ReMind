@@ -28,7 +28,7 @@ import java.util.List;
 
 public class CounterBlastRC extends ReactionCommand {
     public CounterBlastRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
     @Override

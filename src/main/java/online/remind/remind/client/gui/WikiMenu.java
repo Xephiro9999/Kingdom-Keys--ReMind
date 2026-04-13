@@ -190,7 +190,7 @@ public class WikiMenu extends MenuBackground {
 
         scrollTop = (int) topBarHeight;
         scrollBot = (int) (scrollTop + middleHeight);
-        scrollBar = new MenuScrollBar(width - 17, scrollTop, scrollBot, (int) middleHeight, 0);
+        scrollBar = new MenuScrollBar(width - 17, scrollTop, scrollBot, (int) middleHeight, 0, false);
 
         addRenderableWidget(scrollBar);
 

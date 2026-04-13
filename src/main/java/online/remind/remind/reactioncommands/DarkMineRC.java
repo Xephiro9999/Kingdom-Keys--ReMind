@@ -20,7 +20,7 @@ public class DarkMineRC extends ReactionCommand {
 
 
     public DarkMineRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
 

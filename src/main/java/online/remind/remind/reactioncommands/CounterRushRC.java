@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CounterRushRC extends ReactionCommand {
     public CounterRushRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
     int ticks = 0;
     int tickCount = 120;
