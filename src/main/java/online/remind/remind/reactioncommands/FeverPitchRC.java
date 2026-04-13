@@ -33,7 +33,7 @@ public class FeverPitchRC extends ReactionCommand {
 	int maxHits = 4;
 
 	public FeverPitchRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import online.remind.remind.driveform.ModDriveFormsRM;
 public class TestReaction extends ReactionCommand {
 
 	public TestReaction(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, -1);
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class XemnasRC extends ReactionCommand {
 
 
     public XemnasRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
 

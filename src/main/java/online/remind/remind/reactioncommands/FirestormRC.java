@@ -32,7 +32,7 @@ import java.util.List;
 public class FirestormRC extends ReactionCommand {
 
 	public FirestormRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	@Override

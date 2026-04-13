@@ -32,7 +32,7 @@ import java.util.List;
 public class DiamondDustRC extends ReactionCommand {
 
 	public DiamondDustRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	@Override

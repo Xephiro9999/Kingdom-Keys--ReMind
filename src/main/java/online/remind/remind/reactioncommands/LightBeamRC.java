@@ -23,7 +23,7 @@ public class LightBeamRC extends ReactionCommand {
 
 
     public LightBeamRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
 

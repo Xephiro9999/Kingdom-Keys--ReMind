@@ -33,7 +33,7 @@ public class CriticalImpactRC extends ReactionCommand {
 	int maxHits = 4;
 
 	public CriticalImpactRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	@Override

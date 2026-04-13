@@ -22,7 +22,7 @@ public class RiskchargeReaction extends ReactionCommand {
 
 
     public RiskchargeReaction(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
 

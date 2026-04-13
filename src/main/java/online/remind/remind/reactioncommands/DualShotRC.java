@@ -19,7 +19,7 @@ import online.remind.remind.network.PacketHandlerRM;
 
 public class DualShotRC extends ReactionCommand {
     public DualShotRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
     @Override

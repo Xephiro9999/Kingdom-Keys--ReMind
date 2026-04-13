@@ -23,7 +23,7 @@ public class RagingBurstRC extends ReactionCommand {
 
 
     public RagingBurstRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
     int radius = 5;

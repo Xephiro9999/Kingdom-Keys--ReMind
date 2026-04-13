@@ -29,7 +29,7 @@ import java.util.List;
 public class SpellweaverRC extends ReactionCommand {
 
 	public SpellweaverRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck);
+		super(registryName, constantCheck, 30 * 20);
 	}
 
 	@Override

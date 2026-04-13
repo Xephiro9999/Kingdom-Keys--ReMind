@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CounterHammerRC extends ReactionCommand {
     public CounterHammerRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+        super(registryName, constantCheck, -1);
     }
 
     @Override
