@@ -10,6 +10,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.*;
 import online.remind.remind.lib.StringsRM;
+import online.kingdomkeys.kingdomkeys.lib.Strings;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,9 +55,33 @@ public class SGaugeHandler {
         // If no definition found, SGauge contribution is 0
         int totalValue = (def != null) ? def.computeValue(level) : 0;
 
-        if (playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter) > 0){
-            System.out.println("Cure Converter is greater than 0");
-        };
+        // ------------------------------------------------------------
+        // Cure Converter special case
+        // ------------------------------------------------------------
+        if (actionId.equals(ResourceLocation.parse(Strings.Magic_Cure))) {
+
+            int stacks = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
+
+            if (stacks > 0) {
+
+                // Clamp to max 3 stacks
+                int effectiveStacks = Math.min(stacks, 3);
+
+                // Determine base value based on stack count
+                int base;
+                switch (effectiveStacks) {
+                    case 1 -> base = 35;
+                    case 2 -> base = 50;
+                    default -> base = 65; // 3 or more
+                }
+
+                // MP percentage (0.0 to 1.0)
+                double mpPercent = playerData.getMP() / playerData.getMaxMP();
+
+                // KH3 formula: (base * MP%) + 15
+                totalValue = (int)((base * mpPercent) + 15);
+            }
+        }
 
 
         System.out.println("SGauge + " + totalValue +
