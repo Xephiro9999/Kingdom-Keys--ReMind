@@ -41,6 +41,7 @@ public class SGaugeEventHandler {
 
         SGaugeHandler.addContribution(
                 player,
+                spellId,
                 def.elements(),
                 def.specificStyles(),
                 level

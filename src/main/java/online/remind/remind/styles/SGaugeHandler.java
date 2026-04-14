@@ -9,6 +9,7 @@ import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.*;
+import online.remind.remind.lib.StringsRM;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,25 +19,30 @@ public class SGaugeHandler {
     private static final Map<UUID, Map<ResourceLocation, Double>> WEIGHTS = new HashMap<>();
 
     public static void addContribution(Player player,
+                                       ResourceLocation actionId,
                                        Set<StyleElement> elements,
                                        Set<ResourceLocation> specificStyles,
                                        int level) {
 
         IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        PlayerData playerData = PlayerData.get(player);
 
         // ------------------------------------------------------------
         // 1. Determine which ContributionDefinition to use
         // ------------------------------------------------------------
 
-        ContributionDefinition def = null;
+        // Priority 0: SPELL contribution (PRIMARY)
+        ContributionDefinition def = ContributionRegistry.getForSpell(actionId);;
 
-        // Priority 1: specific_styles
-        for (ResourceLocation styleId : specificStyles) {
-            def = ContributionRegistry.getForStyle(styleId);
-            if (def != null) break;
+        // Priority 1: specific_styles (override spell if needed)
+        if (def == null) {
+            for (ResourceLocation styleId : specificStyles) {
+                def = ContributionRegistry.getForStyle(styleId);
+                if (def != null) break;
+            }
         }
 
-        // Priority 2: first element with a definition
+        // Priority 2: element fallback (should almost never be used)
         if (def == null) {
             for (StyleElement element : elements) {
                 def = ContributionRegistry.getForElement(element);
@@ -44,8 +50,14 @@ public class SGaugeHandler {
             }
         }
 
+
         // If no definition found, SGauge contribution is 0
         int totalValue = (def != null) ? def.computeValue(level) : 0;
+
+        if (playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter) > 0){
+            System.out.println("Cure Converter is greater than 0");
+        };
+
 
         System.out.println("SGauge + " + totalValue +
                 " from action (elements=" + elements + ", specific=" + specificStyles + ")");
