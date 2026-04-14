@@ -130,6 +130,7 @@ public class CriticalImpactRC extends ReactionCommand {
 							//Keyblade Check
 							if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.earthshakerChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.endsOfTheEarthChain.get()){
 								return true;
+
 							}
 						}
 					} else if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
