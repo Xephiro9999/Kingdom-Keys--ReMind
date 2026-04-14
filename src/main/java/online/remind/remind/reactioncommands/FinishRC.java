@@ -40,21 +40,15 @@ public class FinishRC extends ReactionCommand {
 			double Z = player.getZ();
 
 			// Finisher Attack Code Below
-
-			float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
+			float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) / 2; // AVG of STR + MAG
 			//float dmgMult = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.25f;
 			//damage += (damage * dmgMult);
 
 			Level level = player.level();
-
 			ServerLevel serverLevel = (ServerLevel) player.level();
 
 			double radius = 3;
-
-			List<LivingEntity> targets = level.getEntitiesOfClass(
-					LivingEntity.class,
-					player.getBoundingBox().inflate(radius)
-			);
+			List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(radius));
 
 			for (LivingEntity target : targets){
 				if (target != player){
@@ -67,16 +61,16 @@ public class FinishRC extends ReactionCommand {
 						//getOwner().sendSystemMessage(Component.literal("Entity: " + target));
 
 						if (playerData.getChosen() == SoAState.WARRIOR) {
-							target.hurt(target.damageSources().generic(), damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,120,0,false,false,true));
 						}
 						if (playerData.getChosen() == SoAState.GUARDIAN) {
-							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,120,0,false,false,true));
 							player.heal(damage * 0.15f);
 						}
 						if (playerData.getChosen() == SoAState.MYSTIC) {
-							target.hurt(target.damageSources().indirectMagic(target, player), damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							System.out.println(damage);
 							playerData.addMP(damage * 0.15f);
 						}
@@ -96,41 +90,19 @@ public class FinishRC extends ReactionCommand {
 				}
 			}
 
-
-
-			level.playSound(
-					null,
-					player.blockPosition(),
-					SoundEvents.PLAYER_ATTACK_CRIT,
-					SoundSource.PLAYERS,
-					1F,
-					1F
-			);
-
+			level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1F, 1F);
 
 			// Drain Gauge
 			remindData.setStyle("NONE");
 			remindData.setSituationValue(0);
 			remindData.clearSituationSpells();
+			playerData.removeReactionCommand(getRegistryName().toString());
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 		}
 	}
 
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		PlayerData playerData = PlayerData.get(player);
-		GlobalDataRM remindData = ModDataRM.getGlobal(player);
-		if (playerData != null) {
-			if (remindData != null) {
-				if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-					if (remindData.getSituationValue() >= 100) {
-						if (remindData.getStyle().equals("NONE") || remindData.getStyle().equals("")) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
+		return true;
 	}
 }

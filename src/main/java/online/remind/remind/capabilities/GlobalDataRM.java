@@ -520,6 +520,10 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         this.situationValue = i;
     }
 
+    public void addSituationValue(double i) {
+        this.situationValue += i;
+    }
+
     public void remSituationValue(double i) {
         situationValue -= i;
     }

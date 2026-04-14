@@ -35,6 +35,7 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
+import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
@@ -455,7 +456,8 @@ public class EntityEventsRM {
 
 
 				remindData.addSituationSpell(spellID);
-				remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
+				remindData.addSituationValue(situationValue + (situationBoost * 1.25f)); //Magic increase
+				addSituationRCs(player);
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
@@ -518,6 +520,86 @@ public class EntityEventsRM {
 				}
 
 				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
+			}
+		}
+	}
+/*
+	FIRE,
+	BLIZZARD,
+	THUNDER,
+	WATER,
+	AIR,
+	LIGHT,
+	DARK,
+	PHYSICAL,
+	MAGIC,
+	NONE
+*/
+
+	private void addSituationRCs(Player player) {
+		PlayerData playerData = PlayerData.get(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
+		if(playerData != null && remindData != null) {
+			if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+				if (remindData.getSituationValue() >= 100) { // Base form finisher
+					if (remindData.getStyle().equals("NONE") || remindData.getStyle().equals("")) {
+						playerData.addReactionCommand(StringsRM.FinishRC, player);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+					}
+				}
+
+				if (remindData.getStyle().equals("FIRE")) {
+					playerData.addReactionCommand(StringsRM.FireStormRC, player); //To enter form
+				}
+
+				if (remindData.getStyle().equals("BLIZZARD")) {
+					playerData.addReactionCommand(StringsRM.DiamondDustRC, player);
+				}
+
+				if (remindData.getStyle().equals("THUNDER")) {
+					playerData.addReactionCommand(StringsRM.ThunderBoltRC, player);
+				}
+
+				if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("AIR")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.waywardWindChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.lostMemoryChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.missingAcheChain.get()) {
+						playerData.addReactionCommand(StringsRM.FeverPitchRC, player);
+					}
+				}
+
+				if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("NONE")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.earthshakerChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.endsOfTheEarthChain.get()) {
+						playerData.addReactionCommand(StringsRM.CriticalImpactRC, player);
+					}
+				}
+
+				if (remindData.getStyle().equals("MAGIC")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.rainfellChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.stormfallChain.get()) {
+						playerData.addReactionCommand(StringsRM.SpellweaverRC, player);
+					}
+				}
+
+			} else if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) {
+				if (remindData.getSituationValue() >= 100) {
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.FireStormRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.DiamondDustRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.ThunderBoltRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.FeverPitchRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.CriticalImpactRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.SpellweaverRC, player);
+					}
+
+				}
 			}
 		}
 	}
@@ -1427,7 +1509,9 @@ public class EntityEventsRM {
 				//System.out.println(situationGain);
 
 				if (remindData != null){
-					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
+					remindData.addSituationValue(situationGain); //Hit increase
+					addSituationRCs(player);
+
 					remindData.setSCooldownTicks(60);
 					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 						remindData.setStyleTicks(100);
