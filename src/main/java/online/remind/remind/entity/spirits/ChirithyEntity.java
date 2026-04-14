@@ -268,7 +268,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
                                     healAmount = (float) (mag);
                                     owner.heal(healAmount);
-                                    System.out.println(healAmount);
                                     if (owner.hasEffect(ModMobEffects.KO)){
                                         owner.removeEffect(ModMobEffects.KO);
                                     }
@@ -277,9 +276,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                                     break;
                                 case 1:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
-                                    healAmount = (float) (mag * 1.1f);
+                                    healAmount = mag * 1.1f;
                                     owner.heal(healAmount);
-                                    System.out.println(healAmount);
                                     if (owner.hasEffect(ModMobEffects.KO)){
                                         owner.removeEffect(ModMobEffects.KO);
                                     }
@@ -288,9 +286,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                                     break;
                                 case 2:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
-                                    healAmount = (float) (mag * 1.25f);
+                                    healAmount = mag * 1.25f;
                                     owner.heal(healAmount);
-                                    System.out.println(healAmount);
                                     if (owner.hasEffect(ModMobEffects.KO)){
                                         owner.removeEffect(ModMobEffects.KO);
                                     }

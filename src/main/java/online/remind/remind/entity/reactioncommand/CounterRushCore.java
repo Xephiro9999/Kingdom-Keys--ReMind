@@ -89,7 +89,6 @@ public class CounterRushCore extends ThrowableProjectile {
                         float dmg = (float) (playerData.getStrengthStat().get() * 0.25f);
                         if (feverPitch){
                             dmg = (float) (playerData.getStrengthStat().get() * 1.5f);
-                            System.out.println(dmg);
                         }
                         target.invulnerableTime = 1;
                         target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);

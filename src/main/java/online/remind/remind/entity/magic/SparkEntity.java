@@ -205,8 +205,6 @@ public class SparkEntity extends ThrowableProjectile {
                         target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
                     }*/
                     target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
-                    System.out.println(dmgMult);
-                    System.out.println(dmg);
                     target.invulnerableTime = 11; // reset invulnerability so multiple hits possible
                 }
             }

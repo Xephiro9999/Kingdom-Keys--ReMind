@@ -71,7 +71,6 @@ public class FinishRC extends ReactionCommand {
 						}
 						if (playerData.getChosen() == SoAState.MYSTIC) {
 							target.hurt(target.damageSources().playerAttack(player), damage);
-							System.out.println(damage);
 							playerData.addMP(damage * 0.15f);
 						}
 						target.invulnerableTime = 0;

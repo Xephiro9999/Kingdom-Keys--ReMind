@@ -77,7 +77,6 @@ public class CSPanelPacket implements CustomPacketPayload {
                     if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
                         playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
                     }
-                    System.out.println(globalData.getMAGPanel());
                     playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
                     break;
                 case 3:

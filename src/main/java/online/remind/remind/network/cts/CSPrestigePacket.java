@@ -55,7 +55,6 @@ public class CSPrestigePacket implements CustomPacketPayload {
 
             // Storing Old Choice For Bonus
             String oldChoice = String.valueOf(playerData.getChosen());
-            System.out.println(oldChoice);
 
             // Until Arclight Fix is Found
             playerData.setLevel(1);
@@ -76,9 +75,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.setEquippedShotlock("");
 
             playerData.setSoAState(SoAState.NONE);
-            System.out.println("SoA State: " + playerData.getSoAState());
             globalData.addPrestigeLvl(+1);
-            System.out.println("Prestige Level: " + globalData.getPrestigeLvl());
 
             LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
             Iterator<Entry<String, int[]>> it = driveForms.entrySet().iterator();

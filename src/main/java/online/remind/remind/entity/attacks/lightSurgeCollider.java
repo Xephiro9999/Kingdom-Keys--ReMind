@@ -86,7 +86,6 @@ public class lightSurgeCollider extends ThrowableProjectile {
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
                     //getOwner().sendSystemMessage(Component.literal("Entity: " + target));
                     target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner()), damage);
-                    System.out.println(damage);
                     target.invulnerableTime = 0; // allow multiple hits per tick
                 }
             }

@@ -667,6 +667,18 @@ public class EntityEventsRM {
 				PlayerData playerData = PlayerData.get(player);
 				WorldData worldData = WorldData.get(player.getServer());
 				if (playerData != null && globalData != null) {
+					RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
+					// Reset Rage form roll
+					if (!player.level().isClientSide() && !playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+						if(!Utils.isLowHP(player.getHealth(), player.getMaxHealth())) {
+							if(state.hasRolled) {
+								state.hasRolled = false;
+								state.shouldAppear = false;
+								//System.out.println("Resetted roll");
+							}
+						}
+					}
+
 					updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID + ":" + StringsRM.darkForm);
 					updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID + ":" + StringsRM.rageForm);
 					updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID + ":" + StringsRM.lightForm);
@@ -1425,11 +1437,62 @@ public class EntityEventsRM {
 
 	}
 
+	private static final WeakHashMap<Player, RageFormChance> playerStates = new WeakHashMap<>();
 
+	private boolean rollChance(double percent){
+		Random rand = new Random();
+		return rand.nextDouble() * 100 < percent;
+	}
 
+	private static class RageFormChance {
+		boolean hasRolled = false;
+		boolean shouldAppear = false;
+	}
 
+	private double calculateDynamicChance(float hpPercent) {
+		// Cap HP percent at 25, and floor at 1 to avoid going above 34%
+		hpPercent = Math.max(1.0f, Math.min(25.0f, hpPercent));
+		double baseChance = ModConfigs.rageFormPercent;
+		float missingPercent = 0;
+		// Percent below 25, unless config is set to 0
+		if (baseChance != 0.0) {
+			missingPercent = 25.0f - hpPercent;
 
+		}
 
+		// Base chance is 10% at 25% HP, +1% for each % below
+		return baseChance + missingPercent;
+	}
+
+	@SubscribeEvent
+	public void hurtPostEvent(LivingDamageEvent.Post event) {
+		if(event.getEntity() instanceof Player player) {
+			PlayerData playerData = PlayerData.get(player);
+			if(playerData == null)
+				return;
+
+			// Rage form
+			float formMissingHP = (player.getHealth() / player.getMaxHealth()) * 100;
+			RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
+			if (!player.level().isClientSide() && !playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+				if (Utils.isLowHP(player.getHealth(), player.getMaxHealth())) {
+					if (!state.hasRolled) {
+						double chance = calculateDynamicChance(formMissingHP);
+						//System.out.println("Client: "+player.level().isClientSide+" Chance: " + chance + "Roll Chance: " + state.shouldAppear);
+						boolean chanced = rollChance(chance);
+						//System.out.println("Chance result: "+chanced);
+						state.shouldAppear = chanced;
+						state.hasRolled = true;
+					}
+
+					if (state.shouldAppear) {
+						playerData.addReactionCommand(StringsRM.RageRC, player);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+					}
+				}
+			}
+		}
+	}
 	@SubscribeEvent
 	public void hurtEvent(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
@@ -1444,9 +1507,6 @@ public class EntityEventsRM {
 			if (globalData.getStepTicks() > 0){
 				event.setNewDamage(0);
 			}
-
-			double missingHP = player.getHealth() / playerData.getMaxHP();
-			//System.out.println(missingHP);
 
 			// Adrenaline
 			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
@@ -1491,10 +1551,7 @@ public class EntityEventsRM {
 
 			}
 
-
 		}
-
-
 
 		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
@@ -1697,6 +1754,8 @@ public class EntityEventsRM {
 						event.getEntity().invulnerableTime = 0;
 						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 				}
+
+
 			}
 		}
 	}

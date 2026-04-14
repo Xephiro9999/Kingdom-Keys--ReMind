@@ -48,7 +48,6 @@ public class CSBoostPacket implements CustomPacketPayload{
             case 1:
                 // Insert Code to Disable NG+ Boosts
                 globalData.setNGPEnabled(0);
-                System.out.println(globalData.getNGPEnabled());
                 playerData.getStrengthStat().removeModifier("NG+ Bonus");
                 playerData.getMagicStat().removeModifier("NG+ Bonus");
                 playerData.getDefenseStat().removeModifier("NG+ Bonus");
@@ -57,7 +56,6 @@ public class CSBoostPacket implements CustomPacketPayload{
             case 2:
                 // Insert Code to Disable Org Boosts
                 globalData.setPanelsEnabled(0);
-                System.out.println(globalData.getPanelsEnabled());
                 playerData.getStrengthStat().removeModifier("Panel");
                 playerData.getMagicStat().removeModifier("Panel");
                 playerData.getDefenseStat().removeModifier("Panel");
@@ -66,7 +64,6 @@ public class CSBoostPacket implements CustomPacketPayload{
             case 3:
                 // Insert Code to Enable NG+ Boosts
                 globalData.setNGPEnabled(1);
-                System.out.println(globalData.getNGPEnabled());
                 playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
                 playerData.getMagicStat().addModifier("NG+ Bonus",globalData.getMAGBonus(), true, false);
                 playerData.getDefenseStat().addModifier("NG+ Bonus",globalData.getDEFBonus(), true, false);
@@ -75,7 +72,6 @@ public class CSBoostPacket implements CustomPacketPayload{
             case 4:
                 // Insert Code to Enable Org Boosts
                 globalData.setPanelsEnabled(1);
-                System.out.println(globalData.getPanelsEnabled());
                 playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
                 playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
                 playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);

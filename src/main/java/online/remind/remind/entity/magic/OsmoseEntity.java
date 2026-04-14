@@ -89,36 +89,34 @@ public class OsmoseEntity extends ThrowableProjectile {
                 LivingEntity target = (LivingEntity) ertResult.getEntity();
                 PlayerData casterData = PlayerData.get((Player) getOwner());
                 if (ertResult != null && ertResult.getEntity() instanceof Player) {
-                PlayerData targetData = PlayerData.get((Player) target);
-                if (target != getOwner()) {
-                    Party p = null;
-                    if (getOwner() != null) {
-                        p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
-                    }
-                    if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
-                        float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2F : 2;
-                        //dmg = (float) Math.max(dmg*dmgMult,targetData.getMP());
+                    PlayerData targetData = PlayerData.get((Player) target);
+                    if (target != getOwner()) {
+                        Party p = null;
+                        if (getOwner() != null) {
+                            p = WorldData.get(getOwner().getServer()).getPartyFromMember(getOwner().getUUID());
+                        }
+                        if(p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) { //If caster is not in a party || the party doesn't have the target in it || the party has FF on
+                            float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2F : 2;
+                            //dmg = (float) Math.max(dmg*dmgMult,targetData.getMP());
 
-                        System.out.println("MP Stolen: "+ dmg*dmgMult);
 
-                        if(this.getOwner() instanceof Player) {
-                            // MP Drain
-                            targetData.remMP(dmg);
-                            PacketHandler.sendTo(new SCSyncPlayerData((Player) target), (ServerPlayer) target);
-                            //MP Give to Caster
-                            casterData.addMP(dmg);
-                            PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
+                            if(this.getOwner() instanceof Player) {
+                                // MP Drain
+                                targetData.remMP(dmg);
+                                PacketHandler.sendTo(new SCSyncPlayerData((Player) target), (ServerPlayer) target);
+                                //MP Give to Caster
+                                casterData.addMP(dmg);
+                                PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
+                            }
                         }
                     }
-                }
-            } else {
-                        float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2.5F : 2;
-                        System.out.println("MP Stolen: "+ dmg*dmgMult);
-                        if(this.getOwner() instanceof Player) {
-                            //MP Give to Caster
-                            casterData.addMP(dmg*dmgMult);
-                            PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
-                        }
+                } else {
+                    float dmg = this.getOwner() instanceof Player ? DamageCalculation.getMagicDamage((Player) this.getOwner()) / 2.5F : 2;
+                    if(this.getOwner() instanceof Player) {
+                        //MP Give to Caster
+                        casterData.addMP(dmg*dmgMult);
+                        PacketHandler.sendTo(new SCSyncPlayerData((Player) getOwner()), (ServerPlayer) getOwner());
+                    }
                 }
                 remove(RemovalReason.KILLED);
             }

@@ -63,7 +63,6 @@ public class EpicFightEvents {
                 PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                 if (playerpatch.isEpicFightMode()) {
                         String spell = String.valueOf(e.getSpellID());
-                        System.out.println(spell);
                         switch (spell) {
                             case "kkremind:attack_quick_blitz":
                                 playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
@@ -73,8 +72,6 @@ public class EpicFightEvents {
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
                                 break;
                         }
-
-
                     }
                 }
             }
