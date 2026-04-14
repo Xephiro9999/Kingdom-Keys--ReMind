@@ -51,7 +51,7 @@ public class DiamondDustRC extends StyleRC {
 	}
 
 	@Override
-	protected void performFinisher(Player player) {
+	protected void performFinisher(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 

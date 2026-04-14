@@ -16,8 +16,8 @@ import online.remind.remind.styles.data.StyleRegistry;
 
 public abstract class StyleRC extends ReactionCommand {
 
-    public StyleRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck);
+    public StyleRC(ResourceLocation registryName, boolean constantCheck, int duration) {
+        super(registryName, constantCheck, duration);
     }
 
     // --------- ABSTRACTS: subclasses must define these ---------
@@ -32,7 +32,7 @@ public abstract class StyleRC extends ReactionCommand {
     protected abstract int getStyleDuration();
 
     /** Finisher behavior when already in this Style */
-    protected abstract void performFinisher(Player player);
+    protected abstract void performFinisher(Player player, LivingEntity livingEntity, LivingEntity livingEntity1);
 
     // ---------------------- MAIN RC LOGIC -----------------------
 
@@ -68,7 +68,7 @@ public abstract class StyleRC extends ReactionCommand {
         }
 
         // 2. Finisher (already in this Style)
-        performFinisher(player);
+        performFinisher(player, target, ignored);
 
         // Exit Style
         playerData.addFP(-1000);

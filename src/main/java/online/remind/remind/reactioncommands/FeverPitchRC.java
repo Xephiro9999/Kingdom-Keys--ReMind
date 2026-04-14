@@ -52,7 +52,7 @@ public class FeverPitchRC extends StyleRC {
 	}
 
 	@Override
-	public void performFinisher(Player player) {
+	public void performFinisher(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 			PlayerData playerData = PlayerData.get(player);
 			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
