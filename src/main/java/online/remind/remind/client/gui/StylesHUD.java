@@ -2,35 +2,21 @@ package online.remind.remind.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.client.ClientUtils;
-import online.kingdomkeys.kingdomkeys.client.gui.elements.HUD.CMElement;
-import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
-import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.client.ClientUtilsRM;
-import online.remind.remind.dreameater.DreamEater;
-import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.entity.spirits.BaseDreamEaterEntity;
 
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +31,7 @@ public class StylesHUD {
         guiGraphics.setColor(event.getSubMenu().getColour().getRed() / 255F, event.getSubMenu().getColour().getGreen() / 255F, event.getSubMenu().getColour().getBlue() / 255F, 1);
         guiGraphics.blit(event.getSubMenu().getTexture(), event.getSubMenu().getX(), event.getSubMenu().getY(), 0, 70, 74, 15);
         PlayerData playerData = PlayerData.get(Minecraft.getInstance().player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
         if (playerData == null || globalData == null)
             return;
 

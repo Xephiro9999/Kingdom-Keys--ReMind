@@ -12,7 +12,7 @@ import online.kingdomkeys.kingdomkeys.client.ClientUtils;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
 import online.remind.remind.dreameater.DreamEater;
@@ -30,7 +30,7 @@ public class DreamEaterHUD extends OverlayBaseRM {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         super.render(guiGraphics, deltaTracker);
         Player player = minecraft.player;
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(globalData == null)
             return;
 
@@ -55,7 +55,7 @@ public class DreamEaterHUD extends OverlayBaseRM {
 
     private void renderDreamEater(GuiGraphics gui, DreamEater dreamEater, int screenWidth, int screenHeight, float scale) {
         Player player = minecraft.player;
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         PlayerData playerData = PlayerData.get(player);
 
         //Get the actual entity from the id which is updated by the packet

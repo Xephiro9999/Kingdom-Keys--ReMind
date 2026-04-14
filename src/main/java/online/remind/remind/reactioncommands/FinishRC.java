@@ -14,18 +14,11 @@ import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
-import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.List;
@@ -40,7 +33,7 @@ public class FinishRC extends ReactionCommand {
 	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
@@ -126,7 +119,7 @@ public class FinishRC extends ReactionCommand {
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
 		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
 		if (playerData != null) {
 			if (remindData != null) {
 				if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {

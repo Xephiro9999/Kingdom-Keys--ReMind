@@ -1,7 +1,6 @@
 package online.remind.remind.magic;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -9,13 +8,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.network.PacketHandlerRM;
 
 public class magicBerserk extends Magic {
 
@@ -26,7 +22,7 @@ public class magicBerserk extends Magic {
 	@Override
 	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
-		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 		if (globalData != null) {
 			int time = (int) (PlayerData.get(caster).getMaxMP() * ((level * 0.75) + 5));

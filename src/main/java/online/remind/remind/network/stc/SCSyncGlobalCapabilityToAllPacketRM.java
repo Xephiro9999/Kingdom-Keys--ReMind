@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 
     }
 
-    public SCSyncGlobalCapabilityToAllPacketRM(int id, IGlobalDataRM capability) {
+    public SCSyncGlobalCapabilityToAllPacketRM(int id, GlobalDataRM capability) {
         this.id = id;
         this.berserkLvl= capability.getBerserkLevel();
         this.berserkTicks = capability.getBerserkTicks();
@@ -141,7 +141,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
 			LivingEntity entity = (LivingEntity) ctx.player().level().getEntity(message.id);
 			
 			if (entity != null) {
-                IGlobalDataRM globalData = ModDataRM.getGlobal(entity);
+                GlobalDataRM globalData = ModDataRM.getGlobal(entity);
                 globalData.setBerserkTicks(message.berserkTicks, message.berserkLvl);
                 globalData.setPrestigeLvl(message.prestige);
                 globalData.setSTRBonus(message.strBonus);

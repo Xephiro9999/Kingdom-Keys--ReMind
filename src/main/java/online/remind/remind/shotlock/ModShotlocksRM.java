@@ -2,7 +2,6 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.remind.remind.KingdomKeysReMind;

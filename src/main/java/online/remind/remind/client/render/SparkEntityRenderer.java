@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.client.model.BalloonModel;
 import online.remind.remind.client.model.SparkModel;
 
 import javax.annotation.Nullable;

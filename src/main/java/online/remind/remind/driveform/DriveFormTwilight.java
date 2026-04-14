@@ -17,7 +17,6 @@ import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-//import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID)

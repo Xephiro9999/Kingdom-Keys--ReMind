@@ -2,11 +2,9 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
-import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.entity.shotlock.FlameSalvoCoreEntity;
 
 import java.util.List;

@@ -1,7 +1,5 @@
 package online.remind.remind.leveling;
 
-import net.minecraft.resources.ResourceLocation;
-
 public class DreamEaterLevel {
 
 //    ResourceLocation name;

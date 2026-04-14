@@ -14,7 +14,7 @@ public class ModDataRM {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, KingdomKeysReMind.MODID);
     public static final Supplier<AttachmentType<GlobalDataRM>> GLOBAL_DATA = ATTACHMENT_TYPES.register("global", () -> AttachmentType.serializable(GlobalDataRM::new).copyOnDeath().build());
 
-    public static IGlobalDataRM getGlobal(LivingEntity e) {
+    public static GlobalDataRM getGlobal(LivingEntity e) {
         if (!e.hasData(GLOBAL_DATA)) {
             e.setData(GLOBAL_DATA, new GlobalDataRM());
         }

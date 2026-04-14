@@ -7,13 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -33,7 +32,7 @@ public class DriveFormRage extends DriveForm {
 			if (event.getSource().getEntity() instanceof Player) {
 				Player player = (Player) event.getSource().getEntity();
 				PlayerData playerData = PlayerData.get(player);
-				IGlobalDataRM formData = ModDataRM.getGlobal(player);
+				GlobalDataRM formData = ModDataRM.getGlobal(player);
 
 				if (playerData != null && playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
 					if (playerData.isAbilityEquipped(StringsRM.rageAwakened)) {
@@ -51,7 +50,7 @@ public class DriveFormRage extends DriveForm {
 
 	@Override
 	public void initDrive(Player player) {
-		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 		globalData.setRiskchargeCount(0);
 		PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 		super.initDrive(player);

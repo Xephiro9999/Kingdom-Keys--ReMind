@@ -18,16 +18,14 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.function.Supplier;
 import java.util.Map.Entry;
 
 public class CSPrestigePacket implements CustomPacketPayload {
@@ -52,7 +50,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
             Player player = ctx.player();
 
             PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 
             // Storing Old Choice For Bonus

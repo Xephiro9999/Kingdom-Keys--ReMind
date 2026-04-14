@@ -4,12 +4,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.reactioncommand.CounterRushCore;
 import online.remind.remind.lib.StringsRM;
@@ -27,7 +25,7 @@ public class CounterRushRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) (playerData.getStrengthStat().get() * 0.015f);
         //float dmg = 1 * 0.5f;
         int hits = (int) (4 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5));
@@ -74,7 +72,7 @@ public class CounterRushRC extends ReactionCommand {
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
            if (playerData.isAbilityEquipped(StringsRM.counterRush) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
                return true;

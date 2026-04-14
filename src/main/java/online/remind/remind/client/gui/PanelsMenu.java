@@ -1,29 +1,25 @@
 package online.remind.remind.client.gui;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBox;
-import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
-import online.remind.remind.capabilities.IGlobalDataRM;
-import online.remind.remind.capabilities.ModDataRM;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.capabilities.IGlobalDataRM;
-import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSBoostPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -54,7 +50,7 @@ public class PanelsMenu extends MenuBackground {
 
     protected void action(String string) {
         PlayerData playerData = PlayerData.get(minecraft.player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(minecraft.player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(minecraft.player);
 
         switch(string){
             case "back" ->
@@ -178,7 +174,7 @@ public class PanelsMenu extends MenuBackground {
 
         Player player;
         final PlayerData playerData = PlayerData.get(minecraft.player);
-        IGlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
+        GlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
         ticks = 0;
 
         this.renderables.clear();

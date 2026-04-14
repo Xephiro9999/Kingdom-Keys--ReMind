@@ -2,11 +2,8 @@ package online.remind.remind.driveform;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-
-import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
 public class DriveFormRegen extends DriveForm {

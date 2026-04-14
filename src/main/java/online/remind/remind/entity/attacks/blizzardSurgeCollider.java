@@ -16,7 +16,6 @@ import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.entity.ModEntitiesRM;
-import online.remind.remind.lib.StringsRM;
 
 import java.util.List;
 

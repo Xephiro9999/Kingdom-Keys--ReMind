@@ -1,10 +1,8 @@
 package online.remind.remind.handler;
 
-import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import online.remind.remind.entity.attacks.swiftStrikeCollider;
 

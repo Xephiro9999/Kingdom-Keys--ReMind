@@ -1,7 +1,9 @@
 package online.remind.remind.entity;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -26,9 +28,9 @@ import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
 import online.remind.remind.entity.attacks.*;
 import online.remind.remind.entity.limits.firagaPillarEntity;
 import online.remind.remind.entity.magic.*;
-import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
+import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.item.ModItemsRM;
 
 import java.util.function.Supplier;

@@ -13,7 +13,6 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.model.BalloonModel;
 
-import java.awt.*;
 import javax.annotation.Nullable;
 
 public class BalloonEntityRenderer extends EntityRenderer<ThrowableProjectile> {

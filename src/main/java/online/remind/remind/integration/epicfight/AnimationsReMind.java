@@ -1,7 +1,5 @@
 package online.remind.remind.integration.epicfight;
 
-import net.neoforged.fml.common.EventBusSubscriber;
-import online.remind.remind.KingdomKeysReMind;
 import yesman.epicfight.api.animation.AnimationClip;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.types.ComboAttackAnimation;

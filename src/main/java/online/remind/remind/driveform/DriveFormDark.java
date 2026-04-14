@@ -1,6 +1,5 @@
 package online.remind.remind.driveform;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.monster.Monster;
@@ -11,11 +10,10 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -35,7 +33,7 @@ public class DriveFormDark extends DriveForm {
             if (event.getSource().getEntity() instanceof Player) {
                 Player player = (Player) event.getSource().getEntity();
                 PlayerData playerData = PlayerData.get(player);
-                IGlobalDataRM formData = ModDataRM.getGlobal(player);
+                GlobalDataRM formData = ModDataRM.getGlobal(player);
 
                 if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
                     double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);
@@ -66,7 +64,7 @@ public class DriveFormDark extends DriveForm {
     @Override
     public ResourceLocation getTextureLocation(Player player) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM global = ModDataRM.getGlobal(player);
+        GlobalDataRM global = ModDataRM.getGlobal(player);
         if (global != null){
             if(global.isDarkMode()){
 

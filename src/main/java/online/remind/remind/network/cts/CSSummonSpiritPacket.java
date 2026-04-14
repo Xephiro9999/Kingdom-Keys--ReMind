@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
@@ -52,7 +52,7 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
         ctx.enqueueWork(() -> {
             Player owner = ctx.player();
 
-            IGlobalDataRM globalData = ModDataRM.getGlobal(owner);
+            GlobalDataRM globalData = ModDataRM.getGlobal(owner);
             PlayerData kkData = PlayerData.get(owner);
             if (kkData == null || globalData == null)
                 return;

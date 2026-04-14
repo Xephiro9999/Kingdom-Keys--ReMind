@@ -3,6 +3,7 @@ package online.remind.remind.capabilities;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
@@ -11,7 +12,53 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class GlobalDataRM implements IGlobalDataRM {
+public class GlobalDataRM implements INBTSerializable<CompoundTag> {
+
+
+    private final List<String> situationSpells = new ArrayList<>();
+    private int hasteTicks;
+    private int hasteLevel;
+    private int slowTicks;
+    private int slowLevel;
+    private int berserkLevel;
+    private int berserkTicks;
+    private int isAutoLifeActive;
+    private int prestigeLvl;
+    private int strBonus;
+    private int magBonus;
+    private int defBonus;
+    private int NGPlusWarriorCount;
+    private int NGPlusMysticCount;
+    private int NGPlusGuardianCount;
+    private int lastHpBoostBonus;
+    private int lastMpBoostBonus;
+    private int strPanel;
+    private int magPanel;
+    private int defPanel;
+    private String panelChoice;
+    private int panelsStatus;
+    private int ngpStatus;
+    private int darkModeEXP;
+    private int lightFormEXP;
+    private int rageFormEXP;
+    private int darkModeLvl;
+    private int lightFormLvl;
+    private int rageFormLvl;
+    private int stepTicks;
+    private byte stepType;
+    private int RCCooldown;
+    private int SCooldown;
+    private int CanCounter;
+    private double situationValue;
+    private String style = "";
+    private int styleTicks;
+    private int MPOG;
+    private int riskchargeCount;
+    private boolean dreamEaterSummoned = false;
+    private UUID dreamEaterUUID = new UUID(0L, 0L);
+    private String dreamEaterRL = KingdomKeysReMind.MODID + ":" + StringsRM.none;
+    private boolean donorGiven;
+    private boolean darkMode;
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
@@ -114,89 +161,27 @@ public class GlobalDataRM implements IGlobalDataRM {
 
     }
 
-    private int hasteTicks;
-    private int hasteLevel;
-    private int slowTicks;
-    private int slowLevel;
-    private int berserkLevel;
-    private int berserkTicks;
-    private int isAutoLifeActive;
-    private int prestigeLvl;
-    private int strBonus;
-    private int magBonus;
-    private int defBonus;
-    private int NGPlusWarriorCount;
-    private int NGPlusMysticCount;
-    private int NGPlusGuardianCount;
-
-    private int lastHpBoostBonus;
-    private int lastMpBoostBonus;
-
-    private int strPanel;
-    private int magPanel;
-    private int defPanel;
-    private String panelChoice;
-
-    private int panelsStatus;
-    private int ngpStatus;
-
-    private int darkModeEXP;
-    private int lightFormEXP;
-    private int rageFormEXP;
-    private int darkModeLvl;
-    private int lightFormLvl;
-    private int rageFormLvl;
-
-    private int stepTicks;
-    private byte stepType;
-
-    private int RCCooldown;
-    private int SCooldown;
-    private int CanCounter;
-
-    private double situationValue;
-
-    private String style = "";
-    private int styleTicks;
-
-    private int MPOG;
-
-    private int riskchargeCount;
-
-    private boolean dreamEaterSummoned = false;
-    private UUID dreamEaterUUID = new UUID(0L, 0L);
-    private String dreamEaterRL = KingdomKeysReMind.MODID+":"+StringsRM.none;
-    private boolean donorGiven;
-
-    private boolean darkMode;
-
     //Haste
     public int getHasteLevel() {
         return hasteLevel;
     }
 
-    @Override
     public void setHasteLevel(int level) {
         this.hasteLevel = level;
     }
 
-    @Override
     public int getHasteTicks() {
         return hasteTicks;
     }
 
-    @Override
     public void setHasteTicks(int i, int level) {
         hasteTicks = i;
         hasteLevel = level;
     }
 
-    @Override
     public void remHasteTicks(int ticks) {
-
         hasteTicks -= ticks;
     }
-
 
     //Slow
     public int getSlowLevel() {
@@ -204,451 +189,388 @@ public class GlobalDataRM implements IGlobalDataRM {
         return slowLevel;
     }
 
-    @Override
     public void setSlowLevel(int level) {
         this.slowLevel = level;
     }
 
-    @Override
     public int getSlowTicks() {
 
         return slowTicks;
     }
 
-    @Override
     public void setSlowTicks(int i, int level) {
         slowTicks = i;
         slowLevel = level;
     }
 
-    @Override
     public void remSlowTicks(int ticks) {
 
         slowTicks -= ticks;
     }
 
-    @Override
+    // Berserk
+
     public void setSlowCaster(String name) {
 
     }
 
-    // Berserk
-    @Override
     public int getBerserkLevel() {
 
         return berserkLevel;
     }
 
-    @Override
     public void setBerserkLevel(int level) {
         this.berserkLevel = level;
     }
 
-    @Override
     public int getBerserkTicks() {
 
         return berserkTicks;
     }
 
-    @Override
     public void setBerserkTicks(int i, int level) {
         berserkTicks = i;
         berserkLevel = level;
 
     }
 
-    @Override
+    // Auto-Life
+
     public void remBerserkTicks(int ticks) {
 
         berserkTicks -= ticks;
     }
 
-    // Auto-Life
-    @Override
     public int setAutoLifeActive(int autoLifeActive) {
         isAutoLifeActive = autoLifeActive;
         return autoLifeActive;
     }
 
-    @Override
     public void setStepTicks(int i, byte type) {
         stepTicks = i;
         stepType = type;
     }
 
-    @Override
     public void remStepTicks(int ticks) {
         stepTicks -= ticks;
     }
 
-    @Override
     public int getStepTicks() {
         return stepTicks;
     }
 
-    @Override
     public byte getStepType() {
         return stepType;
     }
 
-    @Override
-    public void setRiskchargeCount(int i) {
-        riskchargeCount = i;
-    }
-
-    @Override
     public int getRiskchargeCount() {
         return riskchargeCount;
     }
 
-    @Override
+    public void setRiskchargeCount(int i) {
+        riskchargeCount = i;
+    }
+
     public int getAutoLifeActive() {
         return isAutoLifeActive;
     }
 
-    @Override
     public void remAutoLifeActive(int use) {
         isAutoLifeActive -= use;
     }
 
-    @Override
     public int getPrestigeLvl() {
         return prestigeLvl;
     }
 
-    @Override
-    public void addPrestigeLvl(int i) {
-        prestigeLvl += i;
-    }
-
-    @Override
     public void setPrestigeLvl(int i) {
         prestigeLvl = i;
     }
 
-    @Override
+    public void addPrestigeLvl(int i) {
+        prestigeLvl += i;
+    }
+
     public int getSTRBonus() {
         return strBonus;
     }
 
-    @Override
-    public int getMAGBonus() {
-        return magBonus;
-    }
-
-    @Override
-    public int getDEFBonus() {
-        return defBonus;
-    }
-
-    @Override
     public void setSTRBonus(int i) {
         strBonus = i;
     }
 
-    @Override
+    public int getMAGBonus() {
+        return magBonus;
+    }
+
     public void setMAGBonus(int i) {
         magBonus = i;
     }
 
-    @Override
+    public int getDEFBonus() {
+        return defBonus;
+    }
+
     public void setDEFBonus(int i) {
         defBonus = i;
     }
 
-    @Override
     public void addSTRBonus(int i) {
         strBonus += i;
     }
 
-    @Override
     public void addMAGBonus(int i) {
         magBonus += i;
     }
 
-    @Override
     public void addDEFBonus(int i) {
         defBonus += i;
     }
 
-    @Override
     public int getNGPWarriorCount() {
         return NGPlusWarriorCount;
     }
 
-    @Override
-    public int getNGPMysticCount() {
-        return NGPlusMysticCount;
-    }
-
-    @Override
-    public int getNGPGuardianCount() {
-        return NGPlusGuardianCount;
-    }
-
-    @Override
     public void setNGPWarriorCount(int i) {
         NGPlusWarriorCount = i;
     }
 
-    @Override
+    public int getNGPMysticCount() {
+        return NGPlusMysticCount;
+    }
+
     public void setNGPMysticCount(int i) {
         NGPlusMysticCount = i;
     }
 
-    @Override
+    public int getNGPGuardianCount() {
+        return NGPlusGuardianCount;
+    }
+
     public void setNGPGuardianCount(int i) {
         NGPlusGuardianCount = i;
     }
 
-    @Override
     public void addNGPWarriorCount(int i) {
         NGPlusWarriorCount += i;
     }
 
-    @Override
     public void addNGPMysticCount(int i) {
         NGPlusMysticCount += i;
     }
 
-    @Override
     public void addNGPGuardianCount(int i) {
         NGPlusGuardianCount += i;
     }
 
-    @Override
     public int getRCCooldownTicks() {
         return this.RCCooldown;
     }
 
-    @Override
     public void setRCCooldownTicks(int ticks) {
         this.RCCooldown = ticks;
     }
 
-    @Override
     public void remRCCooldownTicks(int ticks) {
         this.RCCooldown = Math.max(RCCooldown - ticks, 0);
 
     }
 
-    @Override
-    public int getLastHpBoostBonus() { return lastHpBoostBonus; }
+    public int getLastHpBoostBonus() {
+        return lastHpBoostBonus;
+    }
 
-    @Override
-    public int getLastMpBoostBonus() { return lastMpBoostBonus; }
+    public void setLastHpBoostBonus(int i) {
+        lastHpBoostBonus = i;
+    }
 
-    @Override
-    public void setLastHpBoostBonus(int i) { lastHpBoostBonus = i; }
+    public int getLastMpBoostBonus() {
+        return lastMpBoostBonus;
+    }
 
-    @Override
-    public void setLastMpBoostBonus(int i) { lastMpBoostBonus = i; }
+    public void setLastMpBoostBonus(int i) {
+        lastMpBoostBonus = i;
+    }
 
-
-
-    @Override
     public int getSTRPanel() {
         return strPanel;
     }
 
-    @Override
-    public int getMAGPanel() {
-        return magPanel;
-    }
-
-    @Override
-    public int getDEFPanel() {
-        return defPanel;
-    }
-
-    @Override
     public void setSTRPanel(int i) {
         strPanel = i;
     }
 
-    @Override
+    public int getMAGPanel() {
+        return magPanel;
+    }
+
     public void setMAGPanel(int i) {
         magPanel = i;
     }
 
-    @Override
+    public int getDEFPanel() {
+        return defPanel;
+    }
+
     public void setDEFPanel(int i) {
         defPanel = i;
     }
 
-    @Override
     public void addSTRPanel(int i) {
         strPanel += i;
     }
 
-    @Override
     public void addMAGPanel(int i) {
         magPanel += i;
     }
 
-    @Override
     public void addDEFPanel(int i) {
         defPanel += i;
     }
 
-    @Override
-    public void setPanelsEnabled(int i) {
-        panelsStatus = i;
-    }
-
-    @Override
-    public void setNGPEnabled(int i) {
-        ngpStatus = i;
-    }
-
-    @Override
     public int getPanelsEnabled() {
         return panelsStatus;
     }
 
-    @Override
+    public void setPanelsEnabled(int i) {
+        panelsStatus = i;
+    }
+
     public int getNGPEnabled() {
         return ngpStatus;
     }
 
-
-    @Override
-    public void setPanelChoice(String choice) {
-        panelChoice = choice;
+    public void setNGPEnabled(int i) {
+        ngpStatus = i;
     }
 
-    @Override
     public String getPanelChoice() {
         return panelChoice;
     }
 
+    public void setPanelChoice(String choice) {
+        panelChoice = choice;
+    }
 
-    @Override
     public double getMPOG() {
         return MPOG;
     }
 
-    @Override
     public void setMPOG(int i) {
         this.MPOG = i;
     }
 
-    @Override
     public int getCanCounter() {
         return CanCounter;
     }
 
-    @Override
     public void setCanCounter(int i) {
         CanCounter = i;
     }
 
-    @Override
     public void remCanCounter(int use) {
         CanCounter -= use;
     }
 
-    @Override
     public boolean hasDreamEaterSummoned() {
         return dreamEaterSummoned;
     }
 
-    @Override
     public void setHasDreamEaterSummoned(boolean val) {
         this.dreamEaterSummoned = val;
     }
 
-    @Override
     public UUID getDreamEaterUUID() {
         return dreamEaterUUID;
     }
 
-    @Override
     public void setDreamEaterUUID(UUID uuid) {
         this.dreamEaterUUID = uuid;
     }
 
-    @Override
     public String getDreamEaterRL() {
         return this.dreamEaterRL;
     }
 
-    @Override
     public void setDreamEaterRL(String i) {
         dreamEaterRL = i;
     }
 
-    @Override
     public boolean getDonorGiven() {
         return donorGiven;
     }
 
-    @Override
     public void setDonorGiven(boolean i) {
         donorGiven = i;
     }
 
-    @Override
     public boolean isDarkMode() {
         return darkMode;
     }
 
-    @Override
     public void setDarkMode(boolean value) {
         this.darkMode = value;
     }
 
-    @Override
-    public double getSituationValue(){ return situationValue;}
+    public double getSituationValue() {
+        return situationValue;
+    }
 
-    @Override
-    public void setSituationValue(double i){this.situationValue = i;}
+    public void setSituationValue(double i) {
+        this.situationValue = i;
+    }
 
-    @Override
     public void remSituationValue(double i) {
         situationValue -= i;
     }
 
-    private final List<String> situationSpells = new ArrayList<>();
-
-    @Override
     public List<String> getSituationSpells() {
         return situationSpells;
     }
-    @Override
+
     public void addSituationSpell(String spell) {
         situationSpells.add(spell);
     }
-    @Override
+
     public void clearSituationSpells() {
         situationSpells.clear();
     }
-    public String getStyle(){return style;}
-    public void setStyle(String style){this.style = style;}
 
-    @Override
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+
     public int getSCooldownTicks() {
         return this.SCooldown;
     }
 
-    @Override
+
     public void setSCooldownTicks(int ticks) {
         this.SCooldown = ticks;
     }
 
-    @Override
+
     public void remSCooldownTicks(int ticks) {
         this.SCooldown = Math.max(SCooldown - ticks, 0);
 
     }
 
-    @Override
-    public int getStyleTicks(){return this.styleTicks;}
-    @Override
-    public void setStyleTicks(int ticks){this.styleTicks = ticks;}
-    @Override
-    public void remStyleTicks(int ticks){
-        this.styleTicks = Math.max(styleTicks-ticks,0);
+
+    public int getStyleTicks() {
+        return this.styleTicks;
+    }
+
+    public void setStyleTicks(int ticks) {
+        this.styleTicks = ticks;
+    }
+
+    public void remStyleTicks(int ticks) {
+        this.styleTicks = Math.max(styleTicks - ticks, 0);
     }
 
 

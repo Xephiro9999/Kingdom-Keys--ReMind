@@ -4,7 +4,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.function.Supplier;

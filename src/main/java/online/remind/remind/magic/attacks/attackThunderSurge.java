@@ -6,11 +6,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.entity.attacks.fireSurgeCollider;
 import online.remind.remind.entity.attacks.thunderSurgeCollider;
 
 public class attackThunderSurge extends Magic {
