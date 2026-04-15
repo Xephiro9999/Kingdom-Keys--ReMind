@@ -15,20 +15,17 @@ public class ConfuseEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        System.out.println("Confused");
         if (pLivingEntity instanceof Mob mob) {
 
             if (mob.getRandom().nextInt(20) == 0) {
                 mob.setTarget(null);
                 mob.setLastHurtByMob(null);
-                System.out.println("Target cleared");
             }
 
             if (mob.onGround() && mob.getRandom().nextInt(12) == 0) {
                 double dx = (mob.getRandom().nextDouble() - 0.5D) * 0.35D;
                 double dz = (mob.getRandom().nextDouble() - 0.5D) * 0.35D;
                 mob.push(dx, 0, dz);
-                System.out.println("Movement Janked");
             }
 
             int retargetChance = Math.max(6, 14 - pAmplifier * 4); // amp makes it more chaotic

@@ -6,11 +6,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.reactioncommand.DualShotEntity;
@@ -25,7 +24,7 @@ public class DualShotRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmgmult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) + PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost))  * 0.2F;
         globalData.setRCCooldownTicks(60);
         playerData.setFP(playerData.getFP() - 40);
@@ -52,7 +51,7 @@ public class DualShotRC extends ReactionCommand {
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null) {
             if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight) && globalData.getRCCooldownTicks() == 0) {
                 return true;

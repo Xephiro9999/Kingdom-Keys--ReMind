@@ -5,18 +5,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
-import online.remind.remind.entity.attacks.fireSurgeCollider;
 import online.remind.remind.entity.attacks.ravenousSaberCollider;
-import online.remind.remind.entity.reactioncommand.DarkMineEntity;
-import online.remind.remind.entity.reactioncommand.ThornsEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -32,7 +27,7 @@ public class RegenRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity lockOnEntity) {
         if (conditionsToAppear(player, player)) {
             PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
             // Damage Calculation
 
@@ -66,7 +61,7 @@ public class RegenRC extends ReactionCommand {
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null) {
             if (playerData.getAlignment() == Utils.OrgMember.NONE) {
                 if (playerData.isAbilityEquipped(StringsRM.Regen) && globalData.getRCCooldownTicks() == 0) {

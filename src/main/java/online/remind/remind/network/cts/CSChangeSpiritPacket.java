@@ -10,7 +10,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -39,7 +39,7 @@ public class CSChangeSpiritPacket implements CustomPacketPayload {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
 
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
             globalData.setDreamEaterRL(message.rl);
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);

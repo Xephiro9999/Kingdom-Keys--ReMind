@@ -9,8 +9,6 @@ import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.zantetsukenCollider;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 public class attackZantetsuken extends Magic {
 

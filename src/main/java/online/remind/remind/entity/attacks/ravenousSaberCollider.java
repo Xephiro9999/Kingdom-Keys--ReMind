@@ -95,7 +95,7 @@ public class ravenousSaberCollider extends ThrowableProjectile {
 
 
                     ResourceKey<DamageType> dmgType = ELEMENT_DAMAGE_MAP.get(ELEMENT_ORDER[currentHitIndex]);
-                    System.out.println("[RavenousSaber] Element: " + element + " -> Type: " + dmgType);
+                    //System.out.println("[RavenousSaber] Element: " + element + " -> Type: " + dmgType);
 
                     if (dmgType == null) {
                         continue; // Hopefully doesn't crash

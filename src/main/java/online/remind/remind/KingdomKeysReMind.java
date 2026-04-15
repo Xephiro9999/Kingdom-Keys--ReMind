@@ -39,7 +39,6 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
-
 import online.remind.remind.integration.epicfight.EpicFightEvents;
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
 import online.remind.remind.item.ICreativeTabRM;

@@ -3,16 +3,11 @@ package online.remind.remind.integration.epicfight;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
- import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
@@ -22,10 +17,8 @@ import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.entity.attacks.slidingDashCollider;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.gameasset.Animations;
@@ -70,7 +63,6 @@ public class EpicFightEvents {
                 PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                 if (playerpatch.isEpicFightMode()) {
                         String spell = String.valueOf(e.getSpellID());
-                        System.out.println(spell);
                         switch (spell) {
                             case "kkremind:attack_quick_blitz":
                                 playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
@@ -80,8 +72,6 @@ public class EpicFightEvents {
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
                                 break;
                         }
-
-
                     }
                 }
             }
@@ -157,7 +147,7 @@ public class EpicFightEvents {
         if (KingdomKeysReMind.efmLoaded) {
             Player player = event.getPlayer();
             PlayerData playerData = PlayerData.get(event.getPlayer());
-            IGlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
+            GlobalDataRM playerData2 = ModDataRM.getGlobal(event.getPlayer());
             WorldData worldData = WorldData.get(event.getPlayer().getServer());
 
             if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get()) || event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
@@ -255,7 +245,7 @@ public class EpicFightEvents {
         System.out.println(event.getSource());
         if (event.getSource().getEntity() instanceof Player player) {
             PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
             PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
 
         }

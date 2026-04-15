@@ -26,7 +26,7 @@ import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
 import online.remind.remind.client.gui.*;
@@ -64,7 +64,7 @@ public class ClientEventsRM {
 
     @SubscribeEvent
     public void onTargetSelector(TargetSelectorEvent event) {
-        IGlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
         //System.out.println(globalData);
         //System.out.println(globalData.getDreamEaterRL());
         //System.out.println(globalData.hasDreamEaterSummoned());
@@ -150,7 +150,7 @@ public class ClientEventsRM {
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
 				PlayerData playerData = PlayerData.get(player);
-				IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
+				GlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 				if (playerData != null){
 					// Light and Dark Step VFX
 					if(globalData.getStepTicks() > 0) {

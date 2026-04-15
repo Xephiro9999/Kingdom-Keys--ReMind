@@ -10,8 +10,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import online.remind.remind.KingdomKeysReMind;
 
-import java.util.UUID;
-
 public class HasteEffect extends MobEffect {
     public HasteEffect(MobEffectCategory pCategory, int pColor){
         super(pCategory, pColor);

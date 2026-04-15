@@ -15,12 +15,10 @@ import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public class magicDispel extends Magic {
 	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
 
 		if (lockOnEntity != null) {
-			IGlobalDataRM globalData = ModDataRM.getGlobal(lockOnEntity);
+			GlobalDataRM globalData = ModDataRM.getGlobal(lockOnEntity);
 			GlobalData globalData2 = GlobalData.get(lockOnEntity);
 
 			// If target is locked and magic lock on ability is on
@@ -81,7 +79,7 @@ public class magicDispel extends Magic {
 				for (int i = 0; i < list.size(); i++) {
 					Entity e = list.get(i);
 					if (e instanceof LivingEntity lEntity) {
-						IGlobalDataRM globalData = ModDataRM.getGlobal(lEntity);
+						GlobalDataRM globalData = ModDataRM.getGlobal(lEntity);
 						GlobalData globalData2 = GlobalData.get(lEntity);
 						lEntity.removeEffect(MobEffects.DAMAGE_BOOST);
 						lEntity.removeEffect(MobEffects.MOVEMENT_SPEED);

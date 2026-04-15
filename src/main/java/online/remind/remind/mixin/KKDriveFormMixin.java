@@ -8,7 +8,6 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
-import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.lib.StringsRM;
@@ -29,7 +28,7 @@ public class KKDriveFormMixin {
                 if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.keybladeOfPeoplesHeartsChain.get()) {
 
                     player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MODE.get(), SoundSource.MASTER, 1.0f, 1.0f);
-                    IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+                    GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
                     globalData.setDarkMode(true);
                     PacketHandlerRM.syncGlobalToAllAround(player, globalData);

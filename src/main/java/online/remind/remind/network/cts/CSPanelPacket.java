@@ -13,13 +13,10 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
-
-import java.sql.SQLOutput;
-import java.util.function.Supplier;
 
 public class CSPanelPacket implements CustomPacketPayload {
     public static final Type<CSPanelPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_panel_packet"));
@@ -50,7 +47,7 @@ public class CSPanelPacket implements CustomPacketPayload {
             ServerPlayer player = (ServerPlayer) ctx.player();
 
             PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
             int level;
             int xpGain;
@@ -80,7 +77,6 @@ public class CSPanelPacket implements CustomPacketPayload {
                     if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
                         playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
                     }
-                    System.out.println(globalData.getMAGPanel());
                     playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
                     break;
                 case 3:

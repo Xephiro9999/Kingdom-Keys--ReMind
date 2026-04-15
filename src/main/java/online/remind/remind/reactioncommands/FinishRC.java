@@ -14,18 +14,11 @@ import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
-import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.driveform.ModDriveFormsRM;
-import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.List;
@@ -40,28 +33,22 @@ public class FinishRC extends ReactionCommand {
 	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM  remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM  remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
 			double Z = player.getZ();
 
 			// Finisher Attack Code Below
-
-			float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) /2; // AVG of STR + MAG
+			float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) / 2; // AVG of STR + MAG
 			//float dmgMult = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.25f;
 			//damage += (damage * dmgMult);
 
 			Level level = player.level();
-
 			ServerLevel serverLevel = (ServerLevel) player.level();
 
 			double radius = 3;
-
-			List<LivingEntity> targets = level.getEntitiesOfClass(
-					LivingEntity.class,
-					player.getBoundingBox().inflate(radius)
-			);
+			List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(radius));
 
 			for (LivingEntity target : targets){
 				if (target != player){
@@ -74,17 +61,16 @@ public class FinishRC extends ReactionCommand {
 						//getOwner().sendSystemMessage(Component.literal("Entity: " + target));
 
 						if (playerData.getChosen() == SoAState.WARRIOR) {
-							target.hurt(target.damageSources().generic(), damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,120,0,false,false,true));
 						}
 						if (playerData.getChosen() == SoAState.GUARDIAN) {
-							target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.OFFHAND, player, player), damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,120,0,false,false,true));
 							player.heal(damage * 0.15f);
 						}
 						if (playerData.getChosen() == SoAState.MYSTIC) {
-							target.hurt(target.damageSources().indirectMagic(target, player), damage);
-							System.out.println(damage);
+							target.hurt(target.damageSources().playerAttack(player), damage);
 							playerData.addMP(damage * 0.15f);
 						}
 						target.invulnerableTime = 0;
@@ -103,22 +89,13 @@ public class FinishRC extends ReactionCommand {
 				}
 			}
 
-
-
-			level.playSound(
-					null,
-					player.blockPosition(),
-					SoundEvents.PLAYER_ATTACK_CRIT,
-					SoundSource.PLAYERS,
-					1F,
-					1F
-			);
-
+			level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1F, 1F);
 
 			// Drain Gauge
 			remindData.setStyle("NONE");
 			remindData.setSituationValue(0);
 			remindData.clearSituationSpells();
+			playerData.removeReactionCommand(getRegistryName().toString());
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 		}
 	}
@@ -126,7 +103,7 @@ public class FinishRC extends ReactionCommand {
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
 		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
 		if (playerData != null) {
 			if (remindData != null) {
 				if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
@@ -136,6 +113,6 @@ public class FinishRC extends ReactionCommand {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 }

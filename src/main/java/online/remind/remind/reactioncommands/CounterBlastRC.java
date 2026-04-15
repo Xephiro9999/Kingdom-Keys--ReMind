@@ -10,14 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -34,7 +32,7 @@ public class CounterBlastRC extends ReactionCommand {
     @Override
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = DamageCalculation.getMagicDamage(player) * 0.40f;
         float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.01F));
         float radius = (float) (0.05F * playerData.getMaxMP());
@@ -98,7 +96,7 @@ public class CounterBlastRC extends ReactionCommand {
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
            if (playerData.isAbilityEquipped(StringsRM.counterBlast) && globalData.getCanCounter() == 1 && globalData.getRCCooldownTicks() == 0) {
                return true;

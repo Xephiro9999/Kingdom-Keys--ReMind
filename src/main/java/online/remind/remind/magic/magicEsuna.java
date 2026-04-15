@@ -14,13 +14,10 @@ import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
-import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +30,7 @@ public class magicEsuna extends Magic {
 
 	@Override
 	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 		WorldData worldData = WorldData.get(player.getServer());
 		GlobalData globalData2 = GlobalData.get(player);
 

@@ -13,7 +13,7 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -38,7 +38,7 @@ public class DriveFormLight extends DriveForm {
             if (event.getSource().getEntity() instanceof Player) {
                 Player player = (Player) event.getSource().getEntity();
                 PlayerData playerData = PlayerData.get(player);
-                IGlobalDataRM formData = ModDataRM.getGlobal(player);
+                GlobalDataRM formData = ModDataRM.getGlobal(player);
 
                 if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID+":"+ StringsRM.lightForm)) {
                     double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);

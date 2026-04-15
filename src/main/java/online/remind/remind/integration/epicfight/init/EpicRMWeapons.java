@@ -1,20 +1,16 @@
 package online.remind.remind.integration.epicfight.init;
 
-import java.util.function.Function;
-import net.minecraft.world.item.Item;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.enums.KKStyles;
-import online.kingdomkeys.kingdomkeys.integration.epicfight.init.EpicKKWeapons;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKCollider;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.skills.KKSkills;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
-
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.event.EpicFightEventHooks;
 import yesman.epicfight.gameasset.Animations;
@@ -23,6 +19,8 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
+
+import java.util.function.Function;
 
 public class EpicRMWeapons {
     public static final Function<Item, WeaponCapability.Builder> XEPHIRO = item ->

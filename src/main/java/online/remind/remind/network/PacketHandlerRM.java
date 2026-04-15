@@ -10,11 +10,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class PacketHandlerRM {
 
     @SubscribeEvent
@@ -49,10 +49,10 @@ public class PacketHandlerRM {
         }
 
 
-        public static void syncGlobalToAllAround(LivingEntity entity, IGlobalDataRM globalData) {
+        public static void syncGlobalToAllAround(LivingEntity entity, GlobalDataRM globalData) {
             if (!entity.level().isClientSide) {
                 for (Player playerFromList : entity.level().players()) {
-                    sendTo(new SCSyncGlobalCapabilityToAllPacketRM(entity.getId(), (IGlobalDataRM) globalData), (ServerPlayer) playerFromList);
+                    sendTo(new SCSyncGlobalCapabilityToAllPacketRM(entity.getId(), (GlobalDataRM) globalData), (ServerPlayer) playerFromList);
                 }
             }
         }

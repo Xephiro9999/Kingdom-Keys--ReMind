@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -32,7 +32,7 @@ public class CSSyncAllClientDataPacketRM implements CustomPacketPayload {
 		ctx.enqueueWork(() -> {
 			Player player = ctx.player();
 
-			IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+			GlobalDataRM globalData = ModDataRM.getGlobal(player);
 			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 		});
 	}

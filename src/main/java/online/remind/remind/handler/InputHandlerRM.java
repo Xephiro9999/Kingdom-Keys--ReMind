@@ -1,27 +1,19 @@
 package online.remind.remind.handler;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.KKInputEvent;
-import online.kingdomkeys.kingdomkeys.client.gui.menu.NoChoiceMenuPopup;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
-import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.kingdomkeys.kingdomkeys.world.dimension.ModDimensions;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.client.gui.GUIHelperRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
@@ -29,7 +21,6 @@ import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSSetStepTicksPacket;
 import online.remind.remind.network.cts.CSSummonSpiritPacket;
-import online.remind.remind.network.cts.CSSyncAllClientDataPacketRM;
 import org.lwjgl.glfw.GLFW;
 
 public class InputHandlerRM {
@@ -39,7 +30,7 @@ public class InputHandlerRM {
 		if (event.getKeybind() == InputHandler.Keybinds.ACTION) {
 			Player player = event.getHandler().player;
 			PlayerData playerData = event.getHandler().playerData;
-			IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+			GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 			// Light/Dark Step Abilities
 			if (InputHandler.qrCooldown <= 0 && (player.getDeltaMovement().x != 0 && player.getDeltaMovement().z != 0)) {

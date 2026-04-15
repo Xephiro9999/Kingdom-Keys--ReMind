@@ -3,8 +3,6 @@ package online.remind.remind.magic;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
@@ -37,15 +35,8 @@ public class magicDeath extends Magic {
             crisisLv = 3;
         }
 
-        System.out.println("Crisis Level: " + crisisLv);
-
-
-
-
         if (lockOnEntity != null){
-
             if (lockOnEntity instanceof Player){
-
                 PlayerData target = PlayerData.get((Player) lockOnEntity);
                 int targetLevel = target.getLevel();
                 double chance = ((double) casterData.getMagic(true) / 4) - ((double) target.getDefense(true) / 4);
@@ -58,7 +49,7 @@ public class magicDeath extends Magic {
 
                 if (target.isAbilityEquipped(Strings.secondChance)){
                     target.unequipAbility(Strings.secondChance, 0);
-                    System.out.println("Unequipped pesky ability");
+                    //System.out.println("Unequipped pesky ability");
                     PacketHandler.syncToAllAround((Player) lockOnEntity, target);
                 }
                 double roll = Math.random() * 100;
@@ -67,7 +58,6 @@ public class magicDeath extends Magic {
                         caster.sendSystemMessage(Component.literal("<Death> You hardly need my help you know..."));
                         if (targetLevel % 4 == 0){
                             chance += chanceBoost;
-                            System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
                                 lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
@@ -85,7 +75,6 @@ public class magicDeath extends Magic {
                         caster.sendSystemMessage(Component.literal("<Death> You've need of my strength..? As you wish..."));
                         if (targetLevel % 3 == 0){
                             chance += chanceBoost;
-                            System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
                                 lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
@@ -103,7 +92,6 @@ public class magicDeath extends Magic {
                         caster.sendSystemMessage(Component.literal("<Death> My approach draws near on you and your foe... but first... THEM."));
                         if (targetLevel % 2 == 0){
                             chance += chanceBoost;
-                            System.out.println("Target meets Level Req! Chance: " + chance);
                             if (roll <= chance){
                                 lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
                                 lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
@@ -120,7 +108,6 @@ public class magicDeath extends Magic {
                     case 3: // Death Lv1
                         caster.sendSystemMessage(Component.literal("<Death> On my doorstep you beg for my aid? So be it."));
                         chance += chanceBoost;
-                        System.out.println("Target meets Level Req! Chance: " + chance);
                         if (roll <= chance){
                             lockOnEntity.sendSystemMessage(Component.literal("Death Awaits You..."));
                             lockOnEntity.level().playSound(null, lockOnEntity.getX(), lockOnEntity.getY(), lockOnEntity.getZ(), ModSoundsRM.DEATH_HIT.get(), SoundSource.MASTER, 1f, 1f);
@@ -132,9 +119,7 @@ public class magicDeath extends Magic {
                 GlobalData mobData = GlobalData.get(lockOnEntity);
                 int mobLvl = mobData.getLevel();
                 double chance = (casterData.getMagicStat().getStat() / 4);
-                System.out.println(chance);
                 double roll = Math.random() * 100;
-                System.out.println(roll);
                 switch(crisisLv){
                     case 0: // Death Lv4
                         caster.sendSystemMessage(Component.literal("<Death> You hardly need my help you know..."));

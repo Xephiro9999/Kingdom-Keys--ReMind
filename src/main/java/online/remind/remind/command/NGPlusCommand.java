@@ -1,35 +1,30 @@
 package online.remind.remind.command;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.context.SuggestionContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
-//import online.kingdomkeys.kingdomkeys.capability.IGlobalCapabilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
-//import online.kingdomkeys.kingdomkeys.capability.ModCapabilities;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-//import online.kingdomkeys.kingdomkeys.network.stc.SCSyncCapabilityPacket;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
-import org.apache.logging.log4j.core.jmx.Server;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <player>
 
@@ -65,7 +60,7 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
 
         for (ServerPlayer player : players){
             final PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
             int addedHP = globalData.getPrestigeLvl() * 2;
             int addedMP = globalData.getPrestigeLvl() * 2;

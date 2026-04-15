@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
@@ -22,7 +22,7 @@ public class magicRegen extends Magic {
 
     @Override
 	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         int time = (int) (PlayerData.get(caster).getMaxMP() * ((level + 1) * 2));
         if (globalData != null) {
             caster.swing(InteractionHand.MAIN_HAND);

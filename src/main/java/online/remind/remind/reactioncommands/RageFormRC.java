@@ -1,13 +1,16 @@
 package online.remind.remind.reactioncommands;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
-import online.kingdomkeys.kingdomkeys.item.ModItems;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
@@ -17,11 +20,8 @@ import java.util.Random;
 import java.util.WeakHashMap;
 
 public class RageFormRC extends ReactionCommand {
-    //private static final double RAGE_PERCENT = ModConfigs.rageFormPercent;
-    private static final WeakHashMap<Player, RageFormChance> playerStates = new WeakHashMap<>();
-
     public RageFormRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck, 30 * 20);
+        super(registryName, constantCheck, -1);
     }
 
     @Override
@@ -33,59 +33,14 @@ public class RageFormRC extends ReactionCommand {
                 playerData.setDriveFormLevel(ModDriveFormsRM.RAGE.get().getRegistryName().toString(), 1);
             }
             rageForm.initDrive(player);
+            playerData.removeReactionCommand(getName());
+            PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
         }
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        PlayerData playerData = PlayerData.get(player);
-        float playerMaxHP = player.getMaxHealth();
-        float currentHP = player.getHealth();
-        float missingHP = (currentHP / playerMaxHP) * 100;
-
-        if (playerData != null) {
-            RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
-            if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
-                if (player.getHealth() <= (playerMaxHP * 0.25f)) {
-                    if (!state.hasRolled) {
-                        double chance = calculateDynamicChance(missingHP);
-                        //System.out.println("Chance: " + chance + "Roll Chance: " + state.shouldAppear);
-                        state.shouldAppear = rollChance(chance);
-                        state.hasRolled = true;
-                    }
-                    return state.shouldAppear;
-
-                } else {
-                    state.hasRolled = false;
-                    state.shouldAppear = false;
-                }
-            }
-        }
-        return false;
+        return Utils.isLowHP(player.getHealth(), player.getMaxHealth());
     }
 
-    private boolean rollChance(double percent){
-        Random rand = new Random();
-        return rand.nextDouble() * 100 < percent;
-    }
-
-    private static class RageFormChance {
-        boolean hasRolled = false;
-        boolean shouldAppear = false;
-    }
-
-    private double calculateDynamicChance(float hpPercent) {
-        // Cap HP percent at 25, and floor at 1 to avoid going above 34%
-        hpPercent = Math.max(1.0f, Math.min(25.0f, hpPercent));
-        double baseChance = ModConfigs.rageFormPercent;
-        float missingPercent = 0;
-        // Percent below 25, unless config is set to 0
-        if (baseChance != 0.0) {
-            missingPercent = 25.0f - hpPercent;
-
-        }
-
-        // Base chance is 10% at 25% HP, +1% for each % below
-        return baseChance + missingPercent;
-    }
 }

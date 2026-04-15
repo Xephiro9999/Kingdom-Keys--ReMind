@@ -6,13 +6,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.neoforged.fml.common.EventBusSubscriber;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.reactioncommand.LightBeamEntity;
@@ -31,7 +30,7 @@ public class LightBeamRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         if (conditionsToAppear(player, player)) {
             PlayerData playerData = PlayerData.get(player);
-            IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
             float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.25F;
 
 
@@ -56,7 +55,7 @@ public class LightBeamRC extends ReactionCommand {
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(playerData != null){
             if(playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) && globalData.getRCCooldownTicks() == 0){
                 return true;

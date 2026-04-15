@@ -1,12 +1,11 @@
 package online.remind.remind.client.sound;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import online.remind.remind.KingdomKeysReMind;
-
-import java.util.function.Supplier;
 
 public class ModSoundsRM {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, KingdomKeysReMind.MODID);

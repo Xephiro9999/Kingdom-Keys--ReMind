@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
 import online.remind.remind.client.sound.MusicManager;
@@ -27,7 +27,7 @@ public class ChangeSpirit extends MenuBackground {
         super(name, rgb);
     }
 
-    IGlobalDataRM globalData;
+    GlobalDataRM globalData;
 
     public ChangeSpirit() {
         super("Change Spirit", new Color(241, 115, 24));

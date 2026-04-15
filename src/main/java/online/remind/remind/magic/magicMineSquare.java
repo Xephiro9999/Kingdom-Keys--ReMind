@@ -8,7 +8,6 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.entity.magic.MineEntity;
-import online.remind.remind.lib.StringsRM;
 
 public class magicMineSquare extends Magic {
 

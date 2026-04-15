@@ -1,11 +1,6 @@
 package online.remind.remind.entity.magic;
 
-import net.minecraft.world.phys.AABB;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.remind.remind.lib.StringsRM;
-import org.joml.Vector3f;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,16 +10,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.AABB;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
-import online.kingdomkeys.kingdomkeys.entity.EntityHelper;
-import online.kingdomkeys.kingdomkeys.entity.mob.IKHMob;
-import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.lib.StringsRM;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -212,8 +205,6 @@ public class SparkEntity extends ThrowableProjectile {
                         target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
                     }*/
                     target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, ownerPlayer), dmg);
-                    System.out.println(dmgMult);
-                    System.out.println(dmg);
                     target.invulnerableTime = 11; // reset invulnerability so multiple hits possible
                 }
             }

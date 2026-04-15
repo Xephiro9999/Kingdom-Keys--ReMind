@@ -12,7 +12,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
@@ -112,7 +112,7 @@ public class DreamEaterMenu extends MenuBackground {
 
 
         // Display Dream Eater Information
-        IGlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
+        GlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
         PlayerData playerData = PlayerData.get(minecraft.player);
 
         if (global != null) {

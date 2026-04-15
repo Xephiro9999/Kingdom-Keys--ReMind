@@ -8,15 +8,16 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.api.item.IItemCategory;
 import online.kingdomkeys.kingdomkeys.api.item.ItemCategory;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
-import java.util.function.Supplier;
+
 import java.util.List;
-import net.minecraft.world.item.TooltipFlag;
+import java.util.function.Supplier;
 
 public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
     private final Supplier<Integer> value;
