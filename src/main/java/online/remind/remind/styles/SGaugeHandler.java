@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.remind.remind.capabilities.IGlobalDataRM;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.*;
@@ -25,7 +25,7 @@ public class SGaugeHandler {
                                        Set<ResourceLocation> specificStyles,
                                        int level) {
 
-        IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         PlayerData playerData = PlayerData.get(player);
 
         // ------------------------------------------------------------
@@ -128,22 +128,14 @@ public class SGaugeHandler {
     }
 
     private static void triggerStyleSelection(Player player,
-                                              IGlobalDataRM globalData,
+                                              GlobalDataRM globalData,
                                               Map<ResourceLocation, Double> weightMap) {
 
-        System.out.println("SGauge reached 100 for " + player.getName().getString());
-
-        // ------------------------------------------------------------
         // Determine current Style tier
-        // ------------------------------------------------------------
-
         StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
         int currentTier = (current != null) ? current.styleLevel() : 0;
 
-        // ------------------------------------------------------------
         // Find eligible Styles for next tier
-        // ------------------------------------------------------------
-
         double highest = 0;
         List<ResourceLocation> eligible = new ArrayList<>();
 
@@ -169,27 +161,20 @@ public class SGaugeHandler {
                 if (def.styleLevel() != nextTier) continue;
             }
 
-            // ------------------------------------------------------------
-            // WEAPON RESTRICTION CHECK (NEW)
-            // ------------------------------------------------------------
+            // WEAPON RESTRICTION CHECK
             if (def.requiresSpecificWeapons()) {
-
-                // Get the held item ID safely
                 ResourceLocation heldWeapon = player.getMainHandItem()
                         .getItem()
                         .builtInRegistryHolder()
                         .key()
                         .location();
 
-                // If the held weapon is NOT in the allowed list, skip this Style
                 if (!def.requiredWeapons().contains(heldWeapon)) {
                     continue;
                 }
             }
 
-            // ------------------------------------------------------------
-            // Weight comparison logic (unchanged)
-            // ------------------------------------------------------------
+            // Weight comparison logic
             if (weight > highest) {
                 highest = weight;
                 eligible.clear();
@@ -199,14 +184,12 @@ public class SGaugeHandler {
             }
         }
 
-
         System.out.println("Eligible Styles: " + eligible);
 
-    // ------------------------------------------------------------
-    // Commit selected Style to globalData
-    // ------------------------------------------------------------
-        if (!eligible.isEmpty()) {
+        PlayerData playerData = PlayerData.get(player);
+        boolean notInStyle = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
 
+        if (!eligible.isEmpty()) {
             // 1) Store ALL eligible styles in the style flag
             String combined = eligible.stream()
                     .map(ResourceLocation::toString)
@@ -214,25 +197,46 @@ public class SGaugeHandler {
             globalData.setStyle(combined);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-            // 2) Add ALL eligible RCs
-            PlayerData playerData = PlayerData.get(player);
+            // Add Finisher RC for current Style if in one
+            if (current != null && current.finisher() != null) {
+                String finisherRcId = current.finisher().toString();
+                //System.out.println("Adding Finisher RC: " + finisherRcId + " for current Style: " + current.target());
+                playerData.addReactionCommand(finisherRcId, player);
+            }
+
+            // 2) Add chain-up RCs (or FinishRC if not in a Style)
             for (ResourceLocation styleId : eligible) {
                 StyleDefinition def = StyleRegistry.getStyleForDriveForm(styleId);
                 if (def != null && def.finisher() != null) {
-                    playerData.addReactionCommand(def.finisher().toString(), player);
+                    String finisherRcId = def.finisher().toString();
+                    //System.out.println("Adding Activation RC: " + finisherRcId + " for Style: " + styleId);
+                    playerData.addReactionCommand(finisherRcId, player);
                 }
             }
 
-            // 3) DO NOT reset SGauge here — RCs handle that
+            // Add FinishRC if not in a Style
+            if (notInStyle) {
+                //System.out.println("DEBUG: Not in a Style - also adding FinishRC");
+                ResourceLocation finishRcId = ResourceLocation.parse("kkremind:rc_finish");
+                playerData.addReactionCommand(finishRcId.toString(), player);
+            }
+        } else if (notInStyle) {
+            // Player not in a Style and no eligible chain-ups
+            // Add the FinishRC (generic finisher for non-Style attacks)
+            //System.out.println("DEBUG: Not in a Style and no eligible styles - adding FinishRC");
+            ResourceLocation finishRcId = ResourceLocation.parse("kkremind:rc_finish");
+            playerData.addReactionCommand(finishRcId.toString(), player);
+        } else {
+            // No chain-ups available, but player is in a Style
+            // Add the Finisher RC for the current Style
+            if (current != null && current.finisher() != null) {
+                String finisherRcId = current.finisher().toString();
+                //System.out.println("Adding Finisher RC (no chain-up): " + finisherRcId + " for current Style: " + current.target());
+                playerData.addReactionCommand(finisherRcId, player);
+            }
         }
 
-
-        // ------------------------------------------------------------
         // Reset SGauge and weights
-        // ------------------------------------------------------------
-        //PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-
         weightMap.clear();
-
     }
 }

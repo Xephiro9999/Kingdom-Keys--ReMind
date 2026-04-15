@@ -60,7 +60,6 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
-import online.remind.remind.capabilities.IGlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
@@ -85,7 +84,7 @@ public class EntityEventsRM {
 	public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent e){
 		Player player = e.getEntity();
 		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 		if (playerData != null){
 
@@ -102,7 +101,7 @@ public class EntityEventsRM {
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
 		Player player = e.getEntity();
 		PlayerData playerData = PlayerData.get(player);
-		IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
         if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
             globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
@@ -283,7 +282,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
+		GlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		Player player = event.getPlayer();
 
@@ -347,7 +346,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		IGlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
+		GlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		if (playerData != null){
 
@@ -413,7 +412,7 @@ public class EntityEventsRM {
 		LivingEntity caster = e.getCaster();
 		if (caster instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null) {
 
 			}
@@ -427,7 +426,7 @@ public class EntityEventsRM {
 		LivingEntity caster = e.getCaster();
 		if (caster instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
 				/*String spellID = e.getSpellID().toString();
@@ -542,7 +541,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
 		if (event.getEntity() instanceof LivingEntity livingEntity) {
-			IGlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
+			GlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
 
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
@@ -1294,7 +1293,7 @@ public class EntityEventsRM {
 	public void onKnockback(LivingKnockBackEvent event){
 		if (event.getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
+			GlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 
 			if (playerData == null)
 				return;
@@ -1333,7 +1332,7 @@ public class EntityEventsRM {
 
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		IGlobalDataRM data = ModDataRM.getGlobal(event.getEntity());
+		GlobalDataRM data = ModDataRM.getGlobal(event.getEntity());
 		if (data != null) {
 			data.setHasDreamEaterSummoned(false);
 			data.setDreamEaterUUID(null);
@@ -1344,7 +1343,7 @@ public class EntityEventsRM {
 	
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event){
-		IGlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
+		GlobalDataRM globalData = ModDataRM.getGlobal(event.getEntity());
 		if (event.getEntity() instanceof Player){
 			Player player = (Player) event.getEntity();
 				if (player.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
@@ -1371,7 +1370,7 @@ public class EntityEventsRM {
 	public void hurtEvent(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM globalData = ModDataRM.getGlobal(player);
+			GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 			if (globalData == null)
 				return;
@@ -1436,7 +1435,7 @@ public class EntityEventsRM {
 		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			IGlobalDataRM remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if(playerData != null) {
 
 

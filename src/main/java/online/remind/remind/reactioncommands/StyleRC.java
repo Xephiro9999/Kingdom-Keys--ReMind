@@ -36,7 +36,7 @@ import java.util.List;
 
 public class StyleRC extends ReactionCommand {
 
-	private final String type; // DriveForm ID (e.g. "kkremind:firestorm")
+	private final String type; // DriveForm ID (e.g. "kkremind:form_firestorm")
 
 	public StyleRC(ResourceLocation registryName, boolean constantCheck, String type) {
 		super(registryName, constantCheck, 30 * 20);
@@ -55,16 +55,16 @@ public class StyleRC extends ReactionCommand {
 		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM remindData = ModDataRM.getGlobal(player);
 
-		String driveId = type;
-
 		// ------------------------------------------------------------
 		// 1. ACTIVATE STYLE (not in this Style yet)
 		// ------------------------------------------------------------
-		if (!playerData.getActiveDriveForm().equals(driveId)) {
+		if (!playerData.getActiveDriveForm().equals(type)) {
 
 			DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(type));
-			if (form != null)
+			if (form != null) {
 				form.initDrive(player);
+				//System.out.println("Entered Style. Active Form is now: " + playerData.getActiveDriveForm());
+			}
 
 			// Reset SGauge + Style state
 			remindData.setSituationValue(0);
@@ -157,38 +157,64 @@ public class StyleRC extends ReactionCommand {
 	public boolean conditionsToAppear(Player player, LivingEntity ignored) {
 
 		PlayerData playerData = PlayerData.get(player);
-		GlobalDataRM global = ModDataRM.getGlobal(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
 
-		if (playerData == null || global == null)
+		if (playerData == null || remindData == null)
 			return false;
 
-		String styleFlag = global.getStyle();
-		double gauge = global.getSituationValue();
+		String style = remindData.getStyle();
+		double gauge = remindData.getSituationValue();
 		String driveId = type;
 
+		/*System.out.println("\n=== StyleRC.conditionsToAppear() ===");
+		System.out.println("RC Registry Name: " + getRegistryName());
+		System.out.println("RC Type (this.type): " + type);
+		System.out.println("Active Form: " + playerData.getActiveDriveForm());
+		System.out.println("Gauge: " + gauge);
+		System.out.println("Style String: " + style);*/
+
+		// Finisher RC - CHECK THIS FIRST
+		boolean isFinisher = playerData.getActiveDriveForm().equals(driveId);
+		//System.out.println("Finisher Check: activeForm.equals(type) = " + playerData.getActiveDriveForm() + ".equals(" + driveId + ") = " + isFinisher);
+		if (isFinisher) {
+			boolean result = gauge >= 100;
+			//System.out.println("FINISHER MATCHED! gauge >= 100? " + result);
+			return result;
+		}
+
 		// Activation RC
-		if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
-			return gauge >= 100 && styleContains(styleFlag, driveId);
+		boolean isNone = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
+		//System.out.println("Activation Check: activeForm == NONE? " + isNone);
+		if (isNone) {
+			boolean styleContainsCheck = styleContains(style, driveId);
+			boolean result = gauge >= 100 && styleContainsCheck;
+			//System.out.println("ACTIVATION: gauge >= 100? " + (gauge >= 100) + ", styleContains? " + styleContainsCheck + ", Result: " + result);
+			return result;
 		}
 
 		// Chain-up RC
+		//System.out.println("Checking Chain-up...");
 		if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 
 			StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
 			StyleDefinition target = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(driveId));
 
+			//System.out.println("Current Style: " + (current != null ? current.target() : "null") + ", Level: " + (current != null ? current.styleLevel() : "N/A"));
+			//System.out.println("Target Style: " + (target != null ? target.target() : "null") + ", Level: " + (target != null ? target.styleLevel() : "N/A"));
+
 			if (current != null && target != null) {
-				if (target.styleLevel() == current.styleLevel() + 1) {
-					return gauge >= 100 && styleContains(styleFlag, driveId);
+				boolean isChainUp = target.styleLevel() == current.styleLevel() + 1;
+				//System.out.println("isChainUp: " + target.styleLevel() + " == " + (current.styleLevel() + 1) + " = " + isChainUp);
+				if (isChainUp) {
+					boolean styleContainsCheck = styleContains(style, driveId);
+					boolean result = gauge >= 100 && styleContainsCheck;
+					//System.out.println("CHAIN-UP: gauge >= 100? " + (gauge >= 100) + ", styleContains? " + styleContainsCheck + ", Result: " + result);
+					return result;
 				}
 			}
 		}
 
-		// Finisher RC
-		if (playerData.getActiveDriveForm().equals(driveId)) {
-			return gauge >= 100;
-		}
-
+		//System.out.println("NO CONDITIONS MET - Returning FALSE");
 		return false;
 	}
 
