@@ -83,6 +83,14 @@ public class SGaugeHandler {
             }
         }
 
+        // ------------------------------------------------------------
+        // Situation Boost (10% per instance, applied AFTER Cure Converter)
+        // ------------------------------------------------------------
+        int boostStacks = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
+        if (boostStacks > 0) {
+            double multiplier = 1.0 + (0.10 * boostStacks);
+            totalValue = (int)(totalValue * multiplier);
+        }
 
         System.out.println("SGauge + " + totalValue +
                 " from action (elements=" + elements + ", specific=" + specificStyles + ")");
