@@ -34,7 +34,7 @@ public class StyleRC extends ReactionCommand {
 	String type;
 
 	public StyleRC(ResourceLocation registryName, boolean constantCheck, String type) {
-		super(registryName, constantCheck, 30 * 20);
+		super(registryName, constantCheck, 30 * 20, 0xff6f00);
 		this.type = type;
 	}
 
