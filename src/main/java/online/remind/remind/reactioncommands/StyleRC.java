@@ -39,7 +39,7 @@ public class StyleRC extends ReactionCommand {
 	private final String type; // DriveForm ID (e.g. "kkremind:form_firestorm")
 
 	public StyleRC(ResourceLocation registryName, boolean constantCheck, String type) {
-		super(registryName, constantCheck, 30 * 20);
+		super(registryName, constantCheck, 30 * 20, 0xff6f00);
 		this.type = type;
 	}
 

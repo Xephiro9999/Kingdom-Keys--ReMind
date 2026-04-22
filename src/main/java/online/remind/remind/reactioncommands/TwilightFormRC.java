@@ -15,7 +15,7 @@ import online.remind.remind.lib.StringsRM;
 public class TwilightFormRC extends ReactionCommand {
 
 	public TwilightFormRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck, -1);
+		super(registryName, constantCheck, -1, 0xebebeb);
 	}
 
 	@Override

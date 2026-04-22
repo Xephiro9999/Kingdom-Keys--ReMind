@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
 
 public class RageFormRC extends ReactionCommand {
     public RageFormRC(ResourceLocation registryName, boolean constantCheck) {
-        super(registryName, constantCheck, -1);
+        super(registryName, constantCheck, -1, 0xff6f00);
     }
 
     @Override
