@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "kkremind:copper_coin",
+    "kkremind:silver_coin",
+    "kkremind:gold_coin",
+    "kkremind:emerald_coin",
+    "kkremind:diamond_coin",
+    "kkremind:netherite_coin",
+    "kkremind:amethyst_coin",
+    "kkremind:heart_coin"
+  ]
+}

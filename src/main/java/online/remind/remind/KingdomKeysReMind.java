@@ -28,6 +28,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.item.ICreativeTab;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
+import online.remind.remind.handler.SGaugeEventHandler;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.command.ModCommands;
@@ -47,6 +48,8 @@ import online.remind.remind.magic.ModMagicsRM;
 import online.remind.remind.particle.ReMindParticles;
 import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
+import online.remind.remind.styles.data.ContributionDataReloadListener;
+import online.remind.remind.styles.data.StyleDataReloadListener;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -74,6 +77,8 @@ public class KingdomKeysReMind {
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EntityEventsRM());
+        NeoForge.EVENT_BUS.register(new StyleDataReloadListener());
+        NeoForge.EVENT_BUS.register(new ContributionDataReloadListener());
         ModDreamEaters.DREAM_EATERS.register(modEventBus);
         ModMagicsRM.MAGIC.register(modEventBus);
         ModSoundsRM.SOUNDS.register(modEventBus);
@@ -86,6 +91,7 @@ public class KingdomKeysReMind {
         ReMindParticles.PARTICLE_TYPES.register(modEventBus);
         ModReactionCommandsRM.REACTION_COMMANDS.register(modEventBus);
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
+        SGaugeEventHandler.register();
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
 

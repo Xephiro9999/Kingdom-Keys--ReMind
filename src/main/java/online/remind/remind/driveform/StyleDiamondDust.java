@@ -5,22 +5,10 @@ import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 
-public class StyleDiamondDust extends DriveForm {
-    public StyleDiamondDust(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
-        super(registeryName, order, hasKeychain, baseGrowthAbilities);
+public class StyleDiamondDust extends StyleForm {
+    public StyleDiamondDust(ResourceLocation registryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+        super(registryName, order, skinRL, hasKeychain, baseGrowthAbilities);
+
         this.color = new float[]{0.0f, 0.75F, 1.0F};
-        this.skinRL = skinRL;
-        ModDriveFormsRM.styles.add(registeryName);
-    }
-
-    @Override
-    public boolean displayInCommandMenu(Player player){
-        return false;
-    }
-
-    @Override
-    public void endDrive(Player player) {
-        super.endDrive(player);
-        PlayerData playerData = PlayerData.get(player);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:form_thunder_bolt",
+  "finisher": "kkremind:rc_thunder_bolt",
+  "style_level": 1,
+  "elements": ["thunder"],
+  "requires_specific_weapons": false,
+  "required_weapons": []
+}

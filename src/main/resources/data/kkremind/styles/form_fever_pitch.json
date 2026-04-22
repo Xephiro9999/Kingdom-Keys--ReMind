@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:form_fever_pitch",
+  "finisher": "kkremind:rc_fever_pitch",
+  "style_level": 1,
+  "elements": ["physical"],
+  "requires_specific_weapons": false,
+  "required_weapons": []
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -361,7 +362,7 @@ public class EntityEventsRM {
 
 	// Helper Method for the Situation Gauge System
 
-	public enum SpellElement {
+	/*public enum SpellElement {
 		FIRE,
 		BLIZZARD,
 		THUNDER,
@@ -372,9 +373,9 @@ public class EntityEventsRM {
 		PHYSICAL,
 		MAGIC,
 		NONE
-	}
+	}*/
 
-	private SpellElement getElement(String spellID){
+	/*private SpellElement getElement(String spellID){
 
 		if (spellID.contains("fire") || spellID.contains("mine")) return SpellElement.FIRE;
 		if (spellID.contains("blizzard")) return SpellElement.BLIZZARD;
@@ -388,7 +389,7 @@ public class EntityEventsRM {
 
 
 		return SpellElement.NONE;
-	}
+	}*/
 
 	@SubscribeEvent
 	public void onRCCast(ReactionCommandCastEvent e){
@@ -414,15 +415,15 @@ public class EntityEventsRM {
 			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null){
 				//System.out.println(e.getSpellID());
-				String spellID = e.getSpellID().toString();
+				/*String spellID = e.getSpellID().toString();
 				int spellLvl = e.getLevel() + 1;
 				int cureConverterCount = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
 
 
 
 				float situationBoost = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
-				double situationValue = 5 * spellLvl;
-				switch (spellID){
+				double situationValue = 5 * spellLvl;*/
+				/*switch (spellID){
 					case "default":
                         break;
 					case "kkremind:magic_ultima":
@@ -452,12 +453,12 @@ public class EntityEventsRM {
 							situationValue = 0;
 						}
 						break;
-				}
+				}*/
 
 
-				remindData.addSituationSpell(spellID);
-				remindData.addSituationValue(situationValue + (situationBoost * 1.25f)); //Magic increase
-				addSituationRCs(player);
+				//remindData.addSituationSpell(spellID);
+				/*remindData.addSituationValue(situationValue + (situationBoost * 1.25f)); //Magic increase
+				addSituationRCs(player);*/
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
@@ -467,7 +468,7 @@ public class EntityEventsRM {
 					remindData.setStyleTicks(100);
 				}
 
-				if (remindData.getSituationValue() >= 100) {
+				/*if (remindData.getSituationValue() >= 100) {
 					Map<SpellElement, Integer> counts = new HashMap<>();
 					for (String s : remindData.getSituationSpells()) {
 						SpellElement element = getElement(s);
@@ -517,26 +518,14 @@ public class EntityEventsRM {
 							remindData.setStyle(majority.toString());
 							break;
 					}
-				}
+				}*/
 
-				PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
+				//PacketHandlerRM.syncGlobalToAllAround(caster, remindData);
 			}
 		}
 	}
-/*
-	FIRE,
-	BLIZZARD,
-	THUNDER,
-	WATER,
-	AIR,
-	LIGHT,
-	DARK,
-	PHYSICAL,
-	MAGIC,
-	NONE
-*/
 
-	private void addSituationRCs(Player player) {
+	/*private void addSituationRCs(Player player) {
 		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM remindData = ModDataRM.getGlobal(player);
 		if(playerData != null && remindData != null) {
@@ -602,7 +591,7 @@ public class EntityEventsRM {
 				}
 			}
 		}
-	}
+	}*/
 
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
@@ -1015,41 +1004,43 @@ public class EntityEventsRM {
 				if (event.getEntity() instanceof Player player) {
 					PlayerData playerData = PlayerData.get(player);
 					if (playerData != null) {
-					// RC Cooldown mechanic
-					if (globalData.getRCCooldownTicks() > 0) {
-						globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
-					}
-
-					// Formchange/Situation Gauge System
-					if (globalData.getSCooldownTicks() > 0 ){
-						globalData.remSCooldownTicks(1);
-					}
-
-					if (!player.hasEffect(ModMobEffects.STOP)){
-						if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
-							// Possible Haste and Slow Interactions?
-							globalData.setSituationValue(globalData.getSituationValue() - 0.2);
+						// RC Cooldown mechanic
+						if (globalData.getRCCooldownTicks() > 0) {
+							globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
 						}
-					}
 
-					if (globalData.getSituationValue() <= 0) {
-						globalData.clearSituationSpells();
-						globalData.setStyle("");
-						PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-						if (globalData.getStyleTicks() > 0) {
-							globalData.remStyleTicks(1);
-							//System.out.println(globalData.getStyleTicks());
-						} else if (globalData.getStyleTicks() <= 0) {
-							if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) { //Only check styles bruh
-								playerData.setActiveDriveForm(DriveForm.NONE.toString());
+						// Formchange/Situation Gauge System
+						if (globalData.getSCooldownTicks() > 0 ){
+							globalData.remSCooldownTicks(1);
+							//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
+						}
+						if (!player.hasEffect(ModMobEffects.STOP)){
+							if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
+								// Possible Haste and Slow Interactions?
+
+								globalData.setSituationValue(globalData.getSituationValue() - 0.2);
 							}
 						}
 
-					} else if (globalData.getSituationValue() > 100) {
-						globalData.setSituationValue(100);
+
+						if (globalData.getSituationValue() <= 0) {
+							//globalData.clearSituationSpells();
+							//globalData.setStyle("");
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+							if (globalData.getStyleTicks() > 0) {
+								globalData.remStyleTicks(1);
+								//System.out.println(globalData.getStyleTicks());
+							} else if (globalData.getStyleTicks() <= 0) {
+								if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) { //Only check styles bruh
+									playerData.setActiveDriveForm(DriveForm.NONE.toString());
+								}
+							}
+
+						} else if (globalData.getSituationValue() > 100) {
+							globalData.setSituationValue(100);
+						}
 					}
 				}
-			}
 
 				// Step Ticks
 				if (globalData.getStepTicks() > 0) {
@@ -1493,6 +1484,7 @@ public class EntityEventsRM {
 			}
 		}
 	}
+
 	@SubscribeEvent
 	public void hurtEvent(LivingDamageEvent.Pre event){
 		if(event.getEntity() instanceof Player player) {
@@ -1551,30 +1543,34 @@ public class EntityEventsRM {
 
 			}
 
+
 		}
+
+
 
 		// On Hit Effects
 		if (event.getSource().getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
 			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if(playerData != null) {
-				double situationGain = (event.getNewDamage() * 0.1);
-				float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) * 0.1f) + 1;
-				situationGain *= situationMulti;
 
-				//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
-				//System.out.println(situationGain);
 
-				if (remindData != null){
+					/*double situationGain = (event.getNewDamage() * 0.1);
+					float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
+					situationGain *= situationMulti;*/
+
+					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
+					//System.out.println(situationGain);
+
+				/*if (remindData != null){
 					remindData.addSituationValue(situationGain); //Hit increase
 					addSituationRCs(player);
-
 					remindData.setSCooldownTicks(60);
 					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 						remindData.setStyleTicks(100);
 					}
 					PacketHandlerRM.syncGlobalToAllAround(player, remindData);
-				}
+				}*/
 
 				// Critical Impact Passive
 				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
@@ -1754,8 +1750,6 @@ public class EntityEventsRM {
 						event.getEntity().invulnerableTime = 0;
 						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 				}
-
-
 			}
 		}
 	}

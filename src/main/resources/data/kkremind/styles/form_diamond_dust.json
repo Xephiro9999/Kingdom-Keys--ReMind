@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:form_diamond_dust",
+  "finisher": "kkremind:rc_diamond_dust",
+  "style_level": 1,
+  "elements": ["blizzard"],
+  "requires_specific_weapons": false,
+  "required_weapons": []
+}

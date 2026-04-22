@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:form_firestorm",
+  "finisher": "kkremind:rc_firestorm",
+  "style_level": 1,
+  "elements": ["fire"],
+  "requires_specific_weapons": false,
+  "required_weapons": []
+}

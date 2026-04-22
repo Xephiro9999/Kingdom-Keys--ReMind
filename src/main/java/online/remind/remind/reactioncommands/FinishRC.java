@@ -33,7 +33,7 @@ public class FinishRC extends ReactionCommand {
 	public void onUse(Player player, LivingEntity livingEntity, LivingEntity livingEntity1) {
 		if (conditionsToAppear(player, player)) {
 			PlayerData playerData = PlayerData.get(player);
-			GlobalDataRM  remindData = ModDataRM.getGlobal(player);
+			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 
 			double X = player.getX();
 			double Y = player.getY();
@@ -41,8 +41,6 @@ public class FinishRC extends ReactionCommand {
 
 			// Finisher Attack Code Below
 			float damage = (float) (playerData.getMagic(true) + playerData.getStrength(true)) / 2; // AVG of STR + MAG
-			//float dmgMult = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.25f;
-			//damage += (damage * dmgMult);
 
 			Level level = player.level();
 			ServerLevel serverLevel = (ServerLevel) player.level();
@@ -58,8 +56,6 @@ public class FinishRC extends ReactionCommand {
 					}
 
 					if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
-						//getOwner().sendSystemMessage(Component.literal("Entity: " + target));
-
 						if (playerData.getChosen() == SoAState.WARRIOR) {
 							target.hurt(target.damageSources().playerAttack(player), damage);
 							player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,120,0,false,false,true));
@@ -85,7 +81,6 @@ public class FinishRC extends ReactionCommand {
 					double y = Y + (radius * Math.cos(Math.toRadians(t)));
 
 					serverLevel.sendParticles(ParticleTypes.CRIT, x,y,z,2,0.05,0.05,0.05,0.01);
-
 				}
 			}
 
@@ -102,6 +97,32 @@ public class FinishRC extends ReactionCommand {
 
 	@Override
 	public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-		return true;
+		PlayerData playerData = PlayerData.get(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
+
+		/*System.out.println("\n=== FinishRC.conditionsToAppear() ===");
+		System.out.println("playerData: " + (playerData != null ? "OK" : "NULL"));
+		System.out.println("remindData: " + (remindData != null ? "OK" : "NULL"));*/
+
+		if (playerData == null || remindData == null)
+			return false;
+
+		String activeDriveForm = playerData.getActiveDriveForm();
+		double gauge = remindData.getSituationValue();
+
+		/*System.out.println("Active Drive Form: " + activeDriveForm);
+		System.out.println("Gauge: " + gauge);
+		System.out.println("Is NONE? " + activeDriveForm.equals(DriveForm.NONE.toString()));
+		System.out.println("Gauge >= 100? " + (gauge >= 100));*/
+
+		// FinishRC only appears when NOT in a Style and gauge >= 100
+		if (activeDriveForm.equals(DriveForm.NONE.toString())) {
+			boolean result = gauge >= 100;
+			//System.out.println("RESULT: " + result);
+			return result;
+		}
+
+		//System.out.println("RESULT: false (in a Style)");
+		return false;
 	}
 }

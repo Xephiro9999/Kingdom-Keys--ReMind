@@ -1,26 +1,11 @@
 package online.remind.remind.driveform;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 
-public class StyleFeverPitch extends DriveForm {
-    public StyleFeverPitch(ResourceLocation registeryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
-        super(registeryName, order, hasKeychain, baseGrowthAbilities);
+public class StyleFeverPitch extends StyleForm {
+    public StyleFeverPitch(ResourceLocation registryName, int order, ResourceLocation skinRL, boolean hasKeychain, boolean baseGrowthAbilities) {
+        super(registryName, order, skinRL, hasKeychain, baseGrowthAbilities);
+
         this.color = new float[]{0.0f, 1.0F, 0.5F};
-        this.skinRL = skinRL;
-        ModDriveFormsRM.styles.add(registeryName);
-    }
-
-    @Override
-    public boolean displayInCommandMenu(Player player){
-        return false;
-    }
-
-    @Override
-    public void endDrive(Player player) {
-        super.endDrive(player);
-        PlayerData playerData = PlayerData.get(player);
     }
 }
