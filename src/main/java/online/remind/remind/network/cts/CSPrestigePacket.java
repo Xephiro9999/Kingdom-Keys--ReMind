@@ -74,7 +74,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.setEquippedShotlock("");
 
             playerData.setSoAState(SoAState.NONE);
-            globalData.addPrestigeLvl(+1);
+            globalData.addPrestigeLvl(1);
 
             LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
 	        for (Entry<String, int[]> entry : driveForms.entrySet()) {
@@ -151,10 +151,15 @@ public class CSPrestigePacket implements CustomPacketPayload {
             //player.heal(playerData.getMaxHP()); // <--- Arclight still hates this
             playerData.setMP(playerData.getMaxMP());
 
+            //Since we cleared abilities earlier we iterate through all the perma abilities and add em back (Utils#restartLevel2 already does this, so if you reimplement it removing it from here should be safe)
+            playerData.getPAbilitiesList().forEach(a -> {
+                playerData.addAbility(a,false);
+            });
+
             // NG+ Bonus Abilities
-            playerData.addAbility(Strings.experienceBoost, true);
-            playerData.addAbility(Strings.luckyLucky, true);
-            playerData.addAbility(StringsRM.dedication, true);
+            playerData.addPAbility(Strings.experienceBoost);
+            playerData.addPAbility(Strings.luckyLucky);
+            playerData.addPAbility(StringsRM.dedication);
 
             switch (globalData.getNGPWarriorCount()) {
                 case 1 -> playerData.addPAbility(Strings.synchBlade);
@@ -203,7 +208,6 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.getStrengthStat().removeModifier("sacrifice");
             playerData.getMagicStat().removeModifier("sacrifice");
             playerData.getDefenseStat().removeModifier("sacrifice");
-
 
             if (globalData.getNGPEnabled() == 1) {
 	            playerData.getStrengthStat().addModifier("NG+ Bonus", Math.min(globalData.getSTRBonus(), ModConfigs.statCap), true, false);

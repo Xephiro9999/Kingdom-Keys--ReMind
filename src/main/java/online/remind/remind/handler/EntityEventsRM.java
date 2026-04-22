@@ -614,6 +614,7 @@ public class EntityEventsRM {
 			// Org Passives
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
+
 				if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
 					playerData.getStrengthStat().addModifier("Organization", 5, false, true);
 					playerData.getMagicStat().addModifier("Organization", 5, false, true);
@@ -842,19 +843,19 @@ public class EntityEventsRM {
 
 							if (weaponSTR < 0) {
 								// Negative stat → clamp to negative cap
-								addSTR = Math.min(Math.max(rawSTR, 0), negSTR);
+								addSTR = Math.clamp(rawSTR, 0, negSTR);
 							} else {
 								// Normal stat → clamp to positive cap
-								addSTR = Math.min(Math.max(rawSTR, 0), posSTR);
+								addSTR = Math.clamp(rawSTR, 0, posSTR);
 							}
 
 							// Magic
 							int rawMAG = posMAG - weaponMAG;
 
 							if (weaponMAG < 0) {
-								addMAG = Math.min(Math.max(rawMAG, 0), negMAG);
+								addMAG = Math.clamp(rawMAG, 0, negMAG);
 							} else {
-								addMAG = Math.min(Math.max(rawMAG, 0), posMAG);
+								addMAG = Math.clamp(rawMAG, 0, posMAG);
 							}
 
 							// Remove old modifiers to prevent stacking
