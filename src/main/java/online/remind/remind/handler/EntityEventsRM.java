@@ -1,11 +1,10 @@
 package online.remind.remind.handler;
 
-import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -15,37 +14,26 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
-import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
-import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
-import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
-import online.kingdomkeys.kingdomkeys.data.GlobalData;
+import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
-import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
-import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
-import online.kingdomkeys.kingdomkeys.handler.InputHandler;
-import online.kingdomkeys.kingdomkeys.handler.KeyboardHelper;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
@@ -54,7 +42,6 @@ import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
-import online.kingdomkeys.kingdomkeys.network.stc.SCSyncGlobalData;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
@@ -63,7 +50,6 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
-import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.item.ModItemsRM;
@@ -471,7 +457,8 @@ public class EntityEventsRM {
 
 
 				//remindData.addSituationSpell(spellID);
-				//remindData.setSituationValue(remindData.getSituationValue() + (situationValue + (situationBoost * 1.25f)));
+				/*remindData.addSituationValue(situationValue + (situationBoost * 1.25f)); //Magic increase
+				addSituationRCs(player);*/
 
 				//System.out.println("Situation Gauge: "+ remindData.getSituationValue());
 				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
@@ -537,6 +524,74 @@ public class EntityEventsRM {
 			}
 		}
 	}
+
+	/*private void addSituationRCs(Player player) {
+		PlayerData playerData = PlayerData.get(player);
+		GlobalDataRM remindData = ModDataRM.getGlobal(player);
+		if(playerData != null && remindData != null) {
+			if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+				if (remindData.getSituationValue() >= 100) { // Base form finisher
+					if (remindData.getStyle().equals("NONE") || remindData.getStyle().equals("")) {
+						playerData.addReactionCommand(StringsRM.FinishRC, player);
+						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+					}
+				}
+
+				if (remindData.getStyle().equals("FIRE")) {
+					playerData.addReactionCommand(StringsRM.FireStormRC, player); //To enter form
+				}
+
+				if (remindData.getStyle().equals("BLIZZARD")) {
+					playerData.addReactionCommand(StringsRM.DiamondDustRC, player);
+				}
+
+				if (remindData.getStyle().equals("THUNDER")) {
+					playerData.addReactionCommand(StringsRM.ThunderBoltRC, player);
+				}
+
+				if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("AIR")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.waywardWindChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.lostMemoryChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.missingAcheChain.get()) {
+						playerData.addReactionCommand(StringsRM.FeverPitchRC, player);
+					}
+				}
+
+				if (remindData.getStyle().equals("PHYSICAL") || remindData.getStyle().equals("NONE")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.earthshakerChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.endsOfTheEarthChain.get()) {
+						playerData.addReactionCommand(StringsRM.CriticalImpactRC, player);
+					}
+				}
+
+				if (remindData.getStyle().equals("MAGIC")) {
+					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.rainfellChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.stormfallChain.get()) {
+						playerData.addReactionCommand(StringsRM.SpellweaverRC, player);
+					}
+				}
+
+			} else if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) {
+				if (remindData.getSituationValue() >= 100) {
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.FireStormRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.DiamondDustRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.ThunderBoltRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.FeverPitchRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.CriticalImpactRC, player);
+					}
+					if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) { // To finish form
+						playerData.addReactionCommand(StringsRM.SpellweaverRC, player);
+					}
+
+				}
+			}
+		}
+	}*/
 
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
@@ -1439,15 +1494,16 @@ public class EntityEventsRM {
 			if(playerData != null) {
 
 
-					double situationGain = (event.getNewDamage() * 0.1);
+					/*double situationGain = (event.getNewDamage() * 0.1);
 					float situationMulti = (playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost) *0.1f) + 1;
-					situationGain *= situationMulti;
+					situationGain *= situationMulti;*/
 
 					//System.out.println(situationGain + " * " + situationMulti +" = " + (situationGain*situationMulti));
 					//System.out.println(situationGain);
 
 				/*if (remindData != null){
-					remindData.setSituationValue(remindData.getSituationValue() + situationGain);
+					remindData.addSituationValue(situationGain); //Hit increase
+					addSituationRCs(player);
 					remindData.setSCooldownTicks(60);
 					if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
 						remindData.setStyleTicks(100);
