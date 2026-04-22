@@ -48,7 +48,6 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     private byte stepType;
     private int RCCooldown;
     private int SCooldown;
-    private int CanCounter;
     private double situationValue;
     private String style = "";
     private int styleTicks;
@@ -70,7 +69,6 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         storage.putInt("berserk_ticks", this.getBerserkTicks());
         storage.putInt("berserk_level", this.getBerserkLevel());
         storage.putInt("autolife_active", this.getAutoLifeActive());
-        storage.putInt("can_counter", this.getCanCounter());
 
         // New Game Plus NBT
         storage.putInt("prestige_level", this.getPrestigeLvl());
@@ -143,7 +141,6 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
-        this.setCanCounter(properties.getInt("can_counter"));
 
         this.setSituationValue(properties.getDouble("situation_value"));
         this.setStyle(properties.getString("style"));
@@ -458,18 +455,6 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     public void setMPOG(int i) {
         this.MPOG = i;
-    }
-
-    public int getCanCounter() {
-        return CanCounter;
-    }
-
-    public void setCanCounter(int i) {
-        CanCounter = i;
-    }
-
-    public void remCanCounter(int use) {
-        CanCounter -= use;
     }
 
     public boolean hasDreamEaterSummoned() {

@@ -44,9 +44,9 @@ public class ModReactionCommandsRM {
 
     // Reprisals
 
-        COUNTER_HAMMER = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_hammer", () -> new CounterHammerRC( ResourceLocation.parse(StringsRM.CounterHammerRC), true)),
-        COUNTER_BLAST = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_blast", () -> new CounterBlastRC( ResourceLocation.parse(StringsRM.CounterBlastRC), true)),
-        COUNTER_RUSH = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_rush", () -> new CounterRushRC( ResourceLocation.parse(StringsRM.CounterRushRC), true));
+        COUNTER_HAMMER = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_hammer", () -> new CounterHammerRC( ResourceLocation.parse(StringsRM.CounterHammerRC), false)),
+        COUNTER_BLAST = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_blast", () -> new CounterBlastRC( ResourceLocation.parse(StringsRM.CounterBlastRC), false)),
+        COUNTER_RUSH = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"counter_rush", () -> new CounterRushRC( ResourceLocation.parse(StringsRM.CounterRushRC), false));
 
 }
 

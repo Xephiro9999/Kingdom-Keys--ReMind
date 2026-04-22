@@ -40,7 +40,6 @@ public class CounterRushRC extends ReactionCommand {
         double X = player.getX();
         double Z = player.getZ();
 
-        globalData.remCanCounter(1);
         player.swing(InteractionHand.MAIN_HAND);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
@@ -66,17 +65,14 @@ public class CounterRushRC extends ReactionCommand {
         CounterRushCore core = new CounterRushCore(player, player.level(), targetList, dmg, false);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);
-
+        playerData.removeReactionCommand(getRegistryName().toString());
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterRush) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
-               return true;
-            }
+	        return playerData.isAbilityEquipped(StringsRM.counterRush);
         }
         return false;
     }

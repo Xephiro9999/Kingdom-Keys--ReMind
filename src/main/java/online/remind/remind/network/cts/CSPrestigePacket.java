@@ -52,7 +52,6 @@ public class CSPrestigePacket implements CustomPacketPayload {
             PlayerData playerData = PlayerData.get(player);
             GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-
             // Storing Old Choice For Bonus
             String oldChoice = String.valueOf(playerData.getChosen());
 
@@ -78,22 +77,19 @@ public class CSPrestigePacket implements CustomPacketPayload {
             globalData.addPrestigeLvl(+1);
 
             LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
-            Iterator<Entry<String, int[]>> it = driveForms.entrySet().iterator();
-            while (it.hasNext()) {
-                Entry<String, int[]> entry = it.next();
-                int dfLevel = entry.getValue()[0];
-                DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(entry.getKey()));
-                if (!form.getRegistryName().equals(DriveForm.NONE) && !form.getRegistryName().equals(DriveForm.SYNCH_BLADE)) {
-                    for (int i = 1; i <= dfLevel; i++) {
-                        String baseAbility = form.getBaseAbilityForLevel(i);
-                        if (baseAbility != null && !baseAbility.equals("")) {
-                            playerData.addAbility(baseAbility, false);
-                        }
-                    }
-                }
-            }
+	        for (Entry<String, int[]> entry : driveForms.entrySet()) {
+		        int dfLevel = entry.getValue()[0];
+		        DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(entry.getKey()));
+		        if (!form.getRegistryName().equals(DriveForm.NONE) && !form.getRegistryName().equals(DriveForm.SYNCH_BLADE)) {
+			        for (int i = 1; i <= dfLevel; i++) {
+				        String baseAbility = form.getBaseAbilityForLevel(i);
+				        if (baseAbility != null && !baseAbility.equals("")) {
+					        playerData.addAbility(baseAbility, false);
+				        }
+			        }
+		        }
+	        }
             System.out.println("Drive Form Abilities Added!");
-
 
             //PacketHandler.sendToServer(new CSEquipAccessories());
             if (playerData.getEquippedAccessories().size() <= Utils.getFreeSlotsForPlayer(player)) {
@@ -118,194 +114,73 @@ public class CSPrestigePacket implements CustomPacketPayload {
             }
             System.out.println("Armor Yeet'd into Inventory");
 
-
             //Utils.restartLevel(playerData, player);
             //Utils.restartLevel2(playerData, player); // Keep this for Drive Bonuses
 
-
-            if (oldChoice == "WARRIOR") {
-                globalData.addNGPWarriorCount(+1);
-                globalData.addSTRBonus(+ModConfigs.statBonus);
-                if (globalData.getSTRBonus() > ModConfigs.statCap) {
-                    globalData.setSTRBonus(ModConfigs.statCap);
+            switch(oldChoice) {
+                case "WARRIOR" -> {
+                    globalData.addNGPWarriorCount(1);
+                    globalData.addSTRBonus(ModConfigs.statBonus);
+                    if (globalData.getSTRBonus() > ModConfigs.statCap) {
+                        globalData.setSTRBonus(ModConfigs.statCap);
+                    }
+                    System.out.println("Strength Bonus: " + globalData.getSTRBonus());
                 }
-                System.out.println("Strength Bonus: " + globalData.getSTRBonus());
-                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-            }
-
-            if (oldChoice == "MYSTIC") {
-                globalData.addNGPMysticCount(+1);
-                globalData.addMAGBonus(+ModConfigs.statBonus);
-                if (globalData.getMAGBonus() > ModConfigs.statCap) {
-                    globalData.setMAGBonus(ModConfigs.statCap);
+                case "MYSTIC" -> {
+                    globalData.addNGPMysticCount(1);
+                    globalData.addMAGBonus(ModConfigs.statBonus);
+                    if (globalData.getMAGBonus() > ModConfigs.statCap) {
+                        globalData.setMAGBonus(ModConfigs.statCap);
+                    }
+                    System.out.println("Magic Bonus: " + globalData.getMAGBonus());
                 }
-                System.out.println("Magic Bonus: " + globalData.getMAGBonus());
-                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-            }
-
-            if (oldChoice == "GUARDIAN") {
-                globalData.addNGPGuardianCount(+1);
-                globalData.addDEFBonus(+ModConfigs.statBonus);
-                if (globalData.getDEFBonus() > ModConfigs.statCap) {
-                    globalData.setDEFBonus(ModConfigs.statCap);
+                case "GUARDIAN" -> {
+                    globalData.addNGPGuardianCount(1);
+                    globalData.addDEFBonus(ModConfigs.statBonus);
+                    if (globalData.getDEFBonus() > ModConfigs.statCap) {
+                        globalData.setDEFBonus(ModConfigs.statCap);
+                    }
+                    System.out.println("Defense Bonus: " + globalData.getDEFBonus());
                 }
-                System.out.println("Defense Bonus: " + globalData.getDEFBonus());
-                PacketHandlerRM.syncGlobalToAllAround(player, globalData);
             }
-
+            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
             System.out.println("NG+ Counts: " + globalData.getNGPWarriorCount() + ", " + globalData.getNGPMysticCount() + ", " + globalData.getNGPGuardianCount());
             System.out.println("Bonus Stats: " + globalData.getSTRBonus() + ", " + globalData.getMAGBonus() + ", " + globalData.getDEFBonus());
 
-
             //player.heal(playerData.getMaxHP()); // <--- Arclight still hates this
             playerData.setMP(playerData.getMaxMP());
 
-
             // NG+ Bonus Abilities
-
             playerData.addAbility(Strings.experienceBoost, true);
             playerData.addAbility(Strings.luckyLucky, true);
             playerData.addAbility(StringsRM.dedication, true);
 
-
             switch (globalData.getNGPWarriorCount()) {
-                case 0:
-                    break;
-                case 1:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    break;
-                case 2:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    break;
-                case 3:
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    break;
-                case 4:
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
-                    break;
-                case 5:
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
-                    break;
-                case 6:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
-                    break;
-                default:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
-                    break;
-
+                case 1 -> playerData.addPAbility(Strings.synchBlade);
+                case 2 -> playerData.addPAbility(Strings.formBoost);
+                case 3 -> playerData.addPAbility(Strings.criticalBoost);
+                case 4 -> playerData.addPAbility(Strings.driveBoost);
+                case 5 -> playerData.addPAbility(StringsRM.attackHaste);
+                case 6 -> playerData.addPAbility(Strings.criticalBoost);
             }
 
             switch (globalData.getNGPMysticCount()) {
-                case 0:
-                    break;
-                case 1:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    break;
-                case 2:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    break;
-                case 3:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    break;
-                case 4:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    break;
-                case 5:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
-                    break;
-                case 6:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
-                    playerData.addAbility(StringsRM.mpShield, true);
-                    break;
-                default:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
-                    playerData.addAbility(StringsRM.mpShield, true);
-                    break;
+                case 1 -> playerData.addPAbility(StringsRM.critical_surge);
+                case 2 -> playerData.addPAbility(Strings.mpHastega);
+                case 3 -> playerData.addPAbility(Strings.mpThrift);
+                case 4 -> playerData.addPAbility(Strings.grandMagicHaste);
+                case 5 -> playerData.addPAbility(StringsRM.mpBoost);
+                case 6 -> playerData.addPAbility(StringsRM.mpShield);
             }
 
             switch (globalData.getNGPGuardianCount()) {
-                case 0:
-                    break;
-                case 1:
-                    playerData.addAbility(Strings.damageControl, true);
-                    break;
-                case 2:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    break;
-                case 3:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    break;
-                case 4:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    break;
-                case 5:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
-                    break;
-                case 6:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
-                    playerData.addAbility(Strings.protect, true);
-                    break;
-                default:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
-                    playerData.addAbility(Strings.protect, true);
-                    break;
+                case 1 -> playerData.addPAbility(Strings.damageControl);
+                case 2 -> playerData.addPAbility(Strings.damageDrive);
+                case 3 -> playerData.addPAbility(StringsRM.mpWalker);
+                case 4 -> playerData.addPAbility(StringsRM.hpWalker);
+                case 5 -> playerData.addPAbility(StringsRM.hpBoost);
+                case 6 -> playerData.addPAbility(Strings.protect);
             }
 
 
@@ -331,42 +206,22 @@ public class CSPrestigePacket implements CustomPacketPayload {
 
 
             if (globalData.getNGPEnabled() == 1) {
-                if (globalData.getSTRBonus() > ModConfigs.statCap) {
-                    playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-                } else {
-                    playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
-                }
-                if (globalData.getMAGBonus() > ModConfigs.statCap) {
-                    playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-                } else {
-                    playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
-                }
-                if (globalData.getDEFBonus() > ModConfigs.statCap) {
-                    playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-                } else {
-                    playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
-                }
+	            playerData.getStrengthStat().addModifier("NG+ Bonus", Math.min(globalData.getSTRBonus(), ModConfigs.statCap), true, false);
+	            playerData.getMagicStat().addModifier("NG+ Bonus", Math.min(globalData.getMAGBonus(), ModConfigs.statCap), true, false);
+	            playerData.getDefenseStat().addModifier("NG+ Bonus", Math.min(globalData.getDEFBonus(), ModConfigs.statCap), true, false);
             }
 
             int addedHP = 2 * globalData.getPrestigeLvl();
             int addedMP = 2 * globalData.getPrestigeLvl();
 
-            if (addedHP > ModConfigs.hpCap) {
-                playerData.addMaxHP(ModConfigs.hpCap);
-            } else {
-                playerData.addMaxHP(addedHP);
-            }
-
-            if (addedMP > ModConfigs.mpCap) {
-                playerData.addMaxHP(ModConfigs.mpCap);
-            } else {
-                playerData.addMaxMP(addedMP);
-            }
-
+	        playerData.addMaxHP(Math.min(addedHP, ModConfigs.hpCap));
+	        playerData.addMaxMP(Math.min(addedMP, ModConfigs.mpCap));
 
             //System.out.println("Prestige Level: " + globalData.getPrestigeLvl());
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
             PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
+            System.out.println("Perma abilities kept: "+playerData.getPAbilitiesList());
             });
         }
 

@@ -42,7 +42,6 @@ public class CounterBlastRC extends ReactionCommand {
         double Y = player.getY();
         double Z = player.getZ();
 
-        globalData.remCanCounter(1);
         player.swing(InteractionHand.MAIN_HAND);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
@@ -72,8 +71,6 @@ public class CounterBlastRC extends ReactionCommand {
                                         new BlockPos((int) lx, (int) player.getY(), (int) lz)
                                 );
 
-
-
                                 LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
                                 lightning.setVisualOnly(true);
                                 if (lightning != null) {
@@ -91,16 +88,15 @@ public class CounterBlastRC extends ReactionCommand {
                 }
             }
         }
+        playerData.removeReactionCommand(getRegistryName().toString());
+
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterBlast) && globalData.getCanCounter() == 1 && globalData.getRCCooldownTicks() == 0) {
-               return true;
-            }
+            return playerData.isAbilityEquipped(StringsRM.counterBlast);
         }
         return false;
     }

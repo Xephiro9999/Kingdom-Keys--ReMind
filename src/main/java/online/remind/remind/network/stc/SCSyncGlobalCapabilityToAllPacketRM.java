@@ -17,7 +17,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public static final StreamCodec<FriendlyByteBuf, SCSyncGlobalCapabilityToAllPacketRM> STREAM_CODEC = StreamCodec.of(SCSyncGlobalCapabilityToAllPacketRM::encode, SCSyncGlobalCapabilityToAllPacketRM::decode);
 
     public int id;
-    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, sCooldown, styleTicks, CanCounter, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
+    public int berserkLvl, berserkTicks, prestige, strBonus, magBonus, defBonus, NGPlusWarriorCount, NGPlusMysticCount, NGPlusGuardianCount, stepTicks, riskchargeCount, autoLife, rcCooldown, sCooldown, styleTicks, strPanel, magPanel, defPanel, panelsStatus, ngpStatus;
     public String dreamEaterRL, style;
     public boolean donorGiven, darkMode, dreamEaterSummoned;
     public byte stepType;
@@ -45,7 +45,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.autoLife = capability.getAutoLifeActive();
         this.rcCooldown = capability.getRCCooldownTicks();
         this.sCooldown = capability.getSCooldownTicks();
-        this.CanCounter = capability.getCanCounter();
         this.strPanel = capability.getSTRPanel();
         this.magPanel = capability.getMAGPanel();
         this.defPanel = capability.getDEFPanel();
@@ -78,7 +77,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeInt(message.autoLife);
         buffer.writeInt(message.rcCooldown);
         buffer.writeInt(message.sCooldown);
-        buffer.writeInt(message.CanCounter);
         buffer.writeInt(message.strPanel);
         buffer.writeInt(message.magPanel);
         buffer.writeInt(message.defPanel);
@@ -117,7 +115,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.autoLife = buffer.readInt();
         msg.rcCooldown = buffer.readInt();
         msg.sCooldown = buffer.readInt();
-        msg.CanCounter = buffer.readInt();
         msg.strPanel = buffer.readInt();
         msg.magPanel = buffer.readInt();
         msg.defPanel = buffer.readInt();
@@ -155,7 +152,6 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setAutoLifeActive(message.autoLife);
                 globalData.setRCCooldownTicks(message.rcCooldown);
                 globalData.setSCooldownTicks(message.sCooldown);
-                globalData.setCanCounter(message.CanCounter);
 
                 globalData.setSTRPanel(message.strPanel);
                 globalData.setMAGPanel(message.magPanel);

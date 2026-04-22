@@ -137,16 +137,6 @@ public class EntityEventsRM {
 				}
 			}
 
-			// Spirit Assignment on Join
-
-
-            // In case the value is NOT what it should be. i.e '-1' or anything over 1
-			if(globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
-				globalData.setCanCounter(0);
-			}
-
-
-
 			// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
 				globalData.setPanelsEnabled(0);
@@ -326,17 +316,10 @@ public class EntityEventsRM {
 	}
 
 
-
-
-
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		GlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
-		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		if (playerData != null){
-
-
 			if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
 				playerData.getStrengthStat().removeModifier("Dedication");
 				playerData.getMagicStat().removeModifier("Dedication");
@@ -348,20 +331,10 @@ public class EntityEventsRM {
 				playerData.getMagicStat().removeModifier("Friendship");
 				playerData.getDefenseStat().removeModifier("Friendship");
 			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get()) || event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
-				if (remindData.getCanCounter() >= 1 || remindData.getCanCounter() < 0) {
-					remindData.setCanCounter(0);
-				}
-				PacketHandlerRM.syncGlobalToAllAround(event.getPlayer(), remindData);
-			}
 		}
 	}
 
-
-
 	// Helper Method for the Situation Gauge System
-
 	/*public enum SpellElement {
 		FIRE,
 		BLIZZARD,
@@ -598,7 +571,7 @@ public class EntityEventsRM {
 		if (event.getEntity() instanceof LivingEntity livingEntity) {
 			GlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
 
-			if (event.getEntity() instanceof Player player) {
+			/*if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {
                     if (globalData.getCanCounter() == 1) {
@@ -615,19 +588,19 @@ public class EntityEventsRM {
 						ticks = 0;
 					}
 				}
-			}
+			}*/
 
 			// MP Boost Test
-			if (event.getEntity() instanceof Player player) {
+			/*if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null){
 
 				}
-			}
+			}*/
 
 
 			// Form Shotlock Change Test
-			if (event.getEntity() instanceof Player player) {
+			/*if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
 					//playerData.setEquippedShotlock(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide);
@@ -635,7 +608,7 @@ public class EntityEventsRM {
 				} else {
 					//System.out.println(playerData.getEquippedShotlock());
 				}
-			}
+			}*/
 
 
 			// Org Passives
@@ -1006,7 +979,7 @@ public class EntityEventsRM {
 					if (playerData != null) {
 						// RC Cooldown mechanic
 						if (globalData.getRCCooldownTicks() > 0) {
-							globalData.setRCCooldownTicks(globalData.getRCCooldownTicks() - 1);
+							globalData.remRCCooldownTicks(1);
 						}
 
 						// Formchange/Situation Gauge System

@@ -1,5 +1,6 @@
 package online.remind.remind.mixin;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +12,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -30,24 +32,27 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 @Mixin(GuardSkill.class)
 public class GuardSkillMixin {
 
-    int maxTicks = 200;
-    int ticks;
-
     @Inject(method = "dealEvent", at = @At("TAIL"), remap = false)
     public void dealEventInject(PlayerPatch<?> playerpatch, TakeDamageEvent.Income event, boolean advanced, CallbackInfo ci) {
         Player player = playerpatch.getOriginal();
         Entity attacker = event.getDamageSource().getEntity();
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
+        if(playerData == null)
+            return;
 
-        globalData.setCanCounter(1);
-        //System.out.println("Debugging Message: Can Counter? " + globalData.getCanCounter());
-        PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+        if(globalData.getRCCooldownTicks() <= 0) {
+            if(playerData.isAbilityEquipped(StringsRM.counterHammer))
+                playerData.addReactionCommand(StringsRM.CounterHammerRC, player);
+            if(playerData.isAbilityEquipped(StringsRM.counterBlast))
+                playerData.addReactionCommand(StringsRM.CounterBlastRC, player);
+            if(playerData.isAbilityEquipped(StringsRM.counterRush))
+                playerData.addReactionCommand(StringsRM.CounterRushRC, player);
 
+            PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+        }
 
         // Block Abilities Effects
-
-
         if(playerData.isAbilityEquipped(StringsRM.renewalBlock)) {
             if (!event.isParried()){
                 player.heal(player.getMaxHealth() * 0.025F);
@@ -74,7 +79,6 @@ public class GuardSkillMixin {
                 playerData.addMP(15);
             }
         }
-
 
 
         // Stop Block Code? :)

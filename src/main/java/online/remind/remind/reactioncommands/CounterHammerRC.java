@@ -34,10 +34,10 @@ public class CounterHammerRC extends ReactionCommand {
         float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.5F);
         globalData.setRCCooldownTicks(60);
 
+
         double X = player.getX();
         double Z = player.getZ();
 
-        globalData.remCanCounter(1);
         player.swing(InteractionHand.MAIN_HAND);
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
@@ -56,16 +56,15 @@ public class CounterHammerRC extends ReactionCommand {
                 }
             }
         }
+        playerData.removeReactionCommand(getRegistryName().toString());
+
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
-        GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null ){
-           if (playerData.isAbilityEquipped(StringsRM.counterHammer) && globalData.getCanCounter() >= 1 && globalData.getRCCooldownTicks() == 0) {
-               return true;
-            }
+            return playerData.isAbilityEquipped(StringsRM.counterHammer);
         }
         return false;
     }

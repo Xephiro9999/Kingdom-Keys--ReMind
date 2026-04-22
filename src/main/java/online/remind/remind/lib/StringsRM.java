@@ -132,7 +132,6 @@ public class StringsRM {
         Regen = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"regen",
 
         // Reprisals
-
         counterHammer = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_hammer",
         counterBlast = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_blast",
         counterRush = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_rush",
