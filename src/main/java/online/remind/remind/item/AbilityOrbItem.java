@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.ability.Ability;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -19,11 +20,10 @@ import online.kingdomkeys.kingdomkeys.util.Utils;
 import java.util.List;
 
 public class AbilityOrbItem extends Item implements ICreativeTabRM {
-    String abilities;
 
-    public AbilityOrbItem(Properties properties, String name){
+
+    public AbilityOrbItem(Properties properties, String string){
         super(properties);
-        this.abilities = name;
     }
 
     @Override
@@ -34,21 +34,33 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
-        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
-        if (abilityInstance != null) {
-            if (!world.isClientSide) {
-                if (!playerData.getPAbilitiesList().contains(abilities)) {
-                    playerData.getPAbilitiesList().add(abilities);
-                    takeItem(player);
-                    player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
-                } else {
-                    player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey()) + " permanently."), true);
+        String abilityIdString = player.getItemInHand(hand).get(ModComponentsRM.ABILITY.get());
 
-                }
-            }
-
+        if (abilityIdString == null || abilityIdString.isEmpty()) {
+            player.displayClientMessage(Component.literal("This orb doesn't contain an ability..."), true);
+            return InteractionResultHolder.success(player.getItemInHand(hand));
         }
-        player.displayClientMessage(Component.translatable("This orb doesn't contain an ability..."), true);
+
+        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilityIdString));
+
+        if (abilityInstance == null) {
+            player.displayClientMessage(Component.literal("Invalid ability."), true);
+            return InteractionResultHolder.success(player.getItemInHand(hand));
+        }
+
+        if (!playerData.getPAbilitiesList().contains(abilityIdString)) {
+            playerData.getPAbilitiesList().add(abilityIdString);
+            takeItem(player);
+            player.displayClientMessage(Component.literal(
+                    "Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())
+            ), true);
+            PacketHandler.syncToAllAround(player, playerData);
+        } else {
+            player.displayClientMessage(Component.literal(
+                    "You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey())
+            ), true);
+        }
+
         return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 
@@ -62,11 +74,18 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
-        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
-        if (abilityInstance != null) {
-            tooltip.add(Component.translatable("Contains ability: " + Utils.translateToLocal(abilityInstance.getTranslationKey())));
-        } else {
-            tooltip.add(Component.translatable("This orb doesn't contain an ability."));
+        String abilityIdString = stack.get(ModComponentsRM.ABILITY.get());
+
+        if (abilityIdString != null) {
+            Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilityIdString));
+
+            if (abilityInstance != null) {
+                tooltip.add(Component.literal("Contains ability: " +
+                        Utils.translateToLocal(abilityInstance.getTranslationKey())));
+                return;
+            }
         }
+
+        tooltip.add(Component.literal("This orb doesn't contain an ability."));
     }
 }
