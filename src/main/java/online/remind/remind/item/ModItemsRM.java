@@ -68,6 +68,9 @@ public class ModItemsRM{
         meteorShower = ITEMS.register("meteor_shower_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":meteor_shower")),
         darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":dark_divide")),
 
+        // Ability Orb?
+        abilityOrb = ITEMS.register("ability_orb", () -> new AbilityOrbItem(new Item.Properties(), KingdomKeysReMind.MODID+":ability_renewal_block")),
+
         // Keyblades
         xephiroKeyblade = ITEMS.register("xephiro_keyblade", () -> new KeybladeItem(new Item.Properties())),
         pureblood = ITEMS.register("pureblood", () -> new KeybladeItem(new Item.Properties())),
