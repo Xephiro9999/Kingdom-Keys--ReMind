@@ -42,6 +42,7 @@ import online.remind.remind.handler.InputHandlerRM;
 import online.remind.remind.integration.epicfight.EpicFightEvents;
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
 import online.remind.remind.item.ICreativeTabRM;
+import online.remind.remind.item.ModComponentsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
 import online.remind.remind.magic.ModMagicsRM;
@@ -91,6 +92,7 @@ public class KingdomKeysReMind {
         ReMindParticles.PARTICLE_TYPES.register(modEventBus);
         ModReactionCommandsRM.REACTION_COMMANDS.register(modEventBus);
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
+        ModComponentsRM.COMPONENTS.register(modEventBus);
         SGaugeEventHandler.register();
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
