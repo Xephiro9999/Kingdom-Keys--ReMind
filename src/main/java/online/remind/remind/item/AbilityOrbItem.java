@@ -51,7 +51,7 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
         if (!world.isClientSide) {
             if (!playerData.getPAbilitiesList().contains(abilityIdString)) {
-                playerData.getPAbilitiesList().add(abilityIdString);
+                playerData.addPAbility(abilityIdString);
                 takeItem(player);
                 player.displayClientMessage(Component.literal(
                         "Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())
