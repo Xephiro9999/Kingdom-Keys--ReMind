@@ -32,20 +32,23 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
         Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
+        if (abilityInstance != null) {
+            if (!world.isClientSide) {
+                if (!playerData.getPAbilitiesList().contains(abilities)) {
+                    playerData.getPAbilitiesList().add(abilities);
+                    takeItem(player);
+                    player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
+                } else {
+                    player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey()) + " permanently."), true);
 
-        if(!world.isClientSide){
-            if (!playerData.getPAbilitiesList().contains(abilities)){
-                playerData.getPAbilitiesList().add(abilities);
-                takeItem(player);
-				player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
-            } else {
-                player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey()) + " permanently."), true);
-
+                }
             }
+
         }
+        player.displayClientMessage(Component.translatable("This orb doesn't contain an ability..."), true);
         return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 
@@ -60,6 +63,10 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
         Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
-        tooltip.add(Component.translatable("Contains ability: " + Utils.translateToLocal(abilityInstance.getTranslationKey())));
+        if (abilityInstance != null) {
+            tooltip.add(Component.translatable("Contains ability: " + Utils.translateToLocal(abilityInstance.getTranslationKey())));
+        } else {
+            tooltip.add(Component.translatable("This orb doesn't contain an ability."));
+        }
     }
 }

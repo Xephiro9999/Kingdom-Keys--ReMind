@@ -69,7 +69,7 @@ public class ModItemsRM{
         darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":dark_divide")),
 
         // Ability Orb?
-        abilityOrb = ITEMS.register("ability_orb", () -> new AbilityOrbItem(new Item.Properties(), KingdomKeysReMind.MODID+":ability_renewal_block")),
+        abilityOrb = ITEMS.register("ability_orb", () -> new AbilityOrbItem(new Item.Properties(), "none")),
 
         // Keyblades
         xephiroKeyblade = ITEMS.register("xephiro_keyblade", () -> new KeybladeItem(new Item.Properties())),
