@@ -41,7 +41,6 @@ import online.remind.remind.handler.EntityEventsRM;
 import online.remind.remind.handler.InputHandlerRM;
 import online.remind.remind.integration.epicfight.EpicFightEvents;
 import online.remind.remind.integration.epicfight.init.EpicFightIntegrationRM;
-import online.remind.remind.item.AbilityOrbRegistry;
 import online.remind.remind.item.ICreativeTabRM;
 import online.remind.remind.item.ModComponentsRM;
 import online.remind.remind.item.ModItemsRM;
@@ -84,12 +83,9 @@ public class KingdomKeysReMind {
         ModDreamEaters.DREAM_EATERS.register(modEventBus);
         ModMagicsRM.MAGIC.register(modEventBus);
         ModSoundsRM.SOUNDS.register(modEventBus);
-        ModAbilitiesRM.ABILITIES.register(modEventBus);
-
-        AbilityOrbRegistry.generateAbilityOrbs();
-
         ModItemsRM.ITEMS.register(modEventBus);
         ModEntitiesRM.ENTITIES.register(modEventBus);
+        ModAbilitiesRM.ABILITIES.register(modEventBus);
         ModDriveFormsRM.DRIVE_FORMS.register(modEventBus);
         ModShotlocksRM.SHOTLOCKS.register(modEventBus);
         ModMobEffectsRM.MOB_EFFECTS.register(modEventBus);
@@ -97,7 +93,6 @@ public class KingdomKeysReMind {
         ModReactionCommandsRM.REACTION_COMMANDS.register(modEventBus);
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
         ModComponentsRM.COMPONENTS.register(modEventBus);
-        AbilityOrbRegistry.ITEMS.register(modEventBus);
         SGaugeEventHandler.register();
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
