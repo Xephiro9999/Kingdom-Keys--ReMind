@@ -21,9 +21,10 @@ import java.util.List;
 
 public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
-
+    String ability;
     public AbilityOrbItem(Properties properties, String string){
         super(properties);
+        this.ability = string;
     }
 
     @Override
@@ -34,22 +35,21 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
-        String abilityIdString = player.getItemInHand(hand).get(ModComponentsRM.ABILITY.get());
 
-        if (abilityIdString == null || abilityIdString.isEmpty()) {
+        if (ability == null || ability.isEmpty()) {
             player.displayClientMessage(Component.literal("This orb doesn't contain an ability..."), true);
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
-        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilityIdString));
+        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(ability));
 
         if (abilityInstance == null) {
             player.displayClientMessage(Component.literal("Invalid ability."), true);
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
-        if (!playerData.getPAbilitiesList().contains(abilityIdString)) {
-            playerData.getPAbilitiesList().add(abilityIdString);
+        if (!playerData.getPAbilitiesList().contains(ability)) {
+            playerData.getPAbilitiesList().add(ability);
             takeItem(player);
             player.displayClientMessage(Component.literal(
                     "Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())
@@ -74,10 +74,9 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
-        String abilityIdString = stack.get(ModComponentsRM.ABILITY.get());
 
-        if (abilityIdString != null) {
-            Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilityIdString));
+        if (ability != null) {
+            Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(ability));
 
             if (abilityInstance != null) {
                 tooltip.add(Component.literal("Contains ability: " +
