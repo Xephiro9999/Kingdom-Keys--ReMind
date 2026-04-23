@@ -12,18 +12,16 @@ import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.ability.Ability;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
-import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
-import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 
 import java.util.List;
 
 public class AbilityOrbItem extends Item implements ICreativeTabRM {
-    String abilities;
+    String ability;
 
-    public AbilityOrbItem(Properties properties, String name){
+    public AbilityOrbItem(Properties properties, String string){
         super(properties);
-        this.abilities = name;
+        this.ability = string;
     }
 
     @Override
@@ -34,15 +32,17 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
-        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
-        if (abilityInstance != null) {
+        String ability = player.getItemInHand(hand).get(ModComponentsRM.ABILITY.get());
+
+        if (ability != null || ability.isEmpty()) {
+            Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(ability));
             if (!world.isClientSide) {
-                if (!playerData.getPAbilitiesList().contains(abilities)) {
-                    playerData.getPAbilitiesList().add(abilities);
+                if (!playerData.getPAbilitiesList().contains(abilityInstance)) {
+                    playerData.getPAbilitiesList().add(ability);
                     takeItem(player);
-                    player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
+                    player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(String.valueOf(abilityInstance))), true);
                 } else {
-                    player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey()) + " permanently."), true);
+                    player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(String.valueOf(abilityInstance)) + " permanently."), true);
 
                 }
             }
@@ -62,9 +62,9 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
-        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilities));
-        if (abilityInstance != null) {
-            tooltip.add(Component.translatable("Contains ability: " + Utils.translateToLocal(abilityInstance.getTranslationKey())));
+        Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(ability));
+        if (ability != null) {
+            tooltip.add(Component.translatable("Contains ability: " + Utils.translateToLocal(String.valueOf(abilityInstance))));
         } else {
             tooltip.add(Component.translatable("This orb doesn't contain an ability."));
         }
