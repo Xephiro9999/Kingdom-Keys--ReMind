@@ -36,19 +36,16 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
 
         if (ability != null || ability.isEmpty()) {
             Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(ability));
-            if (!world.isClientSide) {
-                if (!playerData.getPAbilitiesList().contains(abilityInstance)) {
-                    playerData.getPAbilitiesList().add(ability);
-                    takeItem(player);
-                    player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(String.valueOf(abilityInstance))), true);
-                } else {
-                    player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(String.valueOf(abilityInstance)) + " permanently."), true);
-
-                }
+            if (!playerData.getPAbilitiesList().contains(abilityInstance)) {
+                playerData.addPAbility(ability);
+                takeItem(player);
+                player.displayClientMessage(Component.translatable("Permanently learned " + Utils.translateToLocal(String.valueOf(abilityInstance))), true);
+            } else {
+                player.displayClientMessage(Component.translatable("You already have " + Utils.translateToLocal(String.valueOf(abilityInstance)) + " permanently."), true);
             }
-
+        } else {
+            player.displayClientMessage(Component.translatable("This orb doesn't contain an ability..."), true);
         }
-        player.displayClientMessage(Component.translatable("This orb doesn't contain an ability..."), true);
         return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 
