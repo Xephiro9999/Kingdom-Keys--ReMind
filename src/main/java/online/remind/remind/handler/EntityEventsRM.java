@@ -27,6 +27,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
+import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
 import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
@@ -36,7 +37,7 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
-import online.kingdomkeys.kingdomkeys.item.ModItems;
+import online.kingdomkeys.kingdomkeys.item.MagicSpellItem;
 import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
@@ -62,19 +63,33 @@ public class EntityEventsRM {
 
 	public int ticks;
 
-	int maxTicks;
-
 	public static Map<UUID, Item> ALLOWED_UUIDS = new HashMap<>();
+
+
+	@SubscribeEvent
+	public void onPlayerChangeMagic(EquipmentEvent.Magic e){
+		PlayerData playerData = PlayerData.get(e.getPlayer());
+		GlobalDataRM globalData = ModDataRM.getGlobal(e.getPlayer());
+
+		if(e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell){ //If it's a valid spell (people love to play with NBT editing)
+			ItemStack oldSpell = playerData.getEquippedMagics().get(newSpell.getMagic());
+
+			if(oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell){ //If it already exists, update its value
+				if(foundSpell.getLevel() < newSpell.getLevel()){ //Update only if the new spell is higher
+					globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newSpell.getLevel());
+					PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
+				}
+			} else { //If doesn't exist add it either way
+				globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newSpell.getLevel());
+				PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent e){
 		Player player = e.getEntity();
-		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
-
-		if (playerData != null){
-
-		}
 
 		if (globalData != null){
 			globalData.setHasDreamEaterSummoned(false);
@@ -160,21 +175,9 @@ public class EntityEventsRM {
 			globalData.setNGPEnabled(1);
 
 			if (globalData.getNGPEnabled() == 1) {
-				if (globalData.getSTRBonus() > ModConfigs.statCap) {
-					playerData.getStrengthStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-				} else {
-					playerData.getStrengthStat().addModifier("NG+ Bonus", globalData.getSTRBonus(), true, false);
-				}
-				if (globalData.getMAGBonus() > ModConfigs.statCap) {
-					playerData.getMagicStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-				} else {
-					playerData.getMagicStat().addModifier("NG+ Bonus", globalData.getMAGBonus(), true, false);
-				}
-				if (globalData.getDEFBonus() > ModConfigs.statCap) {
-					playerData.getDefenseStat().addModifier("NG+ Bonus", ModConfigs.statCap, true, false);
-				} else {
-					playerData.getDefenseStat().addModifier("NG+ Bonus", globalData.getDEFBonus(), true, false);
-				}
+				playerData.getStrengthStat().addModifier("NG+ Bonus", Math.min(globalData.getSTRBonus(), ModConfigs.statCap), true, false);
+				playerData.getMagicStat().addModifier("NG+ Bonus", Math.min(globalData.getMAGBonus(), ModConfigs.statCap), true, false);
+				playerData.getDefenseStat().addModifier("NG+ Bonus", Math.min(globalData.getDEFBonus(), ModConfigs.statCap), true, false);
 			}
 
 			// If player was inflicted with slow/haste before logging out
@@ -248,13 +251,6 @@ public class EntityEventsRM {
 
 	}
 
-	private void updateEquippedAbilities(Player player){
-		PlayerData playerData = PlayerData.get(player);
-
-	}
-
-
-
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event){
 		PlayerData playerData = PlayerData.get(event.getPlayer());
@@ -262,20 +258,7 @@ public class EntityEventsRM {
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		Player player = event.getPlayer();
 
-
-
-			/*if (event.getAbility().equals(ModAbilitiesRM.MP_BOOST.get())) {
-				playerData.addMaxMP(12.5);
-			}
-
-			if (event.getAbility().equals(ModAbilitiesRM.HP_BOOST.get())) {
-				playerData.addMaxHP(15);
-				event.getPlayer().setHealth(playerData.getMaxHP());
-				event.getPlayer().getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerData.getMaxHP());
-			}*/
-
 			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-
 				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
 				if (party != null){
 					float friendBoost = party.getMembers().size() - 1;
@@ -570,7 +553,6 @@ public class EntityEventsRM {
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
 		if (event.getEntity() instanceof LivingEntity livingEntity) {
 			GlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
-
 			/*if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 				if (playerData != null) {

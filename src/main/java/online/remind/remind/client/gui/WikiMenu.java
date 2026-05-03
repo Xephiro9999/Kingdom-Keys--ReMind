@@ -10,7 +10,10 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +39,7 @@ public class WikiMenu extends MenuBackground {
 */
     private Wiki activePage = Wiki.NONE;
     WikiLib wikiLib;
-    PlayerData playerData;
+    private GlobalDataRM globalData;
 
     private MenuButton backButton, attack, magic, forms, armor, accessory, shotlock, keyblades, ability;
 
@@ -48,6 +51,7 @@ public class WikiMenu extends MenuBackground {
     public WikiMenu() {
         super("Journal - Re:Mind", new Color(44, 196, 168));
         minecraft = Minecraft.getInstance();
+        globalData = ModDataRM.getGlobal(minecraft.player);
     }
 
     private void setPage(Wiki page) {
@@ -84,76 +88,76 @@ public class WikiMenu extends MenuBackground {
 
     private void addAttackElements() {
         wikiLib.ATTACK_HEADER.add();
-        boolean condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_quick_blitz"));
+        boolean condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_quick_blitz"));
         wikiLib.QUICK_BLITZ.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_sliding_dash"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_sliding_dash"));
         wikiLib.SLIDING_DASH.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_fire_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_fire_surge"));
         wikiLib.FIRE_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_thunder_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_thunder_surge"));
         wikiLib.THUNDER_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_blizzard_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_blizzard_surge"));
         wikiLib.BLIZZARD_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_water_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_water_surge"));
         wikiLib.WATER_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_aero_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_aero_surge"));
         wikiLib.AERO_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_light_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_light_surge"));
         wikiLib.LIGHT_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_dark_surge"));
         wikiLib.DARK_SURGE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "attack_zantetsuken"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "attack_zantetsuken"));
         wikiLib.ZANTETSUKEN.setCondition(condition).add();
     }
 
     private void addMagicElements() {
         wikiLib.MAGICS_HEADER.add();
-        boolean condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"));
+        boolean condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"));
         wikiLib.ESUNA.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_dispel"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_dispel"));
         wikiLib.DISPEL.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_haste"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_haste"));
         wikiLib.HASTE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_slow"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_slow"));
         wikiLib.SLOW.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_steal"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_steal"));
         wikiLib.STEAL.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_spark"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_spark"));
         wikiLib.SPARK.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_berserk"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_berserk"));
         wikiLib.BERSERK.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_drain"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_drain"));
         wikiLib.DRAIN.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_osmose"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_osmose"));
         wikiLib.OSMOSE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_silence"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_silence"));
         wikiLib.SILENCE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_holy"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_holy"));
         wikiLib.HOLY.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ruin"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ruin"));
         wikiLib.RUIN.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_balloon"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_balloon"));
         wikiLib.BALLOON.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"));
         wikiLib.AUTO_LIFE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_shield"));
         wikiLib.MINE_SHIELD.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_mine_square"));
         wikiLib.MINE_SQUARE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_regen"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_regen"));
         wikiLib.REGEN.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_faith"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_faith"));
         wikiLib.FAITH.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_comet"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_comet"));
         wikiLib.COMET.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_warp"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_warp"));
         wikiLib.WARP.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_confuse"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_confuse"));
         wikiLib.CONFUSE.setCondition(condition).add();
-        condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ultima"));
+        condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_ultima"));
         wikiLib.ULTIMA.setCondition(condition).add();
         //TODO: Figure out a fun and balanced way to make Death obtainable outside of commands?
-        //condition = playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_death"));
+        //condition = globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_death"));
         //wikiLib.DEATH.setCondition(condition).add();
 
     }
@@ -226,6 +230,7 @@ public class WikiMenu extends MenuBackground {
         }));
 
         playerData = PlayerData.get(minecraft.player);
+        globalData = ModDataRM.getGlobal(minecraft.player);
         wikiLib = new WikiLib(col1X, (int)(width*0.25));
 
         //Just in case we clear them even tho they should be empty when creating the instance

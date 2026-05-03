@@ -3,13 +3,18 @@ package online.remind.remind.capabilities;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
+import online.kingdomkeys.kingdomkeys.magic.ModMagic;
+import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GlobalDataRM implements INBTSerializable<CompoundTag> {
@@ -58,6 +63,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     private String dreamEaterRL = KingdomKeysReMind.MODID + ":" + StringsRM.none;
     private boolean donorGiven;
     private boolean darkMode;
+    private LinkedHashMap<String, Integer> learnedMagics = new LinkedHashMap<>(); //Key = name, value = level
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
@@ -109,6 +115,12 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         // Donor Grant
         storage.putBoolean("donor_grant", this.getDonorGiven());
 
+        CompoundTag forms = new CompoundTag();
+        for (Map.Entry<String, Integer> pair : this.getLearndedMagics().entrySet()) {
+            forms.putInt(pair.getKey(), pair.getValue());
+        }
+        storage.put("magic_names", forms);
+
         return storage;
     }
 
@@ -155,7 +167,12 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         // this.setPanelChoice(properties.getString("Panels_Choice"));
 
-
+        learnedMagics.clear();
+        for (String magicName : nbt.getCompound("learned_magics").getAllKeys()) {
+            if (ModMagic.registry.containsKey(ResourceLocation.parse(magicName))) {
+                this.getLearndedMagics().put(magicName, nbt.getCompound("learned_magics").getInt(magicName));
+            }
+        }
     }
 
     //Haste
@@ -546,9 +563,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     public void remSCooldownTicks(int ticks) {
         this.SCooldown = Math.max(SCooldown - ticks, 0);
-
     }
-
 
     public int getStyleTicks() {
         return this.styleTicks;
@@ -562,5 +577,25 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         this.styleTicks = Math.max(styleTicks - ticks, 0);
     }
 
+    public LinkedHashMap<String, Integer> getLearndedMagics(){
+        return learnedMagics;
+    }
+
+    public void setLearnedMagics(LinkedHashMap<String, Integer> learnedMagics) {
+        this.learnedMagics = learnedMagics;
+    }
+
+    public int getLearnedMagicLevel(ResourceLocation magic){
+        for(Map.Entry<String, Integer> s : learnedMagics.entrySet()){
+            if(s.getKey().equals(magic.toString())){
+                return s.getValue();
+            }
+        }
+        return -1;
+    }
+
+    public void setLearnedMagicLevel(ResourceLocation magic, int level){
+        learnedMagics.put(magic.toString(), level);
+    }
 
 }

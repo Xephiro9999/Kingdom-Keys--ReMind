@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -199,6 +200,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private void castSupportMagic(){
         float healAmount;
         PlayerData ownerData = PlayerData.get(owner);
+        GlobalDataRM globalData = ModDataRM.getGlobal(owner);
 
         if (ownerData == null) return;
         if (ownerData.isAbilityEquipped(Strings.mpHaste) || ownerData.isAbilityEquipped(Strings.mpHastera) || ownerData.isAbilityEquipped(Strings.mpHastega)) {
@@ -253,16 +255,13 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         if (owner != null && owner.isAlive()){
             if (castCooldown == 0) {
-
-
-
                 //owner.sendSystemMessage(Component.literal(owner.getHealth() + ""));
                 // Cure Logic
-                if (ownerData == null) return;
-                if (ownerData.getMagicsMap().containsKey(Strings.Magic_Cure)) {
+                if (ownerData == null ||globalData == null) return;
+                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
                     if (cureCooldown == 0 && castCooldown == 0) {
                         if (owner.isHurt() || owner.hasEffect(ModMobEffects.KO)) {
-                            int cureLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
+                            int cureLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
                             switch (cureLevel) {
                                 case 0:
                                     ((ServerLevel) owner.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), owner.getX(), owner.getY() + 2.3D, owner.getZ(), 5, 0D, 0D, 0D, 0D);
@@ -303,10 +302,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
 
                 // Aero Logic
-                if (ownerData.getMagicsMap().containsKey(Strings.Magic_Aero)) {
+                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
                     if (aeroCooldown == 0 && castCooldown == 0) {
                         if (owner.hurtTime > 0) {
-                            int aeroLevel = ownerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
+                            int aeroLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
                             int time = (int) (chirithyMagic * 100) * (1 + aeroLevel);
                             owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time * 20, aeroLevel, false, false, true));
                             PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
@@ -336,7 +335,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                 // Esuna Logic
 
-                if (ownerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
+                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
                     if (esunaCooldown == 0 && castCooldown == 0) {
 
                         List<Holder<MobEffect>> toRemove = new ArrayList<>();
@@ -365,7 +364,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 }
 
                 // Auto-Life
-                if (ownerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
+                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
                     if (!owner.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
                         if (autoLifeCooldown == 0 && castCooldown == 0){
                             owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE,Integer.MAX_VALUE, 0,false,false));

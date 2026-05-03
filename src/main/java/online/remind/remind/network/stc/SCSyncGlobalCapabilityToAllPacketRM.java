@@ -10,6 +10,8 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload {
@@ -23,6 +25,8 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
     public byte stepType;
     public UUID dreamEaterUUID;
     public double situationValue;
+    public LinkedHashMap<String, Integer> learnedMagics;
+
 
     public SCSyncGlobalCapabilityToAllPacketRM() {
 
@@ -58,6 +62,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         this.style = capability.getStyle();
         this.situationValue = capability.getSituationValue();
         this.styleTicks = capability.getStyleTicks();
+        this.learnedMagics = new LinkedHashMap<>(capability.getLearndedMagics());
     }
 
     public static void encode(FriendlyByteBuf buffer, SCSyncGlobalCapabilityToAllPacketRM message){
@@ -95,6 +100,12 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         buffer.writeUtf(message.style, 512);
         buffer.writeDouble(message.situationValue);
         buffer.writeInt(message.styleTicks);
+
+        buffer.writeInt(message.learnedMagics.size());
+        for (Map.Entry<String, Integer> entry : message.learnedMagics.entrySet()) {
+            buffer.writeUtf(entry.getKey(), 512);
+            buffer.writeInt(entry.getValue());
+        }
     }
 
     public static SCSyncGlobalCapabilityToAllPacketRM decode(FriendlyByteBuf buffer){
@@ -130,6 +141,15 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
         msg.style = buffer.readUtf(512);
         msg.situationValue = buffer.readDouble();
         msg.styleTicks = buffer.readInt();
+
+        int size = buffer.readInt();
+        msg.learnedMagics = new LinkedHashMap<>();
+
+        for (int i = 0; i < size; i++) {
+            String key = buffer.readUtf(512);
+            int value = buffer.readInt();
+            msg.learnedMagics.put(key, value);
+        }
         return msg;
     }
 
@@ -166,6 +186,7 @@ public class SCSyncGlobalCapabilityToAllPacketRM implements CustomPacketPayload 
                 globalData.setStyle(message.style);
                 globalData.setSituationValue(message.situationValue);
                 globalData.setStyleTicks(message.styleTicks);
+                globalData.setLearnedMagics(message.learnedMagics);
 			}
 		});
     }

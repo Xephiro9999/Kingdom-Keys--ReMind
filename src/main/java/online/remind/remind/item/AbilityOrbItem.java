@@ -53,14 +53,10 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
             if (!playerData.getPAbilitiesList().contains(abilityIdString)) {
                 playerData.addPAbility(abilityIdString);
                 takeItem(player);
-                player.displayClientMessage(Component.literal(
-                        "Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())
-                ), true);
+                player.displayClientMessage(Component.literal("Permanently learned " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
                 PacketHandler.syncToAllAround(player, playerData);
             } else {
-                player.displayClientMessage(Component.literal(
-                        "You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey())
-                ), true);
+                player.displayClientMessage(Component.literal("You already have " + Utils.translateToLocal(abilityInstance.getTranslationKey())), true);
             }
         }
         return InteractionResultHolder.success(player.getItemInHand(hand));
@@ -82,8 +78,7 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
             Ability abilityInstance = ModAbilities.registry.get(ResourceLocation.parse(abilityIdString));
 
             if (abilityInstance != null) {
-                tooltip.add(Component.literal("Contains ability: " +
-                        Utils.translateToLocal(abilityInstance.getTranslationKey())));
+                tooltip.add(Component.literal("Contains ability: " + Utils.translateToLocal(abilityInstance.getTranslationKey())));
                 return;
             }
         }

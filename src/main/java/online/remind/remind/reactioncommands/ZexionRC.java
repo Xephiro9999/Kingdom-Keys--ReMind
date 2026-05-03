@@ -32,8 +32,8 @@ public class ZexionRC extends ReactionCommand {
     @OnlyIn(Dist.CLIENT)
     @Override
     public String getTranslationKey() {
-        PlayerData playerData = PlayerData.get(Minecraft.getInstance().player);
-        int level = playerData.getMagicLevel(magic);
+        GlobalDataRM globalData = ModDataRM.getGlobal(Minecraft.getInstance().player);
+        int level = globalData.getLearnedMagicLevel(magic);
         Magic mag = ModMagic.registry.get(magic);
         //Maybe this will have to be re-enabled if we give access to -za magic to players without reaction commands
 		/*if(level == mag.getMaxLevel()) { //If magic level is the same as the max keep it max
@@ -51,7 +51,7 @@ public class ZexionRC extends ReactionCommand {
             PlayerData playerData = PlayerData.get(player);
             GlobalDataRM globalData = ModDataRM.getGlobal(player);
             Magic mag = ModMagic.registry.get(magic);
-            int level = playerData.getMagicLevel(magic);
+            int level = globalData.getLearnedMagicLevel(magic);
 
             globalData.setRCCooldownTicks(60);
 

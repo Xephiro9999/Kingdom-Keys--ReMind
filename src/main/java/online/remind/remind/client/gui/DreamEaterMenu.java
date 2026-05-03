@@ -131,8 +131,8 @@ public class DreamEaterMenu extends MenuBackground {
 
                     // Known Abilities
                     addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Abilities:", "", 0xffffff));
-                    if (playerData.getMagicsMap().containsKey(Strings.Magic_Cure)) {
-                        switch (playerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
+                    if (global.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
+                        switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
                             case 0:
                                 addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "LEARNED", 0x7a8487));
                                 break;
@@ -146,13 +146,13 @@ public class DreamEaterMenu extends MenuBackground {
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "Requires Cure Unlocked", 0x000000));
                     }
-                    if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
+                    if (global.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Esuna", "LEARNED", 0x7a8487));
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Esuna", "Requires Esuna Unlocked", 0x000000));
                     }
-                    if (playerData.getMagicsMap().containsKey(Strings.Magic_Aero)) {
-                        switch (playerData.getMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
+                    if (global.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
+                        switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
                             case 0:
                                 addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aero", "LEARNED", 0x7a8487));
                                 break;
@@ -166,7 +166,7 @@ public class DreamEaterMenu extends MenuBackground {
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aero", "Requires Aero Unlocked", 0x000000));
                     }
-                    if (playerData.getMagicsMap().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
+                    if (global.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "LEARNED", 0x7a8487));
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "Requires Auto-Life Unlocked", 0x000000));

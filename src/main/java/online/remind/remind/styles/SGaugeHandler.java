@@ -19,11 +19,7 @@ public class SGaugeHandler {
 
     private static final Map<UUID, Map<ResourceLocation, Double>> WEIGHTS = new HashMap<>();
 
-    public static void addContribution(Player player,
-                                       ResourceLocation actionId,
-                                       Set<StyleElement> elements,
-                                       Set<ResourceLocation> specificStyles,
-                                       int level) {
+    public static void addContribution(Player player, ResourceLocation actionId, Set<StyleElement> elements, Set<ResourceLocation> specificStyles, int level) {
 
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         PlayerData playerData = PlayerData.get(player);
