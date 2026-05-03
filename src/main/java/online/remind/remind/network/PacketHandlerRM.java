@@ -13,7 +13,6 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.network.cts.*;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
-import online.remind.remind.network.stc.SCSyncGlobalDataRM;
 
 @EventBusSubscriber
 public class PacketHandlerRM {
@@ -24,7 +23,6 @@ public class PacketHandlerRM {
         KingdomKeysReMind.LOGGER.info("REGISTERING PACKETS");
         //ServerToClient
         registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
-        registrar.playToClient(SCSyncGlobalDataRM.TYPE, SCSyncGlobalDataRM.STREAM_CODEC, SCSyncGlobalDataRM::handle);
 
 
         // ClientToServer
