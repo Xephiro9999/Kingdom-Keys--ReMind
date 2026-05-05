@@ -1,0 +1,15 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kkremind:mine_square1_spell",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:mine_square2_spell",
+    "quantity": 1
+  },
+  "tier": 6
+}

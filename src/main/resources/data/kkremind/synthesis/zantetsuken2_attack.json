@@ -1,0 +1,15 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kkremind:zantetsuken1_attack",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:zantetsuken2_attack",
+    "quantity": 1
+  },
+  "tier": 7
+}

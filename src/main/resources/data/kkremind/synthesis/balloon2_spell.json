@@ -1,0 +1,15 @@
+{
+  "cost": 0,
+  "ingredients": [
+    {
+      "material": "kkremind:balloon1_spell",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:balloon2_spell",
+    "quantity": 1
+  },
+  "tier": 6
+}

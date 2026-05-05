@@ -1,0 +1,15 @@
+{
+  "cost": 100,
+  "ingredients": [
+    {
+      "material": "kkremind:water_surge_attack",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:water_surge1_attack",
+    "quantity": 1
+  },
+  "tier": 3
+}

@@ -1,0 +1,15 @@
+{
+  "cost": 100,
+  "ingredients": [
+    {
+      "material": "kkremind:quick_blitz_attack",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:quick_blitz1_attack",
+    "quantity": 1
+  },
+  "tier": 2
+}
