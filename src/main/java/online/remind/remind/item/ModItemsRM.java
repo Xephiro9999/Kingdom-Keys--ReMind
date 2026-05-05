@@ -62,8 +62,10 @@ public class ModItemsRM{
         sparkraSpell = ITEMS.register("spark1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark",1)),
         mineSquare1Spell = ITEMS.register("mine_square1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square",1)),
         mineShield1Spell = ITEMS.register("mine_shield1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield",1)),
+        confuse1Spell = ITEMS.register("confuse1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse",1)),
 
-        hastegaSpell = ITEMS.register("haste2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",2)),
+
+    hastegaSpell = ITEMS.register("haste2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",2)),
         slowgaSpell = ITEMS.register("slow2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow",2)),
         holygaSpell = ITEMS.register("holy2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy",2)),
         ruingaSpell = ITEMS.register("ruin2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin",2)),
@@ -76,6 +78,7 @@ public class ModItemsRM{
         sparkgaSpell = ITEMS.register("spark2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark",2)),
         mineSquare2Spell = ITEMS.register("mine_square2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square",2)),
         mineShield2Spell = ITEMS.register("mine_shield2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield",2)),
+        confuse2Spell = ITEMS.register("confuse2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse",2)),
 
         mineSquare3Spell = ITEMS.register("mine_square3_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square",3)),
         mineShield3Spell = ITEMS.register("mine_shield3_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield",3)),
