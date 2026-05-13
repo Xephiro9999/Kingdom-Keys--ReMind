@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,6 +58,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     Player owner;
 
     private UUID ownerUUID;
+
 
     private double chirithyHP;
     private double chirithyStrength;
@@ -108,16 +110,19 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
     }
 
-    public ChirithyEntity(Level worldIn, Player owner){
-        this(ModEntitiesRM.TYPE_CHIRITHY.get(),worldIn);
+    public ChirithyEntity(Level worldIn, Player owner) {
+        this(ModEntitiesRM.TYPE_CHIRITHY.get(), worldIn);
+
         if (owner != null) {
             this.owner = owner;
+            this.setOwnerUUID(owner.getUUID());
+            this.setTame(true, true);
+
             PlayerData ownerData = PlayerData.get(owner);
 
-            // Attribute Scaling
             this.hp = (int) (20 + (ownerData.getMaxHP() / 2D));
             this.str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-            this.mag = (int) ( 5 + (ownerData.getMagicStat().getStat() * 0.75D));
+            this.mag = (int) (5 + (ownerData.getMagicStat().getStat() * 0.75D));
             this.def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
 
             this.setHealth((float) hp);
@@ -141,58 +146,63 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
     }
 
+    @Override
     public void tick() {
         super.tick();
 
         if (this.level().isClientSide) return;
 
-        if (this.getOwner() == null) {
+        UUID ownerId = this.getOwnerUUID();
+
+        // No owner UUID = invalid summon
+        if (ownerId == null) {
+            this.discard();
+            return;
+        }
+
+        Player owner = this.level().getPlayerByUUID(ownerId);
+
+        // Owner is not in this dimension / not loaded / offline
+        if (owner == null) {
+            this.discard();
+            return;
+        }
+
+        // Keep your field synced
+        this.owner = owner;
+
+        GlobalDataRM data = ModDataRM.getGlobal(owner);
+
+        if (data == null) {
+            this.discard();
+            return;
+        }
+
+        if (owner.isDeadOrDying()) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
             this.discard();
             return;
         }
 
         updateStatsFromOwner();
 
+        if (!this.isAlive()) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
+            return;
+        }
 
-
-
-        Player owner = this.level().getPlayerByUUID(this.getOwnerUUID());
-        GlobalDataRM data = ModDataRM.getGlobal(owner);
-
-        // Sorry gamer, but if I die, you die.
-        if (owner == null || owner.isDeadOrDying()) {
-
-            if (data != null) {
-                data.setHasDreamEaterSummoned(false);
-                data.setDreamEaterUUID(null);
-                PacketHandlerRM.syncGlobalToAllAround(owner, data);
-            }
+        if (!data.getDreamEaterRL().equals(ModDreamEaters.CHIRITHY.get().getRegistryName().toString())) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
             this.discard();
             return;
         }
 
-
-
-
-        // If you die, I no longer am bound to you.
-        if (!this.isAlive()){
-            data.setHasDreamEaterSummoned(false);
-            data.setDreamEaterUUID(null);
-            PacketHandlerRM.syncGlobalToAllAround(owner, data);
-        }
-
-
-        // Desummon if player's data doesn't match the current ID
-        if (data != null) {
-            if (!data.getDreamEaterRL().equals(ModDreamEaters.CHIRITHY.get().getRegistryName().toString())) {
-                data.setHasDreamEaterSummoned(false);
-                data.setDreamEaterUUID(null);
-                PacketHandlerRM.syncGlobalToAllAround(owner, data);
-                this.discard();
-            }
-        }
-
-        //this.setNoGravity(true);
         castSupportMagic();
     }
 
@@ -471,13 +481,16 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         builder.define(VARIANT, 0); // 0 = normal, 1 = alt
     }
 
-    public void setOwnerUUID(UUID uuid) {
+    @Override
+    public void setOwnerUUID(@Nullable UUID uuid) {
         this.ownerUUID = uuid;
+        super.setOwnerUUID(uuid);
     }
 
+    @Override
     @Nullable
-    public UUID getOwnerUUID(){
-        return ownerUUID;
+    public UUID getOwnerUUID() {
+        return this.ownerUUID != null ? this.ownerUUID : super.getOwnerUUID();
     }
 
     @Override
@@ -491,6 +504,20 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
     }
 
+    public static void removeExistingChirithy(ServerLevel level, UUID ownerUUID) {
+        MinecraftServer server = level.getServer();
+
+        for (ServerLevel serverLevel : server.getAllLevels()) {
+            for (Entity entity : serverLevel.getAllEntities()) {
+                if (entity instanceof ChirithyEntity chirithy) {
+                    if (ownerUUID.equals(chirithy.getOwnerUUID())) {
+                        chirithy.discard();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return null;
@@ -502,6 +529,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
 
+        if (this.getOwnerUUID() != null) {
+            compound.putUUID("DreamEaterOwner", this.getOwnerUUID());
+        }
+
         if (this.data != null) {
             compound.put("data", this.data.serializeNBT());
         }
@@ -510,6 +541,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+
+        if (compound.hasUUID("DreamEaterOwner")) {
+            this.setOwnerUUID(compound.getUUID("DreamEaterOwner"));
+        }
 
         if (this.data == null) {
             this.data = new BaseDreamEaterEntity((EntityType<? extends TamableAnimal>) this.getType(), this.level());

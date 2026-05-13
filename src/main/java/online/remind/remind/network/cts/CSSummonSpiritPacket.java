@@ -73,6 +73,7 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
                         break;
                     case StringsRM.chirithy:
                         // Chirithy Summon
+                        ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
                         ChirithyEntity dreamEaterEntity = new ChirithyEntity(owner.level(), owner);
                         dreamEaterEntity.setOwnerUUID(owner.getUUID());
                         dreamEaterEntity.setPos(owner.getX(), owner.getY() + 2, owner.getZ());
