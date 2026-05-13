@@ -496,13 +496,27 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         return null;
     }
 
-    BaseDreamEaterEntity data;
+    private BaseDreamEaterEntity data;
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+
+        if (this.data != null) {
+            compound.put("data", this.data.serializeNBT());
+        }
+    }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
-        // TODO Stats
-        //System.out.println(data.serializeNBT());
-        compound.put("data", data.serializeNBT());
-        super.addAdditionalSaveData(compound);
+        super.readAdditionalSaveData(compound);
+
+        if (this.data == null) {
+            this.data = new BaseDreamEaterEntity((EntityType<? extends TamableAnimal>) this.getType(), this.level());
+        }
+
+        if (compound.contains("data")) {
+            this.data.readAdditionalSaveData(compound.getCompound("data"));
+        }
     }
 }
