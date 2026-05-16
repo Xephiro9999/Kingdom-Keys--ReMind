@@ -302,7 +302,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		if (playerData != null){
+		if (playerData != null && event.getAbility() != null){
 			if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
 				playerData.getStrengthStat().removeModifier("Dedication");
 				playerData.getMagicStat().removeModifier("Dedication");
