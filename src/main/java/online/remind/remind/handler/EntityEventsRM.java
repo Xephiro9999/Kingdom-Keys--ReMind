@@ -1254,13 +1254,13 @@ public class EntityEventsRM {
 									playerData.addMP(0.5 * mpWalkerMult);
 								}
 							}
-							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker)) {
+							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker) && player.onGround()) {
 								if (!playerData.isAbilityEquipped(Strings.zeroExp)) {
 									if (playerData.isAbilityEquipped(Strings.experienceBoost) && player.getHealth() <= player.getMaxHealth() / 2) {
 										int expBoost = playerData.getNumberOfAbilitiesEquipped(Strings.experienceBoost);
-										playerData.addExperience(player, (5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker)) * expBoost, false, true);
+										playerData.addExperience(player, (1 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker)) * expBoost, false, true);
 									} else {
-										playerData.addExperience(player, 5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
+										playerData.addExperience(player, 1 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
 									}
 								}
 							}
