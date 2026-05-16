@@ -130,6 +130,7 @@ public class StyleRC extends ReactionCommand {
 			case KingdomKeysReMind.MODID + ":" + StringsRM.feverPitch -> {
 				float mult = playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.25f;
 				damage += damage * mult;
+				explosionHurt(player, damage, KKDamageTypes.OFFHAND);
 				playSoundAndParticles(player, SoundEvents.PLAYER_ATTACK_SWEEP,
 						ParticleTypes.CRIT);
 			}
@@ -137,6 +138,7 @@ public class StyleRC extends ReactionCommand {
 			case KingdomKeysReMind.MODID + ":" + StringsRM.criticalImpact -> {
 				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.25f;
 				damage += damage * mult;
+				explosionHurt(player, damage, KKDamageTypes.OFFHAND);
 				playSoundAndParticles(player, SoundEvents.PLAYER_ATTACK_SWEEP,
 						ParticleTypes.SNOWFLAKE, ParticleTypes.ITEM_SNOWBALL);
 			}
@@ -144,6 +146,7 @@ public class StyleRC extends ReactionCommand {
 			case KingdomKeysReMind.MODID + ":" + StringsRM.spellweaver -> {
 				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) * 0.25f;
 				damage += damage * mult;
+				explosionHurt(player, damage, KKDamageTypes.STOP);
 				playSoundAndParticles(player, SoundEvents.EVOKER_CAST_SPELL,
 						ParticleTypes.ENCHANT);
 			}
