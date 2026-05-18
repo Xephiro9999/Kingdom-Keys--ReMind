@@ -268,7 +268,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 //owner.sendSystemMessage(Component.literal(owner.getHealth() + ""));
                 // Cure Logic
                 if (ownerData == null ||globalData == null) return;
-                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
+                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Cure) || globalData.getLearndedMagics().containsKey(Strings.Magic_Cura) || globalData.getLearndedMagics().containsKey(Strings.Magic_Curaga)) {
                     if (cureCooldown == 0 && castCooldown == 0) {
                         if (owner.isHurt() || owner.hasEffect(ModMobEffects.KO)) {
                             int cureLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
@@ -345,7 +345,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                 // Esuna Logic
 
-                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna"))) {
+                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna")) || globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_group_esuna"))) {
                     if (esunaCooldown == 0 && castCooldown == 0) {
 
                         List<Holder<MobEffect>> toRemove = new ArrayList<>();
