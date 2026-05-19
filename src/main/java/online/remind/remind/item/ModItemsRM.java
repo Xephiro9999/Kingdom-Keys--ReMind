@@ -65,7 +65,7 @@ public class ModItemsRM{
         confuse1Spell = ITEMS.register("confuse1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse",1)),
 
 
-    hastegaSpell = ITEMS.register("haste2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",2)),
+        hastegaSpell = ITEMS.register("haste2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",2)),
         slowgaSpell = ITEMS.register("slow2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow",2)),
         holygaSpell = ITEMS.register("holy2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy",2)),
         ruingaSpell = ITEMS.register("ruin2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin",2)),
@@ -117,6 +117,10 @@ public class ModItemsRM{
         lightSurge2Attack = ITEMS.register("light_surge2_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_light_surge",2)),
         darkSurge2Attack = ITEMS.register("dark_surge2_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_dark_surge",2)),
         zantetsuken2Attack = ITEMS.register("zantetsuken2_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_zantetsuken",2)),
+
+    // Creative Exclusive
+        swiftStrikeAttack = ITEMS.register("swift_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_swift_strike", 0)),
+        deathSpell = ITEMS.register("death_lv_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_death", 0)),
 
         // Shotlock Orbs
         flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":flame_salvo")),
