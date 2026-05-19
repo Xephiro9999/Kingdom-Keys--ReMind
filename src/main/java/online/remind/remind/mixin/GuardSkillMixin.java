@@ -81,42 +81,40 @@ public class GuardSkillMixin {
         }
 
 
-        // Stop Block Code? :)
-        if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
-            if (event.isParried()) {
-                GlobalData target = GlobalData.get((LivingEntity) attacker);
-                if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
-                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
-                    event.getEntityPatch().playSound(ModSounds.stop.get(), 1f, 1f);
-                    playerData.remMP(10);
+        if(attacker instanceof LivingEntity livingEntity) {
+            // Stop Block Code? :)
+            if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
+                if (event.isParried()) {
+                    if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
+                        livingEntity.addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
+                        event.getEntityPatch().playSound(ModSounds.stop.get(), 1f, 1f);
+                        playerData.remMP(10);
+                    }
+                }
+            }
+
+            if (playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
+                if (!event.isParried()) {
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
+                } else {
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2, true, true, true));
                 }
             }
         }
-
-        if (playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
-            GlobalData target = GlobalData.get((LivingEntity) attacker);
-            if (!event.isParried()) {
-                    ((LivingEntity) attacker).addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
-                    //event.getEntityPatch().playSound(ModSounds.stop.get(), 1f, 1f);
-            } else {
-                ((LivingEntity) attacker).addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2, true, true, true));
-            }
-        }
-
 
         // Royal Guard
         if (playerData.isAbilityEquipped(StringsRM.royalGuard)) {
             if (event.isParried()) {
                 if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerData.addFP(25);
-                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerData.addDP(25);
                 }
                 event.getEntityPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
             } else {
                 if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerData.addFP(10);
-                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
                     playerData.addDP(10);
                 }
                 event.getEntityPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);
@@ -124,9 +122,6 @@ public class GuardSkillMixin {
 
             PacketHandler.syncToAllAround(player, playerData);
         }
-
-
-
 
     }
 }
