@@ -36,7 +36,7 @@ public class ravenousSaberCollider extends ThrowableProjectile {
         super(type, level);
         this.noPhysics = true;
         //this.setInvisible(true);
-        this.setBoundingBox(new AABB(-0.5, 0, -0.5, 0.5, 1.5, 0.5));
+        this.setBoundingBox(new AABB(40, 0, 40, -10, 1, -10));
 
     }
 
@@ -87,9 +87,9 @@ public class ravenousSaberCollider extends ThrowableProjectile {
 
                 hitTimer = 0; // Resets Timer
 
-                AABB hitBox = this.getBoundingBox().inflate(3.75); // easier to land
+                AABB hitBox = this.getBoundingBox().inflate(1.75); // easier to land
 
-                for (Entity entity : level().getEntities(this, this.getBoundingBox(), e -> e instanceof LivingEntity && e != caster)) {
+                for (Entity entity : level().getEntities(this, hitBox, e -> e instanceof LivingEntity && e != caster)) {
                     LivingEntity target = (LivingEntity) entity;
                     String element = ELEMENT_ORDER[currentHitIndex];
 
