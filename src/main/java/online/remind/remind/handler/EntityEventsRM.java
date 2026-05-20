@@ -1474,6 +1474,15 @@ public class EntityEventsRM {
 				PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 			}
 
+			if (playerData.isAbilityEquipped(StringsRM.Lyric1)){
+				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString()) || event.getSource().type().msgId().equals("lightning")){
+					System.out.println("Thunder Resist");
+					float thunderDMG = event.getNewDamage();
+					System.out.println("Thunder Resist, " + thunderDMG +" Reduced to -> "+ (thunderDMG - (thunderDMG *= 0.1f)));
+					event.setNewDamage(thunderDMG - (thunderDMG *= 0.1f));
+				}
+			}
+
 			//Protect Abilities
 
 			// MP Shield
