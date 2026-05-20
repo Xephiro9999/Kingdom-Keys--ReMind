@@ -1475,7 +1475,7 @@ public class EntityEventsRM {
 			}
 
 			if (playerData.isAbilityEquipped(StringsRM.Lyric1)){
-				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString()) || event.getSource().type().msgId().equals("lightning")){
+				if (event.getSource().getMsgId().equals(KKResistanceType.lightning.toString()) || event.getSource().type().msgId().equals("lightning")){
 					float thunderDMG = event.getNewDamage();
 					//System.out.println("Thunder Resist, " + thunderDMG +" Reduced to -> "+ (thunderDMG - (thunderDMG *= 0.1f))); //Uncomment me for debugging ig
 					event.setNewDamage(thunderDMG - (thunderDMG *= 0.1f));
