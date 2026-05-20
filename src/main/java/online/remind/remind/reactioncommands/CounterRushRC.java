@@ -27,9 +27,7 @@ public class CounterRushRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) (playerData.getStrengthStat().get() * 0.015f);
-        //float dmg = 1 * 0.5f;
         int hits = (int) (4 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5));
-        //float dmgMult = 1 + (ModCapabilities.getPlayer(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
         float radius = 3;
         globalData.setRCCooldownTicks(60);
         int hitsDealt = 0;

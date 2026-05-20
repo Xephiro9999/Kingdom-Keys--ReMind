@@ -33,7 +33,7 @@ public class CounterBlastRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
-        float dmg = DamageCalculation.getMagicDamage(player) * 0.40f;
+        float dmg = DamageCalculation.getMagicDamage(player) * 0.2f;
         float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.01F));
         float radius = (float) (0.05F * playerData.getMaxMP());
         globalData.setRCCooldownTicks(60);

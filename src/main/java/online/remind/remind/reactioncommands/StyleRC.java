@@ -39,7 +39,7 @@ public class StyleRC extends ReactionCommand {
 	private final String type; // DriveForm ID (e.g. "kkremind:form_firestorm")
 
 	public StyleRC(ResourceLocation registryName, boolean constantCheck, String type) {
-		super(registryName, constantCheck, 30 * 20, 0xff6f00);
+		super(registryName, constantCheck, 20 * 20, 0xff6f00);
 		this.type = type;
 	}
 
@@ -71,7 +71,8 @@ public class StyleRC extends ReactionCommand {
 			remindData.setStyle("NONE");
 
 			StyleDefinition def = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(type));
-			remindData.setStyleTicks(100);
+			remindData.setStyleTicks(100 + (10 * playerData.getNumberOfAbilitiesEquipped(Strings.formBoost)));
+			System.out.println(remindData.getStyleTicks());
 
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 
@@ -190,7 +191,8 @@ public class StyleRC extends ReactionCommand {
 		//System.out.println("Activation Check: activeForm == NONE? " + isNone);
 		if (isNone) {
 			boolean styleContainsCheck = styleContains(style, driveId);
-			boolean result = gauge >= 100 && styleContainsCheck;
+			boolean result = styleContainsCheck;
+			//boolean result = gauge >= 100 && styleContainsCheck;
 			//System.out.println("ACTIVATION: gauge >= 100? " + (gauge >= 100) + ", styleContains? " + styleContainsCheck + ", Result: " + result);
 			return result;
 		}
@@ -210,6 +212,7 @@ public class StyleRC extends ReactionCommand {
 				//System.out.println("isChainUp: " + target.styleLevel() + " == " + (current.styleLevel() + 1) + " = " + isChainUp);
 				if (isChainUp) {
 					boolean styleContainsCheck = styleContains(style, driveId);
+					//boolean result = styleContainsCheck;
 					boolean result = gauge >= 100 && styleContainsCheck;
 					//System.out.println("CHAIN-UP: gauge >= 100? " + (gauge >= 100) + ", styleContains? " + styleContainsCheck + ", Result: " + result);
 					return result;

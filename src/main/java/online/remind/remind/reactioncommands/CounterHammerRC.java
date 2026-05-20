@@ -30,8 +30,8 @@ public class CounterHammerRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) playerData.getStrengthStat().get();
-        float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.30F);
-        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.5F);
+        float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.10F);
+        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.25F);
         globalData.setRCCooldownTicks(60);
 
 
