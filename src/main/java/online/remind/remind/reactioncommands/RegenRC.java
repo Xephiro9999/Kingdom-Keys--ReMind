@@ -31,13 +31,13 @@ public class RegenRC extends ReactionCommand {
 
             // Damage Calculation
 
-            float dmg = playerData.getStrength(true) * 0.25f + playerData.getMagic(true) * 0.25f;
+            float dmg = playerData.getStrength(true) * 0.25f + playerData.getMagic(true) * 0.35f;
             float dmgmult = 1;
             if (playerData.isAbilityEquipped(StringsRM.spellblade)){
                 dmgmult = 1.5f;
             }
 
-            globalData.setRCCooldownTicks(60);
+            globalData.setRCCooldownTicks(80);
             playerData.setFP(playerData.getFP() - 40);
 
             player.swing(InteractionHand.MAIN_HAND, true);
