@@ -10,15 +10,21 @@ import org.apache.commons.lang3.tuple.Pair;
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModConfigs {
     private static CommonConfig COMMON;
+    //public static ServerConfig SERVER;
 
     public static final ModConfigSpec COMMON_SPEC;
+    //public static final ModConfigSpec SERVER_SPEC;
+
 
     static {
         {
             final Pair<CommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(CommonConfig::new);
             COMMON = specPair.getLeft();
             COMMON_SPEC = specPair.getRight();
+
         }
+
+
     }
 
     public static void bakeCommon(){
@@ -34,6 +40,8 @@ public class ModConfigs {
 
         // Panels Configs
         panelsEnabled = COMMON.panelsEnabled.get();
+        levelsEnabled = COMMON.levelsEnabled.get();
+        driveLevelsEnabled = COMMON.driveLevelsEnabled.get();
         panelBonus = COMMON.panelBonus.get();
         panelLimit = COMMON.panelLimit.get();
 
@@ -73,6 +81,8 @@ public class ModConfigs {
 
     // Panels
     public static boolean panelsEnabled;
+    public static boolean levelsEnabled;
+    public static boolean driveLevelsEnabled;
     public static int panelBonus;
     public static int panelLimit;
 

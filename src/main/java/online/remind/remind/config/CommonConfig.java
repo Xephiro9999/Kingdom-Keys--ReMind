@@ -17,6 +17,8 @@ public class CommonConfig {
 
     // Panels
     public ModConfigSpec.BooleanValue panelsEnabled;
+    public ModConfigSpec.BooleanValue levelsEnabled;
+    public ModConfigSpec.BooleanValue driveLevelsEnabled;
     public ModConfigSpec.IntValue panelBonus;
     public ModConfigSpec.IntValue panelLimit;
 
@@ -91,6 +93,14 @@ public class CommonConfig {
                 .comment("Dictates if Panels are enabled or not. NOTE: If false, you will get rid of the only way for Org members to level up forms aside from gathering the orbs.")
                 .comment("Default: true")
                 .define("Panels Enabled", true);
+        levelsEnabled = builder
+                .comment("Allows players to level their player level via Panels.")
+                .comment("Default:true")
+                .define("Leveling via Panels", true);
+        driveLevelsEnabled = builder
+                .comment("Allows players to level their Drive Form levels via Panels. This also allows for Easier Org Only Runs if set to true.")
+                .comment("Default:true")
+                .define("Drive Leveling via Panels", true);
         panelBonus = builder
                 .comment("Sets the stat bonus for STR, MAG, and DEF in the panels menu. Note: Setting this to 0 will disable the boost entirely, and setting this too high can/will break balance!")
                 .comment("Default: 1")
