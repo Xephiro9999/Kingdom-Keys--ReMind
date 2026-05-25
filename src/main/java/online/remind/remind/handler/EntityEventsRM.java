@@ -1258,14 +1258,14 @@ public class EntityEventsRM {
 								if (!playerData.isAbilityEquipped(Strings.zeroExp)) {
 									if (playerData.isAbilityEquipped(Strings.experienceBoost) && player.getHealth() <= player.getMaxHealth() / 2) {
 										int expBoost = playerData.getNumberOfAbilitiesEquipped(Strings.experienceBoost);
-										playerData.addExperience(player, (1 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker)) * expBoost, false, true);
+										playerData.addExperience(player, (int) ((playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker) * expBoost)  * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
 									} else {
-										playerData.addExperience(player, 1 * playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker), false, true);
+										playerData.addExperience(player, (int) (playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
 									}
 								}
 							}
 							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
-								playerData.addHearts(5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker));
+								playerData.addHearts((int) (5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.heartMultiplier.get()));
 							}
 							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.focusWalker)) {
 								if (!playerData.getRecharge()) {

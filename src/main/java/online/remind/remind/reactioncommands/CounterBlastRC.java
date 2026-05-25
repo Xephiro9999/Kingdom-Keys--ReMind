@@ -33,7 +33,7 @@ public class CounterBlastRC extends ReactionCommand {
     public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
-        float dmg = DamageCalculation.getMagicDamage(player) * 0.2f;
+        float dmg = DamageCalculation.getMagicDamage(player) * 0.15f;
         float dmgMult = (float) (1 + (playerData.getMaxMP() * 0.01F));
         float radius = (float) (0.05F * playerData.getMaxMP());
         globalData.setRCCooldownTicks(60);
@@ -56,9 +56,9 @@ public class CounterBlastRC extends ReactionCommand {
                     double y = Y + (radius * Math.cos(Math.toRadians(t)));
                     double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
                     if (playerData.isAbilityEquipped(StringsRM.Lyric2)){
-                        e.hurt(e.damageSources().indirectMagic(e, player), dmg * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.25f));
+                        e.hurt(e.damageSources().indirectMagic(e, player), dmg * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.01f));
                         if (player.level() instanceof ServerLevel level) {
-                            double lightningRadius = radius + 1;
+                            double lightningRadius = (radius + 5) + (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.75f);
                             int boltCount = 1;
 
                             for (int i = 0; i < boltCount; i++) {
