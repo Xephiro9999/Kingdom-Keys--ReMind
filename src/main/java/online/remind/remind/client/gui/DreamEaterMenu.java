@@ -134,7 +134,7 @@ public class DreamEaterMenu extends MenuBackground {
                     if (global.getLearndedMagics().containsKey(Strings.Magic_Cure) || global.getLearndedMagics().containsKey(Strings.Magic_Cura) || global.getLearndedMagics().containsKey(Strings.Magic_Curaga)) {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "LEARNED", 0x7a8487));
 
-                        /*switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
+                        switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
                             case 0:
                                 addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "LEARNED", 0x7a8487));
                                 break;
@@ -144,7 +144,7 @@ public class DreamEaterMenu extends MenuBackground {
                             case 2:
                                 addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Curaga", "LEARNED", 0x7a8487));
                                 break;
-                        }*/
+                        }
                     } else {
                         addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "Requires Cure Unlocked", 0x000000));
                     }

@@ -100,7 +100,7 @@ public class thunderSurgeCollider extends ThrowableProjectile {
 
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())) {
                     //getOwner().sendSystemMessage(Component.literal("Entity: " + target));
-                    target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.AIR, this, this.getOwner()), damage);
+                    target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHTNING, this, this.getOwner()), damage);
                     target.invulnerableTime = 0; // allow multiple hits per tick
                 }
             }
