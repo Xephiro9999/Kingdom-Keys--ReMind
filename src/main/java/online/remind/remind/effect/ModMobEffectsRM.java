@@ -19,5 +19,6 @@ public class ModMobEffectsRM {
             REGEN = MOB_EFFECTS.register("regen", () -> new RegenEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
             STONE = MOB_EFFECTS.register("stone", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
             CONFUSE = MOB_EFFECTS.register("confuse", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
-            EXCEED = MOB_EFFECTS.register("exceed", () -> new ExceedEffect(MobEffectCategory.BENEFICIAL, 0xFF9900));
+            EXCEED = MOB_EFFECTS.register("exceed", () -> new ExceedEffect(MobEffectCategory.BENEFICIAL, 0xFF9900)),
+            EXCEED_WINDOW = MOB_EFFECTS.register("exceed_window", () -> new ExceedEffect(MobEffectCategory.BENEFICIAL, 0xFF9900));
 }

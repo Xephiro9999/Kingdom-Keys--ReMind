@@ -32,13 +32,14 @@ public class ExceedRC extends ReactionCommand {
             return;
         }
 
-        //boolean perfect = playerData.getFortunaExceedWindow() > 0;
-        boolean perfect = false;
+        boolean perfect = player.hasEffect(ModMobEffectsRM.EXCEED_WINDOW);
 
         addFortunaExceed(player, perfect);
 
-        //playerData.setFortunaExceedWindow(0);
-        globalData.setRCCooldownTicks(20);
+        player.removeEffect(ModMobEffectsRM.EXCEED_WINDOW);
+
+        globalData.setRCCooldownTicks(perfect ? 10 : 20);
+
 
         player.level().playSound(
                 null,
@@ -103,14 +104,40 @@ public class ExceedRC extends ReactionCommand {
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
-        if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
-            if(playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
-                if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.fortunaChain.get() && globalData.getRCCooldownTicks() == 0) {
-                    return true;
-                }
-            }
+
+        if (playerData == null || globalData == null) {
+            return false;
         }
-        return false;
+
+        if (playerData.getEquippedKeychain(DriveForm.NONE) == null) {
+            return false;
+        }
+
+        if (playerData.getAlignment() != Utils.OrgMember.NONE) {
+            return false;
+        }
+
+        if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+            return false;
+        }
+
+        if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() != ModItemsRM.fortunaChain.get()) {
+            return false;
+        }
+
+        if (globalData.getRCCooldownTicks() != 0) {
+            return false;
+        }
+
+        MobEffectInstance exceed = player.getEffect(ModMobEffectsRM.EXCEED);
+        boolean perfectWindow = player.hasEffect(ModMobEffectsRM.EXCEED_WINDOW);
+
+// If already Level 3, hide RC unless the player is inside the perfect timing window.
+        if (exceed != null && exceed.getAmplifier() >= 2 && !perfectWindow) {
+            return false;
+        }
+
+        return true;
     }
 
     private void addFortunaExceed(Player player, boolean perfect) {

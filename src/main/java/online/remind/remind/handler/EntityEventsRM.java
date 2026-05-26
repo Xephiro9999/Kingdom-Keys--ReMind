@@ -1517,6 +1517,28 @@ public class EntityEventsRM {
 		}
 	}
 
+	private void openFortunaExceedWindow(Player player) {
+		PlayerData playerData = PlayerData.get(player);
+
+		if (playerData == null) {
+			return;
+		}
+
+		if (playerData.getEquippedKeychain(DriveForm.NONE) == null ||
+				!playerData.getEquippedKeychain(DriveForm.NONE).is(ModItemsRM.fortunaChain.get())) {
+			return;
+		}
+
+		player.addEffect(new MobEffectInstance(
+				ModMobEffectsRM.EXCEED_WINDOW,
+				6,      // 6 ticks = about 0.3 seconds
+				0,
+				false,
+				false,
+				false
+		));
+	}
+
 	private void applyFortunaBurst(Player player, LivingEntity target, float damage) {
 		for (LivingEntity nearby : target.level().getEntitiesOfClass(
 				LivingEntity.class,
@@ -1576,6 +1598,8 @@ public class EntityEventsRM {
 			if (player.hasEffect(ModMobEffectsRM.STONE)) {
 				event.setCanceled(true);
 			}
+
+			openFortunaExceedWindow(player);
 		}
 	}
 
