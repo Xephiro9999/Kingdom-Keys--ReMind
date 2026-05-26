@@ -4,6 +4,8 @@
     "cooldown": 100,
     "casttime": 20,
     "dmg_mult": 3.0,
-	"magic_lock_on":true
+	"magic_lock_on":true,
+    "max_exp": 3600,
+    "max_exp_lvl": 5
   }
 }
