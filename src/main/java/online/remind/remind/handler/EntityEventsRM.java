@@ -575,7 +575,7 @@ public class EntityEventsRM {
 		);
 
 		level.sendParticles(
-				ParticleTypes.FLAME,
+				ParticleTypes.SOUL_FIRE_FLAME,
 				x, y, z,
 				80,
 				1.0D, 0.6D, 1.0D,
@@ -681,6 +681,25 @@ public class EntityEventsRM {
 		);
 
 		if (exceedLevel >= 2) {
+			level.sendParticles(
+					ParticleTypes.SOUL_FIRE_FLAME,
+					x, y + 0.1D, z,
+					10,
+					0.45D, 0.25D, 0.45D,
+					0.04D
+			);
+
+			level.playSound(
+					null,
+					target.blockPosition(),
+					SoundEvents.FIRECHARGE_USE,
+					SoundSource.PLAYERS,
+					1.0F,
+					1.2F
+			);
+		}
+
+		if (exceedLevel >= 3) {
 			level.sendParticles(
 					ParticleTypes.SOUL_FIRE_FLAME,
 					x, y + 0.1D, z,
@@ -1531,7 +1550,7 @@ public class EntityEventsRM {
 
 		player.addEffect(new MobEffectInstance(
 				ModMobEffectsRM.EXCEED_WINDOW,
-				6,      // 6 ticks = about 0.3 seconds
+				4,      // 4 ticks = about 0.2 seconds
 				0,
 				false,
 				false,

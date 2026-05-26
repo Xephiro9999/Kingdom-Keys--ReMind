@@ -130,6 +130,7 @@ public class StringsRM {
         Xephiro = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"xephiro",
 
         Regen = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"regen",
+        Exceed = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"exceed",
 
         // Reprisals
         counterHammer = KingdomKeysReMind.MODID+":"+ StringsRM.ABMA_Prefix+"counter_hammer",

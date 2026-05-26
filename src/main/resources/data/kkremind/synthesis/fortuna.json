@@ -1,0 +1,31 @@
+{
+  "cost": 5000,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:sinister_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:blazing_gem",
+      "quantity": "5"
+    },
+    {
+      "material": "kingdomkeys:blazing_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:writhing_crystal",
+      "quantity": "4"
+    },
+    {
+      "material": "kingdomkeys:orichalcumplus",
+      "quantity": "4"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:fortuna_chain",
+    "quantity": 1
+  },
+  "tier": 7
+}

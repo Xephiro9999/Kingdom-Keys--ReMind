@@ -1,6 +1,7 @@
 package online.remind.remind.reactioncommands;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -33,11 +34,20 @@ public class ExceedRC extends ReactionCommand {
         }
 
         boolean perfect = player.hasEffect(ModMobEffectsRM.EXCEED_WINDOW);
-
+        MobEffectInstance exceed = player.getEffect(ModMobEffectsRM.EXCEED);
         if (!perfect){
             playerData.remFocus(10);
+
+            if (exceed != null){
+                player.displayClientMessage(Component.literal("Exceed Level: " + (exceed.getAmplifier() + 2)).withColor(0xff2E68), true);
+            } else {
+                player.displayClientMessage(Component.literal("Exceed Level: 1").withColor(0xff2E68), true);
+            }
+
+
         } else {
             playerData.addFocus(15);
+            player.displayClientMessage(Component.literal("PERFECT! FIRED UP!!!").withColor(0xff9900), true);
         }
 
 
@@ -104,6 +114,17 @@ public class ExceedRC extends ReactionCommand {
                     0.0D,
                     0.0D,
                     0.0D
+            );
+            level.sendParticles(
+                    ParticleTypes.SOUL_FIRE_FLAME,
+                    x,
+                    y,
+                    z,
+                    30,
+                    0.0D,
+                    0.0D,
+                    0.0D,
+                    0.7D
             );
         }
     }

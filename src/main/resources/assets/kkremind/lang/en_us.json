@@ -313,6 +313,8 @@
   "ability.ability_regen.name": "Dimensional Gaze",
   "ability.ability_regen.desc": "Grants access to the reaction command 'Ravenous Saber', a deadly 5-hit combo of elemental fury! \nDeals more damage with 'Spellblade' equipped. \n\nGrants access to Gaze Form. \nThis form specializes in heavy hitting attacks imbued with the power of the elements.",
 
+  "ability.ability_exceed.name": "Exceed",
+  "ability.ability_exceed.desc": "☆Exclusive☆ \nUnlocks the 'Exceed' Reaction Command. \nCost: 10 FP. Can be stacked 3 times. \nBoost your next attack with explosive fury! Time it with your strikes to do even more damage!\nDamage scales with stacks of Exceed and Fire Boosts!\nTime it right and you will get MAX stacks and refund some Focus!",
 
   "shotlock.flame_salvo.name": "Flame Salvo",
   "shotlock.bubble_blaster.name": "Bubble Blaster",
@@ -502,6 +504,7 @@
   "effect.kkremind.auto_life": "Auto-Life",
   "effect.kkremind.stone": "Stone",
   "effect.kkremind.confuse": "Confuse",
+  "effect.kkremind.exceed": "Exceed",
 
   "dreameater.none.name": "None",
   "dreameater.dreameater_chirithy.name": "Chirithy",
