@@ -346,7 +346,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
                             int aeroLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
 
-
                             int amplifier = aeroLevel;
                             int time;
 

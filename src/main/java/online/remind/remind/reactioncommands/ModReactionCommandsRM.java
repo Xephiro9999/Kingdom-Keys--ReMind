@@ -40,6 +40,7 @@ public class ModReactionCommandsRM {
     // Commission RCs
 
         REGEN_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"regen", () -> new RegenRC( ResourceLocation.parse(StringsRM.RegenRC),true)),
+        EXCEED_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"exceed", () -> new ExceedRC( ResourceLocation.parse(StringsRM.ExceedRC),true, -1, 0x002E68)),
 
 
     // Reprisals

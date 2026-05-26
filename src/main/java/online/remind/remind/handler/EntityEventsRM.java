@@ -5,7 +5,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -67,15 +69,15 @@ public class EntityEventsRM {
 
 
 	@SubscribeEvent
-	public void onPlayerChangeMagic(EquipmentEvent.Magic e){
+	public void onPlayerChangeMagic(EquipmentEvent.Magic e) {
 		PlayerData playerData = PlayerData.get(e.getPlayer());
 		GlobalDataRM globalData = ModDataRM.getGlobal(e.getPlayer());
 
-		if(e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell){ //If it's a valid spell (people love to play with NBT editing)
+		if (e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell) { //If it's a valid spell (people love to play with NBT editing)
 			ItemStack oldSpell = playerData.getEquippedMagics().get(newSpell.getMagic());
 
-			if(oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell){ //If it already exists, update its value
-				if(foundSpell.getLevel() < newSpell.getLevel()){ //Update only if the new spell is higher
+			if (oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell) { //If it already exists, update its value
+				if (foundSpell.getLevel() < newSpell.getLevel()) { //Update only if the new spell is higher
 					globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newSpell.getLevel());
 					PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 				}
@@ -87,11 +89,11 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent e){
+	public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent e) {
 		Player player = e.getEntity();
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-		if (globalData != null){
+		if (globalData != null) {
 			globalData.setHasDreamEaterSummoned(false);
 			globalData.setDreamEaterUUID(null);
 			PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
@@ -99,20 +101,20 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e){
+	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e) {
 		Player player = e.getEntity();
 		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if(globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()){ //One time event here for remind
-            globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
-        }
+		if (globalData.getDreamEaterRL() == null || globalData.getDreamEaterRL().isEmpty()) { //One time event here for remind
+			globalData.setDreamEaterRL(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none).toString());
+		}
 
-        if(!player.level().isClientSide){
-            PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-        }
+		if (!player.level().isClientSide) {
+			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+		}
 
-        if (playerData != null) {
+		if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
 					playerData.addAbility(StringsRM.renewalBlock, true);
@@ -215,27 +217,26 @@ public class EntityEventsRM {
 				}
 			} else {
 				player.sendSystemMessage(Component.literal("[Re:Mind] The Server has the config disabled for you to recieve your Keyblade, please contact them if you wish to have it changed."));
-				}
 			}
-        }
+		}
+	}
 
 
 	/**
-	 *
 	 * @param player
 	 * @param AbilityName StringsRM.darkPower
-	 * @param formName ModID + StringsRM.darkForm
+	 * @param formName    ModID + StringsRM.darkForm
 	 */
 	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
 		PlayerData playerData = PlayerData.get(player);
 
-		if(playerData.isAbilityEquipped(AbilityName)) { //if ability to use x form is equipped
-			if(!playerData.getDriveFormMap().containsKey(formName)) {
+		if (playerData.isAbilityEquipped(AbilityName)) { //if ability to use x form is equipped
+			if (!playerData.getDriveFormMap().containsKey(formName)) {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 			}
 		}
 
-		if(playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7){
+		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7) {
 			if (playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString()) == 0) {
 				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 1);
 			}
@@ -252,47 +253,47 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void equipAbility(AbilityEvent.Equip event){
+	public void equipAbility(AbilityEvent.Equip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		GlobalDataRM  remindData = ModDataRM.getGlobal(event.getPlayer());
+		GlobalDataRM remindData = ModDataRM.getGlobal(event.getPlayer());
 		WorldData worldData = WorldData.get(event.getPlayer().getServer());
 		Player player = event.getPlayer();
 
-			if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())){
-				Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
-				if (party != null){
-					float friendBoost = party.getMembers().size() - 1;
-					//System.out.println(friendBoost);
-				}
+		if (event.getAbility().equals(ModAbilitiesRM.FRIEND_POWER.get())) {
+			Party party = worldData.getPartyFromMember(event.getPlayer().getUUID());
+			if (party != null) {
+				float friendBoost = party.getMembers().size() - 1;
+				//System.out.println(friendBoost);
 			}
+		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())) {
 			playerData.unequipAbility(StringsRM.lightStep, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())) {
 			playerData.unequipAbility(StringsRM.darkStep, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOW.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOW.get())) {
 			playerData.unequipAbility(Strings.mpHaste, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWRA.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWRA.get())) {
 			playerData.unequipAbility(Strings.mpHastera, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWGA.get())){
+		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWGA.get())) {
 			playerData.unequipAbility(Strings.mpHastega, 0);
 		}
 
-		if (event.getAbility().equals(ModAbilities.MP_HASTE.get())){
+		if (event.getAbility().equals(ModAbilities.MP_HASTE.get())) {
 			playerData.unequipAbility(StringsRM.mpSlow, 0);
 		}
-		if (event.getAbility().equals(ModAbilities.MP_HASTERA.get())){
+		if (event.getAbility().equals(ModAbilities.MP_HASTERA.get())) {
 			playerData.unequipAbility(StringsRM.mpSlowra, 0);
 		}
-		if (event.getAbility().equals(ModAbilities.MP_HASTEGA.get())){
+		if (event.getAbility().equals(ModAbilities.MP_HASTEGA.get())) {
 			playerData.unequipAbility(StringsRM.mpSlowga, 0);
 		}
 
@@ -302,7 +303,7 @@ public class EntityEventsRM {
 	@SubscribeEvent
 	public void unequipAbility(AbilityEvent.Unequip event) {
 		PlayerData playerData = PlayerData.get(event.getPlayer());
-		if (playerData != null && event.getAbility() != null){
+		if (playerData != null && event.getAbility() != null) {
 			if (event.getAbility().equals(ModAbilitiesRM.DEDICATION.get())) {
 				playerData.getStrengthStat().removeModifier("Dedication");
 				playerData.getMagicStat().removeModifier("Dedication");
@@ -348,7 +349,7 @@ public class EntityEventsRM {
 	}*/
 
 	@SubscribeEvent
-	public void onRCCast(ReactionCommandCastEvent e){
+	public void onRCCast(ReactionCommandCastEvent e) {
 
 		//System.out.println(e.getRCID());//TODO add the RC versions too
 		LivingEntity caster = e.getCaster();
@@ -364,12 +365,12 @@ public class EntityEventsRM {
 	}
 
 	@SubscribeEvent
-	public void onMagicCast(MagicSpellCastEvent e){
+	public void onMagicCast(MagicSpellCastEvent e) {
 		LivingEntity caster = e.getCaster();
-		if (caster instanceof Player player){
+		if (caster instanceof Player player) {
 			PlayerData playerData = PlayerData.get(player);
 			GlobalDataRM remindData = ModDataRM.getGlobal(player);
-			if (playerData != null){
+			if (playerData != null) {
 				//System.out.println(e.getSpellID());
 				/*String spellID = e.getSpellID().toString();
 				int spellLvl = e.getLevel() + 1;
@@ -420,7 +421,7 @@ public class EntityEventsRM {
 				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
-				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString()) ) {
+				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
 					remindData.setStyleTicks(100);
 				}
 
@@ -548,6 +549,219 @@ public class EntityEventsRM {
 			}
 		}
 	}*/
+
+
+	private void playFortunaMaxExceedEffects(ServerLevel level, Player player, LivingEntity target) {
+		double x = target.getX();
+		double y = target.getY() + target.getBbHeight() * 0.5D;
+		double z = target.getZ();
+
+
+		level.playSound(
+				null,
+				target.blockPosition(),
+				SoundEvents.PLAYER_LEVELUP,
+				SoundSource.PLAYERS,
+				0.8F,
+				1.8F
+		);
+
+		level.sendParticles(
+				ParticleTypes.EXPLOSION,
+				x, y, z,
+				1,
+				0.0D, 0.0D, 0.0D,
+				0.0D
+		);
+
+		level.sendParticles(
+				ParticleTypes.FLAME,
+				x, y, z,
+				80,
+				1.0D, 0.6D, 1.0D,
+				0.12D
+		);
+
+		level.sendParticles(
+				ParticleTypes.LAVA,
+				x, y, z,
+				20,
+				0.7D, 0.4D, 0.7D,
+				0.1D
+		);
+
+		level.sendParticles(
+				ParticleTypes.ENCHANT,
+				x, y, z,
+				50,
+				0.8D, 0.8D, 0.8D,
+				0.6D
+		);
+
+		for (LivingEntity nearby : level.getEntitiesOfClass(
+				LivingEntity.class,
+				target.getBoundingBox().inflate(4.0D),
+				entity -> entity != player && entity != target && entity.isAlive()
+		)) {
+			Vec3 knockback = nearby.position().subtract(target.position()).normalize().scale(0.6D);
+			nearby.push(knockback.x, 0.25D, knockback.z);
+
+			level.sendParticles(
+					ParticleTypes.FLAME,
+					nearby.getX(),
+					nearby.getY() + nearby.getBbHeight() * 0.5D,
+					nearby.getZ(),
+					20,
+					0.4D, 0.3D, 0.4D,
+					0.08D
+			);
+		}
+	}
+
+
+	private void playFortunaExceedEffects(ServerLevel level, Player player, LivingEntity target, int exceedLevel) {
+		double x = target.getX();
+		double y = target.getY() + target.getBbHeight() * 0.5D;
+		double z = target.getZ();
+
+		float pitch = switch (exceedLevel) {
+			case 1 -> 1.0F;
+			case 2 -> 1.25F;
+			case 3 -> 1.55F;
+			default -> 1.0F;
+		};
+
+		float volume = switch (exceedLevel) {
+			case 1 -> 0.8F;
+			case 2 -> 1.0F;
+			case 3 -> 1.35F;
+			default -> 1.0F;
+		};
+
+		level.playSound(
+				null,
+				target.blockPosition(),
+				SoundEvents.BLAZE_SHOOT,
+				SoundSource.PLAYERS,
+				volume,
+				pitch
+		);
+
+		level.playSound(
+				null,
+				target.blockPosition(),
+				SoundEvents.PLAYER_ATTACK_CRIT,
+				SoundSource.PLAYERS,
+				volume,
+				0.8F + exceedLevel * 0.2F
+		);
+
+		level.sendParticles(
+				ParticleTypes.FLAME,
+				x, y, z,
+				18 * exceedLevel,
+				0.35D, 0.35D, 0.35D,
+				0.08D
+		);
+
+		level.sendParticles(
+				ParticleTypes.CRIT,
+				x, y, z,
+				12 * exceedLevel,
+				0.4D, 0.4D, 0.4D,
+				0.2D
+		);
+
+		level.sendParticles(
+				ParticleTypes.LAVA,
+				x, y, z,
+				4 * exceedLevel,
+				0.25D, 0.25D, 0.25D,
+				0.05D
+		);
+
+		if (exceedLevel >= 2) {
+			level.sendParticles(
+					ParticleTypes.SOUL_FIRE_FLAME,
+					x, y + 0.1D, z,
+					10,
+					0.45D, 0.25D, 0.45D,
+					0.04D
+			);
+
+			level.playSound(
+					null,
+					target.blockPosition(),
+					SoundEvents.FIRECHARGE_USE,
+					SoundSource.PLAYERS,
+					1.0F,
+					1.2F
+			);
+		}
+	}
+
+	@SubscribeEvent
+	public void onLivingDamagePre(LivingDamageEvent.Pre event) {
+		Entity sourceEntity = event.getSource().getEntity();
+		Entity directEntity = event.getSource().getDirectEntity();
+
+		Player player = null;
+
+		if (sourceEntity instanceof Player sourcePlayer) {
+			player = sourcePlayer;
+		} else if (directEntity instanceof Player directPlayer) {
+			player = directPlayer;
+		}
+
+		if (player == null) {
+			return;
+		}
+
+		PlayerData playerData = PlayerData.get(player);
+
+		if (playerData == null) {
+			return;
+		}
+
+		MobEffectInstance exceed = player.getEffect(ModMobEffectsRM.EXCEED);
+
+		if (exceed == null) {
+			return;
+		}
+
+		if (playerData.getEquippedKeychain(DriveForm.NONE) == null ||
+				!playerData.getEquippedKeychain(DriveForm.NONE).is(ModItemsRM.fortunaChain.get())) {
+			player.removeEffect(ModMobEffectsRM.EXCEED);
+			return;
+		}
+
+		int exceedLevel = exceed.getAmplifier() + 1;
+		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+
+		float exceedMultiplier = switch (exceedLevel) {
+			case 1 -> 1.25F;
+			case 2 -> 1.50F;
+			case 3 -> 2.00F;
+			default -> 1.0F;
+		};
+
+		float fireBoostMultiplier = 1.0F + fireBoosts * 0.15F;
+
+		float oldDamage = event.getNewDamage();
+		float newDamage = oldDamage * exceedMultiplier * fireBoostMultiplier;
+
+		event.setNewDamage(newDamage);
+
+		if (player.level() instanceof ServerLevel level) {
+			playFortunaExceedEffects(level, player, event.getEntity(), exceedLevel);
+
+			if (exceedLevel >= 3) {
+				playFortunaMaxExceedEffects(level, player, event.getEntity());
+			}
+		}
+
+		player.removeEffect(ModMobEffectsRM.EXCEED);
+	}
 
 	@SubscribeEvent
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
@@ -1303,10 +1517,63 @@ public class EntityEventsRM {
 		}
 	}
 
+	private void applyFortunaBurst(Player player, LivingEntity target, float damage) {
+		for (LivingEntity nearby : target.level().getEntitiesOfClass(
+				LivingEntity.class,
+				target.getBoundingBox().inflate(3.0D),
+				entity -> entity != player && entity != target && entity.isAlive()
+		)) {
+			nearby.hurt(
+					player.damageSources().indirectMagic(player, player),
+					damage * 0.5F
+			);
+		}
+	}
+
+	private void applyFortunaExceedBonus(Player player, LivingEntity target) {
+		PlayerData playerData = PlayerData.get(player);
+
+		if (playerData == null) {
+			return;
+		}
+
+		MobEffectInstance exceed = player.getEffect(ModMobEffectsRM.EXCEED);
+
+		if (exceed == null) {
+			return;
+		}
+
+		if (playerData.getEquippedKeychain(DriveForm.NONE) == null ||
+				!playerData.getEquippedKeychain(DriveForm.NONE).is(ModItemsRM.fortunaChain.get())) {
+			player.removeEffect(ModMobEffectsRM.EXCEED);
+			return;
+		}
+
+		int exceedLevel = exceed.getAmplifier() + 1;
+		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+
+		float baseBonusDamage = switch (exceedLevel) {
+			case 1 -> 8.0F;
+			case 2 -> 16.0F;
+			case 3 -> 28.0F;
+			default -> 0.0F;
+		};
+
+		float fireBoostMultiplier = 1.0F + fireBoosts * 0.15F;
+		float finalBonusDamage = baseBonusDamage * fireBoostMultiplier;
+
+		target.hurt(
+				player.damageSources().indirectMagic(player, player),
+				finalBonusDamage
+		);
+
+		player.removeEffect(ModMobEffectsRM.EXCEED);
+	}
+
 	@SubscribeEvent
-	public void onPlayerAttack(AttackEntityEvent event){
-		if (event.getEntity() instanceof Player player){
-			if (player.hasEffect(ModMobEffectsRM.STONE)){
+	public void onPlayerAttack(AttackEntityEvent event) {
+		if (event.getEntity() instanceof Player player) {
+			if (player.hasEffect(ModMobEffectsRM.STONE)) {
 				event.setCanceled(true);
 			}
 		}

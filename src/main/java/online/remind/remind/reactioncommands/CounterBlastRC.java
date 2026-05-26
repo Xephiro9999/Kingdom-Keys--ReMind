@@ -2,6 +2,7 @@ package online.remind.remind.reactioncommands;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -102,10 +103,14 @@ public class CounterBlastRC extends ReactionCommand {
                         double dmgBoost = dmg *= boostDamage;
                         e.hurt(e.damageSources().indirectMagic(e, player), (float) (dmg + dmgBoost));
                     }
+
+                    e.level().addParticle(ParticleTypes.ELECTRIC_SPARK,
+                            target.getX(), target.getY() + target.getBbHeight(), target.getZ(),
+                            0, 0.1, 0);
                 }
             }
         } else {
-            // Non-Lyric2 visual sphere + damage.
+            // Normal visual sphere + damage.
             target.level().playSound(
                     null,
                     target.blockPosition(),

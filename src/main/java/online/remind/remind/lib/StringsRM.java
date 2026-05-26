@@ -176,13 +176,14 @@ public class StringsRM {
         SpellweaverRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"spellweaver",
 
         RegenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"regen",
+        ExceedRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"exceed",
 
         // Limits
 
         firagaWall = "firaga_wall",
 
 
-    //Keyblades
+        //Keyblades
         xephiroKeyblade = KingdomKeysReMind.MODID+":"+ StringsRM.KBMA_Prefix+"xephiro_keyblade",
 
         //Keychains

@@ -1,0 +1,46 @@
+{
+  "parent": "neoforge:item/default",
+  "loader": "neoforge:obj",
+  "flip_v" : "true",
+  "model": "kkremind:models/item/keyblade/fortuna.obj",
+  "textures": {
+    "layer0": "kkremind:textures/item/keyblades/fortuna"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0.0, 0, 0.0 ],
+      "translation": [0, 0, 0 ],
+      "scale": [0.0225, 0.0225, 0.0225]
+    },
+    "thirdperson_righthand": {
+      "rotation": [0.0, 0, 0.0 ],
+      "translation": [0, 0, 0],
+      "scale": [0.0225, 0.0225, 0.0225]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [0, 0, 0 ],
+      "scale": [0.0225, 0.0225, 0.0225]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0.0, 0.0, 0.0 ],
+      "translation": [0, 0, 0],
+      "scale": [0.0225, 0.0225, 0.0225]
+    },
+    "gui": {
+      "rotation": [0, 45.0, 0.0 ],
+      "translation": [0.0, 0, 0.0 ],
+      "scale": [0.01, 0.01, 0.01]
+    },
+    "ground": {
+      "rotation": [0, 90.0, 0.0 ],
+      "translation": [2.0, 7.0, 0.0 ],
+      "scale": [0.0225, 0.0225, 0.0225]
+    },
+    "fixed": {
+      "rotation": [0.0, 90.0, 0.0 ],
+      "translation": [0.0, 0.0, 0.0 ],
+      "scale": [0.0225, 0.0225, 0.0225]
+    }
+  }
+}

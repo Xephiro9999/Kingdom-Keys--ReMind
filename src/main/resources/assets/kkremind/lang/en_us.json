@@ -353,7 +353,7 @@
   "item.kkremind.fierce_deity_key": "Fierce Deity Key",
   "item.kkremind.lyric_2025_tournament": "Wrongful Inheritor",
   "item.kkremind.voidlight": "Voidlight",
-  "item.kkremind.kingdom_key_n": "Kingdom Key Nightmare",
+  "item.kkremind.fortuna": "Fortuna",
 
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
@@ -365,6 +365,7 @@
   "item.kkremind.fierce_deity_key_chain": "Fierce Deity Key Chain",
   "item.kkremind.lyric_2025_tournament_chain": "Wrongful Inheritor Chain",
   "item.kkremind.voidlight_chain": "Voidlight Chain",
+  "item.kkremind.fortuna_chain": "Fortuna Chain",
 
   "item.kkremind.aqua_chaplet": "Aqua Chaplet",
   "item.kkremind.heros_glove": "Hero's Glove",
@@ -468,6 +469,7 @@
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 
   "reactioncommand.kkremind.rc_regen.name": "Ravenous Saber",
+  "reactioncommand.kkremind.rc_exceed.name": "Exceed",
 
   "reactioncommand.kkremind.rc_finish.name": "Finish",
   "reactioncommand.kkremind.rc_firestorm.name": "Firestorm",
