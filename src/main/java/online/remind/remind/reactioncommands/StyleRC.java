@@ -181,7 +181,7 @@ public class StyleRC extends ReactionCommand {
 		boolean isFinisher = playerData.getActiveDriveForm().equals(driveId);
 		//System.out.println("Finisher Check: activeForm.equals(type) = " + playerData.getActiveDriveForm() + ".equals(" + driveId + ") = " + isFinisher);
 		if (isFinisher) {
-			boolean result = gauge >= 100;
+			boolean result = isFinisher;
 			//System.out.println("FINISHER MATCHED! gauge >= 100? " + result);
 			return result;
 		}

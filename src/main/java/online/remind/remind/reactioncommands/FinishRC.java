@@ -26,7 +26,7 @@ import java.util.List;
 public class FinishRC extends ReactionCommand {
 
 	public FinishRC(ResourceLocation registryName, boolean constantCheck) {
-		super(registryName, constantCheck, 30 * 20);
+		super(registryName, constantCheck, 15 * 20);
 	}
 
 	@Override
@@ -115,11 +115,9 @@ public class FinishRC extends ReactionCommand {
 		System.out.println("Is NONE? " + activeDriveForm.equals(DriveForm.NONE.toString()));
 		System.out.println("Gauge >= 100? " + (gauge >= 100));*/
 
-		// FinishRC only appears when NOT in a Style and gauge >= 100
+		// FinishRC only appears when NOT in a Style
 		if (activeDriveForm.equals(DriveForm.NONE.toString())) {
-			boolean result = gauge >= 100;
-			//System.out.println("RESULT: " + result);
-			return result;
+			return true;
 		}
 
 		//System.out.println("RESULT: false (in a Style)");

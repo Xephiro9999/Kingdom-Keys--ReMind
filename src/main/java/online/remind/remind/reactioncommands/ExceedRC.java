@@ -34,6 +34,14 @@ public class ExceedRC extends ReactionCommand {
 
         boolean perfect = player.hasEffect(ModMobEffectsRM.EXCEED_WINDOW);
 
+        if (!perfect){
+            playerData.remFocus(10);
+        } else {
+            playerData.addFocus(15);
+        }
+
+
+
         addFortunaExceed(player, perfect);
 
         player.removeEffect(ModMobEffectsRM.EXCEED_WINDOW);
@@ -106,6 +114,10 @@ public class ExceedRC extends ReactionCommand {
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
         if (playerData == null || globalData == null) {
+            return false;
+        }
+
+        if (playerData.getFocus() < 10){
             return false;
         }
 
