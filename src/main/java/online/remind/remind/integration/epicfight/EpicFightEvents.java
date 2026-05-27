@@ -71,6 +71,33 @@ public class EpicFightEvents {
                             case "kkremind:attack_sliding_dash":
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
                                 break;
+                            case "kkremind:attack_fire_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_blizzard_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_thunder_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_water_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_aero_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_light_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_dark_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_binding_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
+                            case "kkremind:attack_confusion_strike":
+                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
+                                break;
                         }
                     }
                 }

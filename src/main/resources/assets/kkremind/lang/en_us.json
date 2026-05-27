@@ -99,6 +99,33 @@
   "magic.kkremind.attack_zantetsuken2.name": "Zantetsuken++",
   "magic.kkremind.attack_swift_strike0.name": "Swift Strike",
 
+  "item.kkremind.fire_strike_attack": "Fire Strike Command",
+  "magic.kkremind.attack_fire_strike0.name": "Fire Strike",
+
+  "item.kkremind.blizzard_strike_attack": "Blizzard Strike Command",
+  "magic.kkremind.attack_blizzard_strike0.name": "Blizzard Strike",
+
+  "item.kkremind.thunder_strike_attack": "Thunder Strike Command",
+  "magic.kkremind.attack_thunder_strike0.name": "Thunder Strike",
+
+  "item.kkremind.water_strike_attack": "Water Strike Command",
+  "magic.kkremind.attack_water_strike0.name": "Water Strike",
+
+  "item.kkremind.aero_strike_attack": "Aero Strike Command",
+  "magic.kkremind.attack_aero_strike0.name": "Aero Strike",
+
+  "item.kkremind.light_strike_attack": "Light Strike Command",
+  "magic.kkremind.attack_light_strike0.name": "Light Strike",
+
+  "item.kkremind.dark_strike_attack": "Dark Strike Command",
+  "magic.kkremind.attack_dark_strike0.name": "Dark Strike",
+
+  "item.kkremind.binding_strike_attack": "Binding Strike Command",
+  "magic.kkremind.attack_binding_strike0.name": "Binding Strike",
+
+  "item.kkremind.confusion_strike_attack": "Confusion Strike Command",
+  "magic.kkremind.attack_confusion_strike0.name": "Confusion Strike",
+
 
 
 
@@ -136,6 +163,8 @@
   "item.kkremind.zantetsuken_attack": "Zantetsuken Command",
   "item.kkremind.swift_strike_attack": "Swift Strike Command",
   "item.kkremind.death_lv_spell": "LV? Death Spell",
+
+
 
   "item.kkremind.balloon1_spell": "Balloonra Spell",
   "item.kkremind.haste1_spell": "Hastera Spell",

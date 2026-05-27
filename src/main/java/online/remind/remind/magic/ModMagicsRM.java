@@ -55,6 +55,21 @@ public class ModMagicsRM {
             LIGHT_SURGE = MAGIC.register(ResourceLocation.parse("attack_light_surge").getPath(),() -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_light_surge"), false, 3, null)),
             DARK_SURGE = MAGIC.register(ResourceLocation.parse("attack_dark_surge").getPath(),() -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_dark_surge"), false, 3, null)),
             ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(),() -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_zantetsuken"), false, 3, null)),
+            FIRE_STRIKE = MAGIC.register(ResourceLocation.parse("attack_fire_strike").getPath(),() -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_fire_strike"), false, 1, null)),
+            BLIZZARD_STRIKE = MAGIC.register(ResourceLocation.parse("attack_blizzard_strike").getPath(),() -> new attackBlizzardStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_blizzard_strike"), false, 1, null)),
+            THUNDER_STRIKE = MAGIC.register(ResourceLocation.parse("attack_thunder_strike").getPath(),() -> new attackThunderStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_thunder_strike"), false, 1, null)),
+            WATER_STRIKE = MAGIC.register(ResourceLocation.parse("attack_water_strike").getPath(),() -> new attackWaterStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_water_strike"), false, 1, null)),
+            AERO_STRIKE = MAGIC.register(ResourceLocation.parse("attack_aero_strike").getPath(),() -> new attackAeroStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_aero_strike"), false, 1, null)),
+            LIGHT_STRIKE = MAGIC.register(ResourceLocation.parse("attack_light_strike").getPath(),() -> new attackLightStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_light_strike"), false, 1, null)),
+            DARK_STRIKE = MAGIC.register(ResourceLocation.parse("attack_dark_strike").getPath(),() -> new attackDarkStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_dark_strike"), false, 1, null)),
+            BINDING_STRIKE = MAGIC.register(ResourceLocation.parse("attack_binding_strike").getPath(),() -> new attackBindingStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_binding_strike"), false, 1, null)),
+            CONFUSION_STRIKE = MAGIC.register(ResourceLocation.parse("attack_confusion_strike").getPath(),() -> new attackConfusionStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_confusion_strike"), false, 1, null)),
+
+
+
+
+
+
             SWIFT_STRIKE = MAGIC.register(ResourceLocation.parse("attack_swift_strike").getPath(),() -> new attackSwiftStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_swift_strike"), false, 1, null)); // SEPHIROTH!
 
 

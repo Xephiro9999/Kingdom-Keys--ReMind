@@ -96,6 +96,16 @@ public class ModItemsRM{
         darkSurgeAttack = ITEMS.register("dark_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_dark_surge",0)),
         zantetsukenAttack = ITEMS.register("zantetsuken_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_zantetsuken",0)),
 
+        fireStrikeAttack = ITEMS.register("fire_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_fire_strike", 0)),
+        blizzardStrikeAttack = ITEMS.register("blizzard_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_blizzard_strike", 0)),
+        thunderStrikeAttack = ITEMS.register("thunder_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_thunder_strike", 0)),
+        waterStrikeAttack = ITEMS.register("water_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_water_strike", 0)),
+        aeroStrikeAttack = ITEMS.register("aero_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_aero_strike", 0)),
+        lightStrikeAttack = ITEMS.register("light_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_light_strike", 0)),
+        darkStrikeAttack = ITEMS.register("dark_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_dark_strike", 0)),
+        bindingStrikeAttack = ITEMS.register("binding_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_binding_strike", 0)),
+        confusionStrikeAttack = ITEMS.register("confusion_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_confusion_strike", 0)),
+
         quickBlitz1Attack = ITEMS.register("quick_blitz1_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_quick_blitz",1)),
         slidingDash1Attack = ITEMS.register("sliding_dash1_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_sliding_dash",1)),
         fireSurge1Attack = ITEMS.register("fire_surge1_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_fire_surge",1)),
