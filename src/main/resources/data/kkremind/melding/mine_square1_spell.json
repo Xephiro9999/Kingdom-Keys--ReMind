@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kkremind:mine_square_spell",
+  "ingredient2": "kkremind:mine_square_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:mine_square1_spell",
+    "quantity": 1
+  },
+  "tier": 5
+}

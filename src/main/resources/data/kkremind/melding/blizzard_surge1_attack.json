@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kkremind:blizzard_surge_attack",
+  "ingredient2": "kkremind:blizzard_surge_attack",
+  "output": {
+    "type": "item",
+    "item": "kkremind:blizzard_surge1_attack",
+    "quantity": 1
+  },
+  "tier": 4
+}

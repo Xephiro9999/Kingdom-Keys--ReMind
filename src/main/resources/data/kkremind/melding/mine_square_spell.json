@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kingdomkeys:spellfira",
+  "ingredient2": "kingdomkeys:spellstop",
+  "output": {
+    "type": "item",
+    "item": "kkremind:mine_square_spell",
+    "quantity": 1
+  },
+  "tier": 4
+}

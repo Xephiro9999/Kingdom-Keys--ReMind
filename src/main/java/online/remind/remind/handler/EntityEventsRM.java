@@ -982,14 +982,14 @@ public class EntityEventsRM {
 						int friendBoost = 0;
 						if (party != null || globalData.hasDreamEaterSummoned()) {
 							if (party != null) {
-								friendBoost = 5 * (party.getMembers().size() - 1);
+								friendBoost = 2 * (party.getMembers().size() - 1);
 							}
 							if (globalData.hasDreamEaterSummoned()){
 								friendBoost ++;
 							}
-							playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, true);
-							playerData.getMagicStat().addModifier("Friendship", friendBoost, false, true);
-							playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, true);
+							playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, false);
+							playerData.getMagicStat().addModifier("Friendship", friendBoost, false, false);
+							playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, false);
 						}
 					} else {
 						playerData.getStrengthStat().removeModifier("Friendship");
