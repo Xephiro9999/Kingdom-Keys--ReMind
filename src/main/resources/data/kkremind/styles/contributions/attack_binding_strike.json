@@ -1,0 +1,9 @@
+{
+  "target": "kkremind:attack_binding_strike",
+
+  "elements": ["STRIKE", "PHYSICAL"],
+  "specific_styles": [],
+
+  "base_value": 25,
+  "per_level_bonus": 5
+}
