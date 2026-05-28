@@ -62,6 +62,7 @@ public class StylesHUD {
         styles.add(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString());
         styles.add(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString());
+        styles.add(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString());
 
         if(styles.contains(form)){
             title = Component.translatable(driveForm.getTranslationKey()).withStyle(ClientUtils.KK_Font_EXP);
@@ -91,6 +92,9 @@ public class StylesHUD {
                     break;
                 case "kkremind:form_spellweaver":
                     guiGraphics.setColor(0.85f,0.55f,0.85f ,1);
+                    break;
+                case "kkremind:form_bloodlust":
+                    guiGraphics.setColor(0.85f,0.0f,0.0f ,1);
                     break;
             }
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, title, event.getSubMenu().getX() + ((event.getSubMenu().getWidth() - 8) / 2) + 1, event.getSubMenu().getY() + 4, 0xFFFFFF);

@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:form_bloodlust",
+  "finisher": "kkremind:rc_bloodlust",
+  "style_level": 1,
+  "elements": ["dark", "physical"],
+  "requires_specific_weapons": true,
+  "required_weapons": ["kkremind:xephiro_keyblade"]
+}

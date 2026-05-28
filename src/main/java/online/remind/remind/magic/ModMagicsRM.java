@@ -65,6 +65,7 @@ public class ModMagicsRM {
             BINDING_STRIKE = MAGIC.register(ResourceLocation.parse("attack_binding_strike").getPath(),() -> new attackBindingStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_binding_strike"), false, 1, null)),
             CONFUSION_STRIKE = MAGIC.register(ResourceLocation.parse("attack_confusion_strike").getPath(),() -> new attackConfusionStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_confusion_strike"), false, 1, null)),
             BLITZ = MAGIC.register(ResourceLocation.parse("attack_blitz").getPath(),() -> new attackBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_blitz"), false, 1, null)),
+            SLOT_EDGE = MAGIC.register(ResourceLocation.parse("attack_slot_edge").getPath(),() -> new attackSlotEdge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID,"attack_slot_edge"), false, 1, null)),
 
 
 

@@ -26,6 +26,7 @@ public class ModReactionCommandsRM {
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC( ResourceLocation.parse(StringsRM.XemnasRC),true)),
         ZEXION_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"zexion", () -> new XemnasRC( ResourceLocation.parse(StringsRM.ZexionRC),true)),
         BLITZ_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"blitz", () -> new BlitzRC( ResourceLocation.parse(StringsRM.BlitzRC),true)),
+        SLOT_EDGE_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"slot_edge", () -> new SlotEdgeRC( ResourceLocation.parse(StringsRM.SlotEdgeRC),true)),
 
 
         FINISH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"finish", () -> new FinishRC(ResourceLocation.parse(StringsRM.FinishRC),false)),
@@ -35,6 +36,9 @@ public class ModReactionCommandsRM {
         FEVER_PITCH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"fever_pitch", () -> new StyleRC(ResourceLocation.parse(StringsRM.FeverPitchRC),false, KingdomKeysReMind.MODID+":"+StringsRM.feverPitch)),
         CRITICAL_IMPACT_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"critical_impact", () -> new StyleRC(ResourceLocation.parse(StringsRM.CriticalImpactRC),false, KingdomKeysReMind.MODID+":"+StringsRM.criticalImpact)),
         SPELLWEAVER_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"spellweaver", () -> new StyleRC(ResourceLocation.parse(StringsRM.SpellweaverRC),false, KingdomKeysReMind.MODID+":"+StringsRM.spellweaver)),
+
+        // Xephiro Style
+        BLOODLUST_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"bloodlust", () -> new StyleRC(ResourceLocation.parse(StringsRM.BloodlustRC),false, KingdomKeysReMind.MODID+":"+StringsRM.bloodlust)),
 
 
 

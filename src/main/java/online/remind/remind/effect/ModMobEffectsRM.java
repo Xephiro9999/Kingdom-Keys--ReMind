@@ -19,7 +19,9 @@ public class ModMobEffectsRM {
             REGEN = MOB_EFFECTS.register("regen", () -> new RegenEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
             STONE = MOB_EFFECTS.register("stone", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
             CONFUSE = MOB_EFFECTS.register("confuse", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
-            BLITZ_CHAIN = MOB_EFFECTS.register("blitz_chain", () -> new StoneEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
+            BLITZ_CHAIN = MOB_EFFECTS.register("blitz_chain", () -> new BlitzChainEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
+            SLOT_EDGE_CHAIN = MOB_EFFECTS.register("slot_edge_chain", () -> new SlotEdgeChainEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
+            RM_ANIMATION_LOCK = MOB_EFFECTS.register("rm_animation_lock", () -> new HiddenBeneficialEffect(0x000000)),
 
 
 

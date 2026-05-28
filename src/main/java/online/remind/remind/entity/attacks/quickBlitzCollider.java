@@ -88,7 +88,7 @@ public class quickBlitzCollider extends ThrowableProjectile {
                 }
                 LivingEntity target = (LivingEntity) entity;
                 if (p == null || (p.getMember(target.getUUID()) == null || p.getFriendlyFire())){
-                    target.hurt(caster.damageSources().mobAttack(caster), damage);
+                    target.hurt(caster.damageSources().indirectMagic(this, caster), damage);
                     caster.setDeltaMovement(0, 0, 0);
                     caster.swing(InteractionHand.MAIN_HAND);
                     target.invulnerableTime = 0;

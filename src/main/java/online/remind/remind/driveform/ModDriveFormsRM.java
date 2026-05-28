@@ -35,6 +35,9 @@ public class ModDriveFormsRM {
             CRITICAL_IMPACT = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"critical_impact", () -> new StyleCriticalImpact(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "critical_impact"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
             SPELLWEAVER = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"spellweaver", () -> new StyleSpellweaver(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "spellweaver"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
 
+
+            BLOOSTLUST = DRIVE_FORMS.register(StringsRM.DFMA_Prefix+"bloodlust", () -> new StyleBloodlust(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "bloodlust"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true)),
+
         // Commission Forms
 
             REGEN = DRIVE_FORMS.register(StringsRM.DFMA_Prefix + "regen", () -> new DriveFormRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.DFMA_Prefix + "regen"), order++, ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/models/armor/regen.png"), false, true));

@@ -4,5 +4,5 @@
   "style_level": 1,
   "elements": ["magic"],
   "requires_specific_weapons": true,
-  "required_weapons": ["kingdomkeys:rainfell", "kingdomkeys:stormfall"]
+  "required_weapons": ["kingdomkeys:rainfell", "kingdomkeys:stormfall", "kingdomkeys:brightcrest"]
 }

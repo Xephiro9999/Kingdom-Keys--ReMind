@@ -55,6 +55,10 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
+import online.remind.remind.entity.attacks.BlitzCollider;
+import online.remind.remind.entity.attacks.ElementStrikeCollider;
+import online.remind.remind.entity.attacks.SlotEdgeCollider;
+import online.remind.remind.entity.attacks.quickBlitzCollider;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -249,6 +253,7 @@ public class EntityEventsRM {
 		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString(), 1);
 		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString(), 1);
 
 	}
 
@@ -736,6 +741,20 @@ public class EntityEventsRM {
 			return;
 		}
 
+		// FIRST: cancel Epic Fight animation damage
+		if (player.hasEffect(ModMobEffectsRM.RM_ANIMATION_LOCK)) {
+			if (directEntity instanceof quickBlitzCollider ||
+					directEntity instanceof BlitzCollider ||
+					directEntity instanceof SlotEdgeCollider ||
+					directEntity instanceof ElementStrikeCollider) {
+				// Allow custom Re:Mind collider damage.
+			} else {
+				event.setNewDamage(0.0F);
+				return;
+			}
+		}
+
+		// SECOND: Fortuna Exceed logic
 		PlayerData playerData = PlayerData.get(player);
 
 		if (playerData == null) {
@@ -780,6 +799,23 @@ public class EntityEventsRM {
 		}
 
 		player.removeEffect(ModMobEffectsRM.EXCEED);
+	}
+
+	@SubscribeEvent
+	public void onAttackEntity(AttackEntityEvent event) {
+		if (!(event.getEntity() instanceof Player player)) {
+			return;
+		}
+
+		if (!player.hasEffect(ModMobEffectsRM.RM_ANIMATION_LOCK)) {
+			return;
+		}
+
+		/*
+		 * During Re:Mind command animations, cancel normal melee/EFM animation hits.
+		 * Your command damage comes from collider entities, not this player attack event.
+		 */
+		event.setCanceled(true);
 	}
 
 	@SubscribeEvent
@@ -1615,6 +1651,9 @@ public class EntityEventsRM {
 	public void onPlayerAttack(AttackEntityEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			if (player.hasEffect(ModMobEffectsRM.STONE)) {
+				event.setCanceled(true);
+			}
+			if (player.hasEffect(ModMobEffectsRM.RM_ANIMATION_LOCK)) {
 				event.setCanceled(true);
 			}
 

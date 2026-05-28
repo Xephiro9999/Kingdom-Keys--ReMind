@@ -151,6 +151,71 @@ public class StyleRC extends ReactionCommand {
 				playSoundAndParticles(player, SoundEvents.EVOKER_CAST_SPELL,
 						ParticleTypes.ENCHANT);
 			}
+
+			case KingdomKeysReMind.MODID + ":" + StringsRM.bloodlust -> {
+				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+
+				float mult = darkBoosts * 0.25F;
+				float finalDamage = damage + (damage * mult);
+
+				float healAmount = Math.min(finalDamage * 0.25F, 8.0F);
+				player.heal(healAmount);
+
+				explosionHurt(player, finalDamage, KKDamageTypes.DARKNESS);
+
+				playSoundAndParticles(
+						player,
+						SoundEvents.EVOKER_CAST_SPELL,
+						ParticleTypes.DAMAGE_INDICATOR
+				);
+
+				if (player.level() instanceof ServerLevel serverLevel) {
+					serverLevel.sendParticles(
+							ParticleTypes.DAMAGE_INDICATOR,
+							player.getX(),
+							player.getY() + 1.0D,
+							player.getZ(),
+							30,
+							1.0D,
+							0.6D,
+							1.0D,
+							0.08D
+					);
+
+					serverLevel.sendParticles(
+							ParticleTypes.SOUL,
+							player.getX(),
+							player.getY() + 1.0D,
+							player.getZ(),
+							20,
+							0.8D,
+							0.5D,
+							0.8D,
+							0.05D
+					);
+
+					serverLevel.sendParticles(
+							ParticleTypes.WITCH,
+							player.getX(),
+							player.getY() + 1.0D,
+							player.getZ(),
+							18,
+							0.7D,
+							0.5D,
+							0.7D,
+							0.03D
+					);
+				}
+
+				player.level().playSound(
+						null,
+						player.blockPosition(),
+						SoundEvents.WITHER_AMBIENT,
+						SoundSource.PLAYERS,
+						0.8F,
+						1.25F
+				);
+			}
 		}
 	}
 

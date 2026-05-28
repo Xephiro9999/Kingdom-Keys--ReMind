@@ -300,6 +300,14 @@ public class ClientEventsRM {
 
 					}
 
+					// Bloodlust Active
+					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString())){
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.95f,0f,0f),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.25f,0f,0f),0.65f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						player.level().addParticle(new DustParticleOptions(new Vector3f(0.5f,0f,0f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+
+					}
+
 
 					// When I can get particles in other hand
 					//if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())){

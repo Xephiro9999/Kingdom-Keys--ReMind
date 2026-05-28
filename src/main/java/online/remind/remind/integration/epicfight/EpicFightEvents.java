@@ -3,6 +3,7 @@ package online.remind.remind.integration.epicfight;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,6 +20,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.gameasset.Animations;
@@ -64,40 +66,39 @@ public class EpicFightEvents {
                 if (playerpatch.isEpicFightMode()) {
                         String spell = String.valueOf(e.getSpellID());
                         switch (spell) {
-                            case "kkremind:attack_quick_blitz":
+                            // Jump Attacks
+                            case "kkremind:attack_quick_blitz", "kkremind:attack_blitz", "kkremind:attack_slot_edge":
+                                player.addEffect(new MobEffectInstance(
+                                        ModMobEffectsRM.RM_ANIMATION_LOCK,
+                                        20,
+                                        0,
+                                        false,
+                                        false,
+                                        false
+                                ));
                                 playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
                                 break;
-                            case "kkremind:attack_blitz":
-                                playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
-                                break;
+                            // Dash Attacks
                             case "kkremind:attack_sliding_dash":
+                                player.addEffect(new MobEffectInstance(
+                                        ModMobEffectsRM.RM_ANIMATION_LOCK,
+                                        20,
+                                        0,
+                                        false,
+                                        false,
+                                        false
+                                ));
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
                                 break;
-                            case "kkremind:attack_fire_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_blizzard_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_thunder_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_water_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_aero_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_light_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_dark_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_binding_strike":
-                                playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
-                                break;
-                            case "kkremind:attack_confusion_strike":
+                            case "kkremind:attack_confusion_strike", "kkremind:attack_binding_strike", "kkremind:attack_dark_strike", "kkremind:attack_fire_strike", "kkremind:attack_blizzard_strike", "kkremind:attack_thunder_strike", "kkremind:attack_water_strike", "kkremind:attack_aero_strike", "kkremind:attack_light_strike":
+                                player.addEffect(new MobEffectInstance(
+                                        ModMobEffectsRM.RM_ANIMATION_LOCK,
+                                        10,
+                                        0,
+                                        false,
+                                        false,
+                                        false
+                                ));
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_AUTO3.get().getRealAnimation(), 0.25f);
                                 break;
                         }
@@ -151,6 +152,14 @@ public class EpicFightEvents {
                                     playerpatch.playAnimationSynchronized(Animations.BIPED_HOLD_UCHIGATANA_SHEATHING.get().getRealAnimation(), 0.10f);
                                 }
                                 if (playerData.getMagicCasttimeTicks() == 1) {
+                                    player.addEffect(new MobEffectInstance(
+                                            ModMobEffectsRM.RM_ANIMATION_LOCK,
+                                            20,
+                                            0,
+                                            false,
+                                            false,
+                                            false
+                                    ));
                                     playerpatch.playAnimationSynchronized(Animations.UCHIGATANA_SHEATHING_AUTO.get().getRealAnimation(), 0.10f);
 
 

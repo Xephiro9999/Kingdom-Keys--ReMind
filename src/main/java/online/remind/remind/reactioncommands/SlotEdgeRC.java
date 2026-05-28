@@ -12,16 +12,14 @@ import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.entity.attacks.BlitzCollider;
+import online.remind.remind.entity.attacks.SlotEdgeCollider;
 import online.remind.remind.integration.epicfight.RMIntegrationHooks;
 
-public class BlitzRC extends ReactionCommand {
+public class SlotEdgeRC extends ReactionCommand {
 
-    public BlitzRC(ResourceLocation registryName, boolean constantCheck) {
+    public SlotEdgeRC(ResourceLocation registryName, boolean constantCheck) {
         super(registryName, constantCheck, 20, 0xFFD700);
     }
-
-
 
     @Override
     public void onUse(Player player, LivingEntity livingEntity, LivingEntity target) {
@@ -32,7 +30,7 @@ public class BlitzRC extends ReactionCommand {
             return;
         }
 
-        MobEffectInstance chain = player.getEffect(ModMobEffectsRM.BLITZ_CHAIN);
+        MobEffectInstance chain = player.getEffect(ModMobEffectsRM.SLOT_EDGE_CHAIN);
 
         if (chain == null) {
             return;
@@ -40,31 +38,31 @@ public class BlitzRC extends ReactionCommand {
 
         int chainStep = chain.getAmplifier();
 
-        RMIntegrationHooks.playHeavyCommandAnimation(player, "blitz", chainStep);
-
-        player.removeEffect(ModMobEffectsRM.BLITZ_CHAIN);
+        player.removeEffect(ModMobEffectsRM.SLOT_EDGE_CHAIN);
 
         float dmg = switch (chainStep) {
-            case 1 -> playerData.getStrength(true) * 1.35F;
-            case 2 -> playerData.getStrength(true) * 1.8F;
-            default -> playerData.getStrength(true) * 1.2F;
+            case 1 -> playerData.getStrength(true) * 1.0F;
+            case 2 -> playerData.getStrength(true) * 1.35F;
+            default -> playerData.getStrength(true) * 0.9F;
         };
 
-        launchBlitzDash(player, chainStep);
+        launchSlotEdgeDash(player, chainStep);
 
-        BlitzCollider blitz = new BlitzCollider(
+        SlotEdgeCollider slotEdge = new SlotEdgeCollider(
                 player.level(),
                 player,
                 dmg,
                 chainStep
         );
 
-        player.level().addFreshEntity(blitz);
+        player.level().addFreshEntity(slotEdge);
+
+        RMIntegrationHooks.playHeavyCommandAnimation(player, "slot_edge", chainStep);
 
         globalData.setRCCooldownTicks(4);
 
         player.displayClientMessage(
-                Component.literal(chainStep >= 2 ? "Blitz Finisher!" : "Blitz Rush!")
+                Component.literal(chainStep >= 2 ? "Slot Edge Finish!" : "Slot Edge!")
                         .withColor(0xFFD700),
                 true
         );
@@ -81,24 +79,20 @@ public class BlitzRC extends ReactionCommand {
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
-        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+        MobEffectInstance chain = player.getEffect(ModMobEffectsRM.SLOT_EDGE_CHAIN);
 
-        if (globalData == null) {
+        if (chain == null) {
             return false;
         }
 
-        if (globalData.getRCCooldownTicks() > 0) {
-            return false;
-        }
-
-        return player.hasEffect(ModMobEffectsRM.BLITZ_CHAIN);
+        return true;
     }
 
-    private void launchBlitzDash(Player caster, int chainStep) {
+    private void launchSlotEdgeDash(Player caster, int chainStep) {
         double speed = switch (chainStep) {
-            case 1 -> 1.85D;
-            case 2 -> 2.15D;
-            default -> 1.65D;
+            case 1 -> 1.75D;
+            case 2 -> 2.0D;
+            default -> 1.55D;
         };
 
         double jump = chainStep >= 2 ? 0.45D : 0.35D;
@@ -109,7 +103,9 @@ public class BlitzRC extends ReactionCommand {
         caster.hurtMarked = true;
         caster.fallDistance = 0.0F;
 
-        if (!RMIntegrationHooks.isEpicFightMode(caster)) {
+        if (RMIntegrationHooks.isEpicFightMode(caster)) {
+            caster.setDeltaMovement(dx / 2.25D, jump, dz / 2.25D);
+        } else {
             caster.setDeltaMovement(dx, jump, dz);
         }
     }

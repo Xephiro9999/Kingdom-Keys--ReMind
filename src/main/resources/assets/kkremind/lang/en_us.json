@@ -129,6 +129,9 @@
   "item.kkremind.blitz_attack": "Blitz Command",
   "magic.kkremind.attack_blitz0.name": "Blitz",
 
+  "item.kkremind.slot_edge_attack": "Slot Edge Command",
+  "magic.kkremind.attack_slot_edge0.name": "Slot Edge",
+
 
 
 
@@ -375,6 +378,7 @@
   "form.form_fever_pitch.name": "Fever Pitch",
   "form.form_critical_impact.name": "Critical Impact",
   "form.form_spellweaver.name": "Spellweaver",
+  "form.form_bloodlust.name": "Bloodlust",
 
 
   "item.kkremind.xephiro_keyblade": "Sanguine Gaze",
@@ -500,6 +504,7 @@
   "reactioncommand.kkremind.rc_dual_shot.name": "Dual Shot",
   "reactioncommand.kkremind.rc_dark_firaga.name": "Dark Firaga",
   "reactioncommand.kkremind.rc_blitz.name": "Blitz",
+  "reactioncommand.kkremind.rc_slot_edge.name": "Slot Edge",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 
@@ -513,6 +518,7 @@
   "reactioncommand.kkremind.rc_fever_pitch.name": "Fever Pitch",
   "reactioncommand.kkremind.rc_critical_impact.name": "Critical Impact",
   "reactioncommand.kkremind.rc_spellweaver.name": "Spellweaver",
+  "reactioncommand.kkremind.rc_bloodlust.name": "Bloodlust",
 
 
   "reactioncommand.kkremind.rc_counter_hammer.name": "Counter Hammer",
