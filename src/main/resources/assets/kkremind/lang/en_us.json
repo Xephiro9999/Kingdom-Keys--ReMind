@@ -126,6 +126,9 @@
   "item.kkremind.confusion_strike_attack": "Confusion Strike Command",
   "magic.kkremind.attack_confusion_strike0.name": "Confusion Strike",
 
+  "item.kkremind.blitz_attack": "Blitz Command",
+  "magic.kkremind.attack_blitz0.name": "Blitz",
+
 
 
 
@@ -496,6 +499,7 @@
   "reactioncommand.kkremind.rc_twilight.name": "Twilight's Embrace",
   "reactioncommand.kkremind.rc_dual_shot.name": "Dual Shot",
   "reactioncommand.kkremind.rc_dark_firaga.name": "Dark Firaga",
+  "reactioncommand.kkremind.rc_blitz.name": "Blitz",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 

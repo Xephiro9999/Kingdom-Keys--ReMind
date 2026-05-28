@@ -67,7 +67,9 @@ public class EpicFightEvents {
                             case "kkremind:attack_quick_blitz":
                                 playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
                                 break;
-
+                            case "kkremind:attack_blitz":
+                                playerpatch.playAnimationSynchronized(KKAnimations.SORA_FINISHER1.get().getRealAnimation(), 0.1f);
+                                break;
                             case "kkremind:attack_sliding_dash":
                                 playerpatch.playAnimationSynchronized(Animations.SWORD_DASH.get().getRealAnimation(), 0.25f);
                                 break;

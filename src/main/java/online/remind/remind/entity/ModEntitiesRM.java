@@ -59,6 +59,7 @@ public class ModEntitiesRM {
 
     // Attack Commands
     public static final Supplier<EntityType<quickBlitzCollider>> TYPE_QUICK_BLITZ = createEntityType(quickBlitzCollider::new, MobCategory.MISC,"quick_blitz_collider", 1.5F, 1.5F);
+    public static final DeferredHolder<EntityType<?>, EntityType<BlitzCollider>> TYPE_BLITZ = ENTITIES.register("blitz", () -> EntityType.Builder.<BlitzCollider>of(BlitzCollider::new, MobCategory.MISC).sized(1.5F, 1.8F).clientTrackingRange(64).updateInterval(1).build("blitz"));
     public static final Supplier<EntityType<slidingDashCollider>> TYPE_SLIDING_DASH = createEntityType(slidingDashCollider::new, MobCategory.MISC,"sliding_dash_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<fireSurgeCollider>> TYPE_FIRE_SURGE = createEntityType(fireSurgeCollider::new, MobCategory.MISC,"fire_surge_collider", 1.5F, 1.5F);
     public static final Supplier<EntityType<thunderSurgeCollider>> TYPE_THUNDER_SURGE = createEntityType(thunderSurgeCollider::new, MobCategory.MISC,"thunder_surge_collider", 1.5F, 1.5F);
@@ -159,6 +160,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_MINE.get(), MineEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(TYPE_BLITZ.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SLIDING_DASH.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_AERO_SURGE.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_BLIZZARD_SURGE.get(),InvisibleEntityRenderer::new);

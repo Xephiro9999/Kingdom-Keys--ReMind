@@ -105,6 +105,7 @@ public class ModItemsRM{
         darkStrikeAttack = ITEMS.register("dark_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_dark_strike", 0)),
         bindingStrikeAttack = ITEMS.register("binding_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_binding_strike", 0)),
         confusionStrikeAttack = ITEMS.register("confusion_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_confusion_strike", 0)),
+        blitzAttack = ITEMS.register("blitz_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID + ":attack_blitz", 0)),
 
         quickBlitz1Attack = ITEMS.register("quick_blitz1_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_quick_blitz",1)),
         slidingDash1Attack = ITEMS.register("sliding_dash1_attack", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":attack_sliding_dash",1)),

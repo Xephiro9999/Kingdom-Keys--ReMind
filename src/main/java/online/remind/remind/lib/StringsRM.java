@@ -163,6 +163,7 @@ public class StringsRM {
         XigbarRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"xigbar",
         vexenRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"vexen",
         ZexionRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"zexion",
+        BlitzRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"blitz",
 
         CounterHammerRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_hammer",
         CounterBlastRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_blast",

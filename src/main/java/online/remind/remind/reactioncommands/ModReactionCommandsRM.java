@@ -25,6 +25,7 @@ public class ModReactionCommandsRM {
         DARK_FIRAGA_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"dark_firaga", () -> new DarkFiragaRC( ResourceLocation.parse(StringsRM.DarkFiragaRC),true)),
         XEMNAS_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"xemnas", () -> new XemnasRC( ResourceLocation.parse(StringsRM.XemnasRC),true)),
         ZEXION_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"zexion", () -> new XemnasRC( ResourceLocation.parse(StringsRM.ZexionRC),true)),
+        BLITZ_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"blitz", () -> new BlitzRC( ResourceLocation.parse(StringsRM.BlitzRC),true)),
 
 
         FINISH_RC = REACTION_COMMANDS.register(StringsRM.RCMA_Prefix+"finish", () -> new FinishRC(ResourceLocation.parse(StringsRM.FinishRC),false)),
