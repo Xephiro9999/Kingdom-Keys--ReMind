@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:dark_surge_attack",
+  "ingredient2": "kkremind:sliding_dash2_attack",
+  "output": {
+    "type": "item",
+    "item": "kkremind:zantetsuken_attack",
+    "quantity": 1
+  },
+  "tier": 5
+}
