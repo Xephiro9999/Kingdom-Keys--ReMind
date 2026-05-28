@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kkremind:confusion_strike_attack",
+  "ingredient2": "kingdomkeys:spellthundara",
+  "output": {
+    "type": "item",
+    "item": "kkremind:thunder_surge_attack",
+    "quantity": 1
+  },
+  "tier": 3
+}

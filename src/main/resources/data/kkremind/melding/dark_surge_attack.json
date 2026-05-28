@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kkremind:dark_strike_attack",
+  "ingredient2": "kkremind:ruin1_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:dark_surge_attack",
+    "quantity": 1
+  },
+  "tier": 3
+}

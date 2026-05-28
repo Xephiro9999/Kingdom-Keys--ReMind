@@ -1,0 +1,11 @@
+{
+  "cost": 800,
+  "ingredient1": "kkremind:blizzard_strike_attack",
+  "ingredient2": "kingdomkeys:spellblizzara",
+  "output": {
+    "type": "item",
+    "item": "kkremind:blizzard_surge_attack",
+    "quantity": 1
+  },
+  "tier": 3
+}
