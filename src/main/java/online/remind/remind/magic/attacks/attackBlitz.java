@@ -53,7 +53,7 @@ public class attackBlitz extends Magic {
             default -> 1.65D;
         };
 
-        double jump = 0.35D;
+        double jump = 0.25D;
         double yawRad = Math.toRadians(caster.getYRot());
         double dx = -Math.sin(yawRad) * speed;
         double dz = Math.cos(yawRad) * speed;

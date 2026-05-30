@@ -1,0 +1,11 @@
+{
+  "cost": 50000,
+  "ingredient1": "kingdomkeys:curagaspell",
+  "ingredient2": "kkremind:regen2_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:autolife_spell",
+    "quantity": 1
+  },
+  "tier": 7
+}

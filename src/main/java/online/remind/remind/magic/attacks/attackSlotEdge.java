@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.entity.attacks.SlotEdgeCollider;
 import online.remind.remind.integration.epicfight.RMIntegrationHooks;
 
@@ -55,7 +56,7 @@ public class attackSlotEdge extends Magic {
             default -> 1.55D;
         };
 
-        double jump = 0.35D;
+        double jump = 0.25D;
         double yawRad = Math.toRadians(caster.getYRot());
         double dx = -Math.sin(yawRad) * speed;
         double dz = Math.cos(yawRad) * speed;
@@ -63,7 +64,9 @@ public class attackSlotEdge extends Magic {
         caster.hurtMarked = true;
         caster.fallDistance = 0.0F;
 
-        if (!RMIntegrationHooks.isEpicFightMode(caster)) {
+        if (KingdomKeysReMind.efmLoaded) {
+            caster.setDeltaMovement(dx / 2.25D, jump, dz / 2.25D);
+        } else {
             caster.setDeltaMovement(dx, jump, dz);
         }
     }

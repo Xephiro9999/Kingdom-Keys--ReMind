@@ -1,5 +1,5 @@
 {
-  "cost": 0,
+  "cost": 100000,
   "ingredients": [
     {
       "material": "kingdomkeys:lucid_gem",
@@ -23,5 +23,5 @@
     "item": "kkremind:daredevil",
     "quantity": 1
   },
-  "tier": 5
+  "tier": 7
 }
