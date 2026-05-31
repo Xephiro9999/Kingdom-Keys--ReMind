@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:drain1_spell",
+  "ingredient2": "kkremind:drain1_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:drain2_spell",
+    "quantity": 1
+  },
+  "tier": 5
+}

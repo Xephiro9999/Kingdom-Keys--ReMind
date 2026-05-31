@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kingdomkeys:curespell",
+  "ingredient2": "kingdomkeys:poisonspell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:esuna_spell",
+    "quantity": 1
+  },
+  "tier": 2
+}

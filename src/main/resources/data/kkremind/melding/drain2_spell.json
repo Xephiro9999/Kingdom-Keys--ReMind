@@ -1,11 +1,7 @@
 {
   "cost": 0,
-  "ingredients": [
-    {
-      "material": "kkremind:drain1_spell",
-      "quantity": "2"
-    }
-  ],
+  "ingredient1": "kkremind:drain1_spell",
+  "ingredient2": "kkremind:drain_spell",
   "output": {
     "type": "item",
     "item": "kkremind:drain2_spell",

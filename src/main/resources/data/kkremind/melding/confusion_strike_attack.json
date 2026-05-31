@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:confuse_spell",
+  "ingredient2": "kkremind:quick_blitz_attack",
+  "output": {
+    "type": "item",
+    "item": "kkremind:confusion_strike_attack",
+    "quantity": 1
+  },
+  "tier": 4
+}

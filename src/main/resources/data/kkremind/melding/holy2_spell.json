@@ -1,11 +1,7 @@
 {
   "cost": 0,
-  "ingredients": [
-    {
-      "material": "kkremind:holy1_spell",
-      "quantity": "2"
-    }
-  ],
+  "ingredient1": "kkremind:holy1_spell",
+  "ingredient2": "kkremind:holy1_spell",
   "output": {
     "type": "item",
     "item": "kkremind:holy2_spell",
