@@ -1,7 +1,7 @@
 {
   "cost": 0,
   "ingredient1": "kingdomkeys:magnetspell",
-  "ingredient2": "kingdomkeys:poisonspell",
+  "ingredient2": "kingdomkeys:spellpoison",
   "output": {
     "type": "item",
     "item": "kkremind:drain_spell",

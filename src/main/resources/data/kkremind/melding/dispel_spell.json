@@ -1,6 +1,6 @@
 {
   "cost": 500,
-  "ingredient1": "kingdomkeys:poisonspell",
+  "ingredient1": "kingdomkeys:spellpoison",
   "ingredient2": "kkremind:esuna_spell",
   "output": {
     "type": "item",
