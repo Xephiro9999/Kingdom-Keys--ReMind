@@ -47,17 +47,17 @@ public class EpicRMWeapons {
                 .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
 
-                .livingMotionModifier(KKStyles.VALOR, LivingMotions.IDLE, KKAnimations.VALOR_IDLE)
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.IDLE, KKAnimations.WISDOM_IDLE)
-                .livingMotionModifier(KKStyles.MASTER, LivingMotions.IDLE, KKAnimations.MASTER_IDLE)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.IDLE, KKAnimations.FINAL_IDLE)
+                .livingMotionModifier(KKStyles.VALOR, LivingMotions.IDLE, KKAnimations.VALOR_FORM_IDLE)
+                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.IDLE, KKAnimations.WISDOM_FORM_IDLE)
+                .livingMotionModifier(KKStyles.MASTER, LivingMotions.IDLE, KKAnimations.MASTER_FORM_IDLE)
+                .livingMotionModifier(KKStyles.FINAL, LivingMotions.IDLE, KKAnimations.FINAL_FORM_IDLE)
 
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.WALK, KKAnimations.WISDOM_RUN)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.WALK, KKAnimations.FINAL_IDLE)
+                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.WALK, KKAnimations.WISDOM_FORM_RUN)
+                .livingMotionModifier(KKStyles.FINAL, LivingMotions.WALK, KKAnimations.FINAL_FORM_IDLE)
 
                 .livingMotionModifier(KKStyles.VALOR, LivingMotions.RUN, KKAnimations.ROXAS_RUN)
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.RUN, KKAnimations.WISDOM_RUN)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.RUN, KKAnimations.FINAL_IDLE)
+                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.RUN, KKAnimations.WISDOM_FORM_RUN)
+                .livingMotionModifier(KKStyles.FINAL, LivingMotions.RUN, KKAnimations.FINAL_FORM_IDLE)
 
                 .newStyleCombo(KKStyles.VALOR, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO2, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO3, KKAnimations.VALOR_AUTO3, Animations.SWORD_DASH, Animations.SWORD_DUAL_AIR_SLASH)
                 .newStyleCombo(KKStyles.WISDOM, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_COMBO1, Animations.SWORD_AIR_SLASH)
