@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_warp",
+  "target": "kingdomkeys:magic_warp",
 
   "elements": ["MAGIC"],
   "specific_styles": [],
