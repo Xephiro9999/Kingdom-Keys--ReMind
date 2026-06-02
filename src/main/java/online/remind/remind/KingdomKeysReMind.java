@@ -28,6 +28,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.item.ICreativeTab;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
+import online.remind.remind.command.OrganizationPanelCommand;
 import online.remind.remind.handler.SGaugeEventHandler;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -46,6 +47,7 @@ import online.remind.remind.item.ModComponentsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.ListsRM;
 import online.remind.remind.magic.ModMagicsRM;
+import online.remind.remind.panels.PanelRegistry;
 import online.remind.remind.particle.ReMindParticles;
 import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
@@ -94,6 +96,7 @@ public class KingdomKeysReMind {
         ModDataRM.ATTACHMENT_TYPES.register(modEventBus);
         ModComponentsRM.COMPONENTS.register(modEventBus);
         SGaugeEventHandler.register();
+        PanelRegistry.init();
         modEventBus.addListener(this::setup);
         TABS.register(modEventBus);
 
@@ -180,8 +183,7 @@ public class KingdomKeysReMind {
 
     @SubscribeEvent
     public void registerCommands(RegisterCommandsEvent event) {
-        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        ModCommands.register(dispatcher);
+        OrganizationPanelCommand.register(event.getDispatcher());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

@@ -13,6 +13,8 @@ import online.kingdomkeys.kingdomkeys.magic.ModMagic;
 import online.kingdomkeys.kingdomkeys.shotlock.ModShotlocks;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.panels.PanelGrid;
+import online.remind.remind.panels.PanelStats;
 
 import java.util.*;
 
@@ -42,6 +44,9 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     private int defPanel;
     private String panelChoice;
     private int panelsStatus;
+
+    private PanelGrid organizationPanelGrid = new PanelGrid(5, 4);
+
     private int ngpStatus;
     private int darkModeEXP;
     private int lightFormEXP;
@@ -95,6 +100,8 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         storage.putInt("Panels_MAG", this.getMAGPanel());
 
         storage.putInt("Panels_Enabled", this.getPanelsEnabled());
+        storage.put("Organization_Panel_Grid", this.organizationPanelGrid.save());
+
         storage.putInt("NGPlus_Enabled", this.getNGPEnabled());
 
         //storage.putString("Panels_Choice",this.getPanelChoice().toString());
@@ -149,7 +156,13 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         this.setDEFPanel(properties.getInt("Panels_DEF"));
 
         this.setPanelsEnabled(properties.getInt("Panels_Enabled"));
-        this.setNGPEnabled(properties.getInt("NG+_Enabled"));
+        if (properties.contains("Organization_Panel_Grid", Tag.TAG_COMPOUND)) {
+            this.organizationPanelGrid = PanelGrid.load(properties.getCompound("Organization_Panel_Grid"));
+        } else {
+            this.organizationPanelGrid = new PanelGrid(5, 4);
+        }
+
+        this.setNGPEnabled(properties.getInt("NGPlus_Enabled"));
 
         this.setRiskchargeCount(properties.getInt("riskcharge_count"));
 
@@ -448,6 +461,30 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     public void setPanelsEnabled(int i) {
         panelsStatus = i;
+    }
+
+    public PanelGrid getOrganizationPanelGrid() {
+        return organizationPanelGrid;
+    }
+
+    public void setOrganizationPanelGrid(PanelGrid grid) {
+        if (grid == null) {
+            this.organizationPanelGrid = new PanelGrid(5, 4);
+        } else {
+            this.organizationPanelGrid = grid;
+        }
+    }
+
+    public PanelStats getOrganizationPanelStats() {
+        return this.organizationPanelGrid.calculateStats();
+    }
+
+    public boolean placeOrganizationPanel(ResourceLocation panelId, int x, int y) {
+        return this.organizationPanelGrid.place(panelId, x, y);
+    }
+
+    public boolean removeOrganizationPanelAt(int x, int y) {
+        return this.organizationPanelGrid.removeAt(x, y);
     }
 
     public int getNGPEnabled() {
