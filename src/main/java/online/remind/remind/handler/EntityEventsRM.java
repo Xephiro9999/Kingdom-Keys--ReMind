@@ -62,6 +62,7 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.panels.OrganizationPanelStatHelper;
 
 import java.util.*;
 
@@ -866,11 +867,21 @@ public class EntityEventsRM {
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
 
-				if (playerData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
-					playerData.getStrengthStat().addModifier("Organization", 5, false, true);
-					playerData.getMagicStat().addModifier("Organization", 5, false, true);
-					playerData.getDefenseStat().addModifier("Organization", 5, false, true);
-				} else if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
+				if (playerData != null && globalData != null && playerData.getAlignment() != Utils.OrgMember.NONE) {
+					int baseOrgBonus = 5;
+
+					/*
+					 * Level Panels do not change real player level.
+					 * They strengthen the Organization XIII passive bonus instead.
+					 */
+					int panelLevelBonus = OrganizationPanelStatHelper.getPanelLevelBonus(player);
+
+					int totalOrgBonus = baseOrgBonus + panelLevelBonus;
+
+					playerData.getStrengthStat().addModifier("Organization", (double) totalOrgBonus / 3, false, true);
+					playerData.getMagicStat().addModifier("Organization", (double) totalOrgBonus / 3, false, true);
+					playerData.getDefenseStat().addModifier("Organization", (double) totalOrgBonus / 3, false, true);
+				} else if (playerData != null) {
 					playerData.getStrengthStat().removeModifier("Organization");
 					playerData.getMagicStat().removeModifier("Organization");
 					playerData.getDefenseStat().removeModifier("Organization");
@@ -1193,34 +1204,13 @@ public class EntityEventsRM {
 						playerData.getStrengthStat().removeModifier("Tidus");
 					}
 
-					// Panel System
+					// Days-style Organization Panel System
 					if (!player.level().isClientSide) {
 						if (playerData.getAlignment() != Utils.OrgMember.NONE && globalData.getPanelsEnabled() == 1) {
-
-							if (globalData.getSTRPanel() > ModConfigs.panelLimit) {
-								playerData.getStrengthStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-								globalData.setSTRPanel(ModConfigs.panelLimit);
-							}
-							if (globalData.getMAGPanel() > ModConfigs.panelLimit) {
-								playerData.getMagicStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-								globalData.setMAGPanel(ModConfigs.panelLimit);
-							}
-							if (globalData.getDEFPanel() > ModConfigs.panelLimit) {
-								playerData.getDefenseStat().addModifier("Panel", ModConfigs.panelLimit, false, false);
-								globalData.setDEFPanel(ModConfigs.panelLimit);
-							}
-
-							playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
-							playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
-							playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
-
-
+							OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
+						} else {
+							OrganizationPanelStatHelper.removePanelModifiers(player);
 						}
-					} else {
-						playerData.getStrengthStat().removeModifier("Panel");
-						playerData.getMagicStat().removeModifier("Panel");
-						playerData.getDefenseStat().removeModifier("Panel");
-						//PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 					}
 				}
 			}

@@ -22,6 +22,8 @@ public class ModItemsRM{
     public static int goldCoinValue = ModConfigs.goldCoinValue;
 
 
+
+
     public static final Supplier<Item>
             // Spell Orbs
         hasteSpell = ITEMS.register("haste_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",0)),
@@ -145,7 +147,11 @@ public class ModItemsRM{
         // Ability Orb?
         abilityOrb = ITEMS.register("ability_orb", () -> new AbilityOrbItem(new Item.Properties(), "")),
 
-        // Keyblades
+        // Org Panel System
+        slotReleaser = ITEMS.register("slot_releaser", () -> new SlotReleaserItem(new Item.Properties().stacksTo(64))),
+
+
+    // Keyblades
         xephiroKeyblade = ITEMS.register("xephiro_keyblade", () -> new KeybladeItem(new Item.Properties())),
         pureblood = ITEMS.register("pureblood", () -> new KeybladeItem(new Item.Properties())),
         elemental_crescendo = ITEMS.register("elemental_crescendo", () -> new KeybladeItem(new Item.Properties())),

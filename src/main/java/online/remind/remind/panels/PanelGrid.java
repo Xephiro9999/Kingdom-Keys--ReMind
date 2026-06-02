@@ -20,6 +20,14 @@ public class PanelGrid {
         this.height = height;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public boolean canPlace(ResourceLocation panelId, int x, int y) {
         PanelData data = PanelRegistry.get(panelId);
 
@@ -58,6 +66,8 @@ public class PanelGrid {
 
         return true;
     }
+
+
 
     public boolean place(ResourceLocation panelId, int x, int y) {
         if (!canPlace(panelId, x, y)) {
@@ -108,20 +118,6 @@ public class PanelGrid {
         }
 
         return null;
-    }
-
-    public PanelStats calculateStats() {
-        PanelStats stats = new PanelStats();
-
-        for (PanelSlot slot : placedPanels) {
-            PanelData data = PanelRegistry.get(slot.getPanelId());
-
-            if (data != null) {
-                stats.add(data);
-            }
-        }
-
-        return stats;
     }
 
     public List<PanelSlot> getPlacedPanels() {
@@ -177,5 +173,114 @@ public class PanelGrid {
                 && ax + aw > bx
                 && ay < by + bh
                 && ay + ah > by;
+    }
+
+    public PanelStats calculateStats() {
+        PanelStats stats = new PanelStats();
+
+        for (PanelSlot slot : placedPanels) {
+            PanelData data = PanelRegistry.get(slot.getPanelId());
+
+            if (data != null) {
+                stats.add(data);
+            }
+        }
+
+        applyLinkBonuses(stats);
+
+        return stats;
+    }
+
+    private void applyLinkBonuses(PanelStats stats) {
+        for (PanelSlot slot : placedPanels) {
+            PanelData data = PanelRegistry.get(slot.getPanelId());
+
+            if (data == null || data.getType() != PanelType.LINK) {
+                continue;
+            }
+
+            String path = slot.getPanelId().getPath();
+            int adjacentMatchingPanels = countAdjacentMatchingPanels(slot, path);
+
+            switch (path) {
+                case "power_link" -> stats.addStrength(adjacentMatchingPanels);
+                case "magic_link" -> stats.addMagic(adjacentMatchingPanels);
+                case "guard_link" -> stats.addDefense(adjacentMatchingPanels);
+                case "level_link" -> stats.addLevelBonus(adjacentMatchingPanels);
+            }
+        }
+    }
+
+    private int countAdjacentMatchingPanels(PanelSlot linkSlot, String linkPath) {
+        int count = 0;
+
+        for (PanelSlot other : placedPanels) {
+            if (other == linkSlot) {
+                continue;
+            }
+
+            PanelData otherData = PanelRegistry.get(other.getPanelId());
+
+            if (otherData == null) {
+                continue;
+            }
+
+            if (!isAdjacent(linkSlot, other)) {
+                continue;
+            }
+
+            switch (linkPath) {
+                case "power_link" -> {
+                    if (otherData.getType() == PanelType.STRENGTH) {
+                        count++;
+                    }
+                }
+                case "magic_link" -> {
+                    if (otherData.getType() == PanelType.MAGIC) {
+                        count++;
+                    }
+                }
+                case "guard_link" -> {
+                    if (otherData.getType() == PanelType.DEFENSE) {
+                        count++;
+                    }
+                }
+                case "level_link" -> {
+                    if (otherData.getType() == PanelType.LEVEL) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isAdjacent(PanelSlot a, PanelSlot b) {
+        PanelData aData = PanelRegistry.get(a.getPanelId());
+        PanelData bData = PanelRegistry.get(b.getPanelId());
+
+        if (aData == null || bData == null) {
+            return false;
+        }
+
+        int ax1 = a.getX();
+        int ay1 = a.getY();
+        int ax2 = a.getX() + aData.getWidth() - 1;
+        int ay2 = a.getY() + aData.getHeight() - 1;
+
+        int bx1 = b.getX();
+        int by1 = b.getY();
+        int bx2 = b.getX() + bData.getWidth() - 1;
+        int by2 = b.getY() + bData.getHeight() - 1;
+
+        boolean touchingHorizontally = ax2 + 1 == bx1 || bx2 + 1 == ax1;
+        boolean yRangesOverlap = ay1 <= by2 && ay2 >= by1;
+
+        boolean touchingVertically = ay2 + 1 == by1 || by2 + 1 == ay1;
+        boolean xRangesOverlap = ax1 <= bx2 && ax2 >= bx1;
+
+        return touchingHorizontally && yRangesOverlap
+                || touchingVertically && xRangesOverlap;
     }
 }

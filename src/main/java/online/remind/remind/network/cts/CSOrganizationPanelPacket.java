@@ -1,11 +1,13 @@
 package online.remind.remind.network.cts;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -13,9 +15,10 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PanelPacketAction;
-import online.remind.remind.panels.PanelData;
-import online.remind.remind.panels.PanelGrid;
-import online.remind.remind.panels.PanelRegistry;
+import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
+import online.remind.remind.panels.*;
+
+import java.util.Map;
 
 public record CSOrganizationPanelPacket(
         PanelPacketAction action,
@@ -68,8 +71,8 @@ public record CSOrganizationPanelPacket(
             }
 
             /*
-             * Organization XIII restriction.
-             * Remove this if you want non-Org players to test it too.
+             * Keep this if only Organization XIII members should use the panel grid.
+             * Remove this block if you want to test with everyone.
              */
             if (playerData.getAlignment() == Utils.OrgMember.NONE) {
                 player.displayClientMessage(
@@ -97,19 +100,21 @@ public record CSOrganizationPanelPacket(
                             .withColor(0xFF5555),
                     true
             );
+
+            syncBackToClient(player);
             return;
         }
 
-        PanelGrid grid = globalData.getOrganizationPanelGrid();
-
-        boolean placed = grid.place(panelId, x, y);
+        boolean placed = globalData.placeOrganizationPanel(panelId, x, y);
 
         if (!placed) {
             player.displayClientMessage(
-                    Component.literal("Panel cannot be placed there.")
+                    Component.literal("Panel cannot be placed there, or you do not own one.")
                             .withColor(0xFF5555),
                     true
             );
+
+            syncBackToClient(player);
             return;
         }
 
@@ -119,6 +124,7 @@ public record CSOrganizationPanelPacket(
                 true
         );
 
+        OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
         syncBackToClient(player);
     }
 
@@ -131,6 +137,8 @@ public record CSOrganizationPanelPacket(
                             .withColor(0xFF5555),
                     true
             );
+
+            syncBackToClient(player);
             return;
         }
 
@@ -140,10 +148,17 @@ public record CSOrganizationPanelPacket(
                 true
         );
 
+        OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
         syncBackToClient(player);
     }
 
     private static void handleClear(ServerPlayer player, GlobalDataRM globalData) {
+        PanelGrid oldGrid = globalData.getOrganizationPanelGrid();
+
+        for (PanelSlot slot : oldGrid.getPlacedPanels()) {
+            globalData.refundOwnedOrganizationPanel(slot.getPanelId());
+        }
+
         globalData.setOrganizationPanelGrid(new PanelGrid(5, 4));
 
         player.displayClientMessage(
@@ -152,20 +167,29 @@ public record CSOrganizationPanelPacket(
                 true
         );
 
+        OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
         syncBackToClient(player);
     }
 
     private static void syncBackToClient(ServerPlayer player) {
-        /*
-         * Put your capability sync call here if you already have one.
-         * Examples might be something like:
-         *
-         * ModDataRM.sync(player);
-         * PacketHandlerRM.syncGlobalData(player);
-         * ModDataRM.syncGlobal(player);
-         *
-         * If you do not have sync yet, the server data will still save,
-         * but the GUI may not visually update until reopened or resynced.
-         */
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+        if (globalData == null) {
+            return;
+        }
+
+        CompoundTag ownedPanelsTag = new CompoundTag();
+
+        for (Map.Entry<String, Integer> entry : globalData.getOwnedOrganizationPanels().entrySet()) {
+            ownedPanelsTag.putInt(entry.getKey(), entry.getValue());
+        }
+
+        PacketDistributor.sendToPlayer(
+                player,
+                new SCOrganizationPanelSyncPacket(
+                        globalData.getOrganizationPanelGrid().save(),
+                        ownedPanelsTag
+                )
+        );
     }
 }

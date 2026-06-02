@@ -16,6 +16,26 @@ public class PanelStats {
         levelBonus += data.getLevelBonus();
     }
 
+    public void addStrength(int amount) {
+        strength += amount;
+    }
+
+    public void addMagic(int amount) {
+        magic += amount;
+    }
+
+    public void addDefense(int amount) {
+        defense += amount;
+    }
+
+    public void addAp(int amount) {
+        ap += amount;
+    }
+
+    public void addLevelBonus(int amount) {
+        levelBonus += amount;
+    }
+
     public int getStrength() {
         return strength;
     }

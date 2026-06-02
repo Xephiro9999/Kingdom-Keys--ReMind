@@ -12,6 +12,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.network.cts.*;
+import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
 @EventBusSubscriber
@@ -23,6 +24,7 @@ public class PacketHandlerRM {
         KingdomKeysReMind.LOGGER.info("REGISTERING PACKETS");
         //ServerToClient
         registrar.playToClient(SCSyncGlobalCapabilityToAllPacketRM.TYPE, SCSyncGlobalCapabilityToAllPacketRM.STREAM_CODEC, SCSyncGlobalCapabilityToAllPacketRM::handle);
+        registrar.playToClient(SCOrganizationPanelSyncPacket.TYPE, SCOrganizationPanelSyncPacket.STREAM_CODEC, SCOrganizationPanelSyncPacket::handle);
 
 
         // ClientToServer
