@@ -28,6 +28,20 @@ public class PanelGrid {
         return height;
     }
 
+    public boolean hasPanel(ResourceLocation panelId) {
+        if (panelId == null) {
+            return false;
+        }
+
+        for (PanelSlot slot : this.getPlacedPanels()) {
+            if (slot != null && panelId.equals(slot.getPanelId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean canPlace(ResourceLocation panelId, int x, int y) {
         PanelData data = PanelRegistry.get(panelId);
 

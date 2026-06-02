@@ -45,12 +45,6 @@ public class OrganizationPanelStatHelper {
 
         PanelStats stats = globalData.getOrganizationPanelStats();
 
-        System.out.println("[Org Panels] Applying stats:"
-                + " STR=" + stats.getStrength()
-                + " MAG=" + stats.getMagic()
-                + " DEF=" + stats.getDefense()
-                + " PanelsEnabled=" + globalData.getPanelsEnabled());
-
         removePanelModifiers(player);
 
         if (stats.getStrength() > 0) {

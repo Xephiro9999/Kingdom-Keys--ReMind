@@ -913,4 +913,15 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     public void setLearnedMagicLevel(ResourceLocation magic, int level) {
         learnedMagics.put(magic.toString(), level);
     }
+
+
+
+    public boolean hasOrganizationPanelEquipped(ResourceLocation panelId) {
+        if (panelId == null || this.organizationPanelGrid == null) {
+            return false;
+        }
+
+        return this.organizationPanelGrid.hasPanel(panelId);
+    }
+
 }

@@ -4,9 +4,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
+import net.minecraft.nbt.CompoundTag;
+import net.neoforged.neoforge.network.PacketDistributor;
+import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
+
+import java.util.Map;
 
 public class OrganizationPanelRewardHelper {
 
@@ -104,6 +110,9 @@ public class OrganizationPanelRewardHelper {
         }
 
         PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+        if (player instanceof ServerPlayer serverPlayer) {
+            syncOrganizationPanelsToClient(serverPlayer, globalData);
+        }
 
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.displayClientMessage(
@@ -118,5 +127,38 @@ public class OrganizationPanelRewardHelper {
         }
 
         return true;
+    }
+
+    public static boolean buyOrganizationPanel(Player player, ResourceLocation panelId, int amount, int cost) {
+        PlayerData playerData = PlayerData.get(player);
+
+        if (playerData == null) {
+            return false;
+        }
+
+        if (playerData.getHearts() < cost) {
+            return false;
+        }
+
+        playerData.removeHearts(cost);
+
+        return OrganizationPanelRewardHelper.grantOrganizationPanel(player, panelId, amount);
+    }
+
+    private static void syncOrganizationPanelsToClient(ServerPlayer player, GlobalDataRM globalData) {
+        CompoundTag ownedPanelsTag = new CompoundTag();
+
+        for (Map.Entry<String, Integer> entry : globalData.getOwnedOrganizationPanels().entrySet()) {
+            ownedPanelsTag.putInt(entry.getKey(), entry.getValue());
+        }
+
+        PacketDistributor.sendToPlayer(
+                player,
+                new SCOrganizationPanelSyncPacket(
+                        globalData.getOrganizationPanelGrid().save(),
+                        ownedPanelsTag,
+                        globalData.getUnlockedOrganizationPanelSlots()
+                )
+        );
     }
 }

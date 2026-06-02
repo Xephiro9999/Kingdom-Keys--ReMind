@@ -16,11 +16,13 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSBoostPacket;
+import online.remind.remind.network.cts.CSBuyOrganizationPanelPacket;
 import online.remind.remind.network.cts.CSPanelPacket;
 import net.neoforged.neoforge.network.PacketDistributor;
 import online.remind.remind.network.cts.CSOrganizationPanelPacket;
@@ -43,6 +45,14 @@ public class PanelsMenu extends MenuBackground {
     private static final int ORG_PANEL_PICKER_SLOT_SIZE = 24;
     private static final int ORG_PANEL_PICKER_GAP = 6;
 
+    private static final int ORG_PANEL_PICKER_COLUMNS = 7;
+    private static final int ORG_PANEL_PICKER_ROW_GAP = 14;
+
+    private static final int SHOP_VISIBLE_BUTTONS = 10;
+    private static final int SHOP_BUTTON_GAP = 20;
+
+    private int shopScrollOffset = 0;
+
     private int orgPickerX;
     private int orgPickerY;
 
@@ -57,6 +67,22 @@ public class PanelsMenu extends MenuBackground {
     private int orgGridY;
 
     int ticks = 0;
+
+    private int lastKnownHearts = -1;
+
+    private int getCurrentHearts() {
+        if (minecraft == null || minecraft.player == null) {
+            return -1;
+        }
+
+        PlayerData playerData = PlayerData.get(minecraft.player);
+
+        if (playerData == null) {
+            return -1;
+        }
+
+        return playerData.getHearts();
+    }
 
     private MenuButton backButton, strUp, magUp, defUp, apUp, giveAbility, lvl, req0, valorUp, wisdomUp, limitUp, masterUp, finalUp, reqV, reqW, reqL, reqM, reqF, armorUp, accessoryUp, rejectOrg, reset, toggleOff, toggleOn, orgPlaceSTR, orgPlaceMAG, orgPlaceDEF, orgPlaceAP, orgPlaceLV, orgRemove00, orgClear;
     MenuColourBox str, mag, def, ap;
@@ -90,36 +116,162 @@ public class PanelsMenu extends MenuBackground {
                 minecraft.setScreen(new PanelsMenu());
                 minecraft.player.playSound(ModSounds.error.get());
             }
-            case "strUp" -> {
-               // globalData.setPanelChoice("STR");
-                PacketHandlerRM.sendToServer(new CSPanelPacket(1));
-                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+            case "buy_str_unit" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.STRENGTH_UNIT,
+                        1
+                ));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //init();
-                this.reloadMenu();
+            }
 
-            }
-            case "magUp" -> {
-               // globalData.setPanelChoice("MAG");
-                PacketHandlerRM.sendToServer(new CSPanelPacket(2));
-                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+            case "buy_mag_unit" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.MAGIC_UNIT,
+                        1
+                ));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                //init();
-                this.reloadMenu();
             }
-            case "defUp" -> {
-              //  globalData.setPanelChoice("DEF");
-                PacketHandlerRM.sendToServer(new CSPanelPacket(3));
-                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+
+            case "buy_def_unit" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.DEFENSE_UNIT,
+                        1
+                ));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                this.reloadMenu();
             }
-            case "apUp" -> {
-                PacketHandlerRM.sendToServer(new CSPanelPacket(4));
-                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+
+            case "buy_ap_unit" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.AP_UNIT,
+                        1
+                ));
                 minecraft.player.playSound(ModSounds.itemget.get());
-                this.reloadMenu();
             }
+
+            case "buy_level_up" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.LEVEL_UP,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_slot_releaser" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "slot_releaser"),
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+            case "buy_str_unit_l" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.STRENGTH_UNIT_L,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_mag_unit_l" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.MAGIC_UNIT_L,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_def_unit_l" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.DEFENSE_UNIT_L,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_ap_unit_l" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.AP_UNIT_L,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_level_doubler" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.LEVEL_DOUBLER,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_power_link" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.POWER_LINK,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_magic_link" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.MAGIC_LINK,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_guard_link" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.GUARD_LINK,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_level_link" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.LEVEL_LINK,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            // Abilities
+
+            case "buy_ultima_weapon_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                        PanelRegistry.ULTIMA_WEAPON_PANEL,
+                        1
+                ));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_high_jump_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.HIGH_JUMP_PANEL, 1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_dodge_roll_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.DODGE_ROLL_PANEL, 1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_aerial_dodge_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.AERIAL_DODGE_PANEL, 1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_quick_run_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.QUICK_RUN_PANEL, 1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            case "buy_glide_panel" -> {
+                PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.GLIDE_PANEL, 1));
+                minecraft.player.playSound(ModSounds.itemget.get());
+            }
+
+            // Forms
+
             case "valorUp" -> {
                 PacketHandlerRM.sendToServer(new CSPanelPacket(5));
                 PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
@@ -193,7 +345,7 @@ public class PanelsMenu extends MenuBackground {
                         0,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
                 this.reloadMenu();
             }
 
@@ -204,7 +356,7 @@ public class PanelsMenu extends MenuBackground {
                         1,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
                 this.reloadMenu();
             }
 
@@ -215,7 +367,7 @@ public class PanelsMenu extends MenuBackground {
                         2,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
                 this.reloadMenu();
             }
 
@@ -226,7 +378,7 @@ public class PanelsMenu extends MenuBackground {
                         3,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
                 this.reloadMenu();
             }
 
@@ -237,7 +389,7 @@ public class PanelsMenu extends MenuBackground {
                         4,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
                 this.reloadMenu();
             }
 
@@ -248,7 +400,7 @@ public class PanelsMenu extends MenuBackground {
                         0,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_back.get());
                 this.reloadMenu();
             }
 
@@ -259,7 +411,7 @@ public class PanelsMenu extends MenuBackground {
                         0,
                         0
                 ));
-                minecraft.player.playSound(ModSounds.error.get());
+                minecraft.player.playSound(ModSounds.menu_back.get());
                 this.reloadMenu();
             }
 
@@ -285,7 +437,7 @@ public class PanelsMenu extends MenuBackground {
             selectedOrgPanel = clickedPickerPanel;
 
             if (minecraft != null && minecraft.player != null) {
-                minecraft.player.playSound(ModSounds.itemget.get());
+                minecraft.player.playSound(ModSounds.menu_select.get());
             }
 
             return true;
@@ -295,7 +447,17 @@ public class PanelsMenu extends MenuBackground {
         int gridY = getOrgGridMouseY((int) mouseY);
 
         if (gridX >= 0 && gridY >= 0) {
+            GlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
+
             if (button == 0) {
+                if (addedData != null && !addedData.isOrganizationPanelSlotUnlocked(gridX, gridY)) {
+                    if (minecraft != null && minecraft.player != null) {
+                        minecraft.player.playSound(ModSounds.error.get());
+                    }
+
+                    return true;
+                }
+
                 // Left click = place selected panel
                 PacketDistributor.sendToServer(new CSOrganizationPanelPacket(
                         PanelPacketAction.PLACE,
@@ -305,7 +467,7 @@ public class PanelsMenu extends MenuBackground {
                 ));
 
                 if (minecraft != null && minecraft.player != null) {
-                    minecraft.player.playSound(ModSounds.itemget.get());
+                    minecraft.player.playSound(ModSounds.menu_select.get());
                 }
 
                 return true;
@@ -321,7 +483,7 @@ public class PanelsMenu extends MenuBackground {
                 ));
 
                 if (minecraft != null && minecraft.player != null) {
-                    minecraft.player.playSound(ModSounds.itemget.get());
+                    minecraft.player.playSound(ModSounds.menu_back.get());
                 }
 
                 return true;
@@ -348,20 +510,24 @@ public class PanelsMenu extends MenuBackground {
             PanelRegistry.POWER_LINK,
             PanelRegistry.MAGIC_LINK,
             PanelRegistry.GUARD_LINK,
-            PanelRegistry.LEVEL_LINK
-    };
-    private ResourceLocation getClickedPanelPicker(int mouseX, int mouseY) {
-        ResourceLocation[] panels = new ResourceLocation[] {
-                PanelRegistry.STRENGTH_UNIT,
-                PanelRegistry.MAGIC_UNIT,
-                PanelRegistry.DEFENSE_UNIT,
-                PanelRegistry.AP_UNIT,
-                PanelRegistry.LEVEL_UP
-        };
+            PanelRegistry.LEVEL_LINK,
 
+            PanelRegistry.ULTIMA_WEAPON_PANEL,
+
+            PanelRegistry.HIGH_JUMP_PANEL,
+            PanelRegistry.DODGE_ROLL_PANEL,
+            PanelRegistry.AERIAL_DODGE_PANEL,
+            PanelRegistry.QUICK_RUN_PANEL,
+            PanelRegistry.GLIDE_PANEL
+    };
+
+    private ResourceLocation getClickedPanelPicker(int mouseX, int mouseY) {
         for (int i = 0; i < ORG_PICKER_PANELS.length; i++) {
-            int x = orgPickerX + i * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
-            int y = orgPickerY;
+            int col = i % ORG_PANEL_PICKER_COLUMNS;
+            int row = i / ORG_PANEL_PICKER_COLUMNS;
+
+            int x = orgPickerX + col * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
+            int y = orgPickerY + row * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_ROW_GAP);
 
             boolean inside = mouseX >= x
                     && mouseX < x + ORG_PANEL_PICKER_SLOT_SIZE
@@ -404,11 +570,16 @@ public class PanelsMenu extends MenuBackground {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-
     @Override
     public void tick() {
         super.tick();
         ticks++;
+
+        int currentHearts = getCurrentHearts();
+
+        if (currentHearts != -1 && currentHearts != lastKnownHearts) {
+            init();
+        }
     }
 
     @Override
@@ -420,6 +591,8 @@ public class PanelsMenu extends MenuBackground {
         final PlayerData playerData = PlayerData.get(minecraft.player);
         GlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
         ticks = 0;
+
+        lastKnownHearts = playerData != null ? playerData.getHearts() : -1;
 
         this.renderables.clear();
 
@@ -452,15 +625,123 @@ public class PanelsMenu extends MenuBackground {
         int gridWidth = orgGridCols * ORG_SLOT_SIZE;
 
         this.orgGridX = contentX + (contentWidth / 2) - (gridWidth / 2);
-        this.orgGridY = contentY + 16;
+        this.orgGridY = contentY + 42;
 
-        int pickerWidth = (ORG_PICKER_PANELS.length * ORG_PANEL_PICKER_SLOT_SIZE)
-                + ((ORG_PICKER_PANELS.length - 1) * ORG_PANEL_PICKER_GAP);
+        int pickerColumns = Math.min(ORG_PICKER_PANELS.length, ORG_PANEL_PICKER_COLUMNS);
+
+        int pickerWidth = (pickerColumns * ORG_PANEL_PICKER_SLOT_SIZE)
+                + ((pickerColumns - 1) * ORG_PANEL_PICKER_GAP);
 
         this.orgPickerX = orgGridX + (gridWidth / 2) - (pickerWidth / 2);
         this.orgPickerY = contentY - 52;
 
         int i = 0;
+
+        int shopY = button_statsY;
+        int shopGap = 20;
+        int shopX = (int) buttonPosX;
+        int shopWidth = (int) buttonWidth;
+
+        PanelShopEntry[] shopEntries = getPanelShopEntries();
+
+        int maxScroll = Math.max(0, shopEntries.length - SHOP_VISIBLE_BUTTONS);
+        shopScrollOffset = Math.max(0, Math.min(shopScrollOffset, maxScroll));
+
+        for (int shopIndex = 0; shopIndex < SHOP_VISIBLE_BUTTONS; shopIndex++) {
+            int entryIndex = shopScrollOffset + shopIndex;
+
+            if (entryIndex >= shopEntries.length) {
+                break;
+            }
+
+            PanelShopEntry entry = shopEntries[entryIndex];
+
+            addPanelShopButton(
+                    playerData,
+                    shopX,
+                    shopY,
+                    shopWidth,
+                    entry.label(),
+                    entry.cost(),
+                    entry.action()
+            );
+
+            shopY += SHOP_BUTTON_GAP;
+        }
+
+        shopY += 4;
+
+        addRenderableWidget(new MenuButton(
+                shopX,
+                shopY,
+                shopWidth / 60,
+                "▲",
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> {
+                    if (shopScrollOffset > 0) {
+                        shopScrollOffset--;
+                        init();
+                    } else {
+                        minecraft.player.playSound(ModSounds.error.get());
+                    }
+                }
+        ));
+
+        addRenderableWidget(new MenuButton(
+                shopX + shopWidth / 2 + 2,
+                shopY,
+                shopWidth / 60,
+                "▼",
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> {
+                    int max = Math.max(0, getPanelShopEntries().length - SHOP_VISIBLE_BUTTONS);
+
+                    if (shopScrollOffset < max) {
+                        shopScrollOffset++;
+                        init();
+                    } else {
+                        minecraft.player.playSound(ModSounds.error.get());
+                    }
+                }
+        ));
+
+        shopY += shopGap;
+
+        if (addedData.getPanelsEnabled() == 1) {
+            addRenderableWidget(toggleOff = new MenuButton(
+                    shopX,
+                    shopY,
+                    shopWidth,
+                    "Boost OFF",
+                    MenuButton.ButtonType.BUTTON,
+                    false,
+                    e -> action("toggleOff")
+            ));
+        } else {
+            addRenderableWidget(toggleOn = new MenuButton(
+                    shopX,
+                    shopY,
+                    shopWidth,
+                    "Boost ON",
+                    MenuButton.ButtonType.BUTTON,
+                    false,
+                    e -> action("toggleOn")
+            ));
+        }
+
+        shopY += shopGap;
+
+        addRenderableWidget(backButton = new MenuButton(
+                shopX,
+                shopY,
+                shopWidth,
+                Strings.Gui_Menu_Back,
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> action("back")
+        ));
 
 
         // Form Leveling
@@ -534,80 +815,6 @@ public class PanelsMenu extends MenuBackground {
 //            }
 //        }
 
-//        if (ModConfigs.levelsEnabled) {
-//            if (playerData.getHearts() >= 1000 * playerData.getLevel() && playerData.getLevel() < 100) {
-//                addRenderableWidget(lvl = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ("Level Up - Cost: " + ChatFormatting.GREEN + 1000 * playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                    action("lvl");
-//                }));
-//            } else if (playerData.getHearts() < 1000 * playerData.getLevel() && playerData.getLevel() < 100) {
-//                addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, "Level Up - Cost: " + ChatFormatting.DARK_RED + 1000 * playerData.getLevel(), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                    action("req");
-//                }));
-//            } else if (playerData.getLevel() == 100) {
-//                addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY, (int) buttonWidth, ChatFormatting.GOLD + "☆ MAX LEVEL! ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                    action("req");
-//                }));
-//            }
-//        }
-
-        // Add Armor/Accessory Slots
-//        if (playerData.getHearts() >= 10000 && playerData.getMaxArmors() < 4) {
-//            addRenderableWidget(lvl = new MenuButton((int) buttonPosX + 180, button_statsY + 20, (int) buttonWidth + 10, ("Armor Slot Up - Cost: "+ ChatFormatting.GREEN + 10000 * playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("armorUp");
-//            }));
-//        } else if (playerData.getHearts() < 10000){
-//            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY + 20, (int) buttonWidth + 10,  "Armor Slot  Up - Cost: "+ ChatFormatting.DARK_RED + 10000 * playerData.getLevel(), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("req");
-//            }));
-//        } else if (playerData.getMaxArmors() == 4) {
-//            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY + 20, (int) buttonWidth + 10, ChatFormatting.GOLD + "☆ MAX ARMOR SLOTS! ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("req");
-//            }));
-//        }
-//
-//        if (playerData.getHearts() >= 10000 && playerData.getMaxAccessories() < 4) {
-//            addRenderableWidget(lvl = new MenuButton((int) buttonPosX + 180, button_statsY + 40, (int) buttonWidth + 30, ("Accessory Slot Up - Cost: "+ ChatFormatting.GREEN + 10000 * playerData.getLevel()), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("accessoryUp");
-//            }));
-//        } else if (playerData.getHearts() < 10000){
-//            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY + 40, (int) buttonWidth + 30,  "Accessory Slot  Up - Cost: "+ ChatFormatting.DARK_RED + 10000 * playerData.getLevel(), MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("req");
-//            }));
-//        } else if (playerData.getMaxAccessories() == 4) {
-//            addRenderableWidget(req0 = new MenuButton((int) buttonPosX + 180, button_statsY + 40, (int) buttonWidth + 10, ChatFormatting.GOLD + "☆ MAX ACCESSORY SLOTS! ☆", MenuButton.ButtonType.BUTTON, false, (e) -> {
-//                action("req");
-//            }));
-//        }
-
-        if (playerData.getHearts() >= 10000) {
-            addRenderableWidget(lvl = new MenuButton((int) buttonPosX, button_statsY + 220, (int) buttonWidth, "Leave Org - Cost: "+ ChatFormatting.GREEN + 13000, MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("rejectOrg");
-            }));
-        } else if (playerData.getHearts() < 10000){
-            addRenderableWidget(req0 = new MenuButton((int) buttonPosX, button_statsY + 220, (int) buttonWidth,  "Leave Org - Cost: "+ ChatFormatting.DARK_RED + 13000, MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("req");
-            }));
-       }
-
-
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 240, (int) buttonWidth, "Reset", MenuButton.ButtonType.BUTTON, true, (e) -> {
-            action("reset");
-        }));
-
-        if (addedData.getPanelsEnabled() == 1){
-            addRenderableWidget(toggleOff = new MenuButton((int) buttonPosX, button_statsY + 260, (int) buttonWidth, "Boost OFF", MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("toggleOff");
-            }));
-        } else if (addedData.getPanelsEnabled() == 0){
-            addRenderableWidget(toggleOn = new MenuButton((int) buttonPosX, button_statsY + 260, (int) buttonWidth, "Boost ON", MenuButton.ButtonType.BUTTON, false, (e) -> {
-                action("toggleOn");
-            }));
-        }
-
-        addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 280, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
-            action("back");
-        }));
-
 
 
         // 2.0 Ability Planning.
@@ -619,9 +826,6 @@ public class PanelsMenu extends MenuBackground {
         int spacer = 14;
 
         // Stats Column
-        //addRenderableWidget(gainedHP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max HP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
-        //addRenderableWidget(gainedMP = new MenuColourBox(col2X, button_statsY + (d++* spacer), (int) dataWidth*2, Utils.translateToLocal("Gained Max MP: "), "" + addedData.getPrestigeLvl() * 2, 0x3ECE44));
-
         PanelStats orgStats = addedData.getOrganizationPanelStats();
 
 //        addRenderableWidget(new MenuColourBox(
@@ -671,6 +875,30 @@ public class PanelsMenu extends MenuBackground {
 
         super.init();
     }
+
+    private void addPanelShopButton(
+            PlayerData playerData,
+            int x,
+            int y,
+            int width,
+            String label,
+            int cost,
+            String action
+    ) {
+        boolean canAfford = playerData != null && playerData.getHearts() >= cost;
+
+        addRenderableWidget(new MenuButton(
+                x,
+                y,
+                width,
+                label + " - " + (canAfford ? ChatFormatting.GREEN : ChatFormatting.DARK_RED) + cost + " Hearts",
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> action(canAfford ? action : "req")
+        ));
+    }
+
+
 
     private int getOrgGridMouseX(int mouseX) {
         if (minecraft == null || minecraft.player == null) {
@@ -756,6 +984,12 @@ public class PanelsMenu extends MenuBackground {
             case "magic_link" -> "M-L";
             case "guard_link" -> "G-L";
             case "level_link" -> "L-L";
+            case "ultima_weapon_panel" -> "ULT";
+            case "high_jump_panel" -> "HJ";
+            case "dodge_roll_panel" -> "DR";
+            case "aerial_dodge_panel" -> "AD";
+            case "quick_run_panel" -> "QR";
+            case "glide_panel" -> "GLD";
             default -> path.length() > 3 ? path.substring(0, 3).toUpperCase() : path.toUpperCase();
         };
     }
@@ -805,8 +1039,15 @@ public class PanelsMenu extends MenuBackground {
                         && mouseY >= sy
                         && mouseY < sy + ORG_SLOT_SIZE;
 
-                int borderColor = hovered ? 0xFFFFFF00 : 0xFF555555;
-                int fillColor = hovered ? 0x55222222 : 0xAA111111;
+                boolean unlocked = addedData.isOrganizationPanelSlotUnlocked(x, y);
+
+                int borderColor = unlocked
+                        ? hovered ? 0xFFFFFF00 : 0xFF555555
+                        : 0xFF222222;
+
+                int fillColor = unlocked
+                        ? hovered ? 0x55222222 : 0xAA111111
+                        : 0xAA050505;
 
                 gui.fill(sx, sy, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, fillColor);
 
@@ -815,8 +1056,20 @@ public class PanelsMenu extends MenuBackground {
                 gui.fill(sx, sy + ORG_SLOT_SIZE - 1, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, borderColor);
                 gui.fill(sx, sy, sx + 1, sy + ORG_SLOT_SIZE, borderColor);
                 gui.fill(sx + ORG_SLOT_SIZE - 1, sy, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, borderColor);
+
+                if (!unlocked) {
+                    gui.drawString(
+                            this.font,
+                            "X",
+                            sx + 10,
+                            sy + 9,
+                            0xFF333333,
+                            false
+                    );
+                }
             }
         }
+
 
         // Draw placed panels
         for (PanelSlot slot : grid.getPlacedPanels()) {
@@ -934,6 +1187,8 @@ public class PanelsMenu extends MenuBackground {
             case "guard_link" -> "+1 DEF for each adjacent DEF panel";
             case "level_link" -> "+1 LV for each adjacent LV panel";
 
+            case "ultima_weapon_panel" -> "Activates Ultima Weapon while equipped";
+
             default -> "";
         };
     }
@@ -1017,8 +1272,11 @@ public class PanelsMenu extends MenuBackground {
 
         int count = addedData != null ? addedData.getOwnedOrganizationPanelCount(panelId) : 0;
 
-        int x = orgPickerX + index * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
-        int y = orgPickerY;
+        int col = index % ORG_PANEL_PICKER_COLUMNS;
+        int row = index / ORG_PANEL_PICKER_COLUMNS;
+
+        int x = orgPickerX + col * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
+        int y = orgPickerY + row * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_ROW_GAP);
 
         boolean hovered = mouseX >= x
                 && mouseX < x + ORG_PANEL_PICKER_SLOT_SIZE
@@ -1089,17 +1347,78 @@ public class PanelsMenu extends MenuBackground {
             case "magic_link" -> "Magic Link";
             case "guard_link" -> "Guard Link";
             case "level_link" -> "Level Link";
+            case "ultima_weapon_panel" -> "Ultima Weapon Panel";
+            case "high_jump_panel" -> "High Jump Panel";
+            case "dodge_roll_panel" -> "Dodge Roll Panel";
+            case "aerial_dodge_panel" -> "Aerial Dodge Panel";
+            case "quick_run_panel" -> "Quick Run Panel";
+            case "glide_panel" -> "Glide Panel";
             default -> path;
         };
+    }
+
+    private void renderHeartCount(GuiGraphics gui) {
+        int hearts = getCurrentHearts();
+
+        if (hearts < 0) {
+            return;
+        }
+
+        gui.drawString(
+                this.font,
+                "Hearts: " + hearts,
+                8,
+                8,
+                0xFFD700,
+                false
+        );
     }
 
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         super.render(gui, mouseX, mouseY, partialTicks);
 
+        renderHeartCount(gui);
+
         renderOrganizationPanelPicker(gui, mouseX, mouseY);
         renderOrganizationPanelGrid(gui, mouseX, mouseY);
         renderOrganizationPanelStats(gui);
         renderOrganizationPanelKeyGuide(gui);
+    }
+
+    private record PanelShopEntry(String label, int cost, String action) {
+    }
+
+    private PanelShopEntry[] getPanelShopEntries() {
+        return new PanelShopEntry[] {
+                new PanelShopEntry("Buy STR Unit", 250, "buy_str_unit"),
+                new PanelShopEntry("Buy MAG Unit", 250, "buy_mag_unit"),
+                new PanelShopEntry("Buy DEF Unit", 250, "buy_def_unit"),
+                new PanelShopEntry("Buy AP Unit", 400, "buy_ap_unit"),
+                new PanelShopEntry("Buy Level Up", 750, "buy_level_up"),
+
+                new PanelShopEntry("Buy STR Unit L", 1200, "buy_str_unit_l"),
+                new PanelShopEntry("Buy MAG Unit L", 1200, "buy_mag_unit_l"),
+                new PanelShopEntry("Buy DEF Unit L", 1200, "buy_def_unit_l"),
+                new PanelShopEntry("Buy AP Unit L", 1600, "buy_ap_unit_l"),
+                new PanelShopEntry("Buy Level Doubler", 3000, "buy_level_doubler"),
+
+                new PanelShopEntry("Buy Power Link", 1500, "buy_power_link"),
+                new PanelShopEntry("Buy Magic Link", 1500, "buy_magic_link"),
+                new PanelShopEntry("Buy Guard Link", 1500, "buy_guard_link"),
+                new PanelShopEntry("Buy Level Link", 2000, "buy_level_link"),
+
+                new PanelShopEntry("Buy Slot Releaser", 1000, "buy_slot_releaser"),
+
+                new PanelShopEntry("Buy Ultima Weapon", 50000, "buy_ultima_weapon_panel"),
+
+                new PanelShopEntry("Buy High Jump", 2500, "buy_high_jump_panel"),
+                new PanelShopEntry("Buy Dodge Roll", 2500, "buy_dodge_roll_panel"),
+                new PanelShopEntry("Buy Aerial Dodge", 3000, "buy_aerial_dodge_panel"),
+                new PanelShopEntry("Buy Quick Run", 3000, "buy_quick_run_panel"),
+                new PanelShopEntry("Buy Glide", 4000, "buy_glide_panel"),
+
+                new PanelShopEntry("Leave Organization", 13000, "rejectOrg")
+        };
     }
 }

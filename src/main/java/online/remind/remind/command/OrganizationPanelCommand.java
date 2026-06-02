@@ -116,7 +116,51 @@ public class OrganizationPanelCommand {
                                         )
                                 )
                         )
+                        .then(Commands.literal("setslots")
+                                .then(Commands.argument("amount", IntegerArgumentType.integer(
+                                                        GlobalDataRM.ORGANIZATION_PANEL_STARTING_SLOTS,
+                                                        GlobalDataRM.ORGANIZATION_PANEL_MAX_SLOTS
+                                                ))
+                                                .executes(context -> setUnlockedSlotsSelf(
+                                                        context.getSource(),
+                                                        IntegerArgumentType.getInteger(context, "amount")
+                                                ))
+                                )
+                        )
         );
+    }
+
+    private static int setUnlockedSlotsSelf(CommandSourceStack source, int amount) {
+        ServerPlayer player;
+
+        try {
+            player = source.getPlayerOrException();
+        } catch (Exception e) {
+            source.sendFailure(Component.literal("This command must be used by a player."));
+            return 0;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+        if (globalData == null) {
+            source.sendFailure(Component.literal("Could not find Re:Mind global data."));
+            return 0;
+        }
+
+        globalData.setUnlockedOrganizationPanelSlots(amount);
+        PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+
+        source.sendSuccess(
+                () -> Component.literal(
+                        "Set unlocked panel slots to "
+                                + globalData.getUnlockedOrganizationPanelSlots()
+                                + "/"
+                                + GlobalDataRM.ORGANIZATION_PANEL_MAX_SLOTS
+                ),
+                false
+        );
+
+        return 1;
     }
 
     private static int setGridSizeSelf(CommandSourceStack source, int width, int height) {
@@ -551,6 +595,10 @@ public class OrganizationPanelCommand {
                                 + " | DEF +" + stats.getDefense()
                                 + " | AP +" + stats.getAp()
                                 + " | LV +" + stats.getLevelBonus()
+                                + " | Slots "
+                                + globalData.getUnlockedOrganizationPanelSlots()
+                                + "/"
+                                + GlobalDataRM.ORGANIZATION_PANEL_MAX_SLOTS
                 ),
                 false
         );

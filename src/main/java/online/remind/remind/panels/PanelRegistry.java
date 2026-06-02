@@ -52,6 +52,18 @@ public class PanelRegistry {
     public static final ResourceLocation LEVEL_LINK =
             id("level_link");
 
+    // KK Abilities
+
+    public static final ResourceLocation HIGH_JUMP_PANEL = id("high_jump_panel");
+    public static final ResourceLocation DODGE_ROLL_PANEL = id("dodge_roll_panel");
+    public static final ResourceLocation AERIAL_DODGE_PANEL = id("aerial_dodge_panel");
+    public static final ResourceLocation QUICK_RUN_PANEL = id("quick_run_panel");
+    public static final ResourceLocation GLIDE_PANEL = id("glide_panel");
+
+    public static final ResourceLocation HEARTS_POWER_PANEL = id("hearts_power_panel");
+
+    public static final ResourceLocation ULTIMA_WEAPON_PANEL = id("ultima_weapon_panel");
+
     public static void init() {
         register(new PanelData(
                 LEVEL_UP,
@@ -220,6 +232,35 @@ public class PanelRegistry {
                 0,
                 0
         ));
+
+        register(new PanelData(
+                HEARTS_POWER_PANEL,
+                PanelType.ABILITY,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0
+        ));
+        register(new PanelData(
+                ULTIMA_WEAPON_PANEL,
+                PanelType.ABILITY,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0
+        ));
+
+        register(new PanelData(HIGH_JUMP_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(DODGE_ROLL_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(AERIAL_DODGE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(QUICK_RUN_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(GLIDE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
     }
 
     private static void register(PanelData data) {

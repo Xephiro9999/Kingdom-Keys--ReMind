@@ -22,11 +22,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
@@ -62,6 +64,7 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 import online.remind.remind.panels.OrganizationPanelStatHelper;
 
 import java.util.*;
@@ -1053,7 +1056,7 @@ public class EntityEventsRM {
 					}
 
 					// Ultima Weapon Ability
-					if (playerData.isAbilityEquipped(StringsRM.ultima_weapon_ability)) {
+					if (playerData.isAbilityEquipped(StringsRM.ultima_weapon_ability) || (OrganizationPanelAbilityHelper.hasAbility(player, StringsRM.ultima_weapon_ability))) {
 						ItemStack heldStack = player.getMainHandItem();
 						Item heldItem = heldStack.getItem();
 
@@ -1235,6 +1238,11 @@ public class EntityEventsRM {
 
 								globalData.setSituationValue(globalData.getSituationValue() - 0.2);
 							}
+						}
+
+						// PANELS DEBUGING!
+						if (!player.level().isClientSide && player.tickCount % 100 == 0) {
+							OrganizationPanelAbilityHelper.debugAbilityPanel(player, Strings.highJump);
 						}
 
 
@@ -1635,6 +1643,39 @@ public class EntityEventsRM {
 		);
 
 		player.removeEffect(ModMobEffectsRM.EXCEED);
+	}
+
+	// PANELS FAKE HIGH JUMP
+	@SubscribeEvent
+	public void onLivingJump(LivingEvent.LivingJumpEvent event) {
+		if (!(event.getEntity() instanceof Player player)) {
+			return;
+		}
+
+		if (!OrganizationPanelAbilityHelper.hasAbility(player, Strings.highJump)) {
+			return;
+		}
+
+		double boost = 0.28D;
+
+		player.setDeltaMovement(
+				player.getDeltaMovement().x,
+				player.getDeltaMovement().y + boost,
+				player.getDeltaMovement().z
+		);
+
+		player.hurtMarked = true;
+	}
+
+	private static final java.util.Set<java.util.UUID> USED_AERIAL_DODGE = new java.util.HashSet<>();
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onPlayerTickPre(PlayerTickEvent.Pre event) {
+		Player player = event.getEntity();
+		//OrganizationPanelAbilityHelper.refreshFakeMovementAbilities(player);
+		PlayerData playerData = PlayerData.get(player);
+
+
 	}
 
 	@SubscribeEvent

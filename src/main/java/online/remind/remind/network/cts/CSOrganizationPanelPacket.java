@@ -188,7 +188,8 @@ public record CSOrganizationPanelPacket(
                 player,
                 new SCOrganizationPanelSyncPacket(
                         globalData.getOrganizationPanelGrid().save(),
-                        ownedPanelsTag
+                        ownedPanelsTag,
+                        globalData.getUnlockedOrganizationPanelSlots()
                 )
         );
     }

@@ -14,7 +14,8 @@ import online.remind.remind.panels.PanelGrid;
 
 public record SCOrganizationPanelSyncPacket(
         CompoundTag gridTag,
-        CompoundTag ownedPanelsTag
+        CompoundTag ownedPanelsTag,
+        int unlockedSlots
 ) implements CustomPacketPayload {
 
     public static final Type<SCOrganizationPanelSyncPacket> TYPE =
@@ -29,11 +30,13 @@ public record SCOrganizationPanelSyncPacket(
     private static void encode(RegistryFriendlyByteBuf buf, SCOrganizationPanelSyncPacket packet) {
         buf.writeNbt(packet.gridTag);
         buf.writeNbt(packet.ownedPanelsTag);
+        buf.writeInt(packet.unlockedSlots);
     }
 
     private static SCOrganizationPanelSyncPacket decode(RegistryFriendlyByteBuf buf) {
         CompoundTag gridTag = buf.readNbt();
         CompoundTag ownedPanelsTag = buf.readNbt();
+        int unlockedSlots = buf.readInt();
 
         if (gridTag == null) {
             gridTag = new CompoundTag();
@@ -43,7 +46,7 @@ public record SCOrganizationPanelSyncPacket(
             ownedPanelsTag = new CompoundTag();
         }
 
-        return new SCOrganizationPanelSyncPacket(gridTag, ownedPanelsTag);
+        return new SCOrganizationPanelSyncPacket(gridTag, ownedPanelsTag, unlockedSlots);
     }
 
     @Override
@@ -72,6 +75,8 @@ public record SCOrganizationPanelSyncPacket(
             for (String key : packet.ownedPanelsTag.getAllKeys()) {
                 globalData.getOwnedOrganizationPanels().put(key, packet.ownedPanelsTag.getInt(key));
             }
+
+            globalData.setUnlockedOrganizationPanelSlots(packet.unlockedSlots);
         });
     }
 }
