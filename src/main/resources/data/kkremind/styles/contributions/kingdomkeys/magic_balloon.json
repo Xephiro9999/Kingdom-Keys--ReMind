@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_balloon",
+  "target": "kingdomkeys:magic_balloon",
 
   "elements": ["WATER", "MAGIC"],
   "specific_styles": [],

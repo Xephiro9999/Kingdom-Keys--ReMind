@@ -1,0 +1,9 @@
+{
+  "target": "kingdomkeys:magic_deepfreeze",
+
+  "elements": ["BLIZZARD", "MAGIC"],
+  "specific_styles": [],
+
+  "base_value": 38,
+  "per_level_bonus": 5
+}
