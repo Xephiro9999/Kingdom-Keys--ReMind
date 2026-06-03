@@ -17,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -48,6 +49,8 @@ public class PanelsMenu extends MenuBackground {
 	private static final int ORG_PANEL_PICKER_COLUMNS = 7;
 	private static final int ORG_INVENTORY_ROW_HEIGHT = 16;
 	private static final int SHOP_ROW_HEIGHT = 16;
+
+	private static final int SLOT_RELEASER_COST = 10000;
 	private static final ResourceLocation[] ORG_PICKER_PANELS = new ResourceLocation[]{PanelRegistry.STRENGTH_UNIT, PanelRegistry.MAGIC_UNIT, PanelRegistry.DEFENSE_UNIT, PanelRegistry.AP_UNIT, PanelRegistry.LEVEL_UP,
 			PanelRegistry.STRENGTH_UNIT_L, PanelRegistry.MAGIC_UNIT_L, PanelRegistry.DEFENSE_UNIT_L, PanelRegistry.AP_UNIT_L, PanelRegistry.LEVEL_DOUBLER,
 			PanelRegistry.POWER_LINK, PanelRegistry.MAGIC_LINK, PanelRegistry.GUARD_LINK, PanelRegistry.LEVEL_LINK,
@@ -832,8 +835,7 @@ public class PanelsMenu extends MenuBackground {
 
 		controlButtonY += controlButtonGap;
 
-		addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Slot Releaser ", MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
-
+		addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Slot Releaser: " + SLOT_RELEASER_COST, MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
 		controlButtonY += controlButtonGap;
 
 		if (addedData.getPanelsEnabled() == 1) {
@@ -919,61 +921,12 @@ public class PanelsMenu extends MenuBackground {
 //        }
 
 
-		// 2.0 Ability Planning.
-
-
 		//Stats
 		int c = 0;
 		int d = 0;
 		int spacer = 14;
 
-		// Stats Column
-		PanelStats orgStats = addedData.getOrganizationPanelStats();
 
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid STR: "),
-//                "+" + orgStats.getStrength(),
-//                0xFFD700
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid MAG: "),
-//                "+" + orgStats.getMagic(),
-//                0x5555FF
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid DEF: "),
-//                "+" + orgStats.getDefense(),
-//                0x55FF55
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid AP: "),
-//                "+" + orgStats.getAp(),
-//                0xFF55FF
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid LV: "),
-//                "+" + orgStats.getLevelBonus(),
-//                0xFFFFFF
-//        ));
 
 		super.init();
 	}
@@ -1306,7 +1259,7 @@ public class PanelsMenu extends MenuBackground {
 		gui.drawString(this.font, "Grid Bonuses", x, y, 0xFFD700, false);
 		y += compactPanelLayout ? 10 : 12;
 
-		if (compactPanelLayout) {
+		/*if (compactPanelLayout) {
 			gui.drawString(this.font, "STR +" + stats.getStrength() + "  MAG +" + stats.getMagic() + "  DEF +" + stats.getDefense(), x, y, 0xFFFFFF, false);
 
 			y += 10;
@@ -1314,21 +1267,61 @@ public class PanelsMenu extends MenuBackground {
 			gui.drawString(this.font, "AP +" + stats.getAp() + "  LV +" + stats.getLevelBonus() + " (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
 
 			return;
-		}
+		}*/
+		PanelStats orgStats = addedData.getOrganizationPanelStats();
+		int width = 140;
 
-		gui.drawString(this.font, "STR +" + stats.getStrength(), x, y, 0xFF5555, false);
-		y += 10;
+		addRenderableWidget(new MenuColourBox(
+				x,
+				y,
+				width,
+				Utils.translateToLocal("Grid STR: "),
+				"+" + orgStats.getStrength(),
+				0xFFD700
+		));
 
-		gui.drawString(this.font, "MAG +" + stats.getMagic(), x, y, 0x5555FF, false);
-		y += 10;
+		y += 15;
 
-		gui.drawString(this.font, "DEF +" + stats.getDefense(), x, y, 0x55FF55, false);
-		y += 10;
+		addRenderableWidget(new MenuColourBox(
+				x,
+				y,
+				width,
+				Utils.translateToLocal("Grid MAG: "),
+				"+" + orgStats.getMagic(),
+				0x5555FF
+		));
+		y += 15;
 
-		gui.drawString(this.font, "AP +" + stats.getAp(), x, y, 0xFF55FF, false);
-		y += 10;
+		addRenderableWidget(new MenuColourBox(
+				x,
+				y,
+				width,
+				Utils.translateToLocal("Grid DEF: "),
+				"+" + orgStats.getDefense(),
+				0x55FF55
+		));
+		y += 15;
 
-		gui.drawString(this.font, "LV +" + stats.getLevelBonus() + "  (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
+		addRenderableWidget(new MenuColourBox(
+				x,
+				y,
+				width,
+				Utils.translateToLocal("Grid AP: "),
+				"+" + orgStats.getAp(),
+				0xFF55FF
+		));
+		y += 15;
+
+		addRenderableWidget(new MenuColourBox(
+				x,
+				y,
+				width,
+				Utils.translateToLocal("Grid LV: "),
+				"+" + orgStats.getLevelBonus(),
+				0xFFFFFF
+		));
+
+		//gui.drawString(this.font, "LV +" + stats.getLevelBonus() + "  (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
 	}
 
 
@@ -1441,19 +1434,19 @@ public class PanelsMenu extends MenuBackground {
 			case "magic_link" -> "Magic Link";
 			case "guard_link" -> "Guard Link";
 			case "level_link" -> "Level Link";
-			case "ultima_weapon_panel" -> "Ultima Weapon Panel";
-			case "high_jump_panel" -> "High Jump Panel";
-			case "dodge_roll_panel" -> "Dodge Roll Panel";
-			case "aerial_dodge_panel" -> "Aerial Dodge Panel";
-			case "quick_run_panel" -> "Quick Run Panel";
-			case "glide_panel" -> "Glide Panel";
-			case "combo_plus_panel" -> "Combo Plus Panel";
-			case "fire_boost_panel" -> "Fire Boost Panel";
-			case "blizzard_boost_panel" -> "Blizzard Boost Panel";
-			case "thunder_boost_panel" -> "Thunder Boost Panel";
-			case "draw_panel" -> "Draw Panel";
-			case "jackpot_panel" -> "Jackpot Panel";
-			case "lucky_lucky_panel" -> "Lucky Lucky Panel";
+			case "ultima_weapon_panel" -> "Ultima Weapon";
+			case "high_jump_panel" -> "High Jump";
+			case "dodge_roll_panel" -> "Dodge Roll";
+			case "aerial_dodge_panel" -> "Aerial Dodge";
+			case "quick_run_panel" -> "Quick Run";
+			case "glide_panel" -> "Glide";
+			case "combo_plus_panel" -> "Combo Plus";
+			case "fire_boost_panel" -> "Fire Boost";
+			case "blizzard_boost_panel" -> "Blizzard Boost";
+			case "thunder_boost_panel" -> "Thunder Boost";
+			case "draw_panel" -> "Draw";
+			case "jackpot_panel" -> "Jackpot";
+			case "lucky_lucky_panel" -> "Lucky Lucky";
 			default -> path;
 		};
 	}
@@ -1511,7 +1504,7 @@ public class PanelsMenu extends MenuBackground {
 			renderable.render(gui, mouseX, mouseY, partialTicks);
 		}
 
-		if(selectedOrgPanel != null) {
+		/*if(selectedOrgPanel != null) {
 			PanelData data = PanelRegistry.get(selectedOrgPanel);
 
 			if (data != null) {
@@ -1538,7 +1531,7 @@ public class PanelsMenu extends MenuBackground {
 					gui.pose().popPose();
 				}
 			}
-		}
+		}*/
 	}
 
 
