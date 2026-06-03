@@ -42,6 +42,22 @@ public class PanelGrid {
         return false;
     }
 
+    public int countPanel(ResourceLocation panelId) {
+        if (panelId == null) {
+            return 0;
+        }
+
+        int count = 0;
+
+        for (PanelSlot slot : this.getPlacedPanels()) {
+            if (slot != null && panelId.equals(slot.getPanelId())) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public boolean canPlace(ResourceLocation panelId, int x, int y) {
         PanelData data = PanelRegistry.get(panelId);
 

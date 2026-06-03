@@ -99,13 +99,41 @@ public class OrganizationPanelAbilityHelper {
         return ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, path);
     }
 
-    public static void refreshFakeMovementAbilities(Player player) {
-        refreshFakePanelAbility(player, Strings.highJump);
-        refreshFakePanelAbility(player, Strings.dodgeRoll);
-        refreshFakePanelAbility(player, Strings.aerialDodge);
-        refreshFakePanelAbility(player, Strings.quickRun);
-        refreshFakePanelAbility(player, Strings.glide);
+    public static void refreshPanelGrantedMovementAbilities(Player player) {
+        refreshPanelGrantedAbility(player, Strings.highJump);
+        refreshPanelGrantedAbility(player, Strings.dodgeRoll);
+        refreshPanelGrantedAbility(player, Strings.aerialDodge);
+        refreshPanelGrantedAbility(player, Strings.quickRun);
+        refreshPanelGrantedAbility(player, Strings.glide);
     }
+
+    public static int getEquippedPanelCount(Player player, ResourceLocation panelId) {
+        if (player == null || panelId == null) {
+            return 0;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+        if (globalData == null || globalData.getPanelsEnabled() != 1) {
+            return 0;
+        }
+
+        return globalData.countOrganizationPanelEquipped(panelId);
+    }
+
+    public static int getHighJumpLevel(Player player) {
+        return getEquippedPanelCount(player, PanelRegistry.HIGH_JUMP_PANEL);
+    }
+
+    public static int getAerialDodgePanelLevel(Player player) {
+        return getEquippedPanelCount(player, PanelRegistry.AERIAL_DODGE_PANEL);
+    }
+
+    public static int getGlidePanelLevel(Player player) {
+        return getEquippedPanelCount(player, PanelRegistry.GLIDE_PANEL);
+    }
+
+
 
     public static void debugAbilityPanel(Player player, String ability) {
         if (player == null || ability == null) {
@@ -139,9 +167,7 @@ public class OrganizationPanelAbilityHelper {
     private static final java.util.Map<java.util.UUID, java.util.Map<String, int[]>> ORIGINAL_PANEL_ABILITY_STATES =
             new java.util.HashMap<>();
 
-
-
-    public static void refreshFakePanelAbility(Player player, String ability) {
+    public static void refreshPanelGrantedAbility(Player player, String ability) {
         if (player == null || ability == null || ability.isEmpty()) {
             return;
         }
@@ -154,35 +180,59 @@ public class OrganizationPanelAbilityHelper {
 
         boolean panelActive = hasAbilityPanelEquipped(player, ability);
 
-        int[] current = playerData.getAbilityMap().get(ability);
-
-        if (current == null || current.length < 2) {
-            return;
-        }
-
-        int index = 0;
-        int bit = (int) Math.pow(2, index);
-
-        String key = player.getUUID() + "|" + ability;
+        java.util.Map<String, int[]> playerOriginals =
+                ORIGINAL_PANEL_ABILITY_STATES.computeIfAbsent(
+                        player.getUUID(),
+                        uuid -> new java.util.HashMap<>()
+                );
 
         if (panelActive) {
-            if ((current[1] & bit) == 0) {
-                PANEL_FAKE_EQUIPPED.add(key);
-                playerData.equipAbility(ability, index);
+            if (!playerOriginals.containsKey(ability)) {
+                int[] original = playerData.getAbilityMap().get(ability);
+
+                if (original == null) {
+                    playerOriginals.put(ability, null);
+                } else {
+                    playerOriginals.put(ability, new int[] { original[0], original[1] });
+                }
             }
+
+            int[] current = playerData.getAbilityMap().get(ability);
+
+            int level = 0;
+
+            if (current != null && current.length > 0) {
+                level = Math.max(current[0], 0);
+            }
+
+            /*
+             * Add/grant the ability if missing, then equip index 0.
+             * [0] = unlocked level/index
+             * [1] = equipped bit/state
+             */
+            playerData.getAbilityMap().put(ability, new int[] { level, 0 });
+            playerData.equipAbility(ability, 0);
 
             return;
         }
 
-        if (PANEL_FAKE_EQUIPPED.contains(key)) {
-            int[] latest = playerData.getAbilityMap().get(ability);
+        /*
+         * Panel inactive: restore only if the panel system changed this ability.
+         */
+        if (playerOriginals.containsKey(ability)) {
+            int[] original = playerOriginals.get(ability);
 
-            if (latest != null && latest.length >= 2) {
-                latest[1] &= ~bit;
-                playerData.getAbilityMap().put(ability, new int[] { latest[0], latest[1] });
+            if (original == null) {
+                playerData.getAbilityMap().remove(ability);
+            } else {
+                playerData.getAbilityMap().put(ability, new int[] { original[0], original[1] });
             }
 
-            PANEL_FAKE_EQUIPPED.remove(key);
+            playerOriginals.remove(ability);
+        }
+
+        if (playerOriginals.isEmpty()) {
+            ORIGINAL_PANEL_ABILITY_STATES.remove(player.getUUID());
         }
     }
 

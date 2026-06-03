@@ -31,30 +31,39 @@ import online.remind.remind.panels.*;
 
 import net.minecraft.network.chat.Component;
 
-import org.lwjgl.glfw.GLFW;
-
-import java.util.List;
-
 import java.awt.*;
 
 public class PanelsMenu extends MenuBackground {
 
 
-    private static final int ORG_SLOT_SIZE = 28;
+    private static final int BASE_ORG_SLOT_SIZE = 18;
 
-    private static final int ORG_PANEL_PICKER_SLOT_SIZE = 24;
-    private static final int ORG_PANEL_PICKER_GAP = 6;
+    private static final int BASE_ORG_PANEL_PICKER_SLOT_SIZE = 22;
+    private static final int BASE_ORG_PANEL_PICKER_GAP = 4;
+    private static final int BASE_ORG_PANEL_PICKER_ROW_GAP = 5;
+
+    private static final int BASE_SHOP_VISIBLE_BUTTONS = 5;
+    private static final int BASE_SHOP_BUTTON_GAP = 16;
 
     private static final int ORG_PANEL_PICKER_COLUMNS = 7;
-    private static final int ORG_PANEL_PICKER_ROW_GAP = 14;
 
-    private static final int SHOP_VISIBLE_BUTTONS = 10;
-    private static final int SHOP_BUTTON_GAP = 20;
+    private int orgSlotSize = BASE_ORG_SLOT_SIZE;
+    private int orgPickerSlotSize = BASE_ORG_PANEL_PICKER_SLOT_SIZE;
+    private int orgPickerGap = BASE_ORG_PANEL_PICKER_GAP;
+    private int orgPickerRowGap = BASE_ORG_PANEL_PICKER_ROW_GAP;
+    private int shopVisibleButtons = BASE_SHOP_VISIBLE_BUTTONS;
+    private int shopButtonGap = BASE_SHOP_BUTTON_GAP;
+
+    private boolean compactPanelLayout = false;
+    private boolean emergencyPanelLayout = false;
 
     private int shopScrollOffset = 0;
 
     private int orgPickerX;
     private int orgPickerY;
+
+    private int orgControlsX;
+    private int orgControlsY;
 
     private int orgPanelAreaX;
     private int orgPanelAreaY;
@@ -63,8 +72,12 @@ public class PanelsMenu extends MenuBackground {
 
     private ResourceLocation selectedOrgPanel = PanelRegistry.STRENGTH_UNIT; // DUMMY
 
+
     private int orgGridX;
     private int orgGridY;
+    private int shopInfoBoxY;
+    private int shopPanelX;
+    private int shopPanelWidth;
 
     int ticks = 0;
 
@@ -110,7 +123,7 @@ public class PanelsMenu extends MenuBackground {
 
         switch(string){
             case "back" ->
-                PacketHandler.sendToServer(new CSOpenMenu());
+                    PacketHandler.sendToServer(new CSOpenMenu());
 
             case "reg" -> {
                 minecraft.setScreen(new PanelsMenu());
@@ -415,6 +428,17 @@ public class PanelsMenu extends MenuBackground {
                 this.reloadMenu();
             }
 
+            case "buy_selected_panel" -> {
+                if (selectedOrgPanel != null) {
+                    PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(
+                            selectedOrgPanel,
+                            1
+                    ));
+
+                    minecraft.player.playSound(ModSounds.itemget.get());
+                }
+            }
+
         }
 
     }
@@ -526,13 +550,13 @@ public class PanelsMenu extends MenuBackground {
             int col = i % ORG_PANEL_PICKER_COLUMNS;
             int row = i / ORG_PANEL_PICKER_COLUMNS;
 
-            int x = orgPickerX + col * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
-            int y = orgPickerY + row * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_ROW_GAP);
+            int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
+            int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
 
             boolean inside = mouseX >= x
-                    && mouseX < x + ORG_PANEL_PICKER_SLOT_SIZE
+                    && mouseX < x + orgPickerSlotSize
                     && mouseY >= y
-                    && mouseY < y + ORG_PANEL_PICKER_SLOT_SIZE;
+                    && mouseY < y + orgPickerSlotSize;
 
             if (inside) {
                 return ORG_PICKER_PANELS[i];
@@ -542,33 +566,6 @@ public class PanelsMenu extends MenuBackground {
         return null;
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        switch (keyCode) {
-            case GLFW.GLFW_KEY_1 -> {
-                selectedOrgPanel = PanelRegistry.STRENGTH_UNIT;
-                return true;
-            }
-            case GLFW.GLFW_KEY_2 -> {
-                selectedOrgPanel = PanelRegistry.MAGIC_UNIT;
-                return true;
-            }
-            case GLFW.GLFW_KEY_3 -> {
-                selectedOrgPanel = PanelRegistry.DEFENSE_UNIT;
-                return true;
-            }
-            case GLFW.GLFW_KEY_4 -> {
-                selectedOrgPanel = PanelRegistry.AP_UNIT;
-                return true;
-            }
-            case GLFW.GLFW_KEY_5 -> {
-                selectedOrgPanel = PanelRegistry.LEVEL_UP;
-                return true;
-            }
-        }
-
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
 
     @Override
     public void tick() {
@@ -584,8 +581,7 @@ public class PanelsMenu extends MenuBackground {
 
     @Override
     public void init() {
-
-
+        updateAdaptivePanelLayout();
 
         Player player;
         final PlayerData playerData = PlayerData.get(minecraft.player);
@@ -594,7 +590,7 @@ public class PanelsMenu extends MenuBackground {
 
         lastKnownHearts = playerData != null ? playerData.getHearts() : -1;
 
-        this.renderables.clear();
+        this.clearWidgets();
 
         float topBarHeight = (float) height * 0.17F;
         int button_statsY = (int) topBarHeight + 5;
@@ -612,9 +608,10 @@ public class PanelsMenu extends MenuBackground {
         int col2X = (int) (col1X + dataWidth * 2) + 5;
 
         // Organization Panel Grid position
-        int contentX = (int) (buttonPosX + buttonWidth + 20);
-        int contentY = button_statsY + 70;
-        int contentWidth = width - contentX - 180;
+        int contentX = (int) (buttonPosX + buttonWidth + (compactPanelLayout ? 14 : 20));
+        int contentY = button_statsY + (compactPanelLayout ? 64 : 76);
+        int reservedRightWidth = compactPanelLayout ? 130 : 180;
+        int contentWidth = width - contentX - reservedRightWidth;
 
         int orgGridCols = 5;
 
@@ -622,51 +619,63 @@ public class PanelsMenu extends MenuBackground {
             orgGridCols = addedData.getOrganizationPanelGrid().getWidth();
         }
 
-        int gridWidth = orgGridCols * ORG_SLOT_SIZE;
-
-        this.orgGridX = contentX + (contentWidth / 2) - (gridWidth / 2);
-        this.orgGridY = contentY + 42;
+        int gridWidth = orgGridCols * orgSlotSize;
 
         int pickerColumns = Math.min(ORG_PICKER_PANELS.length, ORG_PANEL_PICKER_COLUMNS);
+        int pickerRows = (int) Math.ceil((double) ORG_PICKER_PANELS.length / ORG_PANEL_PICKER_COLUMNS);
 
-        int pickerWidth = (pickerColumns * ORG_PANEL_PICKER_SLOT_SIZE)
-                + ((pickerColumns - 1) * ORG_PANEL_PICKER_GAP);
+        int pickerWidth = (pickerColumns * orgPickerSlotSize)
+                + ((pickerColumns - 1) * orgPickerGap);
+
+        int pickerHeight = (pickerRows * orgPickerSlotSize)
+                + ((pickerRows - 1) * orgPickerRowGap);
+
+        this.orgGridX = contentX + (contentWidth / 2) - (gridWidth / 2);
+
+        int minGridX = (int) (buttonPosX + buttonWidth + 16);
+        if (this.orgGridX < minGridX) {
+            this.orgGridX = minGridX;
+        }
 
         this.orgPickerX = orgGridX + (gridWidth / 2) - (pickerWidth / 2);
-        this.orgPickerY = contentY - 52;
+        this.orgPickerY = contentY - (compactPanelLayout ? 50 : 60);
+
+        /*
+         * Grid starts after the inventory instead of using a fixed Y.
+         * This prevents inventory/count text from colliding with the grid title.
+         */
+        this.orgGridY = this.orgPickerY + pickerHeight + (compactPanelLayout ? 24 : 34);
 
         int i = 0;
 
         int shopY = button_statsY;
         int shopGap = 20;
         int shopX = (int) buttonPosX;
-        int shopWidth = (int) buttonWidth;
+        int shopWidth = Math.max(120, (int) buttonWidth);
+
+        this.shopPanelX = shopX;
+        this.shopPanelWidth = shopWidth;
 
         PanelShopEntry[] shopEntries = getPanelShopEntries();
 
-        int maxScroll = Math.max(0, shopEntries.length - SHOP_VISIBLE_BUTTONS);
+        int maxScroll = Math.max(0, shopEntries.length - shopVisibleButtons);
         shopScrollOffset = Math.max(0, Math.min(shopScrollOffset, maxScroll));
 
-        for (int shopIndex = 0; shopIndex < SHOP_VISIBLE_BUTTONS; shopIndex++) {
+        for (int shopIndex = 0; shopIndex < shopVisibleButtons; shopIndex++) {
             int entryIndex = shopScrollOffset + shopIndex;
 
             if (entryIndex >= shopEntries.length) {
                 break;
             }
 
-            PanelShopEntry entry = shopEntries[entryIndex];
-
-            addPanelShopButton(
-                    playerData,
+            addPanelShopSelectButton(
                     shopX,
                     shopY,
                     shopWidth,
-                    entry.label(),
-                    entry.cost(),
-                    entry.action()
+                    shopEntries[entryIndex]
             );
 
-            shopY += SHOP_BUTTON_GAP;
+            shopY += shopButtonGap;
         }
 
         shopY += 4;
@@ -674,7 +683,7 @@ public class PanelsMenu extends MenuBackground {
         addRenderableWidget(new MenuButton(
                 shopX,
                 shopY,
-                shopWidth / 60,
+                36,
                 "▲",
                 MenuButton.ButtonType.BUTTON,
                 false,
@@ -689,14 +698,14 @@ public class PanelsMenu extends MenuBackground {
         ));
 
         addRenderableWidget(new MenuButton(
-                shopX + shopWidth / 2 + 2,
+                shopX + 42,
                 shopY,
-                shopWidth / 60,
+                36,
                 "▼",
                 MenuButton.ButtonType.BUTTON,
                 false,
                 e -> {
-                    int max = Math.max(0, getPanelShopEntries().length - SHOP_VISIBLE_BUTTONS);
+                    int max = Math.max(0, getPanelShopEntries().length - shopVisibleButtons);
 
                     if (shopScrollOffset < max) {
                         shopScrollOffset++;
@@ -707,13 +716,62 @@ public class PanelsMenu extends MenuBackground {
                 }
         ));
 
-        shopY += shopGap;
+
+
+        this.shopInfoBoxY = shopY + 20;
+
+        shopY += 84;
+
+        gridWidth = addedData != null ? addedData.getOrganizationPanelGridWidth() * orgSlotSize : gridWidth;
+
+        int controlButtonWidth = compactPanelLayout ? 120 : 150;
+        int controlButtonGap = compactPanelLayout ? 18 : 22;
+        int controlButtonX;
+        int controlButtonY;
+
+        int rightSideX = orgGridX + gridWidth + (compactPanelLayout ? 10 : 18);
+
+        if (rightSideX + controlButtonWidth < this.width - 8) {
+            controlButtonX = rightSideX;
+            controlButtonY = orgGridY + (compactPanelLayout ? 52 : 64);
+        } else {
+            /*
+             * Emergency layout: if GUI Scale 4/Auto gives us no right panel, stack controls
+             * below the grid instead of letting them overlap the shop or title area.
+             */
+            controlButtonX = orgGridX;
+            controlButtonY = orgGridY + ((addedData != null ? addedData.getOrganizationPanelGridHeight() : 8) * orgSlotSize) + (compactPanelLayout ? 54 : 70);
+        }
+
+        addRenderableWidget(new MenuButton(
+                controlButtonX,
+                controlButtonY,
+                controlButtonWidth,
+                "Buy Selected",
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> action("buy_selected_panel")
+        ));
+
+        controlButtonY += controlButtonGap;
+
+        addRenderableWidget(new MenuButton(
+                controlButtonX,
+                controlButtonY,
+                controlButtonWidth,
+                "Buy Slot Releaser ",
+                MenuButton.ButtonType.BUTTON,
+                false,
+                e -> action("buy_slot_releaser")
+        ));
+
+        controlButtonY += controlButtonGap;
 
         if (addedData.getPanelsEnabled() == 1) {
             addRenderableWidget(toggleOff = new MenuButton(
-                    shopX,
-                    shopY,
-                    shopWidth,
+                    controlButtonX,
+                    controlButtonY,
+                    controlButtonWidth,
                     "Boost OFF",
                     MenuButton.ButtonType.BUTTON,
                     false,
@@ -721,9 +779,9 @@ public class PanelsMenu extends MenuBackground {
             ));
         } else {
             addRenderableWidget(toggleOn = new MenuButton(
-                    shopX,
-                    shopY,
-                    shopWidth,
+                    controlButtonX,
+                    controlButtonY,
+                    controlButtonWidth,
                     "Boost ON",
                     MenuButton.ButtonType.BUTTON,
                     false,
@@ -731,12 +789,12 @@ public class PanelsMenu extends MenuBackground {
             ));
         }
 
-        shopY += shopGap;
+        controlButtonY += controlButtonGap;
 
         addRenderableWidget(backButton = new MenuButton(
-                shopX,
-                shopY,
-                shopWidth,
+                controlButtonX,
+                controlButtonY,
+                controlButtonWidth,
                 Strings.Gui_Menu_Back,
                 MenuButton.ButtonType.BUTTON,
                 false,
@@ -876,25 +934,25 @@ public class PanelsMenu extends MenuBackground {
         super.init();
     }
 
-    private void addPanelShopButton(
-            PlayerData playerData,
+    private void addPanelShopSelectButton(
             int x,
             int y,
             int width,
-            String label,
-            int cost,
-            String action
+            PanelShopEntry entry
     ) {
-        boolean canAfford = playerData != null && playerData.getHearts() >= cost;
+        boolean selected = entry.panelId().equals(selectedOrgPanel);
 
         addRenderableWidget(new MenuButton(
                 x,
                 y,
                 width,
-                label + " - " + (canAfford ? ChatFormatting.GREEN : ChatFormatting.DARK_RED) + cost + " Hearts",
+                selected ? "> " + entry.label() : entry.label(),
                 MenuButton.ButtonType.BUTTON,
                 false,
-                e -> action(canAfford ? action : "req")
+                e -> {
+                    selectedOrgPanel = entry.panelId();
+                    init();
+                }
         ));
     }
 
@@ -917,7 +975,7 @@ public class PanelsMenu extends MenuBackground {
             return -1;
         }
 
-        int gridX = localX / ORG_SLOT_SIZE;
+        int gridX = localX / orgSlotSize;
 
         if (gridX < 0 || gridX >= addedData.getOrganizationPanelGrid().getWidth()) {
             return -1;
@@ -943,7 +1001,7 @@ public class PanelsMenu extends MenuBackground {
             return -1;
         }
 
-        int gridY = localY / ORG_SLOT_SIZE;
+        int gridY = localY / orgSlotSize;
 
         if (gridY < 0 || gridY >= addedData.getOrganizationPanelGrid().getHeight()) {
             return -1;
@@ -971,9 +1029,9 @@ public class PanelsMenu extends MenuBackground {
     private String getPanelShortName(String path) {
         return switch (path) {
             case "level_up" -> "LV";
-            case "strength_unit" -> "STR";
-            case "magic_unit" -> "MAG";
-            case "defense_unit" -> "DEF";
+            case "strength_unit" -> "S";
+            case "magic_unit" -> "M";
+            case "defense_unit" -> "D";
             case "ap_unit" -> "AP";
             case "strength_unit_l" -> "S+";
             case "magic_unit_l" -> "M+";
@@ -984,12 +1042,12 @@ public class PanelsMenu extends MenuBackground {
             case "magic_link" -> "M-L";
             case "guard_link" -> "G-L";
             case "level_link" -> "L-L";
-            case "ultima_weapon_panel" -> "ULT";
+            case "ultima_weapon_panel" -> "UW";
             case "high_jump_panel" -> "HJ";
             case "dodge_roll_panel" -> "DR";
             case "aerial_dodge_panel" -> "AD";
             case "quick_run_panel" -> "QR";
-            case "glide_panel" -> "GLD";
+            case "glide_panel" -> "GL";
             default -> path.length() > 3 ? path.substring(0, 3).toUpperCase() : path.toUpperCase();
         };
     }
@@ -1009,35 +1067,34 @@ public class PanelsMenu extends MenuBackground {
 
         PanelGrid grid = addedData.getOrganizationPanelGrid();
 
-        // Title
         gui.drawString(
                 this.font,
-                "Organization Panels",
+                "Selected: " + getPanelShortName(selectedOrgPanel.getPath()),
                 orgGridX,
-                orgGridY - 14,
-                0xFFFFFF,
+                orgGridY - 24,
+                0xFFD700,
                 false
         );
 
         gui.drawString(
                 this.font,
-                "Selected: " + getPanelShortName(selectedOrgPanel.getPath()),
+                "Organization Panels",
                 orgGridX,
-                orgGridY - 26,
-                0xFFD700,
+                orgGridY - 12,
+                0xFFFFFF,
                 false
         );
 
         // Draw empty grid slots
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
-                int sx = orgGridX + x * ORG_SLOT_SIZE;
-                int sy = orgGridY + y * ORG_SLOT_SIZE;
+                int sx = orgGridX + x * orgSlotSize;
+                int sy = orgGridY + y * orgSlotSize;
 
                 boolean hovered = mouseX >= sx
-                        && mouseX < sx + ORG_SLOT_SIZE
+                        && mouseX < sx + orgSlotSize
                         && mouseY >= sy
-                        && mouseY < sy + ORG_SLOT_SIZE;
+                        && mouseY < sy + orgSlotSize;
 
                 boolean unlocked = addedData.isOrganizationPanelSlotUnlocked(x, y);
 
@@ -1049,21 +1106,21 @@ public class PanelsMenu extends MenuBackground {
                         ? hovered ? 0x55222222 : 0xAA111111
                         : 0xAA050505;
 
-                gui.fill(sx, sy, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, fillColor);
+                gui.fill(sx, sy, sx + orgSlotSize, sy + orgSlotSize, fillColor);
 
                 // border
-                gui.fill(sx, sy, sx + ORG_SLOT_SIZE, sy + 1, borderColor);
-                gui.fill(sx, sy + ORG_SLOT_SIZE - 1, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, borderColor);
-                gui.fill(sx, sy, sx + 1, sy + ORG_SLOT_SIZE, borderColor);
-                gui.fill(sx + ORG_SLOT_SIZE - 1, sy, sx + ORG_SLOT_SIZE, sy + ORG_SLOT_SIZE, borderColor);
+                gui.fill(sx, sy, sx + orgSlotSize, sy + 1, borderColor);
+                gui.fill(sx, sy + orgSlotSize - 1, sx + orgSlotSize, sy + orgSlotSize, borderColor);
+                gui.fill(sx, sy, sx + 1, sy + orgSlotSize, borderColor);
+                gui.fill(sx + orgSlotSize - 1, sy, sx + orgSlotSize, sy + orgSlotSize, borderColor);
 
                 if (!unlocked) {
                     gui.drawString(
                             this.font,
-                            "X",
-                            sx + 10,
-                            sy + 9,
-                            0xFF333333,
+                            "×",
+                            sx + (orgSlotSize / 2) - 2,
+                            sy + (orgSlotSize / 2) - 4,
+                            0xFF252525,
                             false
                     );
                 }
@@ -1079,10 +1136,10 @@ public class PanelsMenu extends MenuBackground {
                 continue;
             }
 
-            int px = orgGridX + slot.getX() * ORG_SLOT_SIZE;
-            int py = orgGridY + slot.getY() * ORG_SLOT_SIZE;
-            int pw = data.getWidth() * ORG_SLOT_SIZE;
-            int ph = data.getHeight() * ORG_SLOT_SIZE;
+            int px = orgGridX + slot.getX() * orgSlotSize;
+            int py = orgGridY + slot.getY() * orgSlotSize;
+            int pw = data.getWidth() * orgSlotSize;
+            int ph = data.getHeight() * orgSlotSize;
 
             int color = getPanelColor(data);
 
@@ -1095,8 +1152,8 @@ public class PanelsMenu extends MenuBackground {
             gui.drawString(
                     this.font,
                     label,
-                    px + 4,
-                    py + 7,
+                    px + 2,
+                    py + Math.max(3, orgSlotSize / 2 - 4),
                     labelColor,
                     false
             );
@@ -1139,26 +1196,15 @@ public class PanelsMenu extends MenuBackground {
             }
         }
 
-        int x = orgGridX + (gridCols * ORG_SLOT_SIZE) + 18;
+        int x = orgGridX + (gridCols * orgSlotSize) + (compactPanelLayout ? 10 : 18);
         int y = orgGridY;
 
-        gui.drawString(this.font, "Panel Keys", x, y, 0xFFD700, false);
+        if (x + 120 >= this.width - 4) {
+            return;
+        }
+
+        gui.drawString(this.font, "Panel Controls", x, y, 0xFFD700, false);
         y += 14;
-
-        gui.drawString(this.font, "1 - STR Unit", x, y, 0xFF5555, false);
-        y += 11;
-
-        gui.drawString(this.font, "2 - MAG Unit", x, y, 0x5555FF, false);
-        y += 11;
-
-        gui.drawString(this.font, "3 - DEF Unit", x, y, 0x55FF55, false);
-        y += 11;
-
-        gui.drawString(this.font, "4 - AP Unit", x, y, 0xFF55FF, false);
-        y += 11;
-
-        gui.drawString(this.font, "5 - Level Up", x, y, 0xFFFFFF, false);
-        y += 16;
 
         gui.drawString(this.font, "Left Click: Place", x, y, 0xAAAAAA, false);
         y += 11;
@@ -1210,10 +1256,43 @@ public class PanelsMenu extends MenuBackground {
         int gridRows = grid != null ? grid.getHeight() : 4;
 
         int x = orgGridX;
-        int y = orgGridY + (gridRows * ORG_SLOT_SIZE) + 12;
+        int y = orgGridY + (gridRows * orgSlotSize) + (compactPanelLayout ? 5 : 8);
+
+        PlayerData playerData = PlayerData.get(minecraft.player);
+
+        int realLevel = playerData != null ? playerData.getLevel() : 0;
+        int effectiveLevel = realLevel + stats.getLevelBonus();
 
         gui.drawString(this.font, "Grid Bonuses", x, y, 0xFFD700, false);
-        y += 12;
+        y += compactPanelLayout ? 10 : 12;
+
+        if (compactPanelLayout) {
+            gui.drawString(
+                    this.font,
+                    "STR +" + stats.getStrength()
+                            + "  MAG +" + stats.getMagic()
+                            + "  DEF +" + stats.getDefense(),
+                    x,
+                    y,
+                    0xFFFFFF,
+                    false
+            );
+
+            y += 10;
+
+            gui.drawString(
+                    this.font,
+                    "AP +" + stats.getAp()
+                            + "  LV +" + stats.getLevelBonus()
+                            + " (" + realLevel + " > " + effectiveLevel + ")",
+                    x,
+                    y,
+                    0xFFFFFF,
+                    false
+            );
+
+            return;
+        }
 
         gui.drawString(this.font, "STR +" + stats.getStrength(), x, y, 0xFF5555, false);
         y += 10;
@@ -1226,11 +1305,6 @@ public class PanelsMenu extends MenuBackground {
 
         gui.drawString(this.font, "AP +" + stats.getAp(), x, y, 0xFF55FF, false);
         y += 10;
-
-        PlayerData playerData = PlayerData.get(minecraft.player);
-
-        int realLevel = playerData != null ? playerData.getLevel() : 0;
-        int effectiveLevel = realLevel + stats.getLevelBonus();
 
         gui.drawString(
                 this.font,
@@ -1275,45 +1349,48 @@ public class PanelsMenu extends MenuBackground {
         int col = index % ORG_PANEL_PICKER_COLUMNS;
         int row = index / ORG_PANEL_PICKER_COLUMNS;
 
-        int x = orgPickerX + col * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_GAP);
-        int y = orgPickerY + row * (ORG_PANEL_PICKER_SLOT_SIZE + ORG_PANEL_PICKER_ROW_GAP);
+        int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
+        int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
 
         boolean hovered = mouseX >= x
-                && mouseX < x + ORG_PANEL_PICKER_SLOT_SIZE
+                && mouseX < x + orgPickerSlotSize
                 && mouseY >= y
-                && mouseY < y + ORG_PANEL_PICKER_SLOT_SIZE;
+                && mouseY < y + orgPickerSlotSize;
 
         boolean selected = selectedOrgPanel.equals(panelId);
 
         int borderColor = selected ? 0xFFFFFF00 : hovered ? 0xFFFFFFFF : 0xFF555555;
         int fillColor = count > 0 ? getPanelColor(data) : 0xAA333333;
 
-        gui.fill(x, y, x + ORG_PANEL_PICKER_SLOT_SIZE, y + ORG_PANEL_PICKER_SLOT_SIZE, 0xAA111111);
-        gui.fill(x + 2, y + 2, x + ORG_PANEL_PICKER_SLOT_SIZE - 2, y + ORG_PANEL_PICKER_SLOT_SIZE - 2, fillColor);
+        gui.fill(x, y, x + orgPickerSlotSize, y + orgPickerSlotSize, 0xAA111111);
+        gui.fill(x + 2, y + 2, x + orgPickerSlotSize - 2, y + orgPickerSlotSize - 2, fillColor);
 
         // Border
-        gui.fill(x, y, x + ORG_PANEL_PICKER_SLOT_SIZE, y + 1, borderColor);
-        gui.fill(x, y + ORG_PANEL_PICKER_SLOT_SIZE - 1, x + ORG_PANEL_PICKER_SLOT_SIZE, y + ORG_PANEL_PICKER_SLOT_SIZE, borderColor);
-        gui.fill(x, y, x + 1, y + ORG_PANEL_PICKER_SLOT_SIZE, borderColor);
-        gui.fill(x + ORG_PANEL_PICKER_SLOT_SIZE - 1, y, x + ORG_PANEL_PICKER_SLOT_SIZE, y + ORG_PANEL_PICKER_SLOT_SIZE, borderColor);
+        gui.fill(x, y, x + orgPickerSlotSize, y + 1, borderColor);
+        gui.fill(x, y + orgPickerSlotSize - 1, x + orgPickerSlotSize, y + orgPickerSlotSize, borderColor);
+        gui.fill(x, y, x + 1, y + orgPickerSlotSize, borderColor);
+        gui.fill(x + orgPickerSlotSize - 1, y, x + orgPickerSlotSize, y + orgPickerSlotSize, borderColor);
 
         String label = getPanelShortName(panelId.getPath());
 
         gui.drawString(
                 this.font,
                 label,
-                x + 3,
-                y + 8,
+                x + 2,
+                y + (compactPanelLayout ? 4 : 5),
                 0xFFFFFF,
                 false
         );
 
+        String countText = "x" + count;
+        int countColor = count > 0 ? 0xFFFFFFFF : 0xFFAA3333;
+
         gui.drawString(
                 this.font,
-                "x" + count,
-                x + 4,
-                y + ORG_PANEL_PICKER_SLOT_SIZE + 2,
-                count > 0 ? 0xFFFFFF : 0xFF5555,
+                countText,
+                x + orgPickerSlotSize - this.font.width(countText) - 2,
+                y + orgPickerSlotSize - 9,
+                countColor,
                 false
         );
 
@@ -1378,47 +1455,149 @@ public class PanelsMenu extends MenuBackground {
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
         super.render(gui, mouseX, mouseY, partialTicks);
 
-        renderHeartCount(gui);
-
         renderOrganizationPanelPicker(gui, mouseX, mouseY);
         renderOrganizationPanelGrid(gui, mouseX, mouseY);
         renderOrganizationPanelStats(gui);
         renderOrganizationPanelKeyGuide(gui);
+        renderPanelInfoBox(gui);
     }
 
-    private record PanelShopEntry(String label, int cost, String action) {
+    private record PanelShopEntry(ResourceLocation panelId, String label, int cost, String description) {
     }
 
     private PanelShopEntry[] getPanelShopEntries() {
         return new PanelShopEntry[] {
-                new PanelShopEntry("Buy STR Unit", 250, "buy_str_unit"),
-                new PanelShopEntry("Buy MAG Unit", 250, "buy_mag_unit"),
-                new PanelShopEntry("Buy DEF Unit", 250, "buy_def_unit"),
-                new PanelShopEntry("Buy AP Unit", 400, "buy_ap_unit"),
-                new PanelShopEntry("Buy Level Up", 750, "buy_level_up"),
+                new PanelShopEntry(PanelRegistry.STRENGTH_UNIT, "STR Unit", 1000, "+1 STR while placed"),
+                new PanelShopEntry(PanelRegistry.MAGIC_UNIT, "MAG Unit", 1000, "+1 MAG while placed"),
+                new PanelShopEntry(PanelRegistry.DEFENSE_UNIT, "DEF Unit", 1000, "+1 DEF while placed"),
+                new PanelShopEntry(PanelRegistry.AP_UNIT, "AP Unit", 500, "+1 AP while placed"),
+                new PanelShopEntry(PanelRegistry.LEVEL_UP, "Level Up", 2000, "+1 LV while placed"),
 
-                new PanelShopEntry("Buy STR Unit L", 1200, "buy_str_unit_l"),
-                new PanelShopEntry("Buy MAG Unit L", 1200, "buy_mag_unit_l"),
-                new PanelShopEntry("Buy DEF Unit L", 1200, "buy_def_unit_l"),
-                new PanelShopEntry("Buy AP Unit L", 1600, "buy_ap_unit_l"),
-                new PanelShopEntry("Buy Level Doubler", 3000, "buy_level_doubler"),
+                new PanelShopEntry(PanelRegistry.STRENGTH_UNIT_L, "STR Unit L", 2000, "Large STR panel"),
+                new PanelShopEntry(PanelRegistry.MAGIC_UNIT_L, "MAG Unit L", 2000, "Large MAG panel"),
+                new PanelShopEntry(PanelRegistry.DEFENSE_UNIT_L, "DEF Unit L", 2000, "Large DEF panel"),
+                new PanelShopEntry(PanelRegistry.AP_UNIT_L, "AP Unit L", 1000, "Large AP panel"),
+                new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER, "Level Doubler", 4000, "Boosts level panel setups"),
 
-                new PanelShopEntry("Buy Power Link", 1500, "buy_power_link"),
-                new PanelShopEntry("Buy Magic Link", 1500, "buy_magic_link"),
-                new PanelShopEntry("Buy Guard Link", 1500, "buy_guard_link"),
-                new PanelShopEntry("Buy Level Link", 2000, "buy_level_link"),
+                new PanelShopEntry(PanelRegistry.POWER_LINK, "Power Link", 2500, "Boosts nearby STR panels"),
+                new PanelShopEntry(PanelRegistry.MAGIC_LINK, "Magic Link", 2500, "Boosts nearby MAG panels"),
+                new PanelShopEntry(PanelRegistry.GUARD_LINK, "Guard Link", 2500, "Boosts nearby DEF panels"),
+                new PanelShopEntry(PanelRegistry.LEVEL_LINK, "Level Link", 2500, "Boosts nearby LV panels"),
 
-                new PanelShopEntry("Buy Slot Releaser", 1000, "buy_slot_releaser"),
+                new PanelShopEntry(PanelRegistry.ULTIMA_WEAPON_PANEL, "Ultima Weapon", 50000, "Enables Ultima Weapon while equipped"),
+                new PanelShopEntry(PanelRegistry.HIGH_JUMP_PANEL, "High Jump", 2500, "Enables High Jump while equipped"),
+                new PanelShopEntry(PanelRegistry.DODGE_ROLL_PANEL, "Dodge Roll", 2500, "Enables Dodge Roll while equipped"),
+                new PanelShopEntry(PanelRegistry.AERIAL_DODGE_PANEL, "Aerial Dodge", 3000, "Enables Aerial Dodge while equipped"),
+                new PanelShopEntry(PanelRegistry.QUICK_RUN_PANEL, "Quick Run", 3000, "Enables Quick Run while equipped"),
+                new PanelShopEntry(PanelRegistry.GLIDE_PANEL, "Glide", 4000, "Enables Glide while equipped")
 
-                new PanelShopEntry("Buy Ultima Weapon", 50000, "buy_ultima_weapon_panel"),
-
-                new PanelShopEntry("Buy High Jump", 2500, "buy_high_jump_panel"),
-                new PanelShopEntry("Buy Dodge Roll", 2500, "buy_dodge_roll_panel"),
-                new PanelShopEntry("Buy Aerial Dodge", 3000, "buy_aerial_dodge_panel"),
-                new PanelShopEntry("Buy Quick Run", 3000, "buy_quick_run_panel"),
-                new PanelShopEntry("Buy Glide", 4000, "buy_glide_panel"),
-
-                new PanelShopEntry("Leave Organization", 13000, "rejectOrg")
         };
+    }
+
+    private PanelShopEntry getSelectedShopEntry() {
+        for (PanelShopEntry entry : getPanelShopEntries()) {
+            if (entry.panelId().equals(selectedOrgPanel)) {
+                return entry;
+            }
+        }
+
+        return null;
+    }
+
+    private void updateAdaptivePanelLayout() {
+        /*
+         * Scaled GUI dimensions:
+         * Scale 2 usually gives lots of room.
+         * Scale 3 needs mild compression.
+         * Scale 4 / Auto needs stronger compression.
+         */
+        compactPanelLayout = this.width < 900 || this.height < 560;
+        emergencyPanelLayout = this.width < 720 || this.height < 440;
+
+        if (emergencyPanelLayout) {
+            orgSlotSize = 14;
+            orgPickerSlotSize = 18;
+            orgPickerGap = 2;
+            orgPickerRowGap = 3;
+            shopVisibleButtons = 3;
+            shopButtonGap = 14;
+            return;
+        }
+
+        if (compactPanelLayout) {
+            orgSlotSize = 16;
+            orgPickerSlotSize = 20;
+            orgPickerGap = 3;
+            orgPickerRowGap = 4;
+            shopVisibleButtons = 4;
+            shopButtonGap = 15;
+            return;
+        }
+
+        orgSlotSize = 18;
+        orgPickerSlotSize = 22;
+        orgPickerGap = 4;
+        orgPickerRowGap = 5;
+        shopVisibleButtons = 5;
+        shopButtonGap = 16;
+    }
+
+    private void renderPanelInfoBox(GuiGraphics gui) {
+        PanelShopEntry entry = getSelectedShopEntry();
+
+        if (entry == null || minecraft == null || minecraft.player == null) {
+            return;
+        }
+
+        PlayerData playerData = PlayerData.get(minecraft.player);
+        GlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
+
+        int hearts = playerData != null ? playerData.getHearts() : 0;
+        int owned = addedData != null ? addedData.getOwnedOrganizationPanelCount(entry.panelId()) : 0;
+
+        int x = this.shopPanelX;
+        int y = this.shopInfoBoxY;
+        int width = this.shopPanelWidth;
+        int height = compactPanelLayout ? 64 : 76;
+
+        gui.fill(x, y, x + width, y + height, 0xCC000000);
+
+        gui.fill(x, y, x + width, y + 1, 0xFF777777);
+        gui.fill(x, y + height - 1, x + width, y + height, 0xFF777777);
+        gui.fill(x, y, x + 1, y + height, 0xFF777777);
+        gui.fill(x + width - 1, y, x + width, y + height, 0xFF777777);
+
+        int textY = y + 6;
+
+        gui.drawString(this.font, entry.label(), x + 8, textY, 0xFFFFD700, false);
+        textY += 12;
+
+        int costColor = hearts >= entry.cost() ? 0xFF55FF55 : 0xFFFF5555;
+
+        gui.drawString(this.font, "Cost: " + entry.cost() + " Hearts", x + 8, textY, costColor, false);
+        textY += 11;
+
+        gui.drawString(this.font, "Owned: " + owned, x + 8, textY, 0xFFFFFFFF, false);
+        textY += 11;
+
+        if (!compactPanelLayout) {
+            gui.drawString(this.font, "Hearts: " + hearts, x + 8, textY, 0xFFFF5555, false);
+            textY += 13;
+        } else {
+            textY += 2;
+        }
+
+        drawWrappedString(gui, entry.description(), x + 8, textY, width - 16, 0xFFAAAAAA);
+    }
+
+    private void drawWrappedString(GuiGraphics gui, String text, int x, int y, int maxWidth, int color) {
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+
+        for (net.minecraft.util.FormattedCharSequence line : this.font.split(Component.literal(text), maxWidth)) {
+            gui.drawString(this.font, line, x, y, color, false);
+            y += 10;
+        }
     }
 }

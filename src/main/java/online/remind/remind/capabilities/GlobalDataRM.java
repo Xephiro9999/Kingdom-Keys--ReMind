@@ -924,4 +924,12 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         return this.organizationPanelGrid.hasPanel(panelId);
     }
 
+    public int countOrganizationPanelEquipped(ResourceLocation panelId) {
+        if (panelId == null || this.organizationPanelGrid == null) {
+            return 0;
+        }
+
+        return this.organizationPanelGrid.countPanel(panelId);
+    }
+
 }

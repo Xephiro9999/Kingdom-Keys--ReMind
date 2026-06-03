@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import online.kingdomkeys.kingdomkeys.api.event.client.KKInputEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
@@ -18,9 +19,12 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.network.GrowthPanelAction;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.network.cts.CSGrowthPanelActionPacket;
 import online.remind.remind.network.cts.CSSetStepTicksPacket;
 import online.remind.remind.network.cts.CSSummonSpiritPacket;
+import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 import org.lwjgl.glfw.GLFW;
 
 public class InputHandlerRM {
@@ -32,14 +36,28 @@ public class InputHandlerRM {
 			PlayerData playerData = event.getHandler().playerData;
 			GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
+			if (player == null || playerData == null || globalData == null) {
+				return;
+			}
+
+			/*
+			 * Growth Panel Actions
+			 *
+			 * These run BEFORE your existing Org/Light/Dark step logic so that
+			 * equipped movement panels can take priority.
+			 *
+			 * ACTION + Sprint + Moving + Quick Run Panel = Quick Run
+			 * ACTION + Moving + Grounded + Dodge Roll Panel = Dodge Roll
+			 */
+
 			// Light/Dark Step Abilities
 			if (InputHandler.qrCooldown <= 0 && (player.getDeltaMovement().x != 0 && player.getDeltaMovement().z != 0)) {
 				if (player.isSprinting()) {
 					int lightLevel = playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString());
 					int darkLevel = playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString());
 
-					//Org Quick Step
-					if (playerData.getAlignment() != Utils.OrgMember.NONE){
+					// Org Quick Step
+					if (playerData.getAlignment() != Utils.OrgMember.NONE) {
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
@@ -54,75 +72,137 @@ public class InputHandlerRM {
 					}
 
 					// Twilight Step
-					 if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight) && playerData.isAbilityEquipped(Strings.quickRun)){
+					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight)
+							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
 						double power = 3;
+
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.twilightStepType));
+
 						player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
 						InputHandler.qrCooldown = 10;
-						 player.level().playSound(player, player.blockPosition(), ModSoundsRM.TWILIGHT_STEP.get(), SoundSource.PLAYERS, 1F, 1F);
+
+						player.level().playSound(
+								player,
+								player.blockPosition(),
+								ModSoundsRM.TWILIGHT_STEP.get(),
+								SoundSource.PLAYERS,
+								1F,
+								1F
+						);
+
 						event.setCanceled(true);
-					} else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm) && playerData.isAbilityEquipped(Strings.quickRun)) {
-						 // Rage Run
-						 float yaw = player.getYRot();
-						 float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
-						 float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
-						 double power = 0.5 + (globalData.getRiskchargeCount());
-						 PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.rageStepType));
-						 player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
-						 InputHandler.qrCooldown = 15 - globalData.getRiskchargeCount();
-						 //Insert Sound Here
-						 //player.level().playSound(player, player.blockPosition(), ModSoundsRM.TWILIGHT_STEP.get(), SoundSource.PLAYERS, 1F, 1F);
-						 event.setCanceled(true);
+					} else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm)
+							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+
+						// Rage Run
+						float yaw = player.getYRot();
+						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
+						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
+						double power = 0.5 + globalData.getRiskchargeCount();
+
+						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.rageStepType));
+
+						player.push(motionX * power / 1.5, 0, motionZ * power / 1.5);
+						InputHandler.qrCooldown = 15 - globalData.getRiskchargeCount();
+
+						event.setCanceled(true);
 					}
+
 					// Light Step
-					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) || playerData.isAbilityEquipped(StringsRM.lightStep) && playerData.isAbilityEquipped(Strings.quickRun)  && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && !playerData.isAbilityEquipped(StringsRM.darkStep)) {						float yaw = player.getYRot();
+					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)
+							|| playerData.isAbilityEquipped(StringsRM.lightStep)
+							&& playerData.isAbilityEquipped(Strings.quickRun)
+							&& !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)
+							&& !playerData.isAbilityEquipped(StringsRM.darkStep)) {
+
+						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
 						double power = lightLevel;
+
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.lightStepType));
+
 						// Light Form
 						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)) {
-							player.level().playSound(player, player.blockPosition(), ModSoundsRM.LIGHTSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
+							player.level().playSound(
+									player,
+									player.blockPosition(),
+									ModSoundsRM.LIGHTSTEP1.get(),
+									SoundSource.PLAYERS,
+									1F,
+									1F
+							);
 
 							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
 						} else if (playerData.isAbilityEquipped(StringsRM.lightStep)) {
 							if (lightLevel > 2) {
-								player.level().playSound(player, player.blockPosition(), ModSoundsRM.LIGHTSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
+								player.level().playSound(
+										player,
+										player.blockPosition(),
+										ModSoundsRM.LIGHTSTEP1.get(),
+										SoundSource.PLAYERS,
+										1F,
+										1F
+								);
+
 								power = lightLevel - 2;
 								player.push(motionX * power, 0, motionZ * power);
 								InputHandler.qrCooldown = 20;
 							}
 						}
+
 						event.setCanceled(true);
-					} else if (playerData.isAbilityEquipped(StringsRM.darkStep) && playerData.isAbilityEquipped(Strings.quickRun) || playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID+":form_dark") && playerData.isAbilityEquipped(Strings.quickRun)) {
+					} else if (playerData.isAbilityEquipped(StringsRM.darkStep)
+							&& playerData.isAbilityEquipped(Strings.quickRun)
+							|| playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":form_dark")
+							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
 						float motionZ = Mth.cos(yaw / 180.0f * (float) Math.PI);
 						double power = darkLevel;
 
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.darkStepType));
+
 						// Dark Mode
 						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
-							player.level().playSound(player, player.blockPosition(), ModSoundsRM.DARKSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
+							player.level().playSound(
+									player,
+									player.blockPosition(),
+									ModSoundsRM.DARKSTEP1.get(),
+									SoundSource.PLAYERS,
+									1F,
+									1F
+							);
 
 							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
 						} else if (playerData.isAbilityEquipped(StringsRM.darkStep)) {
 							if (darkLevel > 2) {
-								player.level().playSound(player, player.blockPosition(), ModSoundsRM.DARKSTEP1.get(), SoundSource.PLAYERS, 1F, 1F);
+								player.level().playSound(
+										player,
+										player.blockPosition(),
+										ModSoundsRM.DARKSTEP1.get(),
+										SoundSource.PLAYERS,
+										1F,
+										1F
+								);
+
 								power = darkLevel - 2;
 								player.push(motionX * power, 0, motionZ * power);
 								InputHandler.qrCooldown = 20;
 							}
 						}
+
 						event.setCanceled(true);
 					}
+
 					PacketHandlerRM.syncGlobalToAllAround(player, globalData);
-					// PacketHandlerRM.sendToServer(new CSSetStepTicksPacket());
 				}
 			}
 		}
@@ -132,18 +212,18 @@ public class InputHandlerRM {
 	public void handleKeyInputEvent(InputEvent.Key event) {
 		InputHandlerRM.Keybinds key = getPressedKey();
 
-		if(key != null) {
+		if (key != null) {
 			switch (key) {
-                case SUMMONSPIRIT -> {
-                    if(ModConfigs.spiritsEnabled){
-                        summonSpirit();
-                    }
-                }
-            }
+				case SUMMONSPIRIT -> {
+					if (ModConfigs.spiritsEnabled) {
+						summonSpirit();
+					}
+				}
+			}
 		}
 	}
 
-	public void summonSpirit(){
+	public void summonSpirit() {
 		PacketHandlerRM.sendToServer(new CSSummonSpiritPacket());
 	}
 
@@ -151,28 +231,27 @@ public class InputHandlerRM {
 		SUMMONSPIRIT("key.remind.summonspirit", GLFW.GLFW_KEY_Y);
 
 		public final KeyMapping keybinding;
-		Keybinds(String name, int defaultKey){
+
+		Keybinds(String name, int defaultKey) {
 			keybinding = new KeyMapping(name, defaultKey, "key.categories.remind");
 		}
 
-		public KeyMapping getKeybind(){
+		public KeyMapping getKeybind() {
 			return keybinding;
 		}
 
-		private boolean isPressed(){
+		private boolean isPressed() {
 			return keybinding.consumeClick();
 		}
 	}
 
-	private Keybinds getPressedKey(){
-		for (Keybinds key : Keybinds.values()){
-			if (key.isPressed()){
+	private Keybinds getPressedKey() {
+		for (Keybinds key : Keybinds.values()) {
+			if (key.isPressed()) {
 				return key;
 			}
 		}
+
 		return null;
 	}
-
-
-
 }

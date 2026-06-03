@@ -163,22 +163,22 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
         String path = panelId.getPath();
 
         int singleCost = switch (path) {
-            case "strength_unit" -> 250;
-            case "magic_unit" -> 250;
-            case "defense_unit" -> 250;
-            case "ap_unit" -> 400;
-            case "level_up" -> 750;
+            case "strength_unit" -> 1000;
+            case "magic_unit" -> 1000;
+            case "defense_unit" -> 1000;
+            case "ap_unit" -> 500;
+            case "level_up" -> 2000;
 
-            case "strength_unit_l" -> 1200;
-            case "magic_unit_l" -> 1200;
-            case "defense_unit_l" -> 1200;
-            case "ap_unit_l" -> 1600;
-            case "level_doubler" -> 3000;
+            case "strength_unit_l" -> 2000;
+            case "magic_unit_l" -> 2000;
+            case "defense_unit_l" -> 2000;
+            case "ap_unit_l" -> 1000;
+            case "level_doubler" -> 4000;
 
-            case "power_link" -> 1500;
-            case "magic_link" -> 1500;
-            case "guard_link" -> 1500;
-            case "level_link" -> 2000;
+            case "power_link" -> 2500;
+            case "magic_link" -> 2500;
+            case "guard_link" -> 2500;
+            case "level_link" -> 4500;
 
             case "ultima_weapon_panel" -> 50000;
 
@@ -188,7 +188,7 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
             case "quick_run_panel" -> 3000;
             case "glide_panel" -> 4000;
 
-            case "slot_releaser" -> 1000;
+            case "slot_releaser" -> 10000;
 
             default -> -1;
         };

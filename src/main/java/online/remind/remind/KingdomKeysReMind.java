@@ -29,6 +29,7 @@ import online.kingdomkeys.kingdomkeys.item.ICreativeTab;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.command.OrganizationPanelCommand;
+import online.remind.remind.handler.GrowthPanelClientEvents;
 import online.remind.remind.handler.SGaugeEventHandler;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -80,6 +81,7 @@ public class KingdomKeysReMind {
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EntityEventsRM());
+        NeoForge.EVENT_BUS.register(GrowthPanelClientEvents.class);
         NeoForge.EVENT_BUS.register(new StyleDataReloadListener());
         NeoForge.EVENT_BUS.register(new ContributionDataReloadListener());
         ModDreamEaters.DREAM_EATERS.register(modEventBus);
