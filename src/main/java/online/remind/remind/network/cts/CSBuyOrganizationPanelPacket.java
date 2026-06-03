@@ -191,7 +191,14 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
             case "guard_link" -> 2500;
             case "level_link" -> 4500;
 
+            case "level_doubler_l_right" -> 4500;
+            case "level_doubler_l_left" -> 4500;
+            case "level_doubler_l_top_right" -> 4500;
+            case "level_doubler_l_top_left" -> 4500;
+            case "level_doubler_line" -> 4500;
+
             case "ultima_weapon_panel" -> 50000;
+            case "hearts_power_panel" -> 50000;
 
             case "high_jump_panel" -> 2500;
             case "dodge_roll_panel" -> 2500;

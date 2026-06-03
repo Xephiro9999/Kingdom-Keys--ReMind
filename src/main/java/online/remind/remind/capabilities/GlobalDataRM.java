@@ -738,9 +738,23 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
             return false;
         }
 
-        for (int yy = y; yy < y + data.getHeight(); yy++) {
-            for (int xx = x; xx < x + data.getWidth(); xx++) {
-                if (!isOrganizationPanelSlotUnlocked(xx, yy)) {
+        /*
+         * Shape-aware unlocked-slot check.
+         *
+         * Only occupied/body cells need unlocked slots.
+         * Link-area cells are intentionally ignored here so other panels,
+         * like Level Up, can be placed inside them.
+         */
+        for (int localY = 0; localY < data.getHeight(); localY++) {
+            for (int localX = 0; localX < data.getWidth(); localX++) {
+                if (!data.occupies(localX, localY)) {
+                    continue;
+                }
+
+                int gridX = x + localX;
+                int gridY = y + localY;
+
+                if (!isOrganizationPanelSlotUnlocked(gridX, gridY)) {
                     return false;
                 }
             }
