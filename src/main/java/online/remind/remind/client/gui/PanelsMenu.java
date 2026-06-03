@@ -53,6 +53,7 @@ public class PanelsMenu extends MenuBackground {
     private int orgPickerRowGap = BASE_ORG_PANEL_PICKER_ROW_GAP;
     private int shopVisibleButtons = BASE_SHOP_VISIBLE_BUTTONS;
     private int shopButtonGap = BASE_SHOP_BUTTON_GAP;
+    private int orgPickerColumns = ORG_PANEL_PICKER_COLUMNS;
 
     private boolean compactPanelLayout = false;
     private boolean emergencyPanelLayout = false;
@@ -547,8 +548,8 @@ public class PanelsMenu extends MenuBackground {
 
     private ResourceLocation getClickedPanelPicker(int mouseX, int mouseY) {
         for (int i = 0; i < ORG_PICKER_PANELS.length; i++) {
-            int col = i % ORG_PANEL_PICKER_COLUMNS;
-            int row = i / ORG_PANEL_PICKER_COLUMNS;
+            int col = i % orgPickerColumns;
+            int row = i / orgPickerColumns;
 
             int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
             int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
@@ -627,8 +628,8 @@ public class PanelsMenu extends MenuBackground {
 
         int gridWidth = orgGridCols * orgSlotSize;
 
-        int pickerColumns = Math.min(ORG_PICKER_PANELS.length, ORG_PANEL_PICKER_COLUMNS);
-        int pickerRows = (int) Math.ceil((double) ORG_PICKER_PANELS.length / ORG_PANEL_PICKER_COLUMNS);
+        int pickerColumns = Math.min(ORG_PICKER_PANELS.length, orgPickerColumns);
+        int pickerRows = (int) Math.ceil((double) ORG_PICKER_PANELS.length / orgPickerColumns);
 
         int pickerWidth = (pickerColumns * orgPickerSlotSize)
                 + ((pickerColumns - 1) * orgPickerGap);
@@ -689,7 +690,7 @@ public class PanelsMenu extends MenuBackground {
         addRenderableWidget(new MenuButton(
                 shopX,
                 shopY,
-                36,
+                5,
                 "▲",
                 MenuButton.ButtonType.BUTTON,
                 false,
@@ -706,7 +707,7 @@ public class PanelsMenu extends MenuBackground {
         addRenderableWidget(new MenuButton(
                 shopX + 42,
                 shopY,
-                36,
+                5,
                 "▼",
                 MenuButton.ButtonType.BUTTON,
                 false,
@@ -1361,8 +1362,8 @@ public class PanelsMenu extends MenuBackground {
 
         int count = addedData != null ? addedData.getOwnedOrganizationPanelCount(panelId) : 0;
 
-        int col = index % ORG_PANEL_PICKER_COLUMNS;
-        int row = index / ORG_PANEL_PICKER_COLUMNS;
+        int col = index % orgPickerColumns;
+        int row = index / orgPickerColumns;
 
         int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
         int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
@@ -1527,19 +1528,21 @@ public class PanelsMenu extends MenuBackground {
             orgSlotSize = 14;
             orgPickerSlotSize = 18;
             orgPickerGap = 2;
-            orgPickerRowGap = 2;
+            orgPickerRowGap = 3;
+            orgPickerColumns = 6;
             shopVisibleButtons = 3;
             shopButtonGap = 14;
             return;
         }
 
         if (compactPanelLayout) {
-            orgSlotSize = 14;
-            orgPickerSlotSize = 18;
+            orgSlotSize = 16;
+            orgPickerSlotSize = 20;
             orgPickerGap = 3;
-            orgPickerRowGap = 3;
+            orgPickerRowGap = 4;
+            orgPickerColumns = 7;
             shopVisibleButtons = 4;
-            shopButtonGap = 14;
+            shopButtonGap = 15;
             return;
         }
 
