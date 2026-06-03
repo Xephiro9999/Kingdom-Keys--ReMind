@@ -608,9 +608,15 @@ public class PanelsMenu extends MenuBackground {
         int col2X = (int) (col1X + dataWidth * 2) + 5;
 
         // Organization Panel Grid position
-        int contentX = (int) (buttonPosX + buttonWidth + (compactPanelLayout ? 14 : 20));
-        int contentY = button_statsY + (compactPanelLayout ? 64 : 76);
-        int reservedRightWidth = compactPanelLayout ? 130 : 180;
+        int contentX = emergencyPanelLayout
+                ? (int) (buttonPosX + buttonWidth + 28)
+                : (int) (buttonPosX + buttonWidth + (compactPanelLayout ? 18 : 24));
+
+        int contentY = emergencyPanelLayout
+                ? button_statsY + 28
+                : button_statsY + (compactPanelLayout ? 56 : 76);
+
+        int reservedRightWidth = emergencyPanelLayout ? 110 : compactPanelLayout ? 135 : 180;
         int contentWidth = width - contentX - reservedRightWidth;
 
         int orgGridCols = 5;
@@ -718,7 +724,7 @@ public class PanelsMenu extends MenuBackground {
 
 
 
-        this.shopInfoBoxY = shopY + 20;
+        this.shopInfoBoxY = emergencyPanelLayout ? shopY + 18 : shopY + 20;
 
         shopY += 84;
 
@@ -1186,6 +1192,11 @@ public class PanelsMenu extends MenuBackground {
     }
 
     private void renderOrganizationPanelKeyGuide(GuiGraphics gui) {
+
+        if (emergencyPanelLayout) {
+            return;
+        }
+
         int gridCols = 5;
 
         if (minecraft != null && minecraft.player != null) {
@@ -1247,6 +1258,10 @@ public class PanelsMenu extends MenuBackground {
         GlobalDataRM addedData = ModDataRM.getGlobal(minecraft.player);
 
         if (addedData == null) {
+            return;
+        }
+
+        if (emergencyPanelLayout) {
             return;
         }
 
@@ -1505,41 +1520,35 @@ public class PanelsMenu extends MenuBackground {
     }
 
     private void updateAdaptivePanelLayout() {
-        /*
-         * Scaled GUI dimensions:
-         * Scale 2 usually gives lots of room.
-         * Scale 3 needs mild compression.
-         * Scale 4 / Auto needs stronger compression.
-         */
-        compactPanelLayout = this.width < 900 || this.height < 560;
-        emergencyPanelLayout = this.width < 720 || this.height < 440;
+        compactPanelLayout = this.width < 1000 || this.height < 620;
+        emergencyPanelLayout = this.width < 760 || this.height < 500;
 
         if (emergencyPanelLayout) {
             orgSlotSize = 14;
             orgPickerSlotSize = 18;
             orgPickerGap = 2;
-            orgPickerRowGap = 3;
+            orgPickerRowGap = 2;
             shopVisibleButtons = 3;
             shopButtonGap = 14;
             return;
         }
 
         if (compactPanelLayout) {
-            orgSlotSize = 16;
-            orgPickerSlotSize = 20;
+            orgSlotSize = 14;
+            orgPickerSlotSize = 18;
             orgPickerGap = 3;
-            orgPickerRowGap = 4;
+            orgPickerRowGap = 3;
             shopVisibleButtons = 4;
-            shopButtonGap = 15;
+            shopButtonGap = 14;
             return;
         }
 
-        orgSlotSize = 18;
-        orgPickerSlotSize = 22;
-        orgPickerGap = 4;
-        orgPickerRowGap = 5;
-        shopVisibleButtons = 5;
-        shopButtonGap = 16;
+        orgSlotSize = BASE_ORG_SLOT_SIZE;
+        orgPickerSlotSize = BASE_ORG_PANEL_PICKER_SLOT_SIZE;
+        orgPickerGap = BASE_ORG_PANEL_PICKER_GAP;
+        orgPickerRowGap = BASE_ORG_PANEL_PICKER_ROW_GAP;
+        shopVisibleButtons = BASE_SHOP_VISIBLE_BUTTONS;
+        shopButtonGap = BASE_SHOP_BUTTON_GAP;
     }
 
     private void renderPanelInfoBox(GuiGraphics gui) {
@@ -1558,7 +1567,7 @@ public class PanelsMenu extends MenuBackground {
         int x = this.shopPanelX;
         int y = this.shopInfoBoxY;
         int width = this.shopPanelWidth;
-        int height = compactPanelLayout ? 64 : 76;
+        int height = emergencyPanelLayout ? 54 : compactPanelLayout ? 64 : 76;
 
         gui.fill(x, y, x + width, y + height, 0xCC000000);
 
