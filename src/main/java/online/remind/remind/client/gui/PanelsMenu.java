@@ -1375,8 +1375,38 @@ public class PanelsMenu extends MenuBackground {
 		renderOrganizationPanelKeyGuide(gui);
 		renderPanelInfoBox(gui);
 
+
 		for (var renderable : this.renderables) {
 			renderable.render(gui, mouseX, mouseY, partialTicks);
+		}
+
+		if(selectedOrgPanel != null) {
+			PanelData data = PanelRegistry.get(selectedOrgPanel);
+
+			if (data != null) {
+				if (mouseX > orgGridX && mouseY > orgGridY) {
+					int px = mouseX - orgSlotSize / 2;
+					int py = mouseY - orgSlotSize / 2;
+					int pw = data.getWidth() * orgSlotSize;
+					int ph = data.getHeight() * orgSlotSize;
+					int color = getPanelColor(data);
+					int alpha = (color >>> 24) & 0xFF;
+					alpha *= 0.5;
+					int newColor = (color & 0x00FFFFFF) | (alpha << 24);
+
+					gui.fill(px + 2, py + 2, px + pw - 2, py + ph - 2, newColor);
+					String label = getPanelShortName(selectedOrgPanel.getPath());
+
+					int labelColor = data.getType() == PanelType.LINK ? 0x000000 : 0xFFFFFF;
+					gui.pose().pushPose();
+					{
+						gui.pose().translate(px + 2, py + Math.max(3, orgSlotSize / 2 - 4), 0);
+						gui.pose().scale(0.5F, 0.5F, 1F);
+						gui.drawString(font, label, 0, 0, labelColor, false);
+					}
+					gui.pose().popPose();
+				}
+			}
 		}
 	}
 
