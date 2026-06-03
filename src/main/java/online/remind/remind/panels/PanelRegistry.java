@@ -247,8 +247,8 @@ public class PanelRegistry {
         register(new PanelData(
                 ULTIMA_WEAPON_PANEL,
                 PanelType.ABILITY,
-                1,
-                1,
+                3,
+                2,
                 0,
                 0,
                 0,
@@ -256,11 +256,11 @@ public class PanelRegistry {
                 0
         ));
 
-        register(new PanelData(HIGH_JUMP_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
-        register(new PanelData(DODGE_ROLL_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
-        register(new PanelData(AERIAL_DODGE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
-        register(new PanelData(QUICK_RUN_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
-        register(new PanelData(GLIDE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(HIGH_JUMP_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(DODGE_ROLL_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(AERIAL_DODGE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(QUICK_RUN_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
+        register(new PanelData(GLIDE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
     }
 
     private static void register(PanelData data) {

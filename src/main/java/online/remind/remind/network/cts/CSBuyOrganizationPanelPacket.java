@@ -2,8 +2,8 @@ package online.remind.remind.network.cts;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -82,6 +82,7 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
                                 .withColor(0xFF5555),
                         true
                 );
+                syncPlayerData(serverPlayer);
                 return;
             }
 
@@ -98,16 +99,19 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
                                     .withColor(0xFF5555),
                             true
                     );
+                    syncPlayerData(serverPlayer);
                     return;
                 }
             }
 
-            if (buyingSlotReleaser && globalData.getUnlockedOrganizationPanelSlots() >= GlobalDataRM.ORGANIZATION_PANEL_MAX_SLOTS) {
+            if (buyingSlotReleaser
+                    && globalData.getUnlockedOrganizationPanelSlots() >= GlobalDataRM.ORGANIZATION_PANEL_MAX_SLOTS) {
                 serverPlayer.displayClientMessage(
                         Component.literal("Your Panel Grid is already fully expanded.")
                                 .withColor(0xFF5555),
                         true
                 );
+                syncPlayerData(serverPlayer);
                 return;
             }
 
@@ -117,10 +121,15 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
                                 .withColor(0xFF5555),
                         true
                 );
+                syncPlayerData(serverPlayer);
                 return;
             }
 
-            playerData.removeHearts(cost);
+            /*
+             * Charge first, then grant.
+             * If grant fails, refund and sync.
+             */
+            playerData.addHearts(-cost);
 
             boolean success;
 
@@ -135,7 +144,6 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
             }
 
             if (!success) {
-                // Refund if something failed after charging.
                 playerData.addHearts(cost);
 
                 serverPlayer.displayClientMessage(
@@ -143,7 +151,10 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
                                 .withColor(0xFF5555),
                         true
                 );
+
                 PacketHandler.sendTo(new SCSyncPlayerData(serverPlayer), serverPlayer);
+                PacketHandlerRM.syncGlobalToAllAround(serverPlayer, globalData);
+                syncOrganizationPanelsToClient(serverPlayer, globalData);
                 return;
             }
 
@@ -198,6 +209,17 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
         }
 
         return singleCost * amount;
+    }
+
+    private static void syncPlayerData(ServerPlayer player) {
+        PacketHandler.sendTo(new SCSyncPlayerData(player), player);
+    }
+
+    private static void syncAfterBuy(ServerPlayer player, GlobalDataRM globalData) {
+        syncPlayerData(player);
+
+        PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+        syncOrganizationPanelsToClient(player, globalData);
     }
 
     private static void syncOrganizationPanelsToClient(ServerPlayer player, GlobalDataRM globalData) {

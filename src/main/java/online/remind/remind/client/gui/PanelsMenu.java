@@ -9,6 +9,7 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
+import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuScrollBar;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -28,6 +29,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import online.remind.remind.network.cts.CSOrganizationPanelPacket;
 import online.remind.remind.network.PanelPacketAction;
 import online.remind.remind.panels.*;
+
 
 import net.minecraft.network.chat.Component;
 
@@ -71,6 +73,49 @@ public class PanelsMenu extends MenuBackground {
     private int orgPanelAreaWidth;
     private int orgPanelAreaHeight;
 
+    // ------------- Pretty Stuff ----------------------
+    MenuBox box;
+    MenuBox shopBox;
+    MenuBox editorBox;
+    MenuBox detailBox;
+
+    private int shopBoxX;
+    private int shopBoxY;
+    private int shopBoxW;
+    private int shopBoxH;
+
+    private int editorBoxX;
+    private int editorBoxY;
+    private int editorBoxW;
+    private int editorBoxH;
+
+    private int detailBoxX;
+    private int detailBoxY;
+    private int detailBoxW;
+    private int detailBoxH;
+
+    private MenuScrollBar orgInventoryScrollBar;
+
+    private static final int ORG_INVENTORY_ROW_HEIGHT = 16;
+
+    private int orgInventoryListX;
+    private int orgInventoryListY;
+    private int orgInventoryListW;
+    private int orgInventoryListH;
+
+    private MenuScrollBar shopScrollBar;
+
+    private static final int SHOP_ROW_HEIGHT = 16;
+
+    private int shopListX;
+    private int shopListY;
+    private int shopListW;
+    private int shopListH;
+
+
+
+
+
     private ResourceLocation selectedOrgPanel = PanelRegistry.STRENGTH_UNIT; // DUMMY
 
 
@@ -102,7 +147,7 @@ public class PanelsMenu extends MenuBackground {
     MenuColourBox str, mag, def, ap;
 
     MenuColourBox[] playerWidgets = {str, mag, def, ap};
-    MenuBox box;
+
 
 
     public PanelsMenu(String name, Color rgb) {
@@ -135,6 +180,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.STRENGTH_UNIT,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -143,6 +189,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.MAGIC_UNIT,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -151,6 +198,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.DEFENSE_UNIT,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -159,6 +207,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.AP_UNIT,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -167,6 +216,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.LEVEL_UP,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -175,6 +225,7 @@ public class PanelsMenu extends MenuBackground {
                         ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "slot_releaser"),
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
             case "buy_str_unit_l" -> {
@@ -182,6 +233,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.STRENGTH_UNIT_L,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -190,6 +242,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.MAGIC_UNIT_L,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -198,6 +251,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.DEFENSE_UNIT_L,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -206,6 +260,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.AP_UNIT_L,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -214,6 +269,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.LEVEL_DOUBLER,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -222,6 +278,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.POWER_LINK,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -230,6 +287,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.MAGIC_LINK,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -238,6 +296,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.GUARD_LINK,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -246,6 +305,7 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.LEVEL_LINK,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -256,31 +316,37 @@ public class PanelsMenu extends MenuBackground {
                         PanelRegistry.ULTIMA_WEAPON_PANEL,
                         1
                 ));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
             case "buy_high_jump_panel" -> {
                 PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.HIGH_JUMP_PANEL, 1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
             case "buy_dodge_roll_panel" -> {
                 PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.DODGE_ROLL_PANEL, 1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
             case "buy_aerial_dodge_panel" -> {
                 PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.AERIAL_DODGE_PANEL, 1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
             case "buy_quick_run_panel" -> {
                 PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.QUICK_RUN_PANEL, 1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
             case "buy_glide_panel" -> {
                 PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.GLIDE_PANEL, 1));
+                PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                 minecraft.player.playSound(ModSounds.itemget.get());
             }
 
@@ -435,7 +501,7 @@ public class PanelsMenu extends MenuBackground {
                             selectedOrgPanel,
                             1
                     ));
-
+                    PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
                     minecraft.player.playSound(ModSounds.itemget.get());
                 }
             }
@@ -446,6 +512,42 @@ public class PanelsMenu extends MenuBackground {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (shopScrollBar != null) {
+            boolean clickedShopScrollbar = mouseX >= shopScrollBar.getX()
+                    && mouseX <= shopScrollBar.getX() + shopScrollBar.getWidth()
+                    && mouseY >= shopScrollBar.getY()
+                    && mouseY <= shopScrollBar.getBottom();
+
+            if (clickedShopScrollbar) {
+                shopScrollBar.mouseClicked(mouseX, mouseY, button);
+                return true;
+            }
+        }
+
+        PanelShopEntry clickedShopEntry = getClickedShopEntry((int) mouseX, (int) mouseY);
+
+        if (clickedShopEntry != null && button == 0) {
+            selectedOrgPanel = clickedShopEntry.panelId();
+
+            if (minecraft != null && minecraft.player != null) {
+                minecraft.player.playSound(ModSounds.menu_select.get());
+            }
+
+            return true;
+        }
+
+        if (orgInventoryScrollBar != null) {
+            boolean clickedScrollbar = mouseX >= orgInventoryScrollBar.getX()
+                    && mouseX <= orgInventoryScrollBar.getX() + orgInventoryScrollBar.getWidth()
+                    && mouseY >= orgInventoryScrollBar.getY()
+                    && mouseY <= orgInventoryScrollBar.getBottom();
+
+            if (clickedScrollbar) {
+                orgInventoryScrollBar.mouseClicked(mouseX, mouseY, button);
+                return true;
+            }
+        }
+
         ResourceLocation clickedPickerPanel = getClickedPanelPicker((int) mouseX, (int) mouseY);
 
         if (clickedPickerPanel != null && button == 0) {
@@ -518,6 +620,59 @@ public class PanelsMenu extends MenuBackground {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (shopScrollBar != null) {
+            shopScrollBar.mouseReleased(mouseX, mouseY, button);
+        }
+        if (orgInventoryScrollBar != null) {
+            orgInventoryScrollBar.mouseReleased(mouseX, mouseY, button);
+        }
+
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (shopScrollBar != null) {
+            shopScrollBar.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+        if (orgInventoryScrollBar != null) {
+            orgInventoryScrollBar.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        if (shopScrollBar != null) {
+            boolean insideShop = mouseX >= shopListX
+                    && mouseX <= shopListX + shopListW
+                    && mouseY >= shopListY
+                    && mouseY <= shopListY + shopListH;
+
+            if (insideShop) {
+                shopScrollBar.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
+                return true;
+            }
+        }
+
+        if (orgInventoryScrollBar != null) {
+            boolean insideInventory = mouseX >= orgInventoryListX
+                    && mouseX <= orgInventoryListX + orgInventoryListW
+                    && mouseY >= orgInventoryListY
+                    && mouseY <= orgInventoryListY + orgInventoryListH;
+
+            if (insideInventory) {
+                orgInventoryScrollBar.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
+                return true;
+            }
+        }
+
+        return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
+    }
+
 
     private static final ResourceLocation[] ORG_PICKER_PANELS = new ResourceLocation[] {
             PanelRegistry.STRENGTH_UNIT,
@@ -547,24 +702,29 @@ public class PanelsMenu extends MenuBackground {
     };
 
     private ResourceLocation getClickedPanelPicker(int mouseX, int mouseY) {
-        for (int i = 0; i < ORG_PICKER_PANELS.length; i++) {
-            int col = i % orgPickerColumns;
-            int row = i / orgPickerColumns;
-
-            int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
-            int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
-
-            boolean inside = mouseX >= x
-                    && mouseX < x + orgPickerSlotSize
-                    && mouseY >= y
-                    && mouseY < y + orgPickerSlotSize;
-
-            if (inside) {
-                return ORG_PICKER_PANELS[i];
-            }
+        if (orgInventoryScrollBar == null) {
+            return null;
         }
 
-        return null;
+        int scrollBarX = orgInventoryScrollBar.getX();
+
+        boolean insideList = mouseX >= orgInventoryListX
+                && mouseX < scrollBarX
+                && mouseY >= orgInventoryListY
+                && mouseY < orgInventoryListY + orgInventoryListH;
+
+        if (!insideList) {
+            return null;
+        }
+
+        int localY = mouseY - orgInventoryListY + (int) orgInventoryScrollBar.scrollOffset;
+        int index = localY / ORG_INVENTORY_ROW_HEIGHT;
+
+        if (index < 0 || index >= ORG_PICKER_PANELS.length) {
+            return null;
+        }
+
+        return ORG_PICKER_PANELS[index];
     }
 
 
@@ -609,16 +769,48 @@ public class PanelsMenu extends MenuBackground {
         int col2X = (int) (col1X + dataWidth * 2) + 5;
 
         // Organization Panel Grid position
-        int contentX = emergencyPanelLayout
-                ? (int) (buttonPosX + buttonWidth + 28)
-                : (int) (buttonPosX + buttonWidth + (compactPanelLayout ? 18 : 24));
+        int margin = emergencyPanelLayout ? 8 : compactPanelLayout ? 10 : 14;
+        int gap = emergencyPanelLayout ? 6 : compactPanelLayout ? 8 : 10;
 
-        int contentY = emergencyPanelLayout
-                ? button_statsY + 28
-                : button_statsY + (compactPanelLayout ? 56 : 76);
+        int topY = button_statsY;
+        int usableBottom = height - 64;
 
-        int reservedRightWidth = emergencyPanelLayout ? 110 : compactPanelLayout ? 135 : 180;
-        int contentWidth = width - contentX - reservedRightWidth;
+        /*
+         * Wallet-style panel boxes.
+         * These are intentionally smaller than full screen height
+         * so the menu doesn't feel like a giant overlay.
+         */
+        this.shopBoxX = (int) buttonPosX;
+        this.shopBoxY = topY;
+        this.shopBoxW = Math.max(125, (int) (width * (emergencyPanelLayout ? 0.20F : compactPanelLayout ? 0.19F : 0.18F)));
+        this.shopBoxH = emergencyPanelLayout ? 150 : compactPanelLayout ? 175 : 195;
+
+        this.detailBoxX = shopBoxX;
+        this.detailBoxY = shopBoxY + shopBoxH + gap;
+        this.detailBoxW = shopBoxW;
+        this.detailBoxH = emergencyPanelLayout ? 95 : compactPanelLayout ? 110 : 125;
+
+        this.editorBoxX = shopBoxX + shopBoxW + gap;
+        this.editorBoxY = topY;
+        this.editorBoxW = width - editorBoxX - margin;
+
+        /*
+         * Make editor box wrap around the actual editor content instead of filling
+         * almost the entire screen height.
+         */
+        this.editorBoxH = emergencyPanelLayout ? 245 : compactPanelLayout ? 290 : 335;
+
+        if (editorBoxY + editorBoxH > usableBottom) {
+            editorBoxH = usableBottom - editorBoxY;
+        }
+
+        this.shopBox = new MenuBox(shopBoxX, shopBoxY, shopBoxW, shopBoxH, 1F, new Color(92, 92, 151));
+        this.detailBox = new MenuBox(detailBoxX, detailBoxY, detailBoxW, detailBoxH, 1F, new Color(255, 255, 255));
+        this.editorBox = new MenuBox(editorBoxX, editorBoxY, editorBoxW, editorBoxH, 1F, new Color(155, 155, 155));
+
+        int contentX = editorBoxX + 14;
+        int contentY = editorBoxY + 20;
+        int contentWidth = editorBoxW - 28;
 
         int orgGridCols = 5;
 
@@ -637,117 +829,95 @@ public class PanelsMenu extends MenuBackground {
         int pickerHeight = (pickerRows * orgPickerSlotSize)
                 + ((pickerRows - 1) * orgPickerRowGap);
 
-        this.orgGridX = contentX + (contentWidth / 2) - (gridWidth / 2);
+        // --- Panel Inventory + Grid layout ---
+        this.orgInventoryListX = editorBoxX + 16;
+        this.orgInventoryListY = editorBoxY + 28;
+        this.orgInventoryListW = emergencyPanelLayout ? 112 : compactPanelLayout ? 126 : 145;
+        this.orgInventoryListH = editorBoxH - 48;
 
-        int minGridX = (int) (buttonPosX + buttonWidth + 16);
-        if (this.orgGridX < minGridX) {
-            this.orgGridX = minGridX;
+        if (this.orgInventoryListH < 90) {
+            this.orgInventoryListH = 90;
         }
 
-        this.orgPickerX = orgGridX + (gridWidth / 2) - (pickerWidth / 2);
-        this.orgPickerY = contentY - (compactPanelLayout ? 50 : 60);
+        // Keep old picker coords synced so old checks do not drift.
+        this.orgPickerX = orgInventoryListX;
+        this.orgPickerY = orgInventoryListY;
 
-        /*
-         * Grid starts after the inventory instead of using a fixed Y.
-         * This prevents inventory/count text from colliding with the grid title.
-         */
-        this.orgGridY = this.orgPickerY + pickerHeight + (compactPanelLayout ? 24 : 34);
+        // Scrollbar for the Panel Inventory list.
+        this.orgInventoryScrollBar = new MenuScrollBar(
+                orgInventoryListX + orgInventoryListW - 12,
+                orgInventoryListY,
+                orgInventoryListY + orgInventoryListH,
+                orgInventoryListH,
+                0,
+                false
+        );
+
+        this.orgInventoryScrollBar.setContentHeight(
+                ORG_PICKER_PANELS.length * ORG_INVENTORY_ROW_HEIGHT + 4
+        );
+
+        addRenderableWidget(this.orgInventoryScrollBar);
+
+        // Grid sits to the right of the inventory list.
+        this.orgGridX = orgInventoryListX + orgInventoryListW + 20;
+        this.orgGridY = editorBoxY + 56;
+
+        int maxGridX = editorBoxX + editorBoxW - gridWidth - 18;
+
+        if (this.orgGridX > maxGridX) {
+            this.orgGridX = maxGridX;
+        }
+
+        if (this.orgGridX < editorBoxX + 16) {
+            this.orgGridX = editorBoxX + 16;
+        }
 
         int i = 0;
 
-        int shopY = button_statsY;
-        int shopGap = 20;
-        int shopX = (int) buttonPosX;
-        int shopWidth = Math.max(120, (int) buttonWidth);
+        this.shopListX = shopBoxX + 8;
+        this.shopListY = shopBoxY + 22;
+        this.shopListW = shopBoxW - 16;
+        this.shopListH = shopBoxH - 32;
 
-        this.shopPanelX = shopX;
-        this.shopPanelWidth = shopWidth;
+        this.shopPanelX = detailBoxX + 8;
+        this.shopPanelWidth = detailBoxW - 16;
 
-        PanelShopEntry[] shopEntries = getPanelShopEntries();
+        this.shopScrollBar = new MenuScrollBar(
+                shopListX + shopListW - 12,
+                shopListY,
+                shopListY + shopListH,
+                shopListH,
+                0,
+                false
+        );
 
-        int maxScroll = Math.max(0, shopEntries.length - shopVisibleButtons);
-        shopScrollOffset = Math.max(0, Math.min(shopScrollOffset, maxScroll));
+        this.shopScrollBar.setContentHeight(
+                getPanelShopEntries().length * SHOP_ROW_HEIGHT + 4
+        );
 
-        for (int shopIndex = 0; shopIndex < shopVisibleButtons; shopIndex++) {
-            int entryIndex = shopScrollOffset + shopIndex;
-
-            if (entryIndex >= shopEntries.length) {
-                break;
-            }
-
-            addPanelShopSelectButton(
-                    shopX,
-                    shopY,
-                    shopWidth,
-                    shopEntries[entryIndex]
-            );
-
-            shopY += shopButtonGap;
-        }
-
-        shopY += 4;
-
-        addRenderableWidget(new MenuButton(
-                shopX,
-                shopY,
-                5,
-                "▲",
-                MenuButton.ButtonType.BUTTON,
-                false,
-                e -> {
-                    if (shopScrollOffset > 0) {
-                        shopScrollOffset--;
-                        init();
-                    } else {
-                        minecraft.player.playSound(ModSounds.error.get());
-                    }
-                }
-        ));
-
-        addRenderableWidget(new MenuButton(
-                shopX + 42,
-                shopY,
-                5,
-                "▼",
-                MenuButton.ButtonType.BUTTON,
-                false,
-                e -> {
-                    int max = Math.max(0, getPanelShopEntries().length - shopVisibleButtons);
-
-                    if (shopScrollOffset < max) {
-                        shopScrollOffset++;
-                        init();
-                    } else {
-                        minecraft.player.playSound(ModSounds.error.get());
-                    }
-                }
-        ));
+        addRenderableWidget(this.shopScrollBar);
 
 
 
-        this.shopInfoBoxY = emergencyPanelLayout ? shopY + 18 : shopY + 20;
 
-        shopY += 84;
+        this.shopInfoBoxY = detailBoxY + 15;
 
         gridWidth = addedData != null ? addedData.getOrganizationPanelGridWidth() * orgSlotSize : gridWidth;
 
-        int controlButtonWidth = compactPanelLayout ? 120 : 150;
-        int controlButtonGap = compactPanelLayout ? 18 : 22;
-        int controlButtonX;
-        int controlButtonY;
+        int controlButtonWidth = emergencyPanelLayout ? 110 : compactPanelLayout ? 125 : 145;
+        int controlButtonGap = emergencyPanelLayout ? 17 : compactPanelLayout ? 18 : 20;
 
-        int rightSideX = orgGridX + gridWidth + (compactPanelLayout ? 10 : 18);
+        int controlButtonX = orgGridX + gridWidth + 16;
+        int controlButtonY = orgGridY + 18; // move controls upward
 
-        if (rightSideX + controlButtonWidth < this.width - 8) {
-            controlButtonX = rightSideX;
-            controlButtonY = orgGridY + (compactPanelLayout ? 52 : 64);
-        } else {
-            /*
-             * Emergency layout: if GUI Scale 4/Auto gives us no right panel, stack controls
-             * below the grid instead of letting them overlap the shop or title area.
-             */
+        if (controlButtonX + controlButtonWidth > editorBoxX + editorBoxW - 12) {
+            controlButtonX = editorBoxX + editorBoxW - controlButtonWidth - 14;
+        }
+
+        if (controlButtonX < orgGridX + gridWidth + 8) {
             controlButtonX = orgGridX;
-            controlButtonY = orgGridY + ((addedData != null ? addedData.getOrganizationPanelGridHeight() : 8) * orgSlotSize) + (compactPanelLayout ? 54 : 70);
+            controlButtonY = orgGridY + ((addedData != null ? addedData.getOrganizationPanelGridHeight() : 8) * orgSlotSize) + 24;
         }
 
         addRenderableWidget(new MenuButton(
@@ -1211,15 +1381,16 @@ public class PanelsMenu extends MenuBackground {
         int x = orgGridX + (gridCols * orgSlotSize) + (compactPanelLayout ? 10 : 18);
         int y = orgGridY;
 
-        if (x + 120 >= this.width - 4) {
+        if (x + 130 >= this.width - 4) {
             return;
         }
-
+        x += 10;
+        y -= 22;
         gui.drawString(this.font, "Panel Controls", x, y, 0xFFD700, false);
-        y += 14;
+        y += 28;
 
         gui.drawString(this.font, "Left Click: Place", x, y, 0xAAAAAA, false);
-        y += 11;
+        y -= 11;
 
         gui.drawString(this.font, "Right Click: Remove", x, y, 0xAAAAAA, false);
     }
@@ -1272,7 +1443,7 @@ public class PanelsMenu extends MenuBackground {
         int gridRows = grid != null ? grid.getHeight() : 4;
 
         int x = orgGridX;
-        int y = orgGridY + (gridRows * orgSlotSize) + (compactPanelLayout ? 5 : 8);
+        int y = orgGridY + (gridRows * orgSlotSize) + 4;
 
         PlayerData playerData = PlayerData.get(minecraft.player);
 
@@ -1333,21 +1504,68 @@ public class PanelsMenu extends MenuBackground {
     }
 
     private void renderOrganizationPanelPicker(GuiGraphics gui, int mouseX, int mouseY) {
+        if (orgInventoryScrollBar == null) {
+            return;
+        }
+
         gui.drawString(
                 this.font,
-                "Panel Inventory",
-                orgPickerX,
-                orgPickerY - 14,
+                "Inventory",
+                orgInventoryListX,
+                orgInventoryListY - 10,
                 0xFFD700,
                 false
         );
 
+        orgInventoryScrollBar.setContentHeight(
+                ORG_PICKER_PANELS.length * ORG_INVENTORY_ROW_HEIGHT + 4
+        );
+
+        int scrollOffset = (int) orgInventoryScrollBar.scrollOffset;
+        int scrollBarX = orgInventoryScrollBar.getX();
+
+        gui.enableScissor(
+                orgInventoryListX,
+                orgInventoryListY,
+                orgInventoryListX + orgInventoryListW,
+                orgInventoryListY + orgInventoryListH
+        );
+
         for (int i = 0; i < ORG_PICKER_PANELS.length; i++) {
-            renderPanelPickerSlot(gui, mouseX, mouseY, i, ORG_PICKER_PANELS[i]);
+            int rowY = orgInventoryListY + (i * ORG_INVENTORY_ROW_HEIGHT) - scrollOffset;
+
+            if (rowY + ORG_INVENTORY_ROW_HEIGHT < orgInventoryListY
+                    || rowY > orgInventoryListY + orgInventoryListH) {
+                continue;
+            }
+
+            renderPanelInventoryRow(
+                    gui,
+                    mouseX,
+                    mouseY,
+                    i,
+                    ORG_PICKER_PANELS[i],
+                    orgInventoryListX,
+                    rowY,
+                    scrollBarX - orgInventoryListX - 2,
+                    ORG_INVENTORY_ROW_HEIGHT
+            );
         }
+
+        gui.disableScissor();
     }
 
-    private void renderPanelPickerSlot(GuiGraphics gui, int mouseX, int mouseY, int index, ResourceLocation panelId) {
+    private void renderPanelInventoryRow(
+            GuiGraphics gui,
+            int mouseX,
+            int mouseY,
+            int index,
+            ResourceLocation panelId,
+            int x,
+            int y,
+            int width,
+            int height
+    ) {
         PanelData data = PanelRegistry.get(panelId);
 
         if (data == null) {
@@ -1362,50 +1580,60 @@ public class PanelsMenu extends MenuBackground {
 
         int count = addedData != null ? addedData.getOwnedOrganizationPanelCount(panelId) : 0;
 
-        int col = index % orgPickerColumns;
-        int row = index / orgPickerColumns;
-
-        int x = orgPickerX + col * (orgPickerSlotSize + orgPickerGap);
-        int y = orgPickerY + row * (orgPickerSlotSize + orgPickerRowGap);
-
         boolean hovered = mouseX >= x
-                && mouseX < x + orgPickerSlotSize
+                && mouseX < x + width
                 && mouseY >= y
-                && mouseY < y + orgPickerSlotSize;
+                && mouseY < y + height;
 
         boolean selected = selectedOrgPanel.equals(panelId);
 
-        int borderColor = selected ? 0xFFFFFF00 : hovered ? 0xFFFFFFFF : 0xFF555555;
+        int bgColor;
+
+        if (selected) {
+            bgColor = 0xAA660000;
+        } else if (hovered) {
+            bgColor = 0xAA222266;
+        } else {
+            bgColor = 0xAA111144;
+        }
+
+        int borderColor = selected ? 0xFFFF0000 : hovered ? 0xFFFFFFFF : 0xFF222255;
+
+        gui.fill(x, y, x + width, y + height - 1, bgColor);
+
+        gui.fill(x, y, x + width, y + 1, borderColor);
+        gui.fill(x, y + height - 2, x + width, y + height - 1, 0xFF000022);
+
+        // Small colored panel icon.
+        int iconSize = 11;
+        int iconX = x + 4;
+        int iconY = y + 2;
+
         int fillColor = count > 0 ? getPanelColor(data) : 0xAA333333;
 
-        gui.fill(x, y, x + orgPickerSlotSize, y + orgPickerSlotSize, 0xAA111111);
-        gui.fill(x + 2, y + 2, x + orgPickerSlotSize - 2, y + orgPickerSlotSize - 2, fillColor);
+        gui.fill(iconX, iconY, iconX + iconSize, iconY + iconSize, 0xAA111111);
+        gui.fill(iconX + 1, iconY + 1, iconX + iconSize - 1, iconY + iconSize - 1, fillColor);
 
-        // Border
-        gui.fill(x, y, x + orgPickerSlotSize, y + 1, borderColor);
-        gui.fill(x, y + orgPickerSlotSize - 1, x + orgPickerSlotSize, y + orgPickerSlotSize, borderColor);
-        gui.fill(x, y, x + 1, y + orgPickerSlotSize, borderColor);
-        gui.fill(x + orgPickerSlotSize - 1, y, x + orgPickerSlotSize, y + orgPickerSlotSize, borderColor);
+        String name = getPanelDisplayName(panelId.getPath());
+        String countText = "x" + count;
 
-        String label = getPanelShortName(panelId.getPath());
+        int nameColor = count > 0 ? 0xFFFFFFFF : 0xFF888888;
+        int countColor = count > 0 ? 0xFF55FF55 : 0xFFFF5555;
 
         gui.drawString(
                 this.font,
-                label,
-                x + 2,
-                y + (compactPanelLayout ? 4 : 5),
-                0xFFFFFF,
+                name,
+                x + 19,
+                y + 4,
+                nameColor,
                 false
         );
-
-        String countText = "x" + count;
-        int countColor = count > 0 ? 0xFFFFFFFF : 0xFFAA3333;
 
         gui.drawString(
                 this.font,
                 countText,
-                x + orgPickerSlotSize - this.font.width(countText) - 2,
-                y + orgPickerSlotSize - 9,
+                x + width - this.font.width(countText) - 5,
+                y + 4,
                 countColor,
                 false
         );
@@ -1469,13 +1697,40 @@ public class PanelsMenu extends MenuBackground {
 
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
+
         super.render(gui, mouseX, mouseY, partialTicks);
+
+        if (shopBox != null) {
+            shopBox.renderWidget(gui, mouseX, mouseY, partialTicks);
+        }
+
+        if (detailBox != null) {
+            detailBox.renderWidget(gui, mouseX, mouseY, partialTicks);
+        }
+
+        if (editorBox != null) {
+            editorBox.renderWidget(gui, mouseX, mouseY, partialTicks);
+        }
+
+        renderPanelShopList(gui, mouseX, mouseY);
+
+        if (detailBox != null) {
+            gui.drawString(this.font, "Selected Panel", detailBoxX + 8, detailBoxY + 6, 0xFFFF9900, false);
+        }
+
+        if (editorBox != null) {
+            gui.drawString(this.font, "Panel Editor", editorBoxX + 10, editorBoxY + 6, 0xFFFF9900, false);
+        }
 
         renderOrganizationPanelPicker(gui, mouseX, mouseY);
         renderOrganizationPanelGrid(gui, mouseX, mouseY);
         renderOrganizationPanelStats(gui);
         renderOrganizationPanelKeyGuide(gui);
         renderPanelInfoBox(gui);
+
+        for (var renderable : this.renderables) {
+            renderable.render(gui, mouseX, mouseY, partialTicks);
+        }
     }
 
     private record PanelShopEntry(ResourceLocation panelId, String label, int cost, String description) {
@@ -1570,9 +1825,9 @@ public class PanelsMenu extends MenuBackground {
         int x = this.shopPanelX;
         int y = this.shopInfoBoxY;
         int width = this.shopPanelWidth;
-        int height = emergencyPanelLayout ? 54 : compactPanelLayout ? 64 : 76;
+        int height = Math.max(50, detailBoxH - 20);
 
-        gui.fill(x, y, x + width, y + height, 0xCC000000);
+        gui.fill(x, y, x + width, y + height, 0x88000000);
 
         gui.fill(x, y, x + width, y + 1, 0xFF777777);
         gui.fill(x, y + height - 1, x + width, y + height, 0xFF777777);
@@ -1610,6 +1865,162 @@ public class PanelsMenu extends MenuBackground {
         for (net.minecraft.util.FormattedCharSequence line : this.font.split(Component.literal(text), maxWidth)) {
             gui.drawString(this.font, line, x, y, color, false);
             y += 10;
+        }
+    }
+
+    private PanelShopEntry getClickedShopEntry(int mouseX, int mouseY) {
+        if (shopScrollBar == null) {
+            return null;
+        }
+
+        int scrollBarX = shopScrollBar.getX();
+
+        boolean insideList = mouseX >= shopListX
+                && mouseX < scrollBarX
+                && mouseY >= shopListY
+                && mouseY < shopListY + shopListH;
+
+        if (!insideList) {
+            return null;
+        }
+
+        int localY = mouseY - shopListY + (int) shopScrollBar.scrollOffset;
+        int index = localY / SHOP_ROW_HEIGHT;
+
+        PanelShopEntry[] entries = getPanelShopEntries();
+
+        if (index < 0 || index >= entries.length) {
+            return null;
+        }
+
+        return entries[index];
+    }
+
+    private void renderPanelShopList(GuiGraphics gui, int mouseX, int mouseY) {
+        if (shopScrollBar == null) {
+            return;
+        }
+
+        gui.drawString(
+                this.font,
+                "Panel Shop",
+                shopBoxX + 8,
+                shopBoxY + 6,
+                0xFFFF9900,
+                false
+        );
+
+        PanelShopEntry[] entries = getPanelShopEntries();
+
+        shopScrollBar.setContentHeight(entries.length * SHOP_ROW_HEIGHT + 4);
+
+        int scrollOffset = (int) shopScrollBar.scrollOffset;
+        int scrollBarX = shopScrollBar.getX();
+
+        gui.enableScissor(
+                shopListX,
+                shopListY,
+                shopListX + shopListW,
+                shopListY + shopListH
+        );
+
+        for (int i = 0; i < entries.length; i++) {
+            int rowY = shopListY + (i * SHOP_ROW_HEIGHT) - scrollOffset;
+
+            if (rowY + SHOP_ROW_HEIGHT < shopListY
+                    || rowY > shopListY + shopListH) {
+                continue;
+            }
+
+            renderPanelShopRow(
+                    gui,
+                    mouseX,
+                    mouseY,
+                    entries[i],
+                    shopListX,
+                    rowY,
+                    scrollBarX - shopListX - 2,
+                    SHOP_ROW_HEIGHT
+            );
+        }
+
+        gui.disableScissor();
+    }
+
+    private void renderPanelShopRow(
+            GuiGraphics gui,
+            int mouseX,
+            int mouseY,
+            PanelShopEntry entry,
+            int x,
+            int y,
+            int width,
+            int height
+    ) {
+        boolean hovered = mouseX >= x
+                && mouseX < x + width
+                && mouseY >= y
+                && mouseY < y + height;
+
+        boolean selected = selectedOrgPanel != null && selectedOrgPanel.equals(entry.panelId());
+
+        PlayerData playerData = minecraft != null && minecraft.player != null
+                ? PlayerData.get(minecraft.player)
+                : null;
+
+        int hearts = playerData != null ? playerData.getHearts() : 0;
+        boolean canAfford = hearts >= entry.cost();
+
+        int bgColor;
+
+        if (selected) {
+            bgColor = 0xAA660000;
+        } else if (hovered) {
+            bgColor = 0xAA222266;
+        } else {
+            bgColor = 0xAA111144;
+        }
+
+        int borderColor = selected ? 0xFFFF0000 : hovered ? 0xFFFFFFFF : 0xFF222255;
+
+        gui.fill(x, y, x + width, y + height - 1, bgColor);
+
+        gui.fill(x, y, x + width, y + 1, borderColor);
+        gui.fill(x, y + height - 2, x + width, y + height - 1, 0xFF000022);
+
+        String selector = selected ? "› " : "";
+        String name = selector + entry.label();
+
+        int nameColor = canAfford ? 0xFFFFFFFF : 0xFFAAAAAA;
+        int costColor = canAfford ? 0xFF55FF55 : 0xFFFF5555;
+
+        gui.drawString(
+                this.font,
+                name,
+                x + 6,
+                y + 4,
+                nameColor,
+                false
+        );
+
+        String costText = String.valueOf(entry.cost());
+
+        gui.drawString(
+                this.font,
+                costText,
+                x + width - this.font.width(costText) - 5,
+                y + 4,
+                costColor,
+                false
+        );
+
+        if (hovered) {
+            gui.renderTooltip(
+                    this.font,
+                    Component.literal(entry.label() + " - " + entry.cost() + " Hearts"),
+                    mouseX,
+                    mouseY
+            );
         }
     }
 }
