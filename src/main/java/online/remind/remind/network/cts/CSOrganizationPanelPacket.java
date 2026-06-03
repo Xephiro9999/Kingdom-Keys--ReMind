@@ -17,6 +17,9 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PanelPacketAction;
 import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.panels.*;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 
 import java.util.Map;
 
@@ -177,6 +180,21 @@ public record CSOrganizationPanelPacket(
         if (globalData == null) {
             return;
         }
+
+        /*
+         * Recalculate everything the panel grid grants.
+         * This is important after PLACE / REMOVE / CLEAR.
+         */
+        OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
+
+        OrganizationPanelAbilityHelper.refreshPanelGrantedMovementAbilities(player);
+        OrganizationPanelAbilityHelper.refreshPanelGrantedStackableAbilities(player);
+
+        /*
+         * Sync KK PlayerData back to the client.
+         * This is what updates abilityMap/client-side ability state.
+         */
+        PacketHandler.sendTo(new SCSyncPlayerData(player), player);
 
         CompoundTag ownedPanelsTag = new CompoundTag();
 

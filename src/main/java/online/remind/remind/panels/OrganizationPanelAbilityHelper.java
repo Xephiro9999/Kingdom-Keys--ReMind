@@ -14,6 +14,12 @@ import java.util.Map;
 
 public class OrganizationPanelAbilityHelper {
 
+    private static final Map<String, Integer> LAST_PANEL_STACK_BONUSES = new HashMap<>();
+
+    private static String stackKey(Player player, String ability) {
+        return player.getUUID() + ":" + ability;
+    }
+
     public static boolean hasAbility(Player player, String ability) {
         if (player == null || ability == null || ability.isEmpty()) {
             return false;
@@ -135,34 +141,6 @@ public class OrganizationPanelAbilityHelper {
 
 
 
-    public static void debugAbilityPanel(Player player, String ability) {
-        if (player == null || ability == null) {
-            return;
-        }
-
-        PlayerData playerData = PlayerData.get(player);
-
-        if (playerData == null) {
-            return;
-        }
-
-        boolean panelEquipped = hasAbilityPanelEquipped(player, ability);
-        boolean normalEquipped = playerData.isAbilityEquipped(ability);
-        int[] equippedLevel = playerData.getEquippedAbilityLevel(ability);
-
-        System.out.println("[OrgPanelAbilities] Ability: " + ability);
-        System.out.println("[OrgPanelAbilities] Side: " + (player.level().isClientSide ? "CLIENT" : "SERVER"));
-        System.out.println("[OrgPanelAbilities] Panel equipped: " + panelEquipped);
-        System.out.println("[OrgPanelAbilities] Normal equipped: " + normalEquipped);
-
-        if (equippedLevel != null && equippedLevel.length >= 2) {
-            System.out.println("[OrgPanelAbilities] KK equipped level [0]: " + equippedLevel[0]);
-            System.out.println("[OrgPanelAbilities] KK equipped level [1]: " + equippedLevel[1]);
-        } else {
-            System.out.println("[OrgPanelAbilities] KK equipped level: null");
-        }
-    }
-
     private static final java.util.Set<String> FAKE_PANEL_ABILITIES = new java.util.HashSet<>();
     private static final java.util.Map<java.util.UUID, java.util.Map<String, int[]>> ORIGINAL_PANEL_ABILITY_STATES =
             new java.util.HashMap<>();
@@ -237,5 +215,103 @@ public class OrganizationPanelAbilityHelper {
     }
 
     private static final java.util.Set<String> PANEL_FAKE_EQUIPPED = new java.util.HashSet<>();
+
+
+
+    public static void refreshPanelGrantedStackableAbilities(Player player) {
+        if (player == null) {
+            return;
+        }
+
+        PlayerData playerData = PlayerData.get(player);
+
+        if (playerData == null) {
+            return;
+        }
+
+        refreshStackableAbility(player, playerData, Strings.comboPlus, PanelRegistry.COMBO_PLUS_PANEL);
+        //refreshStackableAbility(player, playerData, Strings.airComboPlus, PanelRegistry.AIR_COMBO_PLUS_PANEL);
+
+        //refreshStackableAbility(player, playerData, Strings.comboBoost, PanelRegistry.COMBO_BOOST_PANEL);
+        //refreshStackableAbility(player, playerData, Strings.airComboBoost, PanelRegistry.AIR_COMBO_BOOST_PANEL);
+
+        refreshStackableAbility(player, playerData, Strings.fireBoost, PanelRegistry.FIRE_BOOST_PANEL);
+        refreshStackableAbility(player, playerData, Strings.blizzardBoost, PanelRegistry.BLIZZARD_BOOST_PANEL);
+        refreshStackableAbility(player, playerData, Strings.thunderBoost, PanelRegistry.THUNDER_BOOST_PANEL);
+
+        refreshStackableAbility(player, playerData, Strings.treasureMagnet, PanelRegistry.DRAW_PANEL);
+        refreshStackableAbility(player, playerData, Strings.jackpot, PanelRegistry.JACKPOT_PANEL);
+        refreshStackableAbility(player, playerData, Strings.luckyLucky, PanelRegistry.LUCKY_LUCKY_PANEL);
+    }
+
+    private static void refreshStackableAbility(
+            Player player,
+            PlayerData playerData,
+            String ability,
+            ResourceLocation panelId
+    ) {
+        if (player == null || playerData == null || ability == null || panelId == null) {
+            return;
+        }
+
+        String key = stackKey(player, ability);
+
+        int lastApplied = LAST_PANEL_STACK_BONUSES.getOrDefault(key, 0);
+
+        /*
+         * Remove whatever the panel system added last time.
+         * This prevents infinite stacking.
+         */
+        if (lastApplied > 0) {
+            addPanelAbilityStackSafe(playerData, ability, -lastApplied);
+        }
+
+        int newPanelStacks = getEquippedPanelCount(player, panelId);
+
+        /*
+         * Add current panel count as temporary owned + equipped stacks.
+         */
+        if (newPanelStacks > 0) {
+            addPanelAbilityStackSafe(playerData, ability, newPanelStacks);
+            LAST_PANEL_STACK_BONUSES.put(key, newPanelStacks);
+        } else {
+            LAST_PANEL_STACK_BONUSES.remove(key);
+        }
+
+        if (ability.equals(Strings.fireBoost)) {
+            int[] data = playerData.getAbilityMap().get(ability);
+
+            if (data != null) {
+                System.out.println("[OrgPanelStackables] Fire Boost panels: " + newPanelStacks);
+                System.out.println("[OrgPanelStackables] Fire Boost [0]: " + data[0]);
+                System.out.println("[OrgPanelStackables] Fire Boost [1]: " + data[1]);
+            }
+        }
+    }
+
+    private static void addPanelAbilityStackSafe(PlayerData playerData, String ability, int amount) {
+        if (playerData == null || ability == null || amount == 0) {
+            return;
+        }
+
+        if (playerData.getAbilityMap() == null) {
+            return;
+        }
+
+        int[] data = playerData.getAbilityMap().get(ability);
+
+        if (data == null) {
+            /*
+             * [0] = owned/unlocked stack count
+             * [1] = equipped/active stack count
+             */
+            int value = Math.max(0, amount);
+            playerData.getAbilityMap().put(ability, new int[] {value, value});
+            return;
+        }
+
+        data[0] = Math.max(0, data[0] + amount);
+        data[1] = Math.max(0, data[1] + amount);
+    }
 
 }

@@ -698,7 +698,15 @@ public class PanelsMenu extends MenuBackground {
             PanelRegistry.DODGE_ROLL_PANEL,
             PanelRegistry.AERIAL_DODGE_PANEL,
             PanelRegistry.QUICK_RUN_PANEL,
-            PanelRegistry.GLIDE_PANEL
+            PanelRegistry.GLIDE_PANEL,
+
+            PanelRegistry.COMBO_PLUS_PANEL,
+            PanelRegistry.FIRE_BOOST_PANEL,
+            PanelRegistry.BLIZZARD_BOOST_PANEL,
+            PanelRegistry.THUNDER_BOOST_PANEL,
+            PanelRegistry.DRAW_PANEL,
+            PanelRegistry.JACKPOT_PANEL,
+            PanelRegistry.LUCKY_LUCKY_PANEL,
     };
 
     private ResourceLocation getClickedPanelPicker(int mouseX, int mouseY) {
@@ -1225,6 +1233,13 @@ public class PanelsMenu extends MenuBackground {
             case "aerial_dodge_panel" -> "AD";
             case "quick_run_panel" -> "QR";
             case "glide_panel" -> "GL";
+            case "combo_plus_panel" -> "C+";
+            case "fire_boost_panel" -> "FB";
+            case "blizzard_boost_panel" -> "BB";
+            case "thunder_boost_panel" -> "TB";
+            case "draw_panel" -> "DRW";
+            case "jackpot_panel" -> "JP";
+            case "lucky_lucky_panel" -> "LL";
             default -> path.length() > 3 ? path.substring(0, 3).toUpperCase() : path.toUpperCase();
         };
     }
@@ -1417,6 +1432,14 @@ public class PanelsMenu extends MenuBackground {
             case "level_link" -> "+1 LV for each adjacent LV panel";
 
             case "ultima_weapon_panel" -> "Activates Ultima Weapon while equipped";
+
+            case "combo_plus_panel" -> "+1 Combo Plus";
+            case "fire_boost_panel" -> "+1 Fire Boost";
+            case "blizzard_boost_panel" -> "+1 Blizzard Boost";
+            case "thunder_boost_panel" -> "+1 Thunder Boost";
+            case "draw_panel" -> "+1 Draw";
+            case "jackpot_panel" -> "+1 Jackpot";
+            case "lucky_lucky_panel" -> "+1 Lucky Lucky";
 
             default -> "";
         };
@@ -1674,6 +1697,13 @@ public class PanelsMenu extends MenuBackground {
             case "aerial_dodge_panel" -> "Aerial Dodge Panel";
             case "quick_run_panel" -> "Quick Run Panel";
             case "glide_panel" -> "Glide Panel";
+            case "combo_plus_panel" -> "Combo Plus Panel";
+            case "fire_boost_panel" -> "Fire Boost Panel";
+            case "blizzard_boost_panel" -> "Blizzard Boost Panel";
+            case "thunder_boost_panel" -> "Thunder Boost Panel";
+            case "draw_panel" -> "Draw Panel";
+            case "jackpot_panel" -> "Jackpot Panel";
+            case "lucky_lucky_panel" -> "Lucky Lucky Panel";
             default -> path;
         };
     }
@@ -1760,7 +1790,15 @@ public class PanelsMenu extends MenuBackground {
                 new PanelShopEntry(PanelRegistry.DODGE_ROLL_PANEL, "Dodge Roll", 2500, "Enables Dodge Roll while equipped"),
                 new PanelShopEntry(PanelRegistry.AERIAL_DODGE_PANEL, "Aerial Dodge", 3000, "Enables Aerial Dodge while equipped"),
                 new PanelShopEntry(PanelRegistry.QUICK_RUN_PANEL, "Quick Run", 3000, "Enables Quick Run while equipped"),
-                new PanelShopEntry(PanelRegistry.GLIDE_PANEL, "Glide", 4000, "Enables Glide while equipped")
+                new PanelShopEntry(PanelRegistry.GLIDE_PANEL, "Glide", 4000, "Enables Glide while equipped"),
+
+                new PanelShopEntry(PanelRegistry.COMBO_PLUS_PANEL, "Combo Plus", 2500, "+1 ground combo hit while equipped"),
+                new PanelShopEntry(PanelRegistry.FIRE_BOOST_PANEL, "Fire Boost", 3000, "Boosts Fire damage"),
+                new PanelShopEntry(PanelRegistry.BLIZZARD_BOOST_PANEL, "Blizzard Boost", 3000, "Boosts Blizzard damage"),
+                new PanelShopEntry(PanelRegistry.THUNDER_BOOST_PANEL, "Thunder Boost", 3000, "Boosts Thunder damage"),
+                new PanelShopEntry(PanelRegistry.DRAW_PANEL, "Draw", 2000, "Improves pickup range"),
+                new PanelShopEntry(PanelRegistry.JACKPOT_PANEL, "Jackpot", 2500, "Improves prize drops"),
+                new PanelShopEntry(PanelRegistry.LUCKY_LUCKY_PANEL, "Lucky Lucky", 4000, "Improves rare drops"),
 
         };
     }

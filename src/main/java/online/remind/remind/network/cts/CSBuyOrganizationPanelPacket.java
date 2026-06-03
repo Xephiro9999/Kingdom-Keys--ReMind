@@ -201,6 +201,16 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
 
             case "slot_releaser" -> 10000;
 
+            case "combo_plus_panel" -> 2500;
+
+            case "fire_boost_panel" -> 3000;
+            case "blizzard_boost_panel" -> 3000;
+            case "thunder_boost_panel" -> 3000;
+
+            case "draw_panel" -> 2000;
+            case "jackpot_panel" -> 2500;
+            case "lucky_lucky_panel" -> 4000;
+
             default -> -1;
         };
 

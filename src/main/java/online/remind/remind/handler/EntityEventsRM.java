@@ -1315,12 +1315,6 @@ public class EntityEventsRM {
 							}
 						}
 
-						// PANELS DEBUGING!
-						if (!player.level().isClientSide && player.tickCount % 100 == 0) {
-							OrganizationPanelAbilityHelper.debugAbilityPanel(player, Strings.highJump);
-						}
-
-
 						if (globalData.getSituationValue() <= 0) {
 							//globalData.clearSituationSpells();
 							//globalData.setStyle("");

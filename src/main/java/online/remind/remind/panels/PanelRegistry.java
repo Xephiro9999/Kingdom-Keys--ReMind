@@ -64,6 +64,27 @@ public class PanelRegistry {
 
     public static final ResourceLocation ULTIMA_WEAPON_PANEL = id("ultima_weapon_panel");
 
+    public static final ResourceLocation COMBO_PLUS_PANEL =
+            id("combo_plus_panel");
+
+    public static final ResourceLocation FIRE_BOOST_PANEL =
+            id("fire_boost_panel");
+
+    public static final ResourceLocation BLIZZARD_BOOST_PANEL =
+            id("blizzard_boost_panel");
+
+    public static final ResourceLocation THUNDER_BOOST_PANEL =
+            id("thunder_boost_panel");
+
+    public static final ResourceLocation DRAW_PANEL =
+            id("draw_panel");
+
+    public static final ResourceLocation JACKPOT_PANEL =
+            id("jackpot_panel");
+
+    public static final ResourceLocation LUCKY_LUCKY_PANEL =
+            id("lucky_lucky_panel");
+
     public static void init() {
         register(new PanelData(
                 LEVEL_UP,
@@ -256,11 +277,21 @@ public class PanelRegistry {
                 0
         ));
 
+        // Growth
         register(new PanelData(HIGH_JUMP_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
         register(new PanelData(DODGE_ROLL_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
         register(new PanelData(AERIAL_DODGE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
         register(new PanelData(QUICK_RUN_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
         register(new PanelData(GLIDE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0));
+
+        // Stackable
+        register(new PanelData(COMBO_PLUS_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 1, 0));
+        register(new PanelData(FIRE_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0));
+        register(new PanelData(BLIZZARD_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0));
+        register(new PanelData(THUNDER_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0));
+        register(new PanelData(DRAW_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0));
+        register(new PanelData(JACKPOT_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 4, 0));
+        register(new PanelData(LUCKY_LUCKY_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 5, 0));
     }
 
     private static void register(PanelData data) {
