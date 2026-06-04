@@ -100,8 +100,8 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-    implementation name: 'kingdomkeys-1.21.1-2.7.12a' // For Raw Unreleased Versions
-    //implementation "curse.maven:kingdom-keys-re-coded-242862:8172087"
+    //implementation name: 'kingdomkeys-1.21.1-2.7.12a' // For Raw Unreleased Versions
+    implementation "curse.maven:kingdom-keys-re-coded-242862:8191201"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "curse.maven:epic-fight-mod-405076:7734081-sources"
 }
