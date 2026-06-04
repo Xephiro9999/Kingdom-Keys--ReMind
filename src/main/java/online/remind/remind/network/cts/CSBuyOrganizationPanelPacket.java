@@ -178,6 +178,7 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
             case "magic_unit" -> 1000;
             case "defense_unit" -> 1000;
             case "ap_unit" -> 500;
+            case "sight_unit" -> 1000;
             case "level_up" -> 2000;
 
             case "strength_unit_l" -> 2000;
@@ -209,6 +210,7 @@ public class CSBuyOrganizationPanelPacket implements CustomPacketPayload {
             case "slot_releaser" -> 10000;
 
             case "combo_plus_panel" -> 2500;
+            case "haste_panel" -> 2500;
 
             case "fire_boost_panel" -> 3000;
             case "blizzard_boost_panel" -> 3000;

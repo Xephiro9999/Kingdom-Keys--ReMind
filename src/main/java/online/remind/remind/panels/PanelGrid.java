@@ -262,8 +262,35 @@ public class PanelGrid {
     }
 
     private boolean canPlaceInsideLinkArea(ResourceLocation incomingPanelId, ResourceLocation existingPanelId) {
-        return PanelRegistry.LEVEL_UP.equals(incomingPanelId)
-                && isLevelDoubler(existingPanelId);
+        if (PanelRegistry.LEVEL_UP.equals(incomingPanelId) && isLevelDoubler(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.STRENGTH_UNIT.equals(incomingPanelId) && PanelRegistry.POWER_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.STRENGTH_UNIT_L.equals(incomingPanelId) && PanelRegistry.POWER_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.MAGIC_UNIT.equals(incomingPanelId) && PanelRegistry.MAGIC_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.MAGIC_UNIT_L.equals(incomingPanelId) && PanelRegistry.MAGIC_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.DEFENSE_UNIT.equals(incomingPanelId) && PanelRegistry.GUARD_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.DEFENSE_UNIT_L.equals(incomingPanelId) && PanelRegistry.GUARD_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -333,23 +360,74 @@ public class PanelGrid {
     }
 
     private void applyLinkBonuses(PanelStats stats) {
-        for (PanelSlot slot : placedPanels) {
-            PanelData data = PanelRegistry.get(slot.getPanelId());
+        for (PanelSlot linkSlot : placedPanels) {
+            PanelData linkData = PanelRegistry.get(linkSlot.getPanelId());
 
-            if (data == null || data.getType() != PanelType.LINK) {
+            if (linkData == null || linkData.getType() != PanelType.LINK) {
                 continue;
             }
 
-            String path = slot.getPanelId().getPath();
-            int adjacentMatchingPanels = countAdjacentMatchingPanels(slot, path);
+            String path = linkSlot.getPanelId().getPath();
+            int linkedPanels = countPanelsInLinkArea(linkSlot, linkData, path);
 
             switch (path) {
-                case "power_link" -> stats.addStrength(adjacentMatchingPanels);
-                case "magic_link" -> stats.addMagic(adjacentMatchingPanels);
-                case "guard_link" -> stats.addDefense(adjacentMatchingPanels);
-                case "level_link" -> stats.addLevelBonus(adjacentMatchingPanels);
+                case "power_link" -> stats.addStrength(linkedPanels);
+                case "magic_link" -> stats.addMagic(linkedPanels);
+                case "guard_link" -> stats.addDefense(linkedPanels);
+                case "level_link" -> stats.addLevelBonus(linkedPanels);
             }
         }
+    }
+
+    private int countPanelsInLinkArea(PanelSlot linkSlot, PanelData linkData, String linkPath) {
+        int count = 0;
+
+        for (PanelSlot other : placedPanels) {
+            if (other == linkSlot) {
+                continue;
+            }
+
+            PanelData otherData = PanelRegistry.get(other.getPanelId());
+
+            if (otherData == null) {
+                continue;
+            }
+
+            if (!isMatchingLinkedPanel(linkPath, other.getPanelId(), otherData)) {
+                continue;
+            }
+
+            if (isPanelInsideLinkArea(linkSlot, linkData, other)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isMatchingLinkedPanel(String linkPath, ResourceLocation otherPanelId, PanelData otherData) {
+        return switch (linkPath) {
+            case "power_link" ->
+                    PanelRegistry.STRENGTH_UNIT.equals(otherPanelId)
+                            || PanelRegistry.STRENGTH_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.STRENGTH;
+
+            case "magic_link" ->
+                    PanelRegistry.MAGIC_UNIT.equals(otherPanelId)
+                            || PanelRegistry.MAGIC_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.MAGIC;
+
+            case "guard_link" ->
+                    PanelRegistry.DEFENSE_UNIT.equals(otherPanelId)
+                            || PanelRegistry.DEFENSE_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.DEFENSE;
+
+            case "level_link" ->
+                    PanelRegistry.LEVEL_UP.equals(otherPanelId)
+                            || otherData.getType() == PanelType.LEVEL;
+
+            default -> false;
+        };
     }
 
     private int countLevelUpsInLinkArea(PanelSlot doublerSlot, PanelData doublerData) {

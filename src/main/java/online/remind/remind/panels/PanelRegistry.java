@@ -21,6 +21,7 @@ public class PanelRegistry {
     public static final ResourceLocation MAGIC_UNIT = id("magic_unit");
     public static final ResourceLocation DEFENSE_UNIT = id("defense_unit");
     public static final ResourceLocation AP_UNIT = id("ap_unit");
+    public static final ResourceLocation SIGHT_UNIT = id("sight_unit");
 
     public static final ResourceLocation STRENGTH_UNIT_L = id("strength_unit_l");
     public static final ResourceLocation MAGIC_UNIT_L = id("magic_unit_l");
@@ -95,6 +96,8 @@ public class PanelRegistry {
     // Stackable Base KK Ability Panels
     // ============================================================
 
+    public static final ResourceLocation HASTE_PANEL = id("haste_panel");
+
     public static final ResourceLocation COMBO_PLUS_PANEL = id("combo_plus_panel");
 
     public static final ResourceLocation FIRE_BOOST_PANEL = id("fire_boost_panel");
@@ -129,6 +132,7 @@ public class PanelRegistry {
         registerPanel(MAGIC_UNIT, PanelType.MAGIC, 1, 1, 0, 1, 0, 0, 0);
         registerPanel(DEFENSE_UNIT, PanelType.DEFENSE, 1, 1, 0, 0, 1, 0, 0);
         registerPanel(AP_UNIT, PanelType.AP, 1, 1, 0, 0, 0, 2, 0);
+
 
         registerPanel(STRENGTH_UNIT_L, PanelType.STRENGTH, 1, 2, 3, 0, 0, 0, 0);
         registerPanel(MAGIC_UNIT_L, PanelType.MAGIC, 1, 2, 0, 3, 0, 0, 0);
@@ -258,26 +262,90 @@ public class PanelRegistry {
                         ".XXX"
                 )
         );
+
+        registerShapedPanel(
+                POWER_LINK,
+                PanelType.LINK,
+                3,
+                3,
+                0,
+                0,
+                0,
+                0,
+                0,
+                shape(
+                        ".X.",
+                        "XXX",
+                        ".X."
+                ),
+                shape(
+                        ".X.",
+                        "X.X",
+                        ".X."
+                )
+        );
+
+        registerShapedPanel(
+                MAGIC_LINK,
+                PanelType.LINK,
+                3,
+                3,
+                0,
+                0,
+                0,
+                0,
+                0,
+                shape(
+                        ".X.",
+                        "XXX",
+                        ".X."
+                ),
+                shape(
+                        ".X.",
+                        "X.X",
+                        ".X."
+                )
+        );
+        registerShapedPanel(
+                GUARD_LINK,
+                PanelType.LINK,
+                3,
+                3,
+                0,
+                0,
+                0,
+                0,
+                0,
+                shape(
+                        ".X.",
+                        "XXX",
+                        ".X."
+                ),
+                shape(
+                        ".X.",
+                        "X.X",
+                        ".X."
+                )
+        );
     }
 
     private static void registerLinkPanels() {
-        registerPanel(POWER_LINK, PanelType.LINK, 1, 1, 0, 0, 0, 0, 0);
-        registerPanel(MAGIC_LINK, PanelType.LINK, 1, 1, 0, 0, 0, 0, 0);
-        registerPanel(GUARD_LINK, PanelType.LINK, 1, 1, 0, 0, 0, 0, 0);
         registerPanel(LEVEL_LINK, PanelType.LINK, 1, 1, 0, 0, 0, 0, 0);
     }
 
     private static void registerSpecialAbilityPanels() {
         registerPanel(HEARTS_POWER_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0);
         registerPanel(ULTIMA_WEAPON_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0);
+        registerPanel(SIGHT_UNIT, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
+        registerPanel(HASTE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
     }
 
     private static void registerGrowthAbilityPanels() {
-        registerPanel(HIGH_JUMP_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0);
-        registerPanel(DODGE_ROLL_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0);
-        registerPanel(AERIAL_DODGE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0);
-        registerPanel(QUICK_RUN_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0);
-        registerPanel(GLIDE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 0, 0);
+        registerPanel(HIGH_JUMP_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 3, 0);
+        registerPanel(DODGE_ROLL_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 3, 0);
+        registerPanel(AERIAL_DODGE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 3, 0);
+        registerPanel(QUICK_RUN_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 3, 0);
+        registerPanel(GLIDE_PANEL, PanelType.ABILITY, 3, 1, 0, 0, 0, 3, 0);
     }
 
     private static void registerStackableAbilityPanels() {

@@ -89,6 +89,7 @@ public class OrganizationPanelAbilityHelper {
 
     private static ResourceLocation getPanelForAbility(String ability) {
         return switch (ability) {
+            case Strings.criticalBoost -> id("sight_panel");
             case StringsRM.heartsPower -> id("hearts_power_panel");
             case StringsRM.ultima_weapon_ability -> id("ultima_weapon_panel");
             case Strings.highJump -> id("high_jump_panel");
@@ -229,7 +230,9 @@ public class OrganizationPanelAbilityHelper {
             return;
         }
 
+        refreshStackableAbility(player, playerData, Strings.criticalBoost, PanelRegistry.SIGHT_UNIT);
         refreshStackableAbility(player, playerData, Strings.comboPlus, PanelRegistry.COMBO_PLUS_PANEL);
+        refreshStackableAbility(player, playerData, StringsRM.attackHaste, PanelRegistry.HASTE_PANEL);
         //refreshStackableAbility(player, playerData, Strings.airComboPlus, PanelRegistry.AIR_COMBO_PLUS_PANEL);
 
         //refreshStackableAbility(player, playerData, Strings.comboBoost, PanelRegistry.COMBO_BOOST_PANEL);
