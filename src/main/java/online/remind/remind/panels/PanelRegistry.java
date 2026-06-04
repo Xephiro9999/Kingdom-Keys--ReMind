@@ -103,6 +103,9 @@ public class PanelRegistry {
     public static final ResourceLocation FIRE_BOOST_PANEL = id("fire_boost_panel");
     public static final ResourceLocation BLIZZARD_BOOST_PANEL = id("blizzard_boost_panel");
     public static final ResourceLocation THUNDER_BOOST_PANEL = id("thunder_boost_panel");
+    public static final ResourceLocation WATER_BOOST_PANEL = id("water_boost_panel");
+    public static final ResourceLocation LIGHT_BOOST_PANEL = id("light_boost_panel");
+    public static final ResourceLocation DARK_BOOST_PANEL = id("dark_boost_panel");
 
     public static final ResourceLocation DRAW_PANEL = id("draw_panel");
     public static final ResourceLocation JACKPOT_PANEL = id("jackpot_panel");
@@ -337,7 +340,7 @@ public class PanelRegistry {
         registerPanel(HEARTS_POWER_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0);
         registerPanel(ULTIMA_WEAPON_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 0, 0);
         registerPanel(SIGHT_UNIT, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
-        registerPanel(HASTE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
+
     }
 
     private static void registerGrowthAbilityPanels() {
@@ -352,9 +355,12 @@ public class PanelRegistry {
         registerPanel(COMBO_PLUS_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 1, 0);
 
         registerPanel(FIRE_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
-        registerPanel(BLIZZARD_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
-        registerPanel(THUNDER_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
-
+        registerPanel(BLIZZARD_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 4, 0);
+        registerPanel(THUNDER_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 5, 0);
+        registerPanel(WATER_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 4, 0);
+        registerPanel(LIGHT_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
+        registerPanel(DARK_BOOST_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
+        registerPanel(HASTE_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
         registerPanel(DRAW_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 3, 0);
         registerPanel(JACKPOT_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 4, 0);
         registerPanel(LUCKY_LUCKY_PANEL, PanelType.ABILITY, 1, 1, 0, 0, 0, 5, 0);

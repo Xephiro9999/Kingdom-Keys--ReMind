@@ -186,15 +186,7 @@ public record CSOrganizationPanelPacket(
          * This is important after PLACE / REMOVE / CLEAR.
          */
         OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
-
-        OrganizationPanelAbilityHelper.refreshPanelGrantedMovementAbilities(player);
-        OrganizationPanelAbilityHelper.refreshPanelGrantedStackableAbilities(player);
-
-        /*
-         * Sync KK PlayerData back to the client.
-         * This is what updates abilityMap/client-side ability state.
-         */
-        PacketHandler.sendTo(new SCSyncPlayerData(player), player);
+        OrganizationPanelAbilityHelper.markPanelAbilityRefreshDirty(player);
 
         CompoundTag ownedPanelsTag = new CompoundTag();
 

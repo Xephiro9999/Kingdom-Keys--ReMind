@@ -49,6 +49,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     private int panelsStatus;
 
     private final LinkedHashMap<String, Integer> ownedOrganizationPanels = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Integer> organizationPanelAbilityBonuses = new LinkedHashMap<>();
 
     public static final int ORGANIZATION_PANEL_MAX_WIDTH = 15;
     public static final int ORGANIZATION_PANEL_MAX_HEIGHT = 8;
@@ -253,10 +254,19 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
             ownedPanelsTag.putInt(entry.getKey(), entry.getValue());
         }
 
+        CompoundTag panelAbilityBonusesTag = new CompoundTag();
+
+        for (Map.Entry<String, Integer> entry : this.organizationPanelAbilityBonuses.entrySet()) {
+            panelAbilityBonusesTag.putInt(entry.getKey(), entry.getValue());
+        }
+
+        storage.put("Organization_Panel_Ability_Bonuses", panelAbilityBonusesTag);
+
         storage.put("Organization_Owned_Panels", ownedPanelsTag);
         storage.putInt("Organization_Last_Panel_AP_Bonus", this.getLastOrganizationPanelAPBonus());
         storage.putInt("Organization_Last_Panel_Level_Bonus", this.getLastOrganizationPanelLevelBonus());
         storage.putInt("Organization_Unlocked_Panel_Slots", this.unlockedOrganizationPanelSlots);
+
 
         storage.putInt("NGPlus_Enabled", this.getNGPEnabled());
 
@@ -341,6 +351,16 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
             }
         } else {
             giveDefaultOrganizationPanels();
+        }
+
+        this.organizationPanelAbilityBonuses.clear();
+
+        if (properties.contains("Organization_Panel_Ability_Bonuses", Tag.TAG_COMPOUND)) {
+            CompoundTag panelAbilityBonusesTag = properties.getCompound("Organization_Panel_Ability_Bonuses");
+
+            for (String key : panelAbilityBonusesTag.getAllKeys()) {
+                this.organizationPanelAbilityBonuses.put(key, panelAbilityBonusesTag.getInt(key));
+            }
         }
 
         this.setLastOrganizationPanelAPBonus(properties.getInt("Organization_Last_Panel_AP_Bonus"));
@@ -944,6 +964,30 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         }
 
         return this.organizationPanelGrid.countPanel(panelId);
+    }
+
+    public int getOrganizationPanelAbilityBonus(String ability) {
+        if (ability == null) {
+            return 0;
+        }
+
+        return this.organizationPanelAbilityBonuses.getOrDefault(ability, 0);
+    }
+
+    public void setOrganizationPanelAbilityBonus(String ability, int amount) {
+        if (ability == null) {
+            return;
+        }
+
+        if (amount <= 0) {
+            this.organizationPanelAbilityBonuses.remove(ability);
+        } else {
+            this.organizationPanelAbilityBonuses.put(ability, amount);
+        }
+    }
+
+    public LinkedHashMap<String, Integer> getOrganizationPanelAbilityBonuses() {
+        return this.organizationPanelAbilityBonuses;
     }
 
 }

@@ -1741,13 +1741,11 @@ public class EntityEventsRM {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onPlayerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
-		OrganizationPanelAbilityHelper.refreshPanelGrantedMovementAbilities(player);
 
 		if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
 			CSGrowthPanelActionPacket.tick(serverPlayer);
+			OrganizationPanelAbilityHelper.tickPendingPanelAbilityRefresh(serverPlayer);
 		}
-
-
 	}
 
 	@SubscribeEvent
