@@ -17,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -780,39 +781,161 @@ public class PanelsMenu extends MenuBackground {
 
 		gridWidth = addedData != null ? addedData.getOrganizationPanelGridWidth() * orgSlotSize : gridWidth;
 
-		int controlButtonWidth = emergencyPanelLayout ? 110 : compactPanelLayout ? 125 : 145;
-		int controlButtonGap = emergencyPanelLayout ? 17 : compactPanelLayout ? 18 : 20;
+		/*
+		 * Panel controls.
+		 *
+		 * GUI Scale 3/4/Auto can leave very little vertical room. The old fallback
+		 * moved the buttons under the grid, which made them overlap the bottom HUD.
+		 * This keeps the buttons inside the editor box and tightens labels/gaps when
+		 * the scaled GUI is cramped.
+		 */
+		double currentGuiScale = minecraft != null && minecraft.getWindow() != null
+				? minecraft.getWindow().getGuiScale()
+				: 1.0D;
 
-		int controlButtonX = orgGridX + gridWidth + 16;
-		int controlButtonY = orgGridY + 18; // move controls upward
+		boolean tightControlLayout = emergencyPanelLayout
+				|| compactPanelLayout
+				|| this.height <= 720
+				|| currentGuiScale >= 4.0D;
 
-		if (controlButtonX + controlButtonWidth > editorBoxX + editorBoxW - 12) {
-			controlButtonX = editorBoxX + editorBoxW - controlButtonWidth - 14;
+		int controlButtonWidth = emergencyPanelLayout ? 100 : tightControlLayout ? 115 : 145;
+		int controlButtonGap = emergencyPanelLayout ? 16 : tightControlLayout ? 17 : 20;
+		int controlButtonCount = 5;
+		int neededButtonHeight = controlButtonCount * controlButtonGap;
+
+		int editorRight = editorBoxX + editorBoxW;
+		int editorBottom = editorBoxY + editorBoxH;
+		int gridRows = addedData != null ? addedData.getOrganizationPanelGridHeight() : 8;
+		int gridHeight = gridRows * orgSlotSize;
+
+		int sideButtonX = orgGridX + gridWidth + 8;
+		int rightAlignedButtonX = editorRight - controlButtonWidth - 14;
+
+		int controlButtonX = sideButtonX;
+		boolean hasRoomBesideGrid = sideButtonX + controlButtonWidth <= editorRight - 12;
+
+		if (!hasRoomBesideGrid) {
+			controlButtonX = rightAlignedButtonX;
 		}
 
-		if (controlButtonX < orgGridX + gridWidth + 8) {
-			controlButtonX = orgGridX;
-			controlButtonY = orgGridY + ((addedData != null ? addedData.getOrganizationPanelGridHeight() : 8) * orgSlotSize) + 24;
+		if (controlButtonX < editorBoxX + 12) {
+			controlButtonX = editorBoxX + 12;
 		}
 
-		addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Selected", MenuButton.ButtonType.BUTTON, false, e -> action("buy_selected_panel")));
+		/*
+		 * Start beside the grid. If there is no true side room, center the buttons
+		 * vertically against the grid instead of pushing them below it. Then clamp
+		 * inside the editor box so GUI Scale 4/Auto cannot overlap the bottom HUD.
+		 */
+		int controlButtonY = hasRoomBesideGrid
+				? orgGridY + 18
+				: orgGridY + Math.max(0, (gridHeight - neededButtonHeight) / 2);
 
-		controlButtonY += controlButtonGap;
+		int minControlButtonY = editorBoxY + 30;
+		int maxControlButtonY = editorBottom - neededButtonHeight - 8;
 
-		addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Slot Releaser ", MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
-
-		controlButtonY += controlButtonGap;
-
-		if (addedData.getPanelsEnabled() == 1) {
-			addRenderableWidget(toggleOff = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Boost OFF", MenuButton.ButtonType.BUTTON, false, e -> action("toggleOff")));
-		} else {
-			addRenderableWidget(toggleOn = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Boost ON", MenuButton.ButtonType.BUTTON, false, e -> action("toggleOn")));
+		if (maxControlButtonY < minControlButtonY) {
+			maxControlButtonY = minControlButtonY;
 		}
 
-		controlButtonY += controlButtonGap;
+		controlButtonY = Math.max(minControlButtonY, Math.min(controlButtonY, maxControlButtonY));
 
-		addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
+		String slotReleaserText = tightControlLayout ? "Slot Releaser" : "Buy Slot Releaser";
+		String boostText = addedData != null && addedData.getPanelsEnabled() == 1
+				? (tightControlLayout ? "Boost OFF" : "Turn Boost OFF")
+				: (tightControlLayout ? "Boost ON" : "Turn Boost ON");
 
+
+		if (!compactPanelLayout && !emergencyPanelLayout){
+			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+			controlButtonX -= 15;
+		}
+		if (compactPanelLayout) {
+			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+			controlButtonX += 60;
+			controlButtonY -= 20;
+			controlButtonGap += 2;
+			controlButtonWidth -= 20;
+		}
+		if (emergencyPanelLayout){
+			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+			controlButtonWidth -= 25;
+			controlButtonY += 145;
+			controlButtonX -= 245;
+			orgInventoryListX -= 10;
+			orgInventoryScrollBar.setX(orgInventoryScrollBar.getX() - 20);
+			orgGridX -= 36;
+			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+			addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Selected", MenuButton.ButtonType.BUTTON, false, e -> action("buy_selected_panel")));
+
+				controlButtonX += 75;
+
+			addRenderableWidget(new MenuButton(
+					controlButtonX,
+					controlButtonY,
+					controlButtonWidth,
+					"Unequip All",
+					MenuButton.ButtonType.BUTTON,
+					false,
+					e -> action("orgClear")
+			));
+
+				controlButtonX += 75;
+
+			if (addedData.getUnlockedOrganizationPanelSlots() != 120) {
+				addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, slotReleaserText, MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
+				controlButtonX += 75;
+			}
+			
+			if (addedData != null && addedData.getPanelsEnabled() == 1) {
+				addRenderableWidget(toggleOff = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, boostText, MenuButton.ButtonType.BUTTON, false, e -> action("toggleOff")));
+			} else {
+				addRenderableWidget(toggleOn = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, boostText, MenuButton.ButtonType.BUTTON, false, e -> action("toggleOn")));
+			}
+			if (addedData.getUnlockedOrganizationPanelSlots() == 120) {
+				controlButtonX += 75;
+			} else {
+				controlButtonX -= 225;
+				controlButtonY += controlButtonGap + 5;
+			}
+				addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
+		} else  if (!emergencyPanelLayout || compactPanelLayout){
+
+			controlButtonX -= 80;
+			controlButtonY += 20;
+
+			addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Selected", MenuButton.ButtonType.BUTTON, false, e -> action("buy_selected_panel")));
+
+			controlButtonY += controlButtonGap;
+
+			addRenderableWidget(new MenuButton(
+					controlButtonX,
+					controlButtonY,
+					controlButtonWidth,
+					"Unequip All",
+					MenuButton.ButtonType.BUTTON,
+					false,
+					e -> action("orgClear")
+			));
+
+			controlButtonY += controlButtonGap;
+			if (addedData.getUnlockedOrganizationPanelSlots() != 120) {
+				addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, slotReleaserText, MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
+				controlButtonY += controlButtonGap;
+			}
+
+
+			if (addedData != null && addedData.getPanelsEnabled() == 1) {
+				addRenderableWidget(toggleOff = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, boostText, MenuButton.ButtonType.BUTTON, false, e -> action("toggleOff")));
+			} else {
+				addRenderableWidget(toggleOn = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, boostText, MenuButton.ButtonType.BUTTON, false, e -> action("toggleOn")));
+			}
+
+			controlButtonY += controlButtonGap;
+
+				addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
+
+		}
 
 		// Form Leveling
 //        if (ModConfigs.driveLevelsEnabled) {
@@ -884,64 +1007,6 @@ public class PanelsMenu extends MenuBackground {
 //                }));
 //            }
 //        }
-
-
-		// 2.0 Ability Planning.
-
-
-		//Stats
-		int c = 0;
-		int d = 0;
-		int spacer = 14;
-
-		// Stats Column
-		PanelStats orgStats = addedData.getOrganizationPanelStats();
-
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid STR: "),
-//                "+" + orgStats.getStrength(),
-//                0xFFD700
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid MAG: "),
-//                "+" + orgStats.getMagic(),
-//                0x5555FF
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid DEF: "),
-//                "+" + orgStats.getDefense(),
-//                0x55FF55
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid AP: "),
-//                "+" + orgStats.getAp(),
-//                0xFF55FF
-//        ));
-//
-//        addRenderableWidget(new MenuColourBox(
-//                col2X,
-//                button_statsY + (d++ * spacer),
-//                (int) dataWidth,
-//                Utils.translateToLocal("Org Grid LV: "),
-//                "+" + orgStats.getLevelBonus(),
-//                0xFFFFFF
-//        ));
-
 		super.init();
 	}
 
@@ -1049,7 +1114,7 @@ public class PanelsMenu extends MenuBackground {
 			case "haste_panel" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/haste.png");
 			case "level_doubler", "level_doubler_line", "level_doubler_l_top_left", "level_doubler_l_top_right",
-                 "level_doubler_l_left", "level_doubler_l_right" ->
+				 "level_doubler_l_left", "level_doubler_l_right" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/lv_doubler.png");
 			case "fire_boost_panel" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/fire_panel.png");
@@ -1069,7 +1134,7 @@ public class PanelsMenu extends MenuBackground {
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/ability_unit.png");
 			case "lucky_lucky_panel" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/ability_unit.png");
-            case "high_jump_panel" ->
+			case "high_jump_panel" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/high_jump_panel.png");
 			case "quick_run_panel" ->
 					ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "textures/gui/panels/icons/quick_run_panel.png");
@@ -1478,8 +1543,8 @@ public class PanelsMenu extends MenuBackground {
 			return;
 		}
 		x += 10;
-		y -= 22;
-		gui.drawString(this.font, "Panel Controls", x, y, 0xFFD700, false);
+		y -= 21;
+		gui.drawString(this.font, "Panel Controls", x, y + 5, 0xFFD700, false);
 		y += 28;
 
 		gui.drawString(this.font, "Left Click: Place", x, y, 0xAAAAAA, false);
@@ -1573,21 +1638,20 @@ public class PanelsMenu extends MenuBackground {
 			gui.drawString(this.font, "AP +" + stats.getAp() + "  LV +" + stats.getLevelBonus() + " (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
 
 			return;
+		} else {
+			gui.drawString(this.font, "STR +" + stats.getStrength(), x, y, 0xFFFFFF, false);
+			y += 10;
+			gui.drawString(this.font, "MAG +" + stats.getMagic(), x, y, 0xFFFFFF, false);
+			y += 10;
+			gui.drawString(this.font, "DEF +" + stats.getDefense(), x, y, 0xFFFFFF, false);
+			y += 10;
+			gui.drawString(this.font, "AP +" + stats.getAp() + "  LV +" + stats.getLevelBonus() + " (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
 		}
 
-		gui.drawString(this.font, "STR +" + stats.getStrength(), x, y, 0xFF5555, false);
-		y += 10;
 
-		gui.drawString(this.font, "MAG +" + stats.getMagic(), x, y, 0x5555FF, false);
-		y += 10;
 
-		gui.drawString(this.font, "DEF +" + stats.getDefense(), x, y, 0x55FF55, false);
-		y += 10;
 
-		gui.drawString(this.font, "AP +" + stats.getAp(), x, y, 0xFF55FF, false);
-		y += 10;
 
-		gui.drawString(this.font, "LV +" + stats.getLevelBonus() + "  (" + realLevel + " > " + effectiveLevel + ")", x, y, 0xFFFFFF, false);
 	}
 
 	private void renderOrganizationPanelPicker(GuiGraphics gui, int mouseX, int mouseY) {
@@ -1682,25 +1746,25 @@ public class PanelsMenu extends MenuBackground {
 	private String getPanelDisplayName(String path) {
 		return switch (path) {
 			case "level_up" -> "Level Up";
-			case "strength_unit" -> "Strength Unit";
-			case "magic_unit" -> "Magic Unit";
-			case "defense_unit" -> "Defense Unit";
+			case "strength_unit" -> "STR Unit";
+			case "magic_unit" -> "MAG Unit";
+			case "defense_unit" -> "DEF Unit";
 			case "sight_unit" -> "Sight Unit";
 			case "ap_unit" -> "AP Unit";
-			case "strength_unit_l" -> "Strength Unit L";
-			case "magic_unit_l" -> "Magic Unit L";
-			case "defense_unit_l" -> "Defense Unit L";
-			case "ap_unit_l" -> "AP Unit L";
-			case "level_doubler" -> "Level Doubler";
-			case "level_doubler_l_right" -> "LV Doubler L Right";
-			case "level_doubler_l_left" -> "LV Doubler L Left";
-			case "level_doubler_l_top_right" -> "LV Doubler Top Right";
-			case "level_doubler_l_top_left" -> "LV Doubler Top Left";
-			case "level_doubler_line" -> "LV Doubler Line";
-			case "power_link" -> "Power Link";
-			case "magic_link" -> "Magic Link";
-			case "guard_link" -> "Guard Link";
-			case "level_link" -> "Level Link";
+			case "strength_unit_l" -> "STR+ Unit";
+			case "magic_unit_l" -> "MAG+ Unit";
+			case "defense_unit_l" -> "DEF+ Unit";
+			case "ap_unit_l" -> "AP+ Unit";
+			case "level_doubler" -> "LV Doubler";
+			case "level_doubler_l_right" -> "LV DBL 'L'-R";
+			case "level_doubler_l_left" -> "LV DBL 'L'-L";
+			case "level_doubler_l_top_right" -> "LV DBL TR";
+			case "level_doubler_l_top_left" -> "LV DBL TL";
+			case "level_doubler_line" -> "LV DBL -";
+			case "power_link" -> "PWR LNK";
+			case "magic_link" -> "MAG LNK";
+			case "guard_link" -> "DEF LNK";
+			case "level_link" -> "LVL LNK";
 			case "hearts_power_panel" -> "Hearts Are Power";
 			case "ultima_weapon_panel" -> "Ultima Weapon";
 			case "high_jump_panel" -> "High Jump";
@@ -1708,14 +1772,14 @@ public class PanelsMenu extends MenuBackground {
 			case "aerial_dodge_panel" -> "Aerial Dodge";
 			case "quick_run_panel" -> "Quick Run";
 			case "glide_panel" -> "Glide";
-			case "combo_plus_panel" -> "Combo Plus Panel";
-			case "haste_panel" -> "Haste Panel";
-			case "fire_boost_panel" -> "Fire Boost Panel";
-			case "blizzard_boost_panel" -> "Blizzard Boost Panel";
-			case "thunder_boost_panel" -> "Thunder Boost Panel";
-			case "water_boost_panel" -> "Water Boost Panel";
-			case "light_boost_panel" -> "Light Boost Panel";
-			case "dark_boost_panel" -> "Dark Boost Panel";
+			case "combo_plus_panel" -> "Combo Plus";
+			case "haste_panel" -> "Haste";
+			case "fire_boost_panel" -> "FIRE Boost";
+			case "blizzard_boost_panel" -> "BLIZ Boost";
+			case "thunder_boost_panel" -> "THUN Boost";
+			case "water_boost_panel" -> "WTR Boost";
+			case "light_boost_panel" -> "LGT Boost";
+			case "dark_boost_panel" -> "DRK Boost";
 			case "draw_panel" -> "Draw Panel";
 			case "jackpot_panel" -> "Jackpot Panel";
 			case "lucky_lucky_panel" -> "Lucky Lucky Panel";
@@ -1762,8 +1826,9 @@ public class PanelsMenu extends MenuBackground {
 
 		renderOrganizationPanelPicker(gui, mouseX, mouseY);
 		renderOrganizationPanelGrid(gui, mouseX, mouseY);
-		renderOrganizationPanelStats(gui);
+
 		renderOrganizationPanelKeyGuide(gui);
+		renderOrganizationPanelStats(gui);
 		renderPanelInfoBox(gui);
 
 
@@ -1782,7 +1847,6 @@ public class PanelsMenu extends MenuBackground {
 					int alpha = (color >>> 24) & 0xFF;
 					alpha *= 0.5;
 					int newColor = (color & 0x00FFFFFF) | (alpha << 24);
-
 					drawPanelShape(gui, data, px, py, newColor);
 					drawPanelShapeLabel(gui, data, selectedOrgPanel, px, py);
 				}
@@ -1819,11 +1883,11 @@ public class PanelsMenu extends MenuBackground {
 	}
 
 	private void updateAdaptivePanelLayout() {
-		compactPanelLayout = this.width < 1000 || this.height < 620;
+		compactPanelLayout = this.width < 1280 || this.height < 620;
 		emergencyPanelLayout = this.width < 760 || this.height < 500;
 
 		if (emergencyPanelLayout) {
-			orgSlotSize = 14;
+			orgSlotSize = 10;
 			orgPickerSlotSize = 18;
 			orgPickerGap = 2;
 			orgPickerRowGap = 3;

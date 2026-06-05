@@ -158,14 +158,25 @@ public record CSOrganizationPanelPacket(
     private static void handleClear(ServerPlayer player, GlobalDataRM globalData) {
         PanelGrid oldGrid = globalData.getOrganizationPanelGrid();
 
-        for (PanelSlot slot : oldGrid.getPlacedPanels()) {
-            globalData.refundOwnedOrganizationPanel(slot.getPanelId());
+        if (oldGrid != null) {
+            for (PanelSlot slot : oldGrid.getPlacedPanels()) {
+                if (slot != null) {
+                    globalData.refundOwnedOrganizationPanel(slot.getPanelId());
+                }
+            }
         }
 
-        globalData.setOrganizationPanelGrid(new PanelGrid(5, 4));
+        /*
+         * Keep the full organization panel grid size.
+         * Do NOT reset to 5x4, because that can break the expanded grid layout.
+         */
+        globalData.setOrganizationPanelGrid(new PanelGrid(
+                GlobalDataRM.ORGANIZATION_PANEL_MAX_WIDTH,
+                GlobalDataRM.ORGANIZATION_PANEL_MAX_HEIGHT
+        ));
 
         player.displayClientMessage(
-                Component.literal("Panel grid cleared.")
+                Component.literal("All panels unequipped.")
                         .withColor(0xFFFF55),
                 true
         );
