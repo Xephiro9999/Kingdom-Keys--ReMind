@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_faith",
+  "target": "kingdomkeys:magic_faith",
 
   "elements": ["LIGHT", "MAGIC"],
   "specific_styles": [],
