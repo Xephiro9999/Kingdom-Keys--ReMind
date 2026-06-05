@@ -847,25 +847,23 @@ public class PanelsMenu extends MenuBackground {
 
 
 		if (!compactPanelLayout && !emergencyPanelLayout){
-			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
 			controlButtonX -= 15;
 		}
 		if (compactPanelLayout) {
-			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+
 			controlButtonX += 60;
 			controlButtonY -= 20;
 			controlButtonGap += 2;
 			controlButtonWidth -= 20;
 		}
 		if (emergencyPanelLayout){
-			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
+
 			controlButtonWidth -= 25;
 			controlButtonY += 145;
 			controlButtonX -= 245;
 			orgInventoryListX -= 10;
 			orgInventoryScrollBar.setX(orgInventoryScrollBar.getX() - 20);
 			orgGridX -= 36;
-			System.out.println(compactPanelLayout + "," + emergencyPanelLayout);
 			addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Buy Selected", MenuButton.ButtonType.BUTTON, false, e -> action("buy_selected_panel")));
 
 				controlButtonX += 75;
@@ -886,7 +884,7 @@ public class PanelsMenu extends MenuBackground {
 				addRenderableWidget(new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, slotReleaserText, MenuButton.ButtonType.BUTTON, false, e -> action("buy_slot_releaser")));
 				controlButtonX += 75;
 			}
-			
+
 			if (addedData != null && addedData.getPanelsEnabled() == 1) {
 				addRenderableWidget(toggleOff = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, boostText, MenuButton.ButtonType.BUTTON, false, e -> action("toggleOff")));
 			} else {

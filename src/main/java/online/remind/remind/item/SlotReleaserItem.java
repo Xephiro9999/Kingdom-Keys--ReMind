@@ -12,10 +12,15 @@ import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.panels.OrganizationPanelRewardHelper;
 
-public class SlotReleaserItem extends Item {
+public class SlotReleaserItem extends Item implements ICreativeTabRM {
 
     public SlotReleaserItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public ICreativeTabRM.Tab getTab() {
+        return ICreativeTabRM.Tab.MISC;
     }
 
     @Override

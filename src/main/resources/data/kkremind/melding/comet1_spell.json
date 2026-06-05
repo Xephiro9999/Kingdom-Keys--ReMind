@@ -1,11 +1,7 @@
 {
   "cost": 0,
-  "ingredients": [
-    {
-      "material": "kkremind:comet_spell",
-      "quantity": "2"
-    }
-  ],
+  "ingredient1": "kkremind:comet_spell",
+  "ingredient2": "kkremind:comet_spell",
   "output": {
     "type": "item",
     "item": "kkremind:comet1_spell",
