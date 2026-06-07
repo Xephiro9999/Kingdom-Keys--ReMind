@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:confuse_spell",
+  "ingredient2": "kkremind:confuse_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:confuse1_spell",
+    "quantity": 1
+  },
+  "tier": 3
+}

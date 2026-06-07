@@ -44,18 +44,14 @@ public class ModEntitiesRM {
     // Magic
     public static final Supplier<EntityType<HolyEntity>> TYPE_HOLY = createEntityType(HolyEntity::new, MobCategory.MISC,"entity_holy", 0.5F, 0.5F);
     public static final Supplier<EntityType<RuinEntity>> TYPE_RUIN = createEntityType(RuinEntity::new, MobCategory.MISC,"entity_ruin", 0.5F, 0.5F);
-    public static final Supplier<EntityType<BalloonEntity>> TYPE_BALLOON = createEntityType(BalloonEntity::new, MobCategory.MISC, "entity_balloon", 0.5F, 0.5F);
-    public static final Supplier<EntityType<BalloongaEntity>> TYPE_BALLOONGA = createEntityType(BalloongaEntity::new, MobCategory.MISC, "entity_balloonga", 1F, 1F);
     public static final Supplier<EntityType<UltimaEntity>> TYPE_ULTIMA = createEntityType(UltimaEntity::new, MobCategory.MISC, "entity_ultima", 1F, 1F);
     public static final Supplier<EntityType<CometEntity>> TYPE_COMET = createEntityType(CometEntity::new, MobCategory.MISC, "entity_comet", 2F, 2F);
     public static final Supplier<EntityType<OsmoseEntity>> TYPE_OSMOSE = createEntityType(OsmoseEntity::new, MobCategory.MISC,"entity_osmose", 0.5F, 0.5F);
     public static final Supplier<EntityType<DrainEntity>> TYPE_DRAIN = createEntityType(DrainEntity::new, MobCategory.MISC,"entity_drain", 0.5F, 0.5F);
     public static final Supplier<EntityType<SilenceEntity>> TYPE_SILENCE = createEntityType(SilenceEntity::new, MobCategory.MISC,"entity_silence", 0.5F, 0.5F);
-    public static final Supplier<EntityType<WarpEntity>> TYPE_WARP = createEntityType(WarpEntity::new, MobCategory.MISC,"entity_warp", 0.5F, 0.5F);
     public static final Supplier<EntityType<FaithEntity>> TYPE_FAITH = createEntityType(FaithEntity::new, MobCategory.MISC,"entity_faith", 1.5F, 1.5F);
     public static final Supplier<EntityType<MeteorEntity>> TYPE_METEOR = createEntityType(MeteorEntity::new, MobCategory.MISC,"entity_meteor", 1.5F, 1.5F);
-    public static final Supplier<EntityType<SparkEntity>> TYPE_SPARK = createEntityType(SparkEntity::new, MobCategory.MISC,"entity_spark", 1.5F, 1.5F);
-    public static final Supplier<EntityType<MineEntity>> TYPE_MINE = createEntityType(MineEntity::new, MobCategory.MISC,"entity_mine", 1.0F, 1.0F);
+
 
     // Attack Commands
     public static final Supplier<EntityType<quickBlitzCollider>> TYPE_QUICK_BLITZ = createEntityType(quickBlitzCollider::new, MobCategory.MISC,"quick_blitz_collider", 1.5F, 1.5F);
@@ -147,18 +143,13 @@ public class ModEntitiesRM {
 
         event.registerEntityRenderer(TYPE_HOLY.get(), HolyEntityRenderer::new);
         event.registerEntityRenderer(TYPE_RUIN.get(), RuinEntityRenderer::new);
-        event.registerEntityRenderer(TYPE_BALLOON.get(), BalloonEntityRenderer::new);
-        event.registerEntityRenderer(TYPE_BALLOONGA.get(), BalloongaEntityRenderer::new);
         event.registerEntityRenderer(TYPE_COMET.get(), CometEntityRenderer::new);
         event.registerEntityRenderer(TYPE_ULTIMA.get(), UltimaEntityRenderer::new);
         event.registerEntityRenderer(TYPE_OSMOSE.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_DRAIN.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_SILENCE.get(),InvisibleEntityRenderer::new);
-        event.registerEntityRenderer(TYPE_WARP.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_FAITH.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_METEOR.get(),InvisibleEntityRenderer::new);
-        event.registerEntityRenderer(TYPE_SPARK.get(), SparkEntityRenderer::new);
-        event.registerEntityRenderer(TYPE_MINE.get(), MineEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_QUICK_BLITZ.get(),InvisibleEntityRenderer::new);
         event.registerEntityRenderer(TYPE_BLITZ.get(),InvisibleEntityRenderer::new);

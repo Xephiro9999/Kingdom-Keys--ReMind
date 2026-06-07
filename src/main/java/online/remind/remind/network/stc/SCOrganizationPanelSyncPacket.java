@@ -1,15 +1,19 @@
 package online.remind.remind.network.stc;
 
-import net.minecraft.client.Minecraft;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.ClientOrganizationPanelSyncHandler;
 import online.remind.remind.panels.PanelGrid;
 
 public record SCOrganizationPanelSyncPacket(
@@ -56,27 +60,9 @@ public record SCOrganizationPanelSyncPacket(
 
     public static void handle(SCOrganizationPanelSyncPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
-            Minecraft minecraft = Minecraft.getInstance();
-
-            if (minecraft.player == null) {
-                return;
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                ClientOrganizationPanelSyncHandler.handle(packet);
             }
-
-            GlobalDataRM globalData = ModDataRM.getGlobal(minecraft.player);
-
-            if (globalData == null) {
-                return;
-            }
-
-            globalData.setOrganizationPanelGrid(PanelGrid.load(packet.gridTag));
-
-            globalData.getOwnedOrganizationPanels().clear();
-
-            for (String key : packet.ownedPanelsTag.getAllKeys()) {
-                globalData.getOwnedOrganizationPanels().put(key, packet.ownedPanelsTag.getInt(key));
-            }
-
-            globalData.setUnlockedOrganizationPanelSlots(packet.unlockedSlots);
         });
     }
 }

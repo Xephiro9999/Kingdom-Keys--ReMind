@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:haste_spell",
+  "ingredient2": "kkremind:haste_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:haste1_spell",
+    "quantity": 1
+  },
+  "tier": 4
+}

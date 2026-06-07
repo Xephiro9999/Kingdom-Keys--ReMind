@@ -21,6 +21,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -29,6 +30,7 @@ import online.kingdomkeys.kingdomkeys.item.ICreativeTab;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.command.OrganizationPanelCommand;
+import online.remind.remind.handler.GrowthPanelClientEvents;
 import online.remind.remind.handler.SGaugeEventHandler;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -80,6 +82,10 @@ public class KingdomKeysReMind {
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EntityEventsRM());
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            NeoForge.EVENT_BUS.register(GrowthPanelClientEvents.class);
+            // other client-only event classes here
+        }
         NeoForge.EVENT_BUS.register(new StyleDataReloadListener());
         NeoForge.EVENT_BUS.register(new ContributionDataReloadListener());
         ModDreamEaters.DREAM_EATERS.register(modEventBus);

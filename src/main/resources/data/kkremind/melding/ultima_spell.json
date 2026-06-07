@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:comet1_spell",
+  "ingredient2": "kkremind:faith_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:ultima_spell",
+    "quantity": 1
+  },
+  "tier": 7
+}

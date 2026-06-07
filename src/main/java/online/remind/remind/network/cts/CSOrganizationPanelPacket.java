@@ -17,6 +17,9 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PanelPacketAction;
 import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.panels.*;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 
 import java.util.Map;
 
@@ -155,14 +158,25 @@ public record CSOrganizationPanelPacket(
     private static void handleClear(ServerPlayer player, GlobalDataRM globalData) {
         PanelGrid oldGrid = globalData.getOrganizationPanelGrid();
 
-        for (PanelSlot slot : oldGrid.getPlacedPanels()) {
-            globalData.refundOwnedOrganizationPanel(slot.getPanelId());
+        if (oldGrid != null) {
+            for (PanelSlot slot : oldGrid.getPlacedPanels()) {
+                if (slot != null) {
+                    globalData.refundOwnedOrganizationPanel(slot.getPanelId());
+                }
+            }
         }
 
-        globalData.setOrganizationPanelGrid(new PanelGrid(5, 4));
+        /*
+         * Keep the full organization panel grid size.
+         * Do NOT reset to 5x4, because that can break the expanded grid layout.
+         */
+        globalData.setOrganizationPanelGrid(new PanelGrid(
+                GlobalDataRM.ORGANIZATION_PANEL_MAX_WIDTH,
+                GlobalDataRM.ORGANIZATION_PANEL_MAX_HEIGHT
+        ));
 
         player.displayClientMessage(
-                Component.literal("Panel grid cleared.")
+                Component.literal("All panels unequipped.")
                         .withColor(0xFFFF55),
                 true
         );
@@ -177,6 +191,13 @@ public record CSOrganizationPanelPacket(
         if (globalData == null) {
             return;
         }
+
+        /*
+         * Recalculate everything the panel grid grants.
+         * This is important after PLACE / REMOVE / CLEAR.
+         */
+        OrganizationPanelStatHelper.refreshPanelModifiersIfEnabled(player);
+        OrganizationPanelAbilityHelper.markPanelAbilityRefreshDirty(player);
 
         CompoundTag ownedPanelsTag = new CompoundTag();
 

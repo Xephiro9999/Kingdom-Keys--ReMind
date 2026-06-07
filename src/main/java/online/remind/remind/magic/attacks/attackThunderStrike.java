@@ -1,7 +1,6 @@
 package online.remind.remind.magic.attacks;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import online.remind.remind.entity.attacks.StrikeElement;
 

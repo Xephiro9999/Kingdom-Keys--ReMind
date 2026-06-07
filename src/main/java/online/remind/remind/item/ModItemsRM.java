@@ -21,9 +21,6 @@ public class ModItemsRM{
     public static int silverCoinValue = ModConfigs.silverCoinValue;
     public static int goldCoinValue = ModConfigs.goldCoinValue;
 
-
-
-
     public static final Supplier<Item>
             // Spell Orbs
         hasteSpell = ITEMS.register("haste_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste",0)),

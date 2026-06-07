@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:slow1_spell",
+  "ingredient2": "kkremind:slow1_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:slow2_spell",
+    "quantity": 1
+  },
+  "tier": 3
+}

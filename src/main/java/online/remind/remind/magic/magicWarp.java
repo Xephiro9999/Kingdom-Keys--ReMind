@@ -1,13 +1,12 @@
 package online.remind.remind.magic;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.client.sound.ModSoundsRM;
-import online.remind.remind.entity.magic.WarpEntity;
 
 public class magicWarp extends Magic {
 	public magicWarp(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
@@ -16,23 +15,7 @@ public class magicWarp extends Magic {
 
 	@Override
 	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		float dmgMult = getDamageMult(level);
-		dmgMult *= fullMPBlastMult;
-
-		switch (level) {
-		case 0:
-
-			ThrowableProjectile warp = new WarpEntity(player.level(), player, dmgMult);
-			warp.setOwner(caster);
-			player.level().addFreshEntity(warp);
-			warp.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 0.75F, 0);
-			break;
-
-		case 1:
-
-			break;
-		}
-
+		caster.sendSystemMessage(Component.literal("This magic has now been ported to Kingdom Keys, unequip it to get the new spell."));
 	}
 
 	@Override

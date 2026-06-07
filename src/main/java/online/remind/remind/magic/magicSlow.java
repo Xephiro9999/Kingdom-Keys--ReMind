@@ -48,22 +48,16 @@ public class magicSlow extends Magic {
 			double yOffset = 1.0 + player.getRandom().nextDouble() * 0.5; // slightly above ground, around head
 
 			((ServerLevel) player.level()).sendParticles(ParticleTypes.SOUL.getType(), player.getX() + xOffset, player.getY() + yOffset, player.getZ() + zOffset, 0, 0.02, 0,0, 1d);
-
 			((ServerLevel) player.level()).sendParticles(ParticleTypes.EFFECT.getType(), player.getX() + xOffset, player.getY() + yOffset, player.getZ() + zOffset, 0, 0.02, 0,0, 0);
 
 		}
 
 		int time = (int) (PlayerData.get(caster).getMaxMP() * ((level * 0.75) + 5) + 5);
 		if (!list.isEmpty()) {
-			for (int i = 0; i < list.size(); i++) {
-				Entity e = (Entity) list.get(i);
-				if (e instanceof LivingEntity lEntity) {
+			for (Entity entity : list) {
+				if (entity instanceof LivingEntity lEntity) {
 					GlobalDataRM globalData = ModDataRM.getGlobal(lEntity);
 					if (globalData != null) {
-						// lEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,time,
-						// level + 1));
-						// lEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,time, level +
-						// 1));
 						lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.SLOW_RM, time, level, false, false, false));
 					}
 				}

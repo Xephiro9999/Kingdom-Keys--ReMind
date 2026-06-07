@@ -2,6 +2,7 @@ package online.remind.remind.handler;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -27,8 +28,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
@@ -64,8 +67,11 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.network.cts.CSGrowthPanelActionPacket;
+import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 import online.remind.remind.panels.OrganizationPanelStatHelper;
+import online.remind.remind.panels.PanelStats;
 
 import java.util.*;
 
@@ -94,6 +100,75 @@ public class EntityEventsRM {
 				PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerLogin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			refreshOrganizationPanelsForPlayer(player);
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			GlobalDataRM data = ModDataRM.getGlobal(event.getEntity());
+			if (data != null) {
+				data.setHasDreamEaterSummoned(false);
+				data.setDreamEaterUUID(null);
+				refreshOrganizationPanelsForPlayer(player);
+			}
+		}
+	}
+
+	private void refreshOrganizationPanelsForPlayer(ServerPlayer player) {
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
+		PlayerData playerData = PlayerData.get(player);
+
+		if (globalData == null || playerData == null) {
+			return;
+		}
+
+		globalData.setOrganizationPanelGrid(globalData.getOrganizationPanelGrid());
+
+		PanelStats stats = globalData.getOrganizationPanelStats();
+
+		globalData.setSTRPanel(stats.getStrength());
+		globalData.setMAGPanel(stats.getMagic());
+		globalData.setDEFPanel(stats.getDefense());
+
+		if (globalData.getPanelsEnabled() == 1) {
+			playerData.getStrengthStat().removeModifier("Panel");
+			playerData.getMagicStat().removeModifier("Panel");
+			playerData.getDefenseStat().removeModifier("Panel");
+
+			playerData.getStrengthStat().addModifier("Panel", globalData.getSTRPanel(), false, false);
+			playerData.getMagicStat().addModifier("Panel", globalData.getMAGPanel(), false, false);
+			playerData.getDefenseStat().addModifier("Panel", globalData.getDEFPanel(), false, false);
+		}
+
+		OrganizationPanelAbilityHelper.refreshPanelGrantedMovementAbilities(player);
+
+		PacketHandler.sendTo(new SCSyncPlayerData(player), player);
+		PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+		syncOrganizationPanelsToClient(player, globalData);
+	}
+
+	private void syncOrganizationPanelsToClient(ServerPlayer player, GlobalDataRM globalData) {
+		CompoundTag ownedPanelsTag = new CompoundTag();
+
+		for (Map.Entry<String, Integer> entry : globalData.getOwnedOrganizationPanels().entrySet()) {
+			ownedPanelsTag.putInt(entry.getKey(), entry.getValue());
+		}
+
+		PacketDistributor.sendToPlayer(
+				player,
+				new SCOrganizationPanelSyncPacket(
+						globalData.getOrganizationPanelGrid().save(),
+						ownedPanelsTag,
+						globalData.getUnlockedOrganizationPanelSlots()
+				)
+		);
 	}
 
 	@SubscribeEvent
@@ -1240,12 +1315,6 @@ public class EntityEventsRM {
 							}
 						}
 
-						// PANELS DEBUGING!
-						if (!player.level().isClientSide && player.tickCount % 100 == 0) {
-							OrganizationPanelAbilityHelper.debugAbilityPanel(player, Strings.highJump);
-						}
-
-
 						if (globalData.getSituationValue() <= 0) {
 							//globalData.clearSituationSpells();
 							//globalData.setStyle("");
@@ -1672,10 +1741,11 @@ public class EntityEventsRM {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onPlayerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
-		//OrganizationPanelAbilityHelper.refreshFakeMovementAbilities(player);
-		PlayerData playerData = PlayerData.get(player);
 
-
+		if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+			CSGrowthPanelActionPacket.tick(serverPlayer);
+			OrganizationPanelAbilityHelper.tickPendingPanelAbilityRefresh(serverPlayer);
+		}
 	}
 
 	@SubscribeEvent
@@ -1733,14 +1803,7 @@ public class EntityEventsRM {
 		}
 	}
 
-	@SubscribeEvent
-	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		GlobalDataRM data = ModDataRM.getGlobal(event.getEntity());
-		if (data != null) {
-			data.setHasDreamEaterSummoned(false);
-			data.setDreamEaterUUID(null);
-		}
-	}
+
 
 
 	

@@ -38,6 +38,7 @@ public class PacketHandlerRM {
         registrar.playToServer(CSChangeSpiritPacket.TYPE,CSChangeSpiritPacket.STREAM_CODEC,CSChangeSpiritPacket::handle);
         registrar.playToServer(CSOrganizationPanelPacket.TYPE, CSOrganizationPanelPacket.STREAM_CODEC, CSOrganizationPanelPacket::handle);
         registrar.playToServer(CSBuyOrganizationPanelPacket.TYPE, CSBuyOrganizationPanelPacket.STREAM_CODEC, CSBuyOrganizationPanelPacket::handle);
+        registrar.playToServer(CSGrowthPanelActionPacket.TYPE, CSGrowthPanelActionPacket.STREAM_CODEC, CSGrowthPanelActionPacket::handle);
     }
 
         public static void sendToServer(CustomPacketPayload msg) {

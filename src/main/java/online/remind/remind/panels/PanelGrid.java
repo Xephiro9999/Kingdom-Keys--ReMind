@@ -42,6 +42,22 @@ public class PanelGrid {
         return false;
     }
 
+    public int countPanel(ResourceLocation panelId) {
+        if (panelId == null) {
+            return 0;
+        }
+
+        int count = 0;
+
+        for (PanelSlot slot : this.getPlacedPanels()) {
+            if (slot != null && panelId.equals(slot.getPanelId())) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public boolean canPlace(ResourceLocation panelId, int x, int y) {
         PanelData data = PanelRegistry.get(panelId);
 
@@ -50,13 +66,36 @@ public class PanelGrid {
         }
 
         if (x < 0 || y < 0) {
+
             return false;
         }
 
-        if (x + data.getWidth() > width || y + data.getHeight() > height) {
-            return false;
+        /*
+         * Shape-aware bounds check.
+         *
+         * Old behavior treated every panel as a full width x height rectangle.
+         * New behavior only treats data.occupies(localX, localY) cells as real cells.
+         */
+        for (int localY = 0; localY < data.getHeight(); localY++) {
+            for (int localX = 0; localX < data.getWidth(); localX++) {
+                if (!data.occupies(localX, localY)) {
+                    continue;
+                }
+
+                int gridX = x + localX;
+                int gridY = y + localY;
+
+                if (gridX < 0 || gridY < 0 || gridX >= width || gridY >= height) {
+
+                    return false;
+                }
+            }
         }
 
+        /*
+         * Shape-aware collision check.
+         * Empty cells inside a shaped panel's bounding box no longer block placement.
+         */
         for (PanelSlot existing : placedPanels) {
             PanelData existingData = PanelRegistry.get(existing.getPanelId());
 
@@ -64,15 +103,15 @@ public class PanelGrid {
                 continue;
             }
 
-            if (rectsOverlap(
+            if (occupiedCellsOverlap(
+                    panelId,
                     x,
                     y,
-                    data.getWidth(),
-                    data.getHeight(),
+                    data,
+                    existing.getPanelId(),
                     existing.getX(),
                     existing.getY(),
-                    existingData.getWidth(),
-                    existingData.getHeight()
+                    existingData
             )) {
                 return false;
             }
@@ -80,8 +119,6 @@ public class PanelGrid {
 
         return true;
     }
-
-
 
     public boolean place(ResourceLocation panelId, int x, int y) {
         if (!canPlace(panelId, x, y)) {
@@ -103,10 +140,10 @@ public class PanelGrid {
                 continue;
             }
 
-            if (x >= slot.getX()
-                    && x < slot.getX() + data.getWidth()
-                    && y >= slot.getY()
-                    && y < slot.getY() + data.getHeight()) {
+            int localX = x - slot.getX();
+            int localY = y - slot.getY();
+
+            if (data.occupies(localX, localY)) {
                 iterator.remove();
                 return true;
             }
@@ -123,10 +160,10 @@ public class PanelGrid {
                 continue;
             }
 
-            if (x >= slot.getX()
-                    && x < slot.getX() + data.getWidth()
-                    && y >= slot.getY()
-                    && y < slot.getY() + data.getHeight()) {
+            int localX = x - slot.getX();
+            int localY = y - slot.getY();
+
+            if (data.occupies(localX, localY)) {
                 return slot;
             }
         }
@@ -173,21 +210,90 @@ public class PanelGrid {
         return grid;
     }
 
-    private boolean rectsOverlap(
+    private boolean occupiedCellsOverlap(
+            ResourceLocation incomingPanelId,
             int ax,
             int ay,
-            int aw,
-            int ah,
+            PanelData incomingData,
+            ResourceLocation existingPanelId,
             int bx,
             int by,
-            int bw,
-            int bh
+            PanelData existingData
     ) {
-        return ax < bx + bw
-                && ax + aw > bx
-                && ay < by + bh
-                && ay + ah > by;
+        for (int aLocalY = 0; aLocalY < incomingData.getHeight(); aLocalY++) {
+            for (int aLocalX = 0; aLocalX < incomingData.getWidth(); aLocalX++) {
+                if (!incomingData.occupies(aLocalX, aLocalY)) {
+                    continue;
+                }
+
+                int aGridX = ax + aLocalX;
+                int aGridY = ay + aLocalY;
+
+                for (int bLocalY = 0; bLocalY < existingData.getHeight(); bLocalY++) {
+                    for (int bLocalX = 0; bLocalX < existingData.getWidth(); bLocalX++) {
+                        int bGridX = bx + bLocalX;
+                        int bGridY = by + bLocalY;
+
+                        if (aGridX != bGridX || aGridY != bGridY) {
+                            continue;
+                        }
+
+                        /*
+                         * Link cells are checked FIRST.
+                         * They may still be occupied/body cells, but Level Up is allowed
+                         * to overlap them when the existing panel is an LV Doubler.
+                         */
+                        if (existingData.linksAt(bLocalX, bLocalY)) {
+                            return !canPlaceInsideLinkArea(incomingPanelId, existingPanelId);
+                        }
+
+                        /*
+                         * Non-link occupied cells block everything.
+                         */
+                        if (existingData.occupies(bLocalX, bLocalY)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
+
+    private boolean canPlaceInsideLinkArea(ResourceLocation incomingPanelId, ResourceLocation existingPanelId) {
+        if (PanelRegistry.LEVEL_UP.equals(incomingPanelId) && isLevelDoubler(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.STRENGTH_UNIT.equals(incomingPanelId) && PanelRegistry.POWER_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.STRENGTH_UNIT_L.equals(incomingPanelId) && PanelRegistry.POWER_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.MAGIC_UNIT.equals(incomingPanelId) && PanelRegistry.MAGIC_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.MAGIC_UNIT_L.equals(incomingPanelId) && PanelRegistry.MAGIC_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.DEFENSE_UNIT.equals(incomingPanelId) && PanelRegistry.GUARD_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        if (PanelRegistry.DEFENSE_UNIT_L.equals(incomingPanelId) && PanelRegistry.GUARD_LINK.equals(existingPanelId)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     public PanelStats calculateStats() {
         PanelStats stats = new PanelStats();
@@ -201,28 +307,179 @@ public class PanelGrid {
         }
 
         applyLinkBonuses(stats);
+        applyLevelDoublerBonuses(stats);
 
         return stats;
     }
 
-    private void applyLinkBonuses(PanelStats stats) {
-        for (PanelSlot slot : placedPanels) {
-            PanelData data = PanelRegistry.get(slot.getPanelId());
+    private void applyLevelDoublerBonuses(PanelStats stats) {
+        for (PanelSlot doublerSlot : placedPanels) {
+            PanelData doublerData = PanelRegistry.get(doublerSlot.getPanelId());
 
-            if (data == null || data.getType() != PanelType.LINK) {
+            if (doublerData == null || !isLevelDoubler(doublerSlot.getPanelId())) {
                 continue;
             }
 
-            String path = slot.getPanelId().getPath();
-            int adjacentMatchingPanels = countAdjacentMatchingPanels(slot, path);
+            int linkedLevelUps = countLevelUpsInLinkArea(doublerSlot, doublerData);
 
-            switch (path) {
-                case "power_link" -> stats.addStrength(adjacentMatchingPanels);
-                case "magic_link" -> stats.addMagic(adjacentMatchingPanels);
-                case "guard_link" -> stats.addDefense(adjacentMatchingPanels);
-                case "level_link" -> stats.addLevelBonus(adjacentMatchingPanels);
+            /*
+             * LV Doubler adds +2 levels for each Level Up panel in its link area.
+             * Level Up itself already adds +1, so linked total becomes +3.
+             */
+            stats.addLevelBonus(linkedLevelUps * 2);
+        }
+    }
+
+    private int countAdjacentLevelUpPanels(PanelSlot doublerSlot) {
+        int count = 0;
+
+        for (PanelSlot other : placedPanels) {
+            if (other == doublerSlot) {
+                continue;
+            }
+
+            if (!PanelRegistry.LEVEL_UP.equals(other.getPanelId())) {
+                continue;
+            }
+
+            if (isAdjacent(doublerSlot, other)) {
+                count++;
             }
         }
+
+        return count;
+    }
+
+    private boolean isLevelDoubler(ResourceLocation panelId) {
+        return PanelRegistry.LEVEL_DOUBLER.equals(panelId)
+                || PanelRegistry.LEVEL_DOUBLER_L_RIGHT.equals(panelId)
+                || PanelRegistry.LEVEL_DOUBLER_L_LEFT.equals(panelId)
+                || PanelRegistry.LEVEL_DOUBLER_L_TOP_RIGHT.equals(panelId)
+                || PanelRegistry.LEVEL_DOUBLER_L_TOP_LEFT.equals(panelId)
+                || PanelRegistry.LEVEL_DOUBLER_LINE.equals(panelId);
+    }
+
+    private void applyLinkBonuses(PanelStats stats) {
+        for (PanelSlot linkSlot : placedPanels) {
+            PanelData linkData = PanelRegistry.get(linkSlot.getPanelId());
+
+            if (linkData == null || linkData.getType() != PanelType.LINK) {
+                continue;
+            }
+
+            String path = linkSlot.getPanelId().getPath();
+            int linkedPanels = countPanelsInLinkArea(linkSlot, linkData, path);
+
+            switch (path) {
+                case "power_link" -> stats.addStrength(linkedPanels);
+                case "magic_link" -> stats.addMagic(linkedPanels);
+                case "guard_link" -> stats.addDefense(linkedPanels);
+                case "level_link" -> stats.addLevelBonus(linkedPanels);
+            }
+        }
+    }
+
+    private int countPanelsInLinkArea(PanelSlot linkSlot, PanelData linkData, String linkPath) {
+        int count = 0;
+
+        for (PanelSlot other : placedPanels) {
+            if (other == linkSlot) {
+                continue;
+            }
+
+            PanelData otherData = PanelRegistry.get(other.getPanelId());
+
+            if (otherData == null) {
+                continue;
+            }
+
+            if (!isMatchingLinkedPanel(linkPath, other.getPanelId(), otherData)) {
+                continue;
+            }
+
+            if (isPanelInsideLinkArea(linkSlot, linkData, other)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isMatchingLinkedPanel(String linkPath, ResourceLocation otherPanelId, PanelData otherData) {
+        return switch (linkPath) {
+            case "power_link" ->
+                    PanelRegistry.STRENGTH_UNIT.equals(otherPanelId)
+                            || PanelRegistry.STRENGTH_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.STRENGTH;
+
+            case "magic_link" ->
+                    PanelRegistry.MAGIC_UNIT.equals(otherPanelId)
+                            || PanelRegistry.MAGIC_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.MAGIC;
+
+            case "guard_link" ->
+                    PanelRegistry.DEFENSE_UNIT.equals(otherPanelId)
+                            || PanelRegistry.DEFENSE_UNIT_L.equals(otherPanelId)
+                            || otherData.getType() == PanelType.DEFENSE;
+
+            case "level_link" ->
+                    PanelRegistry.LEVEL_UP.equals(otherPanelId)
+                            || otherData.getType() == PanelType.LEVEL;
+
+            default -> false;
+        };
+    }
+
+    private int countLevelUpsInLinkArea(PanelSlot doublerSlot, PanelData doublerData) {
+        int count = 0;
+
+        for (PanelSlot other : placedPanels) {
+            if (other == doublerSlot) {
+                continue;
+            }
+
+            if (!PanelRegistry.LEVEL_UP.equals(other.getPanelId())) {
+                continue;
+            }
+
+            if (isPanelInsideLinkArea(doublerSlot, doublerData, other)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isPanelInsideLinkArea(
+            PanelSlot doublerSlot,
+            PanelData doublerData,
+            PanelSlot targetSlot
+    ) {
+        PanelData targetData = PanelRegistry.get(targetSlot.getPanelId());
+
+        if (targetData == null) {
+            return false;
+        }
+
+        for (int targetLocalY = 0; targetLocalY < targetData.getHeight(); targetLocalY++) {
+            for (int targetLocalX = 0; targetLocalX < targetData.getWidth(); targetLocalX++) {
+                if (!targetData.occupies(targetLocalX, targetLocalY)) {
+                    continue;
+                }
+
+                int targetGridX = targetSlot.getX() + targetLocalX;
+                int targetGridY = targetSlot.getY() + targetLocalY;
+
+                int localToDoublerX = targetGridX - doublerSlot.getX();
+                int localToDoublerY = targetGridY - doublerSlot.getY();
+
+                if (doublerData.linksAt(localToDoublerX, localToDoublerY)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private int countAdjacentMatchingPanels(PanelSlot linkSlot, String linkPath) {
@@ -278,23 +535,41 @@ public class PanelGrid {
             return false;
         }
 
-        int ax1 = a.getX();
-        int ay1 = a.getY();
-        int ax2 = a.getX() + aData.getWidth() - 1;
-        int ay2 = a.getY() + aData.getHeight() - 1;
+        /*
+         * Shape-aware adjacency.
+         *
+         * Two panels are adjacent when any occupied cell from panel A touches
+         * any occupied cell from panel B on a cardinal side.
+         */
+        for (int aLocalY = 0; aLocalY < aData.getHeight(); aLocalY++) {
+            for (int aLocalX = 0; aLocalX < aData.getWidth(); aLocalX++) {
+                if (!aData.occupies(aLocalX, aLocalY)) {
+                    continue;
+                }
 
-        int bx1 = b.getX();
-        int by1 = b.getY();
-        int bx2 = b.getX() + bData.getWidth() - 1;
-        int by2 = b.getY() + bData.getHeight() - 1;
+                int aGridX = a.getX() + aLocalX;
+                int aGridY = a.getY() + aLocalY;
 
-        boolean touchingHorizontally = ax2 + 1 == bx1 || bx2 + 1 == ax1;
-        boolean yRangesOverlap = ay1 <= by2 && ay2 >= by1;
+                for (int bLocalY = 0; bLocalY < bData.getHeight(); bLocalY++) {
+                    for (int bLocalX = 0; bLocalX < bData.getWidth(); bLocalX++) {
+                        if (!bData.occupies(bLocalX, bLocalY)) {
+                            continue;
+                        }
 
-        boolean touchingVertically = ay2 + 1 == by1 || by2 + 1 == ay1;
-        boolean xRangesOverlap = ax1 <= bx2 && ax2 >= bx1;
+                        int bGridX = b.getX() + bLocalX;
+                        int bGridY = b.getY() + bLocalY;
 
-        return touchingHorizontally && yRangesOverlap
-                || touchingVertically && xRangesOverlap;
+                        int distanceX = Math.abs(aGridX - bGridX);
+                        int distanceY = Math.abs(aGridY - bGridY);
+
+                        if (distanceX + distanceY == 1) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

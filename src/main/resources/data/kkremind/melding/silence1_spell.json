@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:silence_spell",
+  "ingredient2": "kkremind:silence_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:silence1_spell",
+    "quantity": 1
+  },
+  "tier": 3
+}
