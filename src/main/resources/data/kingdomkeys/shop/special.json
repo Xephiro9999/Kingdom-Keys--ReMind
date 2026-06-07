@@ -2,6 +2,11 @@
   {"names": "kingdomkeys:special"},
   {"item": "kingdomkeys:k111c", "amount": 1, "tier": 1, "cost": 10111},
   {"item": "kingdomkeys:retribution_chain", "amount": 1, "tier": 1, "cost": 9001},
+  {"item": "kkremind:quick_blitz_attack", "amount": 1, "tier": 1, "cost": 100},
+  {"item": "kkremind:sliding_dash_attack", "amount": 1, "tier": 1, "cost": 100},
+  {"item": "kkremind:confuse_spell", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:silence_spell", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:slow_spell", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:berserk_spell", "amount": 1, "tier": 5, "cost": 5000},
   {"item": "kkremind:slot_releaser", "amount": 1, "tier": 6, "cost": 10000}
 ]
