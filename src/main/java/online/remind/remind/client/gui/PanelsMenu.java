@@ -896,7 +896,10 @@ public class PanelsMenu extends MenuBackground {
 				controlButtonX -= 225;
 				controlButtonY += controlButtonGap + 5;
 			}
-				addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
+
+			addRenderableWidget(rejectOrg = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Leave Org", MenuButton.ButtonType.BUTTON, false, e -> action("rejectOrg")));
+			controlButtonX += 75;
+			addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
 		} else  if (!emergencyPanelLayout || compactPanelLayout){
 
 			controlButtonX -= 80;
@@ -931,7 +934,11 @@ public class PanelsMenu extends MenuBackground {
 
 			controlButtonY += controlButtonGap;
 
-				addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
+			addRenderableWidget(rejectOrg = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, "Leave Org", MenuButton.ButtonType.BUTTON, false, e -> action("rejectOrg")));
+
+			controlButtonY += controlButtonGap;
+
+			addRenderableWidget(backButton = new MenuButton(controlButtonX, controlButtonY, controlButtonWidth, Strings.Gui_Menu_Back, MenuButton.ButtonType.BUTTON, false, e -> action("back")));
 
 		}
 
