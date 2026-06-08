@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_mine_square",
+  "target": "kingdomkeys:magic_mine_square",
 
   "elements": ["MINE","MAGIC"],
   "specific_styles": [],

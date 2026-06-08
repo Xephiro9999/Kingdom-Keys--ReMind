@@ -1,8 +1,8 @@
 {
-  "target": "kingdomkeys:magic_thundagashot",
+  "target": "kingdomkeys:magic_tripleplasma",
 
   "elements": ["THUNDER", "MAGIC"],
   "specific_styles": [],
 
-  "base_value": 35
+  "base_value": 25
 }
