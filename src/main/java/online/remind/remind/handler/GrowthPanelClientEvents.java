@@ -22,6 +22,7 @@ public class GrowthPanelClientEvents {
     private static int airborneTicks = 0;
     private static boolean releasedJumpSinceLeavingGround = false;
     private static boolean wasGliding = false;
+    private static boolean hasUsedAerialDodge = false;
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
@@ -36,6 +37,7 @@ public class GrowthPanelClientEvents {
         if (minecraft.player.onGround()) {
             airborneTicks = 0;
             releasedJumpSinceLeavingGround = false;
+            hasUsedAerialDodge = false;
 
             if (wasGliding) {
                 PacketDistributor.sendToServer(
@@ -56,12 +58,13 @@ public class GrowthPanelClientEvents {
          * Aerial Dodge:
          * Requires a second jump press after leaving the ground.
          */
-        if (jumpDown && !wasJumpDown) {
+        if (jumpDown && !wasJumpDown && !hasUsedAerialDodge) {
             if (!minecraft.player.onGround()
                     && airborneTicks >= 4
                     && releasedJumpSinceLeavingGround
                     && OrganizationPanelAbilityHelper.hasAbilityPanelEquipped(minecraft.player, Strings.aerialDodge)) {
 
+                hasUsedAerialDodge = true;
                 PacketHandler.sendToServer(new CSSetAerialDodgeTicksPacket(true, 10));
 
                 PacketDistributor.sendToServer(
@@ -117,7 +120,7 @@ public class GrowthPanelClientEvents {
         }
 
         double boost = 0.05D * OrganizationPanelAbilityHelper.getEquippedPanelCount(player, PanelRegistry.HIGH_JUMP_PANEL);
-        System.out.println(boost);
+        //System.out.println(boost);
 
         player.setDeltaMovement(
                 player.getDeltaMovement().x,

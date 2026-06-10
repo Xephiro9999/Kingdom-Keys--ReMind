@@ -1,24 +1,170 @@
+KK ReMind Changelogs
+
+12.25.2
+
+	Additions:
+	- Creative Tabs added, further sorting items! The tabs are Keyblades, Equipables, Shotlocks, Spells, and Misc items!
+	- Preventing EFM exclusive abilities from being added if Epic Fight isn't loaded/in modlist
+	- Gazing Omen Reworked (via commission request)
+	- NEW ATTACK COMMANDS! COMPLETELY ORIGINAL TO THIS MOD!
+		- Blizzard Surge
+		- Water Surge
+		- Aero Surge
+		- Light Surge
+		- Dark Surge
+		They all gain 10% DMG per respective boost equipped.
+	
+	Fixes:
+	- Crash that occurs if you DON'T have Epic Fight loaded
+	- Fixed a crash that occurs if you enter Rage Form via the Reaction Command for the first time
+	- Fixed EFM Guards and Counters not working properly
+	- Localization for certain Reaction Commands have been restored
+	
+12.25.2a
+
+	Fixed ????????? in menu not showing when requirements are met
+	Fixed crash when using the Surge Commands
+	Fixed Counter Rush's visuals not playing/showing
+	Fixed Light/Dark Steps
+	
+12.25.2b
+
+	Sanguine Gaze now uses proper form animations for forms
+	Added visuals for when hitting the Attack Commands
+	Made Quick Blitz and Sliding Dash easier to land and have animations (with Epic Fight)
+	
+1.26.1
+
+Adjusted abilities for Light and Dark forms respectively.
+Fixed Step abilities getting stopped by taking damage.
+Fixed spells locking and not being able to be cast
+Fixed Friendly Fire from the Surges, Sliding Dash, and Quick Blitz
+Dark Mines now SPIN (in place)! WOOOOOOOOOOOOOOOOOOOOO!
+Dark Form Easter Egg no longer JUST client side!
+Spark/ra/ga now have sounds!
+Dark Firaga RC now has a proper sound!
+Added visual for Slow's radius
+Added visual for Dispel's radius
+Reduced Dispel's radius (it was WAAAAY too big)
+Comet and Meteor fixes
+
+The Journal Page now has INFORMATION! So far Keyblades, Attack Commands, and Magic Commands are complete!
+
+New Form exclusive abilities added:
+
+	Light Infusion - Light Form Exclusive:
+	Imbues your spells, shotlocks, and other non-melee attacks with Light Damage! (Does not work on things that already use Light Damage)
+	
+	Dark Infusion - Dark Form Exclusive:
+	Imbues your spells, shotlocks, and other non-melee attacks with Darkness Damage! (Does not work on things that already use Darkness Damage)
+	
+New Spells! 
+Mine Square and Mine Shield from BBS
+They act exactly how they do in BBS except they deal FIRE Damage and can be boosted via Fire Boost.
+They both have SEEKER Variants that can be unlocked at Level 4 of the spell!
+
+Confuse
+Disorientate your enemies and make them unable to act properly! Radius and Time affected increase per level!
+5s -> 6s -> 7s
+
+Dream Eaters!
+Chirithy is finally usable! Summonable via Keybind and scales/learns with you!
+It's stats will grow along side you and support you in combat! 
+It can cast Cure, Aero, and Esuna and does not fight. 
+
+More will be added later on!
+
+1.26.2
+
+NEW KEYBLADE:
+- Voidlight, a Darkness Corrupted version of Starlight (RE:MIND ORIGINAL!)
+
+Journal Menu Cleaned up and has a scroll bar! (Big thank you to Abelatox)
+Can now target Dream Eaters with your magic like Aero or Cure (Thanks to Abelatox)
+Dream Eater's HP now appear on your screen near your HP, MP, Drive, etc. (Thanks to Abelatox)
+Chirithy can now use Auto-Life every 5 minutes (by default) on you if you don't already have the effect.
+Chirithy will now prioritze healing you over itself.
+Having a Dream Eater summoned will now affect Friends Are Power, counting them as a party member!
+Added configs to disable Dream Eaters
+Updated Stop Block's description to avoid confusion.
+Stop Block's afflicted time increased from 2 seconds to 3 seconds.
+Fixed Surges not doing damage
+Fixed Spark not doing damage
+Descriptions added to Attack Commands in the Journal Menu
+
+2.26.1
+
+Chirithy now properly despawns when you log out
+Fixed Chirithy not healing properly
+Voidlight has it's recipe now
+Chirithy is now affected by your equipped MP Haste/Hastera/Hastegas, allowing it to cast magic more often!
+HP Boost and MP Boost now work properly (Thanks to Willaby_Neko)
+Ultima Weapon Ability added (Thanks to Willaby_Neko), this is used to boost your weapons Strength and Magic to the absolute limits.
+
+Added Zantesuken Attack Command!
+Added Sephiroth's Swift Strike as a Command Exclusive (for now) Attack Command!
+
+Added More Coins to the Wallet Menu and changed values of all coins (except Heart)
+
+	Copper - 1 Munny
+	Silver - 5 Munny
+	Gold - 10 Munny
+	Emerald - 50 Munny
+	Diamond - 100 Munny
+	Netherite - 500 Munny
+	Amethyst - 1000 Munny
+
+
+
+Add Munny Magic ability - pay munny to cast magic while in mp recharge
+
+2.26.1b
+
+	EFM Support
+
+3.26.1
+
+	Chirithy can no longer dual cast.
+	Chirithy's Esuna no longer crashes (hopefully)
+	
+3.26.2
+	Summoning Dream Eaters no longer crashes the game due to a removed config. (Update KK to Latest)
+	Regen can now target party members (and Dream Eaters?)
+	
+	New Accessories:
+	
+		- Brave Warrior (From KH1)
+			AP: 1, STR: 2, x2 HP Boost
+		- Omega Arts (From KH1)
+			AP: 3, STR: 4, x2 HP Boost
+		- Ray of Light
+			AP: 3, MAG: 4, HP Boost, MP Boost
+		- Alluring Skull (For some Jolly Cooperation I hope?)
+			AP: 3, x2 Encounter Plus Ability
+		- White Fang (From KH1)
+			AP: 1, STR: 1, Critical Boost
+			
 3.26.3
 
 Additions:
     - Formchanges and Command Styles are now starting to be introduced! Starting with Firestorm, Diamond Dust, and Thunder Bolt from BBS!
-    - Added a base Finisher! Only accessible outside of forms.
+    - Added a base Finisher! Only accessible outside of forms. 
     - Situation Boost Ability added
     - Esuna can now be leveled to Group Esuna!
     - Poison Block is added! Poisons your attacker if you guard successfully with EFM! (Boosted Effects with Parry)
     - Block Replenisher is added! Restores a small amount of MP upon a successful guard! (Boosted Effects with Parry)
     - Cure Converter added!
-
+	
 Fixes:
 	- Tags are now properly applied to various items, triggering advancements from KK. (Thanks to Willaby_Neko)
 	- Coin Values are now configurable (Thanks to Willaby_Neko)
 	- Chirithy now has a cooldown upon being summoned (No more free spells on summon)
-
+	
 Adjustments:
 	- The block abilites now restore a bit less
 	- Counter Blast's damage and range have been adjusted for balance.
 	- Breakthrough now has the Cure Converter Ability!
-
+		
 3.26.3a
 
 Additions:
@@ -37,3 +183,153 @@ Fixes:
 
 3.26.3b
 - Fixed Server Packet Issue that prevented loading in
+
+3.26.3c
+- Fixed normal Drive Forms kicking you out upon use (Thanks Abelatox)
+
+4.26.1
+- Revamped and future proofed Styles/Formchanges (Thanks Neko)
+- NG+ now gives permament abilities (Thanks Abel)
+- Rage Form RC fixed (Thanks Abel)
+- Some clean-up
+- Added Ability Orb item, can give players a permament copy of an ability. 
+Please note, this can be given via `/give @s kkremind:ability_orb[kkremind:ability="kingdomkeys:ability_mp_haste"]`. Just an example. AND THIS IS A ONE TIME USE!
+
+5.26.1
+- Compatability with latest KK Version
+
+5.26.2
+- Chirithy Cloning No Longer a Thing
+- Chirithy Related Crash Fixed
+- BBS Trio Base Styles deal damage again
+
+5.26.2a
+- Drive Form Crash Fix
+- Hidden Spells Obtainable only via Creative
+
+5.26.2b
+- Added Configs for Panels to allow leveling for player or forms.
+
+5.26.2c
+- Potential fix for guarding against certain things with Stop/Poison Blocks
+- Form Boost now extends the amount of time you can idle in Stylechanges before being forced out
+- BBS Trio's respective Styles are now keyblade locked
+- Counter Abilities damages adjusted
+- Ravenous Saber's Hitbox made bigger
+
+5.26.3
+- Wrongful Inheritor's abilities adjusted
+- EXP Walker's formula changed to respect KK's xpMultiplier server config.
+- Heart Walker's formula changed to respect KK's heartMultiplier server config.
+- Wrongful Inheritor's abilities adjusted, again
+- Chirithy can cast Cura/Curaga and Aerora/Aeroga again.
+- Thunder Surge deals Lightning Damage instead of Air. 
+- Finishers for Style and Non-Style no longer time out after like 3 seconds.
+
+- NEW KEYBLADE, Fortuna -- Requested by Nameless Dreamer, inspired by Nero in DMC4
+	Tier SSS (Smokin' Sexy Style)
+	Base Stats:
+		Ability: Exceed
+		Stats: 7 STR / 7 MAG
+
+	Exclusive Reaction Command - Exceed
+	Cost: 10 Focus
+	Can be stacked 3 times.
+	Boost your next attack with explosive fury! Time it with your strikes to do even more damage!
+	Damage scales with stacks of Exceed and Fire Boosts!
+	Time it right and you will get MAX stacks and refund some Focus!
+
+5.26.4
+	- Adjusted Friends Are Power
+	- Fixed Group Esuna's data
+	- Migrated some spells and commands to the Melding System
+	- Attack Commands no Longer Double Hit in EFM
+	- Brightcrest added to Spellweaver's Keyblade pool
+	
+	- 11 NEW ATTACK COMMANDS ADDED!
+		- Fire Strike 
+		- (ORIGINAL) Blizzard Strike
+		- (ORIGINAL) Thunder Strike
+		- (ORIGINAL) Water Strike
+		- (ORIGINAL) Aero Strike
+		- (ORIGINAL) Light Strike
+		- (ORIGINAL) Dark Strike
+		- Binding Strike
+		- Confusion Strike
+		- Blitz
+		- Slot Edge
+
+5.26.4a
+	- Adjusted Daredevil's Synth Recipe/Cost
+	- Adjusted Blitz and Slot Edge's jump power
+	- Added Meld Recipes for the following Spells: 
+		- Confusion Strike
+		- Dispel
+		- Auto-Life 
+		- Drain Tree 
+		- Osmose Tree
+		- Esuna + Group Esuna
+		- Holy Tree
+		- Ruin Tree
+	- Added various commands to moogle shops.
+	
+	
+## 6.26.1 
+
+# Organization Panel System
+
+	The Organization Panel System has been expanded into a full progression and customization feature.
+
+	Players can now collect, purchase, equip, and arrange panels on a grid to customize their stats, abilities, and growth options. Panels can grant stat bonuses, unlock movement abilities, boost spell effects, and interact with nearby panels through special link areas.
+
+# New Panel Features
+	- Panel Shop where players can purchase new panels.
+	- Panel Inventory for managing owned panels.
+	- Slot Releasers to expand the available grid space.
+	- Unequip All button to quickly clear equipped panels.
+	- Custom panel icons for improved readability.
+	- Link-area panels, allowing certain panels to enhance compatible panels placed inside their linked slots.
+# Panel Types
+	- Stat Panels: Strength, Magic, Defense, AP, and Level Up.
+	- Growth Panels: High Jump, Dodge Roll, Aerial Dodge, Quick Run, and Glide.
+	- Boost Panels: Fire Boost, Blizzard Boost, Thunder Boost, Water Boost, Light Boost, Dark Boost, Attack Haste, Draw, Jackpot, Lucky Lucky, and Combo Plus.
+	- Special Panels: Hearts Are Power and Ultima Weapon.
+	- Link Panels: Power Link, Magic Link, Guard Link, and Level Link.
+	- LV Doubler Panels: Special shaped panels that increase level bonuses when Level Up panels are placed in their link areas.
+	- Link Panel System
+
+	Power Link, Magic Link, Guard Link, and LV Doubler now use shaped link areas. Matching panels can be placed inside these areas to gain additional effects:
+
+	Power Link enhances linked Strength panels.
+	Magic Link enhances linked Magic panels.
+	Guard Link enhances linked Defense panels.
+	LV Doubler boosts Level Up panels placed within its link area.
+	
+# New Meld Recipes
+	
+	- Slot Edge + Slot Edge -> Steal
+	- Curaga + Aerora -> Haste
+	- Haste + Haste -> Hastera
+	- Hastera + Hastera -> Hastega
+	- Ruin + Firaga -> Comet
+	- Comet + Comet -> Meteor
+	- Berserk + Berserk -> Berserkra
+	- Berserkra + Berserkra -> Berserkga
+	- Slow + Slow -> Slowra
+	- Slowra + Slowra -> Slowga
+	- Silence + Silence -> Silencera
+	- Silencera + Silencera -> Silencega
+	
+# Fixes:
+	- Updated Compat for latest KK Release
+# Misc:	
+	- Moved a few spells to the SPECIAL Moogle Shop.
+	
+6.26.1b
+
+# Fixes:
+	- Fixed Org's Fake Growths activating despite not being in org or having the panels or the boosts active.
+	- Fixed Org's Fake High Jump being too high. It now scales with EACH High Jump Panel Equipped.
+	- Fixed Org's leaving option taking Hearts despite not having enough Hearts
+	- Added feedback to some buttons in the Panel System.
+	- Org Glide should feel better at just one.

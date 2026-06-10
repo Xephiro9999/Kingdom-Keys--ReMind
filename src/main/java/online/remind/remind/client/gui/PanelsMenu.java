@@ -147,7 +147,7 @@ public class PanelsMenu extends MenuBackground {
 			new PanelMenuEntry(PanelRegistry.POWER_LINK, "Power Link", "P-L", "+1 STR for each adjacent STR panel", 2500, PanelCategory.LINKS),
 			new PanelMenuEntry(PanelRegistry.MAGIC_LINK, "Magic Link", "M-L", "+1 MAG for each adjacent MAG panel", 2500, PanelCategory.LINKS),
 			new PanelMenuEntry(PanelRegistry.GUARD_LINK, "Guard Link", "G-L", "+1 DEF for each adjacent DEF panel", 2500, PanelCategory.LINKS),
-			new PanelMenuEntry(PanelRegistry.LEVEL_LINK, "Level Link", "L-L", "+1 LV for each adjacent LV panel", 4500, PanelCategory.LINKS),
+			//new PanelMenuEntry(PanelRegistry.LEVEL_LINK, "Level Link", "L-L", "+1 LV for each adjacent LV panel", 4500, PanelCategory.LINKS),
 
 			new PanelMenuEntry(PanelRegistry.HEARTS_POWER_PANEL, "Hearts Are Power", "♡", "Enables Hearts Are Power while equipped", 50000, PanelCategory.SPECIAL),
 			new PanelMenuEntry(PanelRegistry.ULTIMA_WEAPON_PANEL, "Ultima Weapon", "UW", "Enables Ultima Weapon while equipped", 50000, PanelCategory.SPECIAL),
@@ -237,9 +237,19 @@ public class PanelsMenu extends MenuBackground {
 			}
 
 			case "buy_slot_releaser" -> {
-				PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "slot_releaser"), 1));
-				PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-				minecraft.player.playSound(ModSounds.itemget.get());
+				if (globalData.getUnlockedOrganizationPanelSlots() < 120) {
+					if (playerData.getHearts() >= 10000) {
+						PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "slot_releaser"), 1));
+						PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+						minecraft.player.playSound(ModSounds.itemget.get());
+					} else {
+						player.sendSystemMessage(Component.literal("You do not have enough Hearts to do this."));
+						player.playSound(ModSounds.error.get());
+					}
+				} else {
+					player.sendSystemMessage(Component.literal("You already have all the Slot Releasers."));
+					player.playSound(ModSounds.error.get());
+				}
 			}
 			case "buy_str_unit_l" -> {
 				PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(PanelRegistry.STRENGTH_UNIT_L, 1));
@@ -456,9 +466,14 @@ public class PanelsMenu extends MenuBackground {
 
 			case "buy_selected_panel" -> {
 				if (selectedOrgPanel != null) {
-					PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(selectedOrgPanel, 1));
-					PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-					minecraft.player.playSound(ModSounds.itemget.get());
+					if (playerData.getHearts() >= getSelectedShopEntry().cost()) {
+						PacketHandlerRM.sendToServer(new CSBuyOrganizationPanelPacket(selectedOrgPanel, 1));
+						PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+						minecraft.player.playSound(ModSounds.itemget.get());
+					} else {
+						player.sendSystemMessage(Component.literal("You do not have enough Hearts to do this."));
+						player.playSound(ModSounds.error.get());
+					}
 				}
 			}
 
@@ -1871,7 +1886,7 @@ public class PanelsMenu extends MenuBackground {
 				new PanelShopEntry(PanelRegistry.MAGIC_UNIT, "MAG Unit", 1000, "+1 MAG while placed"),
 				new PanelShopEntry(PanelRegistry.DEFENSE_UNIT, "DEF Unit", 1000, "+1 DEF while placed"),
 				new PanelShopEntry(PanelRegistry.AP_UNIT, "AP Unit", 500, "+1 AP while placed"),
-				new PanelShopEntry(PanelRegistry.SIGHT_UNIT, "Sight Unit", 1000, "+1 LV while placed"), 
+				new PanelShopEntry(PanelRegistry.SIGHT_UNIT, "Sight Unit", 1000, "+1 LV while placed"),
 				new PanelShopEntry(PanelRegistry.LEVEL_UP, "Level Up", 2000, "+1 LV while placed"),
 
 				new PanelShopEntry(PanelRegistry.STRENGTH_UNIT_L, "STR Unit L", 2000, "Large STR panel"),
@@ -1887,7 +1902,7 @@ public class PanelsMenu extends MenuBackground {
 				new PanelShopEntry(PanelRegistry.POWER_LINK, "Power Link", 2500, "Boosts nearby STR panels"),
 				new PanelShopEntry(PanelRegistry.MAGIC_LINK, "Magic Link", 2500, "Boosts nearby MAG panels"),
 				new PanelShopEntry(PanelRegistry.GUARD_LINK, "Guard Link", 2500, "Boosts nearby DEF panels"),
-				new PanelShopEntry(PanelRegistry.LEVEL_LINK, "Level Link", 2500, "Boosts nearby LV panels"),
+				//new PanelShopEntry(PanelRegistry.LEVEL_LINK, "Level Link", 2500, "Boosts nearby LV panels"),
 				new PanelShopEntry(PanelRegistry.HEARTS_POWER_PANEL, "Hearts Are Power", 50000, "Enables Hearts Are Power while equipped"),
 				new PanelShopEntry(PanelRegistry.ULTIMA_WEAPON_PANEL, "Ultima Weapon", 50000, "Enables Ultima Weapon while equipped"),
 				new PanelShopEntry(PanelRegistry.HIGH_JUMP_PANEL, "High Jump", 2500, "Enables High Jump while equipped"),

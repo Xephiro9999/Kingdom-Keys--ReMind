@@ -264,7 +264,24 @@ public class CSGrowthPanelActionPacket implements CustomPacketPayload {
         );
 
         float glide = DriveForm.FINAL_GLIDE[glideIndex];
-        float limit = DriveForm.FINAL_GLIDE_SPEED[glideIndex];
+
+        double rawLimit = DriveForm.FINAL_GLIDE_SPEED[glideIndex];
+
+        /*
+         * Make Glide 1 usable, but prevent higher levels from getting crazy.
+         */
+        double minLimit = 0.40D;
+        double maxLimit = 0.80D;
+
+        double limit = Math.max(rawLimit, minLimit);
+        limit = Math.min(limit, maxLimit);
+
+        /*
+         * Keep acceleration mostly stable.
+         * Higher levels should feel better from speed limit, not from launching instantly.
+         */
+        double accelFactor = 0.085D + (0.010D * glideIndex);
+        accelFactor = Math.min(accelFactor, 0.12D);
 
         /*
          * Server-safe glide movement.
@@ -280,8 +297,6 @@ public class CSGrowthPanelActionPacket implements CustomPacketPayload {
 
         Vec3 current = player.getDeltaMovement();
 
-        double accelFactor = 0.12D;
-
         double targetX = moveX * limit;
         double targetZ = moveZ * limit;
 
@@ -293,6 +308,8 @@ public class CSGrowthPanelActionPacket implements CustomPacketPayload {
         if (current.y < glide) {
             ySpeed = glide;
         }
+
+        System.out.println(accelFactor);
 
         player.setDeltaMovement(new Vec3(xSpeed, ySpeed, zSpeed));
         player.fallDistance = 0.0F;
