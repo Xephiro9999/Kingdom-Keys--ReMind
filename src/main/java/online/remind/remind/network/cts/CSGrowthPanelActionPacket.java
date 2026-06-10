@@ -238,21 +238,16 @@ public class CSGrowthPanelActionPacket implements CustomPacketPayload {
     }
 
     private static void handleGlideTick(ServerPlayer player) {
+        if (!OrganizationPanelAbilityHelper.isOrganizationPanelSystemActive(player)) {
+            stopGliding(player);
+            return;
+        }
+
         if (!isGliding(player)) {
             if (player.getForcedPose() == Pose.SWIMMING) {
                 player.setForcedPose(null);
             }
 
-            return;
-        }
-
-        if (player.onGround()) {
-            stopGliding(player);
-            return;
-        }
-
-        if (!OrganizationPanelAbilityHelper.hasAbilityPanelEquipped(player, Strings.glide)) {
-            stopGliding(player);
             return;
         }
 

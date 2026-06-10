@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -53,7 +54,7 @@ public class OrganizationPanelAbilityHelper {
         }
 
         // Panel abilities only work while Organization Panel boosts are ON.
-        if (globalData.getPanelsEnabled() != 1) {
+        if (!isOrganizationPanelSystemActive(player)) {
             return false;
         }
 
@@ -109,6 +110,25 @@ public class OrganizationPanelAbilityHelper {
         };
     }
 
+    public static boolean isOrganizationPanelSystemActive(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        PlayerData playerData = PlayerData.get(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+        if (playerData == null || globalData == null) {
+            return false;
+        }
+
+        if (playerData.getAlignment() == Utils.OrgMember.NONE) {
+            return false;
+        }
+
+        return globalData.getPanelsEnabled() == 1;
+    }
+
     private static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, path);
     }
@@ -128,7 +148,7 @@ public class OrganizationPanelAbilityHelper {
 
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if (globalData == null || globalData.getPanelsEnabled() != 1) {
+        if (globalData == null || !isOrganizationPanelSystemActive(player)) {
             return 0;
         }
 
@@ -377,6 +397,26 @@ public class OrganizationPanelAbilityHelper {
         );
 
         globalData.setOrganizationPanelAbilityBonus(ability, currentPanelBonus);
+    }
+
+    public static boolean hasPanelHighJump(Player player) {
+        return hasAbilityPanelEquipped(player, Strings.highJump);
+    }
+
+    public static boolean hasPanelDodgeRoll(Player player) {
+        return hasAbilityPanelEquipped(player, Strings.dodgeRoll);
+    }
+
+    public static boolean hasPanelAerialDodge(Player player) {
+        return hasAbilityPanelEquipped(player, Strings.aerialDodge);
+    }
+
+    public static boolean hasPanelQuickRun(Player player) {
+        return hasAbilityPanelEquipped(player, Strings.quickRun);
+    }
+
+    public static boolean hasPanelGlide(Player player) {
+        return hasAbilityPanelEquipped(player, Strings.glide);
     }
 
 }

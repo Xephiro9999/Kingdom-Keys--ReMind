@@ -14,6 +14,7 @@ import online.kingdomkeys.kingdomkeys.network.cts.CSSetGlidingPacket;
 import online.remind.remind.network.GrowthPanelAction;
 import online.remind.remind.network.cts.CSGrowthPanelActionPacket;
 import online.remind.remind.panels.OrganizationPanelAbilityHelper;
+import online.remind.remind.panels.PanelRegistry;
 
 public class GrowthPanelClientEvents {
 
@@ -115,7 +116,8 @@ public class GrowthPanelClientEvents {
             return;
         }
 
-        double boost = 0.28D;
+        double boost = 0.05D * OrganizationPanelAbilityHelper.getEquippedPanelCount(player, PanelRegistry.HIGH_JUMP_PANEL);
+        System.out.println(boost);
 
         player.setDeltaMovement(
                 player.getDeltaMovement().x,

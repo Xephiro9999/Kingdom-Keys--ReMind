@@ -71,6 +71,7 @@ import online.remind.remind.network.cts.CSGrowthPanelActionPacket;
 import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 import online.remind.remind.panels.OrganizationPanelStatHelper;
+import online.remind.remind.panels.PanelRegistry;
 import online.remind.remind.panels.PanelStats;
 
 import java.util.*;
@@ -1712,28 +1713,6 @@ public class EntityEventsRM {
 		);
 
 		player.removeEffect(ModMobEffectsRM.EXCEED);
-	}
-
-	// PANELS FAKE HIGH JUMP
-	@SubscribeEvent
-	public void onLivingJump(LivingEvent.LivingJumpEvent event) {
-		if (!(event.getEntity() instanceof Player player)) {
-			return;
-		}
-
-		if (!OrganizationPanelAbilityHelper.hasAbility(player, Strings.highJump)) {
-			return;
-		}
-
-		double boost = 0.28D;
-
-		player.setDeltaMovement(
-				player.getDeltaMovement().x,
-				player.getDeltaMovement().y + boost,
-				player.getDeltaMovement().z
-		);
-
-		player.hurtMarked = true;
 	}
 
 	private static final java.util.Set<java.util.UUID> USED_AERIAL_DODGE = new java.util.HashSet<>();

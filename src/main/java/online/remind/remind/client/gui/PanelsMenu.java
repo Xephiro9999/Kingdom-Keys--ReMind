@@ -17,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.network.cts.CSSyncAllClientDataPacket;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
@@ -387,9 +388,14 @@ public class PanelsMenu extends MenuBackground {
 				init();
 			}
 			case "rejectOrg" -> {
-				PacketHandlerRM.sendToServer(new CSPanelPacket(14));
-				//PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
-				PacketHandler.sendToServer(new CSOpenMenu());
+				if (playerData.getHearts() >= 13000) {
+					PacketHandlerRM.sendToServer(new CSPanelPacket(14));
+					//PacketHandler.sendToServer(new CSSyncAllClientDataPacket());
+					PacketHandler.sendToServer(new CSOpenMenu());
+				} else {
+					player.sendSystemMessage(Component.literal("You do not have enough Hearts to do this."));
+					player.playSound(ModSounds.error.get());
+				}
 			}
 			case "reset" -> {
 				PacketHandlerRM.sendToServer(new CSPanelPacket(11));
@@ -1861,18 +1867,46 @@ public class PanelsMenu extends MenuBackground {
 	}
 
 	private PanelShopEntry[] getPanelShopEntries() {
-		return new PanelShopEntry[]{new PanelShopEntry(PanelRegistry.STRENGTH_UNIT, "STR Unit", 1000, "+1 STR while placed"), new PanelShopEntry(PanelRegistry.MAGIC_UNIT, "MAG Unit", 1000, "+1 MAG while placed"), new PanelShopEntry(PanelRegistry.DEFENSE_UNIT, "DEF Unit", 1000, "+1 DEF while placed"), new PanelShopEntry(PanelRegistry.AP_UNIT, "AP Unit", 500, "+1 AP while placed"), new PanelShopEntry(PanelRegistry.SIGHT_UNIT, "Sight Unit", 1000, "+1 LV while placed"), new PanelShopEntry(PanelRegistry.LEVEL_UP, "Level Up", 2000, "+1 LV while placed"),
+		return new PanelShopEntry[]{new PanelShopEntry(PanelRegistry.STRENGTH_UNIT, "STR Unit", 1000, "+1 STR while placed"),
+				new PanelShopEntry(PanelRegistry.MAGIC_UNIT, "MAG Unit", 1000, "+1 MAG while placed"),
+				new PanelShopEntry(PanelRegistry.DEFENSE_UNIT, "DEF Unit", 1000, "+1 DEF while placed"),
+				new PanelShopEntry(PanelRegistry.AP_UNIT, "AP Unit", 500, "+1 AP while placed"),
+				new PanelShopEntry(PanelRegistry.SIGHT_UNIT, "Sight Unit", 1000, "+1 LV while placed"), 
+				new PanelShopEntry(PanelRegistry.LEVEL_UP, "Level Up", 2000, "+1 LV while placed"),
 
-				new PanelShopEntry(PanelRegistry.STRENGTH_UNIT_L, "STR Unit L", 2000, "Large STR panel"), new PanelShopEntry(PanelRegistry.MAGIC_UNIT_L, "MAG Unit L", 2000, "Large MAG panel"), new PanelShopEntry(PanelRegistry.DEFENSE_UNIT_L, "DEF Unit L", 2000, "Large DEF panel"), new PanelShopEntry(PanelRegistry.AP_UNIT_L, "AP Unit L", 1000, "Large AP panel"),
-				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_RIGHT, "LV Doubler L Right", 4000, "L-shaped LV Doubler"), new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_LEFT, "LV Doubler L Left", 4000, "Mirrored L-shaped LV Doubler"),
-				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_TOP_RIGHT, "LV Doubler Top R", 4000, "Top L-shaped LV Doubler"), new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_TOP_LEFT, "LV Doubler Top L", 4000, "Mirrored top L-shaped LV Doubler"),
+				new PanelShopEntry(PanelRegistry.STRENGTH_UNIT_L, "STR Unit L", 2000, "Large STR panel"),
+				new PanelShopEntry(PanelRegistry.MAGIC_UNIT_L, "MAG Unit L", 2000, "Large MAG panel"),
+				new PanelShopEntry(PanelRegistry.DEFENSE_UNIT_L, "DEF Unit L", 2000, "Large DEF panel"),
+				new PanelShopEntry(PanelRegistry.AP_UNIT_L, "AP Unit L", 1000, "Large AP panel"),
+				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_RIGHT, "LV Doubler L Right", 4000, "L-shaped LV Doubler"),
+				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_LEFT, "LV Doubler L Left", 4000, "Mirrored L-shaped LV Doubler"),
+				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_TOP_RIGHT, "LV Doubler Top R", 4000, "Top L-shaped LV Doubler"),
+				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_L_TOP_LEFT, "LV Doubler Top L", 4000, "Mirrored top L-shaped LV Doubler"),
 				new PanelShopEntry(PanelRegistry.LEVEL_DOUBLER_LINE, "LV Doubler Line", 4000, "Long LV Doubler"),
 
-				new PanelShopEntry(PanelRegistry.POWER_LINK, "Power Link", 2500, "Boosts nearby STR panels"), new PanelShopEntry(PanelRegistry.MAGIC_LINK, "Magic Link", 2500, "Boosts nearby MAG panels"), new PanelShopEntry(PanelRegistry.GUARD_LINK, "Guard Link", 2500, "Boosts nearby DEF panels"), new PanelShopEntry(PanelRegistry.LEVEL_LINK, "Level Link", 2500, "Boosts nearby LV panels"),
+				new PanelShopEntry(PanelRegistry.POWER_LINK, "Power Link", 2500, "Boosts nearby STR panels"),
+				new PanelShopEntry(PanelRegistry.MAGIC_LINK, "Magic Link", 2500, "Boosts nearby MAG panels"),
+				new PanelShopEntry(PanelRegistry.GUARD_LINK, "Guard Link", 2500, "Boosts nearby DEF panels"),
+				new PanelShopEntry(PanelRegistry.LEVEL_LINK, "Level Link", 2500, "Boosts nearby LV panels"),
 				new PanelShopEntry(PanelRegistry.HEARTS_POWER_PANEL, "Hearts Are Power", 50000, "Enables Hearts Are Power while equipped"),
-				new PanelShopEntry(PanelRegistry.ULTIMA_WEAPON_PANEL, "Ultima Weapon", 50000, "Enables Ultima Weapon while equipped"), new PanelShopEntry(PanelRegistry.HIGH_JUMP_PANEL, "High Jump", 2500, "Enables High Jump while equipped"), new PanelShopEntry(PanelRegistry.DODGE_ROLL_PANEL, "Dodge Roll", 2500, "Enables Dodge Roll while equipped"), new PanelShopEntry(PanelRegistry.AERIAL_DODGE_PANEL, "Aerial Dodge", 3000, "Enables Aerial Dodge while equipped"), new PanelShopEntry(PanelRegistry.QUICK_RUN_PANEL, "Quick Run", 3000, "Enables Quick Run while equipped"), new PanelShopEntry(PanelRegistry.GLIDE_PANEL, "Glide", 4000, "Enables Glide while equipped"),
+				new PanelShopEntry(PanelRegistry.ULTIMA_WEAPON_PANEL, "Ultima Weapon", 50000, "Enables Ultima Weapon while equipped"),
+				new PanelShopEntry(PanelRegistry.HIGH_JUMP_PANEL, "High Jump", 2500, "Enables High Jump while equipped"),
+				new PanelShopEntry(PanelRegistry.DODGE_ROLL_PANEL, "Dodge Roll", 2500, "Enables Dodge Roll while equipped"),
+				new PanelShopEntry(PanelRegistry.AERIAL_DODGE_PANEL, "Aerial Dodge", 3000, "Enables Aerial Dodge while equipped"),
+				new PanelShopEntry(PanelRegistry.QUICK_RUN_PANEL, "Quick Run", 3000, "Enables Quick Run while equipped"),
+				new PanelShopEntry(PanelRegistry.GLIDE_PANEL, "Glide", 4000, "Enables Glide while equipped"),
 
-				new PanelShopEntry(PanelRegistry.COMBO_PLUS_PANEL, "Combo Plus", 2500, "+1 ground combo hit while equipped"), new PanelShopEntry(PanelRegistry.HASTE_PANEL, "Haste", 2500, "Increases Attack Speed while equipped"), new PanelShopEntry(PanelRegistry.FIRE_BOOST_PANEL, "Fire Boost", 3000, "Boosts Fire damage"), new PanelShopEntry(PanelRegistry.BLIZZARD_BOOST_PANEL, "Blizzard Boost", 3000, "Boosts Blizzard damage"), new PanelShopEntry(PanelRegistry.THUNDER_BOOST_PANEL, "Thunder Boost", 3000, "Boosts Thunder damage"),new PanelShopEntry(PanelRegistry.WATER_BOOST_PANEL, "Water Boost", 3000, "Boosts Water damage"), new PanelShopEntry(PanelRegistry.LIGHT_BOOST_PANEL, "Light Boost", 3000, "Boosts Light damage"), new PanelShopEntry(PanelRegistry.DARK_BOOST_PANEL, "Darkness Boost", 3000, "Boosts Dark damage"), new PanelShopEntry(PanelRegistry.DRAW_PANEL, "Draw", 2000, "Improves pickup range"), new PanelShopEntry(PanelRegistry.JACKPOT_PANEL, "Jackpot", 2500, "Improves prize drops"), new PanelShopEntry(PanelRegistry.LUCKY_LUCKY_PANEL, "Lucky Lucky", 4000, "Improves rare drops"),
+				new PanelShopEntry(PanelRegistry.COMBO_PLUS_PANEL, "Combo Plus", 2500, "+1 ground combo hit while equipped"),
+				new PanelShopEntry(PanelRegistry.HASTE_PANEL, "Haste", 2500, "Increases Attack Speed while equipped"),
+				new PanelShopEntry(PanelRegistry.FIRE_BOOST_PANEL, "Fire Boost", 3000, "Boosts Fire damage"),
+				new PanelShopEntry(PanelRegistry.BLIZZARD_BOOST_PANEL, "Blizzard Boost", 3000, "Boosts Blizzard damage"),
+				new PanelShopEntry(PanelRegistry.THUNDER_BOOST_PANEL, "Thunder Boost", 3000, "Boosts Thunder damage"),
+				new PanelShopEntry(PanelRegistry.WATER_BOOST_PANEL, "Water Boost", 3000, "Boosts Water damage"),
+				new PanelShopEntry(PanelRegistry.LIGHT_BOOST_PANEL, "Light Boost", 3000, "Boosts Light damage"),
+				new PanelShopEntry(PanelRegistry.DARK_BOOST_PANEL, "Darkness Boost", 3000, "Boosts Dark damage"),
+				new PanelShopEntry(PanelRegistry.DRAW_PANEL, "Draw", 2000, "Improves pickup range"),
+				new PanelShopEntry(PanelRegistry.JACKPOT_PANEL, "Jackpot", 2500, "Improves prize drops"),
+				new PanelShopEntry(PanelRegistry.LUCKY_LUCKY_PANEL, "Lucky Lucky", 4000, "Improves rare drops"),
 
 		};
 	}

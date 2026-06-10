@@ -1,11 +1,13 @@
 package online.remind.remind.network.cts;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
@@ -202,9 +204,14 @@ public class CSPanelPacket implements CustomPacketPayload {
                     PacketHandler.sendTo(new SCSyncPlayerData(player), player);
                     break;
                 case 14:
-                    PacketHandler.sendTo(new SCSyncPlayerData(player), player);
-                    playerData.setAlignment(0);
-                    playerData.addHearts(-13000);
+                    if (playerData.getHearts() >= 13000) {
+                        PacketHandler.sendTo(new SCSyncPlayerData(player), player);
+                        playerData.setAlignment(0);
+                        playerData.addHearts(-13000);
+                    } else {
+                        player.sendSystemMessage(Component.literal("You do not have enough Hearts to do this."));
+                        player.playSound(ModSounds.error.get());
+                    }
                     break;
             }
 
