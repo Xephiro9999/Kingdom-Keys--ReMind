@@ -23,6 +23,7 @@ import online.remind.remind.client.model.reactioncommand.DarkMineModel;
 import online.remind.remind.client.model.reactioncommand.LightBeamModel;
 import online.remind.remind.client.render.*;
 import online.remind.remind.client.render.mob.ChirithyRenderer;
+import online.remind.remind.client.render.mob.MeowWowRenderer;
 import online.remind.remind.client.render.reactioncommand.DarkMineEntityRenderer;
 import online.remind.remind.client.render.reactioncommand.LightBeamEntityRenderer;
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
@@ -32,6 +33,7 @@ import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
 import online.remind.remind.entity.spirits.ChirithyEntity;
+import online.remind.remind.entity.spirits.MeowWowEntity;
 import online.remind.remind.item.ModItemsRM;
 
 import java.util.function.Supplier;
@@ -102,6 +104,7 @@ public class ModEntitiesRM {
     public static final Item.Properties PROPERTIES = new Item.Properties();
 
     public static final Supplier<EntityType<ChirithyEntity>> TYPE_CHIRITHY = createEntityType(ChirithyEntity::new, MobCategory.MONSTER, "chirithy", 1F, 1F);
+    public static final Supplier<EntityType<MeowWowEntity>> TYPE_MEOW_WOW = createEntityType(MeowWowEntity::new, MobCategory.MONSTER, "meow_wow", 1F, 1F);
     public static final Supplier<Item> CHIRITHY_EGG = ModItemsRM.ITEMS.register("chirithy_spawn_egg", () -> new DeferredSpawnEggItem(TYPE_CHIRITHY, 0xAAAAFF, 0xFF00FF, PROPERTIES));
 
 
@@ -192,6 +195,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_COUNTER_RUSH.get(),InvisibleEntityRenderer::new);
 
         event.registerEntityRenderer(TYPE_CHIRITHY.get(),ChirithyRenderer::new);
+        event.registerEntityRenderer(TYPE_MEOW_WOW.get(), MeowWowRenderer::new);
 
 
     }
@@ -199,7 +203,9 @@ public class ModEntitiesRM {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event){
         event.put(TYPE_CHIRITHY.get(), ChirithyEntity.registerAttributes().build());
+        event.put(TYPE_MEOW_WOW.get(), MeowWowEntity.createAttributes().build());
     }
+
 
     public static void registerPlacements(RegisterSpawnPlacementsEvent event) {
         //event.register(TYPE_CHIRITHY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMobSpawnRules);

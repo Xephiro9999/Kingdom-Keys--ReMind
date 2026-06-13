@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
@@ -35,6 +36,7 @@ import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
+import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 

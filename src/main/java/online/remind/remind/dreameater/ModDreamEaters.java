@@ -14,13 +14,13 @@ public class ModDreamEaters {
     public static Registry<DreamEater> registry = DREAM_EATERS.makeRegistry(builder -> builder.sync(true));
 
     static int order = 0;
-    // 0 = None, 1 = Chirithy, 2 = ???
+    // 0 = None, 1 = Chirithy, 2 = Meow Wow, 3 = ...
 
     //TODO: Add More Dream Eaters
     public static final Supplier<DreamEater>
             NONE = DREAM_EATERS.register(StringsRM.none, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none), order++)),
-            CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy), order++));
-            //MEOWWOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++));
+            CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy), order++)),
+            MEOW_WOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++));
 
 
 }
