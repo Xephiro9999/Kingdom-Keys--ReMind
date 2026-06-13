@@ -130,20 +130,47 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     public void updateStatsFromOwner() {
-        if (owner != null) {
-            PlayerData ownerData = PlayerData.get(owner);
-            hp = (int) (20 + (ownerData.getMaxHP() / 2D));
-            str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-            mag = (int) (5 + (ownerData.getMagicStat().getStat() / 0.75D));
-            def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
-
-            //System.out.println(hp+ ", " + str + ", " + mag + ", " + def);
-
-            this.setHealth((float) hp);
-            this.setStr(str);
-            this.setMag(mag);
-            this.setDef(def);
+        if (owner == null) {
+            return;
         }
+
+        PlayerData ownerData = PlayerData.get(owner);
+
+        if (ownerData == null) {
+            return;
+        }
+
+        hp = (int) (20 + (ownerData.getMaxHP() / 2D));
+        str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
+        mag = (int) (5 + (ownerData.getMagicStat().getStat() * 0.75D));
+        def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
+
+        chirithyHP = hp;
+        chirithyStrength = str;
+        chirithyMagic = mag;
+        chirithyDefense = def;
+
+        if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(hp);
+        }
+
+        if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(str);
+        }
+
+        if (this.getAttribute(Attributes.ARMOR) != null) {
+            this.getAttribute(Attributes.ARMOR).setBaseValue(def);
+        }
+
+        // Do NOT heal every tick.
+        // Only clamp down if max HP got lower.
+        if (this.getHealth() > this.getMaxHealth()) {
+            this.setHealth(this.getMaxHealth());
+        }
+
+        this.setStr(str);
+        this.setMag(mag);
+        this.setDef(def);
     }
 
     @Override
@@ -329,8 +356,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                             }
 
                             this.startCasting();
-                            cureCooldown = 400;
-                            castCooldown = 20;
+                            cureCooldown = 180;
+                            castCooldown = 40;
                         }
                     }
                 }

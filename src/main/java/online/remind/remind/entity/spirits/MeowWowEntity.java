@@ -48,12 +48,17 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.network.PacketHandlerRM;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.ModDreamEaters;
+import online.remind.remind.lib.StringsRM;
+import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -121,14 +126,13 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 42.0D)
+                .add(Attributes.MAX_HEALTH, 36.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.34D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0D)
-                .add(Attributes.ARMOR, 4.0D)
+                .add(Attributes.ATTACK_DAMAGE, 8.4D)
+                .add(Attributes.ARMOR, 6.6D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.2D);
     }
-
     public static MeowWowEntity summon(Level level, Player owner) {
         MeowWowEntity meowWow = ModEntitiesRM.TYPE_MEOW_WOW.get().create(level);
 
@@ -181,7 +185,8 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
     }
 
     private float getMeowWowMagic(PlayerData ownerData) {
-        return (float) (11D + (ownerData.getMagicStat().getStat() * 0.45D));
+        int level = Math.max(1, ownerData.getLevel());
+        return (float) getMeowWowStatsForLevel(level).magic;
     }
 
 
@@ -203,6 +208,66 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
             return;
         }
 
+        UUID ownerId = this.getOwnerUUID();
+
+        // No owner UUID = invalid summon
+        if (ownerId == null) {
+            this.discard();
+            return;
+        }
+
+        LivingEntity ownerLiving = this.getOwnerLiving();
+
+        // Owner is offline, unloaded, or in another dimension.
+        // If we can still find the player, clear their Dream Eater data too.
+        if (!(ownerLiving instanceof Player owner) || owner.level() != this.level()) {
+            if (ownerLiving instanceof Player foundOwner) {
+                GlobalDataRM data = ModDataRM.getGlobal(foundOwner);
+
+                if (data != null) {
+                    data.setHasDreamEaterSummoned(false);
+                    data.setDreamEaterUUID(null);
+                    PacketHandlerRM.syncGlobalToAllAround(foundOwner, data);
+                }
+            }
+
+            this.discard();
+            return;
+        }
+
+        GlobalDataRM data = ModDataRM.getGlobal(owner);
+
+        if (data == null) {
+            this.discard();
+            return;
+        }
+
+        // Owner died = clear summon data and despawn
+        if (owner.isDeadOrDying()) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
+            this.discard();
+            return;
+        }
+
+        // If Meow Wow itself is dead, clear the owner's summon data.
+        if (!this.isAlive()) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
+            return;
+        }
+
+        // Despawn if the player's selected Dream Eater is no longer Meow Wow.
+        if (!this.isSelectedDreamEaterMeowWow(data)) {
+            data.setHasDreamEaterSummoned(false);
+            data.setDreamEaterUUID(null);
+            PacketHandlerRM.syncGlobalToAllAround(owner, data);
+            this.discard();
+            return;
+        }
+
         if (this.attackCooldown > 0) {
             this.attackCooldown--;
         }
@@ -216,10 +281,31 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
             this.tryFinishHornDiveHit();
         }
 
-        this.handleOwnerCleanupAndScaling();
+        // Same role as Chirithy's updateStatsFromOwner(), but for Meow Wow.
+        if (this.tickCount % 40 == 0) {
+            this.applyOwnerScaling(owner);
+            this.updateVariantFromOwner(owner);
+        }
+
         this.updateCombatTarget();
         this.castSupportMagic();
         this.tryStartHornDive();
+    }
+
+    private boolean isSelectedDreamEaterMeowWow(GlobalDataRM data) {
+        String dreamEaterRL = data.getDreamEaterRL();
+
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return false;
+        }
+
+        DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
+
+        if (dreamEater == null) {
+            return false;
+        }
+
+        return StringsRM.meowWow.equals(dreamEater.getName());
     }
 
     private void handleOwnerCleanupAndScaling() {
@@ -534,19 +620,19 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
 
         switch (cureTier) {
             case 2:
-                healAmount = mag * 1.25F;
+                healAmount = mag * 1.15F;
                 spellName = "Curaga";
                 owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.curaga.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
 
             case 1:
-                healAmount = mag * 1.1F;
+                healAmount = mag * 0.95F;
                 spellName = "Cura";
                 owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cura.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
 
             default:
-                healAmount = mag;
+                healAmount = mag * 0.75f;
                 spellName = "Cure";
                 owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cure.get(), SoundSource.PLAYERS, 1F, 1F);
                 break;
@@ -585,17 +671,17 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
 
         switch (cureTier) {
             case 2:
-                healAmount = mag * 1.25F;
+                healAmount = mag * 1.15F;
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.curaga.get(), SoundSource.NEUTRAL, 1F, 1F);
                 break;
 
             case 1:
-                healAmount = mag * 1.1F;
+                healAmount = mag * 0.95F;
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.cura.get(), SoundSource.NEUTRAL, 1F, 1F);
                 break;
 
             default:
-                healAmount = mag;
+                healAmount = mag * 0.75F;
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.cure.get(), SoundSource.NEUTRAL, 1F, 1F);
                 break;
         }
@@ -829,18 +915,28 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
     }
 
     private void applyOwnerScaling(LivingEntity owner) {
-        double ownerMaxHealth = owner.getMaxHealth();
-        double ownerAttack = owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        int level = 1;
 
-        double scaledHealth = Mth.clamp(28.0D + ownerMaxHealth * 0.75D, 36.0D, 120.0D);
-        double scaledAttack = Mth.clamp(4.0D + ownerAttack * 0.45D, 5.0D, 24.0D);
+        if (owner instanceof Player player) {
+            PlayerData ownerData = PlayerData.get(player);
+
+            if (ownerData != null) {
+                level = Math.max(1, ownerData.getLevel());
+            }
+        }
+
+        MeowWowStats stats = getMeowWowStatsForLevel(level);
 
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(scaledHealth);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(stats.hp);
         }
 
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(scaledAttack);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(stats.strength);
+        }
+
+        if (this.getAttribute(Attributes.ARMOR) != null) {
+            this.getAttribute(Attributes.ARMOR).setBaseValue(stats.defense);
         }
 
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
@@ -849,6 +945,86 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
 
         if (this.getHealth() > this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
+        }
+    }
+
+    private static MeowWowStats getMeowWowStatsForLevel(int level) {
+        level = Mth.clamp(level, 1, 100);
+
+        // Exact known in-game table values
+        if (level < 3) {
+            return new MeowWowStats(36.0D, 8.4D, 11.1D, 6.6D);
+        }
+
+        if (level < 6) {
+            return new MeowWowStats(37.0D, 12.0D, 16.0D, 6.0D);
+        }
+
+        if (level < 8) {
+            return new MeowWowStats(46.0D, 15.0D, 20.0D, 8.0D);
+        }
+
+        if (level < 10) {
+            return new MeowWowStats(52.0D, 17.0D, 22.0D, 9.0D);
+        }
+
+        if (level < 12) {
+            return new MeowWowStats(58.0D, 19.0D, 25.0D, 10.0D);
+        }
+
+        if (level < 14) {
+            return new MeowWowStats(63.0D, 21.0D, 27.0D, 11.0D);
+        }
+
+        if (level < 16) {
+            return new MeowWowStats(69.0D, 23.0D, 30.0D, 12.0D);
+        }
+
+        if (level < 18) {
+            return new MeowWowStats(75.0D, 24.0D, 32.0D, 12.0D);
+        }
+
+        if (level < 20) {
+            return new MeowWowStats(81.0D, 26.0D, 35.0D, 13.0D);
+        }
+
+        if (level < 22) {
+            return new MeowWowStats(86.0D, 28.0D, 37.0D, 14.0D);
+        }
+
+        if (level < 24) {
+            return new MeowWowStats(92.0D, 30.0D, 40.0D, 15.0D);
+        }
+
+        if (level < 26) {
+            return new MeowWowStats(98.0D, 32.0D, 42.0D, 16.0D);
+        }
+
+        // Lv 26 base from the table:
+        // HP 104 / STR 34 / MAG 45 / DEF 17
+        //
+        // From Lv 27-100, continue growth in a controlled way.
+        int extraLevels = level - 26;
+
+        double hp = 104.0D + (extraLevels * 2.5D);
+        double strength = 34.0D + (extraLevels * 0.50D);
+        double magic = 45.0D + (extraLevels * 0.65D);
+        double defense = 17.0D + (extraLevels * 0.25D);
+
+        return new MeowWowStats(hp, strength, magic, defense);
+    }
+
+    private static class MeowWowStats {
+        private final double hp;
+        private final double strength;
+        private final double magic;
+        private final double defense;
+
+        private MeowWowStats(double hp, double strength, double magic, double defense) {
+            this.hp = hp;
+            this.strength = strength;
+            this.magic = magic;
+            this.defense = defense;
         }
     }
 
