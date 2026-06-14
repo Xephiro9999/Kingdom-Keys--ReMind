@@ -13,17 +13,18 @@ import online.remind.remind.lib.StringsRM;
 
 public class magicRuin extends Magic {
 
-	public magicRuin(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicRuin(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		// dmg
-		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
+		float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			ThrowableProjectile ruin = new RuinEntity(player.level(), player, dmgMult, 2);
 			player.level().addFreshEntity(ruin);
@@ -43,7 +44,7 @@ public class magicRuin extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.RUIN.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

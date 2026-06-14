@@ -120,8 +120,6 @@ public class EpicFightEvents {
                     if (playerData.getCastedMagic() != null) {
                         //player.sendSystemMessage(Component.literal(playerData.getCastedMagic().magic().getRegistryName().toString()));
                         String spellName = playerData.getCastedMagic().magic().getRegistryName().toString();
-                        int spellLevel = playerData.getCastedMagic().level();
-
 
                         if (spellName.equals("kkremind:attack_sliding_dash")) {
                             if (!animationsPlayed) {

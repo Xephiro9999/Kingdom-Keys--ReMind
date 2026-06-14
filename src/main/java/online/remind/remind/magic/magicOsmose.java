@@ -12,18 +12,19 @@ import online.remind.remind.entity.magic.OsmoseEntity;
 
 public class magicOsmose extends Magic {
 
-	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
-		float mpTaken = getDamageMult(level);
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
+		float mpTaken = getDamageMult();
 		mpTaken *= fullMPBlastMult;
 
-		lockOnEntity = getMagicLockOn(level) ? lockOnEntity : null;
+		lockOnEntity = getMagicLockOn() ? lockOnEntity : null;
 		caster.swing(InteractionHand.MAIN_HAND);
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			ThrowableProjectile osmose = new OsmoseEntity(player.level(), player, mpTaken, lockOnEntity);
 			player.level().addFreshEntity(osmose);
@@ -43,7 +44,7 @@ public class magicOsmose extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.OSMOSE.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

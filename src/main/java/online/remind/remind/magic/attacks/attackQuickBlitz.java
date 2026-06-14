@@ -12,8 +12,9 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 
 public class attackQuickBlitz extends Magic {
 
-    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     private LivingEntity target;
@@ -23,10 +24,10 @@ public class attackQuickBlitz extends Magic {
     float dmg;
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
-        switch(level){
+        switch(getTier()){
             case 0:
                 dmg = playerData.getStrength(true) * 0.7f;
                 break;
@@ -59,7 +60,7 @@ public class attackQuickBlitz extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1F, 1F);
 
     }

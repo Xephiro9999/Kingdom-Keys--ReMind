@@ -6,11 +6,11 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackWaterStrike extends attackElementStrike {
 
-    public attackWaterStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackWaterStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
         super(
                 registryName,
                 hasToSelect,
-                maxLevel,
+                tier,
                 gmAbility,
                 StrikeElement.WATER,
                 SoundEvents.PLAYER_SPLASH

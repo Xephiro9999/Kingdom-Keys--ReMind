@@ -14,11 +14,12 @@ import online.remind.remind.client.sound.ModSoundsRM;
 
 public class magicDeath extends Magic {
 
-    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData casterData = PlayerData.get(caster);
         int crisisLv = 0;
 
@@ -183,7 +184,7 @@ public class magicDeath extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.DEATH_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
     }
 }

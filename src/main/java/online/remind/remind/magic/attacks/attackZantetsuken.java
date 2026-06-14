@@ -12,8 +12,9 @@ import online.remind.remind.entity.attacks.zantetsukenCollider;
 
 public class attackZantetsuken extends Magic {
 
-    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     private LivingEntity target;
@@ -21,7 +22,7 @@ public class attackZantetsuken extends Magic {
     int level;
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
 
@@ -52,7 +53,7 @@ public class attackZantetsuken extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.ZANTETSUKEN.get(), SoundSource.PLAYERS, 1F, 1F);
 
     }

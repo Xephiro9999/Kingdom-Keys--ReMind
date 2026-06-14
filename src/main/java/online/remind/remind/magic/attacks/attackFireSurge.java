@@ -14,15 +14,16 @@ import online.remind.remind.entity.attacks.fireSurgeCollider;
 public class attackFireSurge extends Magic {
 
 
-    public attackFireSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackFireSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
         float dmg = 0;
 
-        switch(level){
+        switch(getTier()){
             case 0:
                 dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.1f);
                 break;
@@ -33,7 +34,7 @@ public class attackFireSurge extends Magic {
                 dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.1f);
                 break;
         }
-        float radius = 1.5f + (0.5f * level);
+        float radius = 1.5f + (0.5f * getTier());
 
         double speed = 1;
 
@@ -54,7 +55,7 @@ public class attackFireSurge extends Magic {
     }
 
         @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
             player.level().playSound(null, player.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1F, 1F);
     }
 }

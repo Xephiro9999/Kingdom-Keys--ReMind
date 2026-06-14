@@ -11,18 +11,19 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.SilenceEntity;
 
 public class magicSilence extends Magic {
-	public magicSilence(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicSilence(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, null);
+		setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		float silenceTime = getDamageMult(level);
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
+		float silenceTime = getDamageMult();
 		silenceTime *= fullMPBlastMult;
 
-		lockOnTarget = getMagicLockOn(level) ? lockOnTarget : null;
+		lockOnTarget = getMagicLockOn() ? lockOnTarget : null;
 		caster.swing(InteractionHand.MAIN_HAND);
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			ThrowableProjectile silence = new SilenceEntity(player.level(), player, silenceTime, lockOnTarget);
 			player.level().addFreshEntity(silence);
@@ -42,7 +43,7 @@ public class magicSilence extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

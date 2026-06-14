@@ -49,6 +49,8 @@ import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.kingdomkeys.kingdomkeys.magic.ModMagic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -88,16 +90,19 @@ public class EntityEventsRM {
 		PlayerData playerData = PlayerData.get(e.getPlayer());
 		GlobalDataRM globalData = ModDataRM.getGlobal(e.getPlayer());
 
-		if (e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell) { //If it's a valid spell (people love to play with NBT editing)
+		if (e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell) {
 			ItemStack oldSpell = playerData.getEquippedMagics().get(newSpell.getMagic());
 
-			if (oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell) { //If it already exists, update its value
-				if (foundSpell.getLevel() < newSpell.getLevel()) { //Update only if the new spell is higher
-					globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newSpell.getLevel());
+			Magic newMagic = ModMagic.registry.get(ResourceLocation.parse(newSpell.getMagic()));
+			if (oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell) {
+				Magic oldMagic = ModMagic.registry.get(ResourceLocation.parse(foundSpell.getMagic()));
+
+				if (oldMagic.getTier() < newMagic.getTier()) {
+					globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newMagic.getTier());
 					PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 				}
-			} else { //If doesn't exist add it either way
-				globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newSpell.getLevel());
+			} else {
+				globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newMagic.getTier());
 				PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 			}
 		}

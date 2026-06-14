@@ -21,30 +21,31 @@ import java.util.List;
 
 public class magicHaste extends Magic {
 
-	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+		setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 		WorldData worldData = WorldData.get(player.getServer());
 		if (globalData != null) {
-			int time = (int) (PlayerData.get(caster).getMaxMP() * ((level * 0.75) + 5) + 5);
+			int time = (int) (PlayerData.get(caster).getMaxMP() * ((getTier() * 0.75) + 5) + 5);
 			caster.swing(InteractionHand.MAIN_HAND);
-			caster.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, time, level, false, false, false));
+			caster.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, time, getTier(), false, false, false));
 
 			// Hastega Effect
-			if (level == 2) {
+			if (getTier() == 2) {
 				if (worldData.getPartyFromMember(player.getUUID()) != null) {
 					Party party = worldData.getPartyFromMember(player.getUUID());
 					List<Party.Member> list = party.getMembers();
 					if (!list.isEmpty()) { // Haste everyone in the party within reach
-						for (int i = 0; i < list.size(); i++) {
-							if (player.level().getPlayerByUUID(list.get(i).getUUID()) != null && player.distanceTo(player.level().getPlayerByUUID(list.get(i).getUUID())) < ModConfigs.SERVER.partyRangeLimit.get()) {
-								LivingEntity e = player.level().getPlayerByUUID(list.get(i).getUUID());
+						for (Party.Member member : list) {
+							if (player.level().getPlayerByUUID(member.getUUID()) != null && player.distanceTo(player.level().getPlayerByUUID(member.getUUID())) < ModConfigs.SERVER.partyRangeLimit.get()) {
+								LivingEntity e = player.level().getPlayerByUUID(member.getUUID());
 								if (e != null && Utils.isEntityInParty(party, e) && e != player) {
-									e.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, time, level, false, false, false));
+									e.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, time, getTier(), false, false, false));
 								}
 							}
 						}
@@ -56,7 +57,7 @@ public class magicHaste extends Magic {
 
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.HASTE.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 

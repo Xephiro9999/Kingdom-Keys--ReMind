@@ -31,8 +31,8 @@ public class RMMagicSpellItem extends MagicSpellItem implements ICreativeTabRM {
             Map.entry(ModItemsRM.mineSquare3Spell, ModItems.mineSeekerSpell)
     );
 
-    public RMMagicSpellItem(Properties properties, String name, int level) {
-        super(properties, name, level);
+    public RMMagicSpellItem(Properties properties, String name) {
+        super(properties, name);
     }
 
     @Override

@@ -12,8 +12,9 @@ import online.remind.remind.entity.attacks.slidingDashCollider;
 
 public class attackSlidingDash extends Magic {
 
-    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     private LivingEntity target;
@@ -21,10 +22,10 @@ public class attackSlidingDash extends Magic {
     double speed;
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
-        switch(level){
+        switch(getTier()){
             case 0:
                 dmg = playerData.getStrength(true) * 0.9f;
                 speed = 2.5;
@@ -60,7 +61,7 @@ public class attackSlidingDash extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_RIPTIDE_3, SoundSource.PLAYERS, 1F, 1F);
 
     }

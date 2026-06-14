@@ -12,19 +12,20 @@ import online.remind.remind.entity.attacks.BlitzCollider;
 
 public class attackBlitz extends Magic {
 
-    public attackBlitz(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackBlitz(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
         if (playerData == null) {
             return;
         }
 
-        float dmg = switch (level) {
+        float dmg = switch (getTier()) {
             case 0 -> playerData.getStrength(true) * 1.1F;
             case 1 -> playerData.getStrength(true) * 1.3F;
             case 2 -> playerData.getStrength(true) * 1.5F;
@@ -69,7 +70,7 @@ public class attackBlitz extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(
                 null,
                 player.getX(),

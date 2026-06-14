@@ -14,8 +14,9 @@ import online.remind.remind.entity.attacks.swiftStrikeCollider;
 
 public class attackSwiftStrike extends Magic {
 
-    public attackSwiftStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackSwiftStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     private LivingEntity target;
@@ -23,7 +24,7 @@ public class attackSwiftStrike extends Magic {
     int level;
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
         if (lockOnEntity != null){
@@ -59,7 +60,7 @@ public class attackSwiftStrike extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         double rand = Math.floor(Math.random() * 100);
         if (rand >= 50) {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.SWIFT_STRIKE.get(), SoundSource.PLAYERS, 1F, 1F);

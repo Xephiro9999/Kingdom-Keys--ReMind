@@ -6,14 +6,7 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackDarkStrike extends attackElementStrike {
 
-    public attackDarkStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(
-                registryName,
-                hasToSelect,
-                maxLevel,
-                gmAbility,
-                StrikeElement.DARK,
-                SoundEvents.WITHER_SHOOT
-        );
-    }
+	public attackDarkStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, tier, gmAbility, StrikeElement.DARK, SoundEvents.WITHER_SHOOT);
+	}
 }

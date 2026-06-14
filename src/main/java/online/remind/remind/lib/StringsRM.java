@@ -56,6 +56,8 @@ public class StringsRM {
         Magic_Esuna= StringsRM.MAMA_Prefix+"esuna",
         Magic_Faith= StringsRM.MAMA_Prefix+"faith",
         Magic_Haste= StringsRM.MAMA_Prefix+"haste",
+        Magic_Hastera= StringsRM.MAMA_Prefix+"hastera",
+        Magic_Hastega= StringsRM.MAMA_Prefix+"hastega",
         Magic_Holy= StringsRM.MAMA_Prefix+"holy",
         Magic_Mine_Shield = StringsRM.MAMA_Prefix+"mine_shield",
         Magic_Mine_Square = StringsRM.MAMA_Prefix+"mine_square",

@@ -6,14 +6,7 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackAeroStrike extends attackElementStrike {
 
-    public attackAeroStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(
-                registryName,
-                hasToSelect,
-                maxLevel,
-                gmAbility,
-                StrikeElement.AERO,
-                SoundEvents.BREEZE_SHOOT
-        );
-    }
+	public attackAeroStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, tier, gmAbility, StrikeElement.AERO, SoundEvents.BREEZE_SHOOT);
+	}
 }

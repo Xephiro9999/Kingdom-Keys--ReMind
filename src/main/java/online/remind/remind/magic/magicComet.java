@@ -14,16 +14,17 @@ import online.remind.remind.lib.StringsRM;
 
 public class magicComet extends Magic {
 
-	public magicComet(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicComet(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
+		float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			// Comet
 			ThrowableProjectile comet = new CometEntity(player.level(), player, dmgMult, 2,0, 0, player.getYRot(), 0, false);
@@ -44,7 +45,7 @@ public class magicComet extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

@@ -19,14 +19,15 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import java.util.List;
 
 public class magicConfuse extends Magic {
-	public magicConfuse(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicConfuse(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, null);
+		setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
-		float radius = 3 + (level);
+		float radius = 3 + (getTier());
 		List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(radius, radius, radius));
 		Party casterParty = WorldData.get(player.getServer()).getPartyFromMember(player.getUUID());
 
@@ -36,7 +37,7 @@ public class magicConfuse extends Magic {
 			}
 		}
 		int time = 0;
-		switch (level){
+		switch (getTier()){
 			case 0:
 				time = 100;
 
@@ -51,7 +52,7 @@ public class magicConfuse extends Magic {
 			for (int i = 0; i < list.size(); i++) {
 				Entity e = (Entity) list.get(i);
 				if (e instanceof LivingEntity lEntity) {
-					lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, time, level, false, false, false));
+					lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, time, getTier(), false, false, false));
 				}
 			}
 			player.swing(InteractionHand.MAIN_HAND);
@@ -76,7 +77,7 @@ public class magicConfuse extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.CONFUSE.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

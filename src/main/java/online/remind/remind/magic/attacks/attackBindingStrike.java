@@ -6,11 +6,11 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackBindingStrike extends attackElementStrike {
 
-    public attackBindingStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackBindingStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
         super(
                 registryName,
                 hasToSelect,
-                maxLevel,
+                tier,
                 gmAbility,
                 StrikeElement.BINDING,
                 SoundEvents.ENCHANTMENT_TABLE_USE

@@ -6,11 +6,11 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackThunderStrike extends attackElementStrike {
 
-    public attackThunderStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackThunderStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
         super(
                 registryName,
                 hasToSelect,
-                maxLevel,
+                tier,
                 gmAbility,
                 StrikeElement.THUNDER,
                 SoundEvents.TRIDENT_THUNDER.value()

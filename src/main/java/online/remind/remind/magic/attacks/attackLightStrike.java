@@ -6,11 +6,11 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackLightStrike extends attackElementStrike {
 
-    public attackLightStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackLightStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
         super(
                 registryName,
                 hasToSelect,
-                maxLevel,
+                tier,
                 gmAbility,
                 StrikeElement.LIGHT,
                 SoundEvents.AMETHYST_BLOCK_CHIME

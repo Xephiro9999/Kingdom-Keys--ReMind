@@ -22,14 +22,15 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import java.util.List;
 
 public class magicSlow extends Magic {
-	public magicSlow(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, null);
+	public magicSlow(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, null);
+		setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
-		float radius = 3 + (level);
+		float radius = 3 + (getTier());
 		List<Entity> list = player.level().getEntities(player, player.getBoundingBox().inflate(radius, radius, radius));
 		Party casterParty = WorldData.get(player.getServer()).getPartyFromMember(player.getUUID());
 
@@ -52,13 +53,13 @@ public class magicSlow extends Magic {
 
 		}
 
-		int time = (int) (PlayerData.get(caster).getMaxMP() * ((level * 0.75) + 5) + 5);
+		int time = (int) (PlayerData.get(caster).getMaxMP() * ((getTier() * 0.75) + 5) + 5);
 		if (!list.isEmpty()) {
 			for (Entity entity : list) {
 				if (entity instanceof LivingEntity lEntity) {
 					GlobalDataRM globalData = ModDataRM.getGlobal(lEntity);
 					if (globalData != null) {
-						lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.SLOW_RM, time, level, false, false, false));
+						lEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.SLOW_RM, time, getTier(), false, false, false));
 					}
 				}
 			}
@@ -69,7 +70,7 @@ public class magicSlow extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.SLOW.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

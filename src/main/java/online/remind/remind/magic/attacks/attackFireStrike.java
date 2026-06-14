@@ -6,11 +6,11 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackFireStrike extends attackElementStrike {
 
-    public attackFireStrike(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
+    public attackFireStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
         super(
                 registryName,
                 hasToSelect,
-                maxLevel,
+                tier,
                 gmAbility,
                 StrikeElement.FIRE,
                 SoundEvents.FIRECHARGE_USE

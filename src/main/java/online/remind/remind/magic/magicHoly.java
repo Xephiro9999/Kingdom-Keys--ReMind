@@ -12,18 +12,19 @@ import online.remind.remind.lib.StringsRM;
 
 public class magicHoly extends Magic {
 
-	public magicHoly(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicHoly(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
 		// IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
-		float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+		float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			for (int i = -1; i <= 1; i++) {
 				HolyEntity holy = new HolyEntity(player.level(), caster, i, dmgMult);
@@ -53,7 +54,7 @@ public class magicHoly extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.HOLY.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

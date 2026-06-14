@@ -12,18 +12,19 @@ import online.remind.remind.lib.StringsRM;
 
 public class magicFaith extends Magic {
 
-    public magicFaith(ResourceLocation registryName, int maxLevel, String gmAbility) {
-        super(registryName, false, maxLevel, gmAbility);
+    public magicFaith(ResourceLocation registryName, int tier, String gmAbility) {
+        super(registryName, false, gmAbility);
+        setTier(tier);
     }
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity){
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity){
 
-        float dmgMult = getDamageMult(level) + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.25F;
+        float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.25F;
         dmgMult *= fullMPBlastMult;
 
         // Casting Faith go here
-        switch(level){
+        switch(getTier()){
             case 0-> {
                 FaithEntity faith = new FaithEntity(player.level(), player, dmgMult, lockOnEntity);
                 faith.setOwner(caster);
@@ -35,7 +36,7 @@ public class magicFaith extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(null,player.blockPosition(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS,1,1);
     }
 }

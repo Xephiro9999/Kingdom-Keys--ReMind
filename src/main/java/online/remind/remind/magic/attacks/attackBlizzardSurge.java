@@ -14,15 +14,16 @@ import online.remind.remind.entity.attacks.blizzardSurgeCollider;
 public class attackBlizzardSurge extends Magic {
 
 
-    public attackBlizzardSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackBlizzardSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
         float dmg = 0;
 
-        switch(level){
+        switch(getTier()){
             case 0:
                 dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) * 0.1f);
                 break;
@@ -34,7 +35,7 @@ public class attackBlizzardSurge extends Magic {
                 break;
         }
 
-        float radius = 1.5f + (0.5f * level);
+        float radius = 1.5f + (0.5f * getTier());
 
         double speed = 0.75;
 
@@ -55,7 +56,7 @@ public class attackBlizzardSurge extends Magic {
     }
 
         @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
             player.level().playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1F, 1F);
     }
 }

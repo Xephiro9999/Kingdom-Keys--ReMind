@@ -57,7 +57,7 @@ public class ZexionRC extends ReactionCommand {
 
             player.swing(InteractionHand.MAIN_HAND, true);
 
-            mag.onUse(player, player, level, lockOnEntity);
+            mag.onUse(player, player, lockOnEntity);
             playerData.removeReactionCommand(getRegistryName().toString());
             //player.level().playSound(null, player.blockPosition(), ModSoundsRM.DUAL_SHOT.get(), SoundSource.PLAYERS, 1F, 1F);
             // Sync Packet

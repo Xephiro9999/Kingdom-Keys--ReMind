@@ -10,16 +10,17 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.UltimaEntity;
 
 public class magicUltima extends Magic {
-	public magicUltima(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicUltima(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
-		float dmgMult = getDamageMult(level);
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
+		float dmgMult = getDamageMult();
 		dmgMult *= fullMPBlastMult;
 
-		switch (level) {
+		switch (getTier()) {
 		case 0:
 			ThrowableProjectile ultima = new UltimaEntity(player.level(), player, dmgMult);
 			ultima.setOwner(caster);
@@ -37,7 +38,7 @@ public class magicUltima extends Magic {
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.blockPosition(), ModSoundsRM.PLAYER_CAST.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 

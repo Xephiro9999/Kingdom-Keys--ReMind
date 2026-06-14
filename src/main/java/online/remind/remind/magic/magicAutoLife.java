@@ -15,12 +15,13 @@ import online.remind.remind.effect.ModMobEffectsRM;
 public class magicAutoLife extends Magic {
 
 
-    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     @Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (globalData != null) {
             caster.swing(InteractionHand.MAIN_HAND);
@@ -29,7 +30,7 @@ public class magicAutoLife extends Magic {
     }
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 

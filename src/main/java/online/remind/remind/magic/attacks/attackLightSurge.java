@@ -14,25 +14,26 @@ import online.remind.remind.lib.StringsRM;
 public class attackLightSurge extends Magic {
 
 
-    public attackLightSurge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackLightSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
         float dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
 
-        if (level == 0){
+        if (getTier() == 0){
             dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
-        } else if (level == 1){
+        } else if (getTier() == 1){
             dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
-        } else if (level == 2){
+        } else if (getTier() == 2){
             dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
         }
 
 
 
-        float radius = 1.5f + (0.5f * level);
+        float radius = 1.5f + (0.5f * getTier());
 
         double speed = 0.75;
 
@@ -53,7 +54,7 @@ public class attackLightSurge extends Magic {
     }
 
         @Override
-    protected void playMagicCastSound(LivingEntity player, Player player1, int i) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
             player.level().playSound(null, player.blockPosition(), ModSoundsRM.HOLY.get(), SoundSource.PLAYERS, 1F, 1F);
     }
 }

@@ -15,24 +15,25 @@ import online.remind.remind.effect.ModMobEffectsRM;
 
 public class magicBerserk extends Magic {
 
-	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-		super(registryName, hasToSelect, maxLevel, gmAbility);
+	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+		super(registryName, hasToSelect, gmAbility);
+setTier(tier);
 	}
 
 	@Override
-	public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnTarget) {
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
 		if (globalData != null) {
-			int time = (int) (PlayerData.get(caster).getMaxMP() * ((level * 0.75) + 5));
+			int time = (int) (PlayerData.get(caster).getMaxMP() * ((getTier() * 0.75) + 5));
 			caster.swing(InteractionHand.MAIN_HAND);
-			player.addEffect(new MobEffectInstance(ModMobEffectsRM.BERSERK, time, level, false, false, false));
+			player.addEffect(new MobEffectInstance(ModMobEffectsRM.BERSERK, time, getTier(), false, false, false));
 		}
 	}
 
 	@Override
-	protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+	public void playMagicCastSound(LivingEntity player, Player caster) {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.BERSERK.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 }

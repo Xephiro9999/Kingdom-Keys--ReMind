@@ -12,62 +12,42 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackElementStrike extends Magic {
 
-    private final StrikeElement element;
-    private final SoundEvent castSound;
+	private final StrikeElement element;
+	private final SoundEvent castSound;
 
-    public attackElementStrike(
-            ResourceLocation registryName,
-            boolean hasToSelect,
-            int maxLevel,
-            String gmAbility,
-            StrikeElement element,
-            SoundEvent castSound
-    ) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
-        this.element = element;
-        this.castSound = castSound;
-    }
+	public attackElementStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility, StrikeElement element, SoundEvent castSound) {
+		super(registryName, hasToSelect, gmAbility);
+	setTier(tier);
+		this.element = element;
+		this.castSound = castSound;
+	}
 
-    @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
-        PlayerData playerData = PlayerData.get(caster);
+	@Override
+	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
+		PlayerData playerData = PlayerData.get(caster);
 
-        if (playerData == null) {
-            return;
-        }
+		if (playerData == null) {
+			return;
+		}
 
-        float dmg = switch (level) {
-            case 0 -> playerData.getStrength(true) * 1F;
-            case 1 -> playerData.getStrength(true) * 1.15F;
-            case 2 -> playerData.getStrength(true) * 1.3F;
-            default -> playerData.getStrength(true) * 1F;
-        };
+		float dmg = switch (getTier()) {
+			case 0 -> playerData.getStrength(true) * 1F;
+			case 1 -> playerData.getStrength(true) * 1.15F;
+			case 2 -> playerData.getStrength(true) * 1.3F;
+			default -> playerData.getStrength(true) * 1F;
+		};
 
-        caster.hurtMarked = true;
-        caster.fallDistance = 0;
+		caster.hurtMarked = true;
+		caster.fallDistance = 0;
 
 
-        ElementStrikeCollider collider = new ElementStrikeCollider(
-                player.level(),
-                caster,
-                dmg,
-                element
-        );
+		ElementStrikeCollider collider = new ElementStrikeCollider(player.level(), caster, dmg, element);
 
-        caster.level().addFreshEntity(collider);
-    }
+		caster.level().addFreshEntity(collider);
+	}
 
-    @Override
-    protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
-        player.level().playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                castSound,
-                SoundSource.PLAYERS,
-                1.0F,
-                1.0F
-        );
-    }
+	@Override
+	public void playMagicCastSound(LivingEntity player, Player caster) {
+		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), castSound, SoundSource.PLAYERS, 1.0F, 1.0F);
+	}
 }

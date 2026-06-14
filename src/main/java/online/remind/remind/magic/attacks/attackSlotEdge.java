@@ -13,19 +13,20 @@ import online.remind.remind.integration.epicfight.RMIntegrationHooks;
 
 public class attackSlotEdge extends Magic {
 
-    public attackSlotEdge(ResourceLocation registryName, boolean hasToSelect, int maxLevel, String gmAbility) {
-        super(registryName, hasToSelect, maxLevel, gmAbility);
+    public attackSlotEdge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+        super(registryName, hasToSelect, gmAbility);
+setTier(tier);
     }
 
     @Override
-    public void magicUse(LivingEntity player, Player caster, int level, float fullMPBlastMult, LivingEntity lockOnEntity) {
+    public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
 
         if (playerData == null) {
             return;
         }
 
-        float dmg = switch (level) {
+        float dmg = switch (getTier()) {
             case 0 -> playerData.getStrength(true) * 0.85F;
             case 1 -> playerData.getStrength(true) * 1.0F;
             case 2 -> playerData.getStrength(true) * 1.15F;
@@ -72,7 +73,7 @@ public class attackSlotEdge extends Magic {
     }
 
     @Override
-    protected void playMagicCastSound(LivingEntity player, Player caster, int level) {
+    public void playMagicCastSound(LivingEntity player, Player caster) {
         player.level().playSound(
                 null,
                 player.getX(),
