@@ -19,7 +19,7 @@ public class ModMagicsRM {
 	public static final Supplier<Magic>
 		HASTE = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Haste).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Haste), true, 0, null)),
 		HASTERA = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Hastera).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Hastera), true, 1, null)),
-			HASTEGA = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Hastega).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Hastega), true, 2, null)),
+		HASTEGA = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Hastega).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Hastega), true, 2, null)),
 
 		// Slow
 		SLOW = MAGIC.register(ResourceLocation.parse("magic_slow").getPath(), () -> new magicSlow(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_slow"), false, 0, null)),
@@ -67,7 +67,7 @@ public class ModMagicsRM {
 		WARP = MAGIC.register(ResourceLocation.parse("magic_warp").getPath(), () -> new magicWarp(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_warp"), false, 0, null)),
 
 		ESUNA = MAGIC.register(ResourceLocation.parse("magic_esuna").getPath(), () -> new magicEsuna(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_esuna"), true, 0, null)),
-		ESUNARA = MAGIC.register(ResourceLocation.parse("magic_esunara").getPath(), () -> new magicEsuna(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_esunara"), true, 1, null)),
+		GROUP_ESUNA = MAGIC.register(ResourceLocation.parse("magic_group_esuna").getPath(), () -> new magicEsuna(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_group_esuna"), true, 1, null)),
 
 		DISPEL = MAGIC.register(ResourceLocation.parse("magic_dispel").getPath(), () -> new magicDispel(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_dispel"), false, 0, null)),
 
@@ -105,20 +105,20 @@ public class ModMagicsRM {
 		BLIZZAGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_blizzaga_surge").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzaga_surge"), false, 2, null)),
 
 		WATER_SURGE = MAGIC.register(ResourceLocation.parse("attack_water_surge").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surge"), false, 0, null)),
-		WATER_SURGERA = MAGIC.register(ResourceLocation.parse("attack_water_surgera").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surgera"), false, 1, null)),
-		WATER_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_water_surgega").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surgega"), false, 2, null)),
+		WATERRA_SURGE = MAGIC.register(ResourceLocation.parse("attack_watera_surge").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_watera_surge"), false, 1, null)),
+		WATERGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_waterga_surge").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_waterga_surge"), false, 2, null)),
 
 		AERO_SURGE = MAGIC.register(ResourceLocation.parse("attack_aero_surge").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surge"), false, 0, null)),
-		AERORA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_aero_surgera").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgera"), false, 1, null)),
-		AEROGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_aero_surgega").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgega"), false, 2, null)),
+		AERORA_SURGE = MAGIC.register(ResourceLocation.parse("attack_aerora_surge").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aerora_surge"), false, 1, null)),
+		AEROGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_aeroga_surge").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aeroga_surge"), false, 2, null)),
 
 		LIGHT_SURGE = MAGIC.register(ResourceLocation.parse("attack_light_surge").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surge"), false, 0, null)),
-		LIGHTRA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_light_surgera").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgera"), false, 1, null)),
-		LIGHTGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_light_surgega").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgega"), false, 2, null)),
+		LIGHTRA_SURGE = MAGIC.register(ResourceLocation.parse("attack_lightra_surge").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_lightra_surge"), false, 1, null)),
+		LIGHTGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_lightga_surge").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_lightga_surge"), false, 2, null)),
 
 		DARK_SURGE = MAGIC.register(ResourceLocation.parse("attack_dark_surge").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surge"), false, 0, null)),
-		DARKRA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_dark_surgera").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgera"), false, 1, null)),
-		DARKGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_dark_surgega").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgega"), false, 2, null)),
+		DARKRA_SURGE = MAGIC.register(ResourceLocation.parse("attack_darkra_surge").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_darkra_surge"), false, 1, null)),
+		DARKGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_darkga_surge").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_darkga_surge"), false, 2, null)),
 
 		ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(), () -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_zantetsuken"), false, 0, null)),
 
