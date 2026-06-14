@@ -1,0 +1,8 @@
+{
+  "target": "kingdomkeys:magic_reflega",
+
+  "elements": ["MAGIC"],
+  "specific_styles": [],
+
+  "base_value": 20
+}
