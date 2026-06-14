@@ -74,7 +74,7 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
     private int zeroGravityCooldown = 0;
     private int drainCooldown = 0;
     private int hasteCooldown = 0;
-    private int supportCastCooldown = 0;
+    private int supportCastCooldown = 20 * 7; // 7 Seconds Delay on Summon
 
     private double komoryHP = 32.7D;
     private double komoryStrength = 8.2D;
@@ -96,7 +96,7 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private int attackCooldown = 0;
+    private int attackCooldown = 20 * 5; // 5 Seconds before initial attack
     private boolean didSonicBoomHit = false;
     private LivingEntity target;
 
@@ -503,7 +503,14 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         }
 
         float dmgMult = 1.0F;
-
+        this.level().playSound(
+                null,
+                owner.blockPosition(),
+                ModSoundsRM.DRAIN.get(),
+                SoundSource.PLAYERS,
+                0.65F,
+                1F
+        );
         DrainEntity drain = new DrainEntity(
                 this.level(),
                 this,       // origin: Komory Bat
