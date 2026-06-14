@@ -7,6 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import online.kingdomkeys.kingdomkeys.ability.Ability;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
@@ -24,6 +25,7 @@ import online.remind.remind.client.gui.dreameaters.CreateSpirit;
 import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
+import online.remind.remind.client.gui.dreameaters.AbilityLinks;
 import online.remind.remind.lib.StringsRM;
 
 import java.awt.*;
@@ -65,6 +67,9 @@ public class DreamEaterMenu extends MenuBackground {
         }
         if (string.equals("createSpirit")) {
             minecraft.setScreen(new CreateSpirit());
+        }
+        if (string.equals("abilityLinks")) {
+            minecraft.setScreen(new AbilityLinks());
         }
         if (string.equals("wip")) {
             minecraft.player.playSound(ModSounds.error.get());
@@ -109,7 +114,7 @@ public class DreamEaterMenu extends MenuBackground {
             action("createSpirit");
         }));
         addRenderableWidget(abilityLinks = new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, "Ability Links", MenuButton.ButtonType.BUTTON, true, (e) -> {
-            action("wip");
+            action("abilityLinks");
         }));
         addRenderableWidget(backButton = new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
             action("back");
