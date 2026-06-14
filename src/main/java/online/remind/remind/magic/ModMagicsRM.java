@@ -5,6 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.KingdomKeys;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.lib.StringsRM;
 import online.remind.remind.magic.attacks.*;
 
 import java.util.function.Supplier;
@@ -16,9 +17,9 @@ public class ModMagicsRM {
 
 	//Normal Spells
 	public static final Supplier<Magic>
-		HASTE = MAGIC.register(ResourceLocation.parse("magic_haste").getPath(), () -> new magicHaste(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_haste"), true, 0, null)),
-		HASTERA = MAGIC.register(ResourceLocation.parse("magic_hastera").getPath(), () -> new magicHaste(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_hastera"), true, 1, null)),
-		HASTEGA = MAGIC.register(ResourceLocation.parse("magic_hastega").getPath(), () -> new magicHaste(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_hastega"), true, 2, null)),
+		HASTE = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Haste).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Haste), true, 0, null)),
+		HASTERA = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Hastera).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Hastera), true, 1, null)),
+			HASTEGA = MAGIC.register(ResourceLocation.parse(StringsRM.Magic_Hastega).getPath(), () -> new magicHaste(ResourceLocation.parse(StringsRM.Magic_Hastega), true, 2, null)),
 
 		// Slow
 		SLOW = MAGIC.register(ResourceLocation.parse("magic_slow").getPath(), () -> new magicSlow(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_slow"), false, 0, null)),

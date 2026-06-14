@@ -1,5 +1,6 @@
 package online.remind.remind.magic;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -30,6 +31,9 @@ public class magicHaste extends Magic {
 	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 		WorldData worldData = WorldData.get(player.getServer());
+
+		caster.sendSystemMessage(Component.literal("Tier: " + getTier()));
+
 		if (globalData != null) {
 			int time = (int) (PlayerData.get(caster).getMaxMP() * ((getTier() * 0.75) + 5) + 5);
 			caster.swing(InteractionHand.MAIN_HAND);
