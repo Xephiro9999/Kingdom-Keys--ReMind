@@ -40,7 +40,7 @@ public class SGaugeEventHandler {
 		Magic magic = ModMagic.registry.get(event.getSpellID());
 		int level = magic.getTier() + 1;
 
-		SGaugeHandler.addContribution(player, spellId, def.elements(), def.specificStyles(), level);
+		SGaugeHandler.addContribution(player, spellId, def.elements(), def.specificStyles(), 0);
 	}
 
 

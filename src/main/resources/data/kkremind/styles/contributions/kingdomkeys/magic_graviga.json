@@ -1,0 +1,8 @@
+{
+  "target": "kingdomkeys:magic_graviga",
+
+  "elements": ["GRAVITY", "MAGIC"],
+  "specific_styles": [],
+
+  "base_value": 30
+}

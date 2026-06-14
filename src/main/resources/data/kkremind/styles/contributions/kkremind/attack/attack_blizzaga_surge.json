@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:attack_blizzaga_surge",
+
+  "elements": ["BLIZZARD","LUNGE", "PHYSICAL"],
+  "specific_styles": [],
+
+  "base_value": 20
+}

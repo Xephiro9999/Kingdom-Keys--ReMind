@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:attack_thundara_surge",
+
+  "elements": ["THUNDER","LUNGE","PHYSICAL"],
+  "specific_styles": [],
+
+  "base_value": 15
+}
