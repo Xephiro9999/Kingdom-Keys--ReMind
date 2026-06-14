@@ -43,7 +43,7 @@ public class ModMagicsRM {
 		ULTIMA = MAGIC.register(ResourceLocation.parse("magic_ultima").getPath(), () -> new magicUltima(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_ultima"), false, 0, null)),
 
 		COMET = MAGIC.register(ResourceLocation.parse("magic_comet").getPath(), () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_comet"), false, 0, null)),
-		COMETRA = MAGIC.register(ResourceLocation.parse("magic_cometra").getPath(), () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_cometra"), false, 1, null)),
+		METEOR = MAGIC.register(ResourceLocation.parse("magic_meteor").getPath(), () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_meteor"), false, 1, null)),
 
 		BERSERK = MAGIC.register(ResourceLocation.parse("magic_berserk").getPath(), () -> new magicBerserk(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_berserk"), true, 0, null)),
 		BERSERKRA = MAGIC.register(ResourceLocation.parse("magic_berserkra").getPath(), () -> new magicBerserk(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_berserkra"), true, 1, null)),
@@ -78,13 +78,6 @@ public class ModMagicsRM {
 
 		DEATH = MAGIC.register(ResourceLocation.parse("magic_death").getPath(), () -> new magicDeath(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_death"), false, 0, null)),
 
-		// Spark / Mine
-		SPARK = MAGIC.register(ResourceLocation.parse("magic_spark").getPath(), () -> new magicSpark(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_spark"), false, 0, null)),
-
-		MINE_SQUARE = MAGIC.register(ResourceLocation.parse("magic_mine_square").getPath(), () -> new magicMineSquare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_mine_square"), false, 1, null)),
-
-		MINE_SHIELD = MAGIC.register(ResourceLocation.parse("magic_mine_shield").getPath(), () -> new magicMineShield(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_mine_shield"), false, 2, null)),
-
 		// Confuse
 		CONFUSE = MAGIC.register(ResourceLocation.parse("magic_confuse").getPath(), () -> new magicConfuse(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_confuse"), false, 0, null)),
 		CONFUSERA = MAGIC.register(ResourceLocation.parse("magic_confusera").getPath(), () -> new magicConfuse(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_confusera"), false, 1, null)),
@@ -95,44 +88,38 @@ public class ModMagicsRM {
 		// TODO: Add BBS/DDD Attack Commands and FF Related Commands
 
 		QUICK_BLITZ = MAGIC.register(ResourceLocation.parse("attack_quick_blitz").getPath(), () -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_quick_blitz"), false, 0, null)),
-		QUICK_BLITZRA = MAGIC.register(ResourceLocation.parse("attack_quick_blitzra").getPath(), () -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_quick_blitzra"), false, 1, null)),
-		QUICK_BLITZGA = MAGIC.register(ResourceLocation.parse("attack_quick_blitzga").getPath(), () -> new attackQuickBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_quick_blitzga"), false, 2, null)),
 
 		SLIDING_DASH = MAGIC.register(ResourceLocation.parse("attack_sliding_dash").getPath(), () -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sliding_dash"), false, 0, null)),
-		SLIDING_DASHRA = MAGIC.register(ResourceLocation.parse("attack_sliding_dashra").getPath(), () -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sliding_dashra"), false, 1, null)),
-		SLIDING_DASHGA = MAGIC.register(ResourceLocation.parse("attack_sliding_dashga").getPath(), () -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sliding_dashga"), false, 2, null)),
 
 		FIRE_SURGE = MAGIC.register(ResourceLocation.parse("attack_fire_surge").getPath(), () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_surge"), false, 0, null)),
-		FIRE_SURGERA = MAGIC.register(ResourceLocation.parse("attack_fire_surgera").getPath(), () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_surgera"), false, 1, null)),
-		FIRE_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_fire_surgega").getPath(), () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_surgega"), false, 2, null)),
+		FIRA_SURGE = MAGIC.register(ResourceLocation.parse("attack_fira_surge").getPath(), () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fira_surge"), false, 1, null)),
+		FIRAGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_firaga_surge").getPath(), () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_firaga_surge"), false, 2, null)),
 
 		THUNDER_SURGE = MAGIC.register(ResourceLocation.parse("attack_thunder_surge").getPath(), () -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_surge"), false, 0, null)),
-		THUNDER_SURGERA = MAGIC.register(ResourceLocation.parse("attack_thunder_surgera").getPath(), () -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_surgera"), false, 1, null)),
-		THUNDER_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_thunder_surgega").getPath(), () -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_surgega"), false, 2, null)),
+		THUNDARA_SURGE = MAGIC.register(ResourceLocation.parse("attack_thundara_surge").getPath(), () -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thundara_surge"), false, 1, null)),
+		THUNDAGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_thundaga_surge").getPath(), () -> new attackThunderSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thundaga_surge"), false, 2, null)),
 
 		BLIZZARD_SURGE = MAGIC.register(ResourceLocation.parse("attack_blizzard_surge").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_surge"), false, 0, null)),
-		BLIZZARD_SURGERA = MAGIC.register(ResourceLocation.parse("attack_blizzard_surgera").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_surgera"), false, 1, null)),
-		BLIZZARD_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_blizzard_surgega").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_surgega"), false, 2, null)),
+		BLIZZARA_SURGE = MAGIC.register(ResourceLocation.parse("attack_blizzara_surge").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzara_surge"), false, 1, null)),
+		BLIZZAGA_SURGE = MAGIC.register(ResourceLocation.parse("attack_blizzaga_surge").getPath(), () -> new attackBlizzardSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzaga_surge"), false, 2, null)),
 
 		WATER_SURGE = MAGIC.register(ResourceLocation.parse("attack_water_surge").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surge"), false, 0, null)),
 		WATER_SURGERA = MAGIC.register(ResourceLocation.parse("attack_water_surgera").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surgera"), false, 1, null)),
 		WATER_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_water_surgega").getPath(), () -> new attackWaterSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_surgega"), false, 2, null)),
 
 		AERO_SURGE = MAGIC.register(ResourceLocation.parse("attack_aero_surge").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surge"), false, 0, null)),
-		AERO_SURGERA = MAGIC.register(ResourceLocation.parse("attack_aero_surgera").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgera"), false, 1, null)),
-		AERO_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_aero_surgega").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgega"), false, 2, null)),
+		AERORA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_aero_surgera").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgera"), false, 1, null)),
+		AEROGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_aero_surgega").getPath(), () -> new attackAeroSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_surgega"), false, 2, null)),
 
 		LIGHT_SURGE = MAGIC.register(ResourceLocation.parse("attack_light_surge").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surge"), false, 0, null)),
-		LIGHT_SURGERA = MAGIC.register(ResourceLocation.parse("attack_light_surgera").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgera"), false, 1, null)),
-		LIGHT_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_light_surgega").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgega"), false, 2, null)),
+		LIGHTRA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_light_surgera").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgera"), false, 1, null)),
+		LIGHTGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_light_surgega").getPath(), () -> new attackLightSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_surgega"), false, 2, null)),
 
 		DARK_SURGE = MAGIC.register(ResourceLocation.parse("attack_dark_surge").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surge"), false, 0, null)),
-		DARK_SURGERA = MAGIC.register(ResourceLocation.parse("attack_dark_surgera").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgera"), false, 1, null)),
-		DARK_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_dark_surgega").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgega"), false, 2, null)),
+		DARKRA_SURGERA = MAGIC.register(ResourceLocation.parse("attack_dark_surgera").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgera"), false, 1, null)),
+		DARKGA_SURGEGA = MAGIC.register(ResourceLocation.parse("attack_dark_surgega").getPath(), () -> new attackDarkSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_surgega"), false, 2, null)),
 
 		ZANTETSUKEN = MAGIC.register(ResourceLocation.parse("attack_zantetsuken").getPath(), () -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_zantetsuken"), false, 0, null)),
-		ZANTETSUKENRA = MAGIC.register(ResourceLocation.parse("attack_zantetsukenra").getPath(), () -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_zantetsukenra"), false, 1, null)),
-		ZANTETSUKENGA = MAGIC.register(ResourceLocation.parse("attack_zantetsukenga").getPath(), () -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_zantetsukenga"), false, 2, null)),
 
 		FIRE_STRIKE = MAGIC.register(ResourceLocation.parse("attack_fire_strike").getPath(), () -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_strike"), false, 0, null)),
 

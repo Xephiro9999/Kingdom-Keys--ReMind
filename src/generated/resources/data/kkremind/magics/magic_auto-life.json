@@ -1,0 +1,10 @@
+{
+  "casttime": 60,
+  "cooldown": 60,
+  "cost": 50,
+  "dmg_mult": 1.5,
+  "dmg_mult_max": 3.0,
+  "magic_lock_on": false,
+  "max_exp": 4200,
+  "max_lvl": 5
+}

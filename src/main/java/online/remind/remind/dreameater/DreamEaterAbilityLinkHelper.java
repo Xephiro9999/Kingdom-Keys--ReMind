@@ -72,6 +72,11 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
+        if (isChirithyEquipped(globalData)) {
+            applyDreamEaterAbilityLinks(player, playerData, DreamEaterLinkData.getChirithyLinks());
+            return;
+        }
+
         if (isMeowWowEquipped(globalData)) {
             applyDreamEaterAbilityLinks(player, playerData, DreamEaterLinkData.getMeowWowLinks());
             return;
@@ -368,6 +373,28 @@ public class DreamEaterAbilityLinkHelper {
         }
 
         return changed;
+    }
+
+    private static boolean isChirithyEquipped(GlobalDataRM globalData) {
+        String dreamEaterRL = globalData.getDreamEaterRL();
+
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return false;
+        }
+
+        if (dreamEaterRL.equals("kkremind:chirithy")) {
+            return true;
+        }
+
+        DreamEater dreamEater;
+
+        try {
+            dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
+        } catch (Exception e) {
+            return false;
+        }
+
+        return dreamEater != null && StringsRM.chirithy.equals(dreamEater.getName());
     }
 
     private static boolean isMeowWowEquipped(GlobalDataRM globalData) {

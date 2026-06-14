@@ -16,6 +16,7 @@ import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import org.spongepowered.asm.mixin.Mixin;
@@ -98,6 +99,14 @@ public class GuardSkillMixin {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2, true, true, true));
+                }
+            }
+
+            if (playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (!event.isParried()) {
+                    livingEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, 20 * 5, 1, true, true, true));
+                } else {
+                    livingEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, 20 * 7, 2, true, true, true));
                 }
             }
         }

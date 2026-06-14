@@ -7,20 +7,54 @@ public class DreamEaterLinkData {
     public static final String TYPE_SPIRIT_SKILL = "Spirit Skill";
     public static final String TYPE_GRANTED_ABILITY = "Granted Ability";
 
-
+    // ---------------- Base KK Abilities ---------------------------
     public static final String ITEM_BOOST = "kingdomkeys:ability_item_boost";
     public static final String MP_HASTE = "kingdomkeys:ability_mp_haste";
-    //public static final String CONFUSION_BLOCK = "kkremind:ability_confusion_block";
     public static final String LEAF_BRACER = "kingdomkeys:ability_leaf_bracer";
+    public static final String DAMAGE_CONTROL = "kingdomkeys:ability_damage_control";
+    public static final String SECOND_CHANCE = "kingdomkeys:ability_second_chance";
 
+    // ---------------- KK Re:Mind Abilities ------------------------
+    public static final String CONFUSION_BLOCK = "kkremind:ability_confusion_block";
     public static final String HP_BOOST = "kkremind:ability_hp_boost";
     public static final String MP_BOOST = "kkremind:ability_mp_boost";
     public static final String ATTACK_HASTE = "kkremind:ability_attack_haste";
+    public static final String RENEWAL_BLOCK = "kkremind:ability_renewal_block";
     public static final String POISON_BLOCK = "kkremind:ability_poison_block";
+
+
+    private static final List<LinkEntry> CHIRITHY_LINKS = List.of(
+            // Spirit skills only. These do NOT grant player magic.
+            new LinkEntry("chirithy_cure", "Cure", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("chirithy_aero", "Aero", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("chirithy_esuna", "Esuna", TYPE_SPIRIT_SKILL, 5, false, ""),
+            new LinkEntry("chirithy_cura", "Cura", TYPE_SPIRIT_SKILL, 10, false, ""),
+            new LinkEntry("chirithy_aerora", "Aerora", TYPE_SPIRIT_SKILL, 15, false, ""),
+            new LinkEntry("chirithy_curaga", "Curaga", TYPE_SPIRIT_SKILL, 20, false, ""),
+            new LinkEntry("chirithy_auto_life", "Auto-Life", TYPE_SPIRIT_SKILL, 25, false, ""),
+            new LinkEntry("chirithy_aeroga", "Aeroga", TYPE_SPIRIT_SKILL, 35, false, ""),
+
+            // Guardian/passive support abilities.
+            new LinkEntry("chirithy_hp_boost", "HP Boost", TYPE_GRANTED_ABILITY, 1, true, HP_BOOST),
+            //new LinkEntry("chirithy_defense_boost", "Defense Boost", TYPE_GRANTED_ABILITY, 5, true, DEFENSE_BOOST),
+            new LinkEntry("chirithy_magic_haste", "MP Haste", TYPE_GRANTED_ABILITY, 10, true, MP_HASTE),
+            new LinkEntry("chirithy_leaf_bracer", "Leaf Bracer", TYPE_GRANTED_ABILITY, 15, true, LEAF_BRACER),
+            new LinkEntry("chirithy_renewal_block", "Renewal Block", TYPE_GRANTED_ABILITY, 20, true, RENEWAL_BLOCK),
+            //new LinkEntry("chirithy_light_screen", "Light Screen", TYPE_GRANTED_ABILITY, 20, true, LIGHT_SCREEN),
+            //new LinkEntry("chirithy_dark_screen", "Dark Screen", TYPE_GRANTED_ABILITY, 25, true, DARK_SCREEN),
+            new LinkEntry("chirithy_damage_control", "Damage Control", TYPE_GRANTED_ABILITY, 35, true, DAMAGE_CONTROL),
+            new LinkEntry("chirithy_second_chance", "Second Chance", TYPE_GRANTED_ABILITY, 50, true, SECOND_CHANCE)
+            //new LinkEntry("chirithy_once_more", "Once More", TYPE_GRANTED_ABILITY, 75, true, ONCE_MORE)
+    );
+
+    public static List<LinkEntry> getChirithyLinks() {
+        return CHIRITHY_LINKS;
+    }
 
 
     private static final List<LinkEntry> MEOW_WOW_LINKS = List.of(
             // Spirit skills. These are NOT granted to the player.
+            new LinkEntry("meow_wow_horn_strike", "Horn Strike", TYPE_SPIRIT_SKILL, 1, false, ""),
             new LinkEntry("meow_wow_cure", "Cure", TYPE_SPIRIT_SKILL, 1, false, ""),
             new LinkEntry("meow_wow_slow", "Slow", TYPE_SPIRIT_SKILL, 1, false, ""),
             new LinkEntry("meow_wow_balloon", "Balloon", TYPE_SPIRIT_SKILL, 1, false, ""),
@@ -35,7 +69,6 @@ public class DreamEaterLinkData {
             new LinkEntry("meow_wow_mp_boost", "MP Boost", TYPE_GRANTED_ABILITY, 5, true, MP_BOOST),
             new LinkEntry("meow_wow_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 8, true, ATTACK_HASTE),
             new LinkEntry("meow_wow_mp_haste", "MP Haste", TYPE_GRANTED_ABILITY, 12, true, MP_HASTE),
-            //new LinkEntry("meow_wow_confusion_block", "Confusion Block", TYPE_GRANTED_ABILITY, 30, true, CONFUSION_BLOCK),
             new LinkEntry("meow_wow_poison_block", "Poison Block", TYPE_GRANTED_ABILITY, 35, true, POISON_BLOCK),
             new LinkEntry("meow_wow_leaf_bracer", "Leaf Bracer", TYPE_GRANTED_ABILITY, 50, true, LEAF_BRACER)
     );
@@ -55,11 +88,11 @@ public class DreamEaterLinkData {
             new LinkEntry("komory_bat_zero_graviga", "Zero Graviga", TYPE_SPIRIT_SKILL, 25, false, ""),
 
 
-            new LinkEntry("komory_bat_magic_haste", "Magic Haste", TYPE_GRANTED_ABILITY, 12, true, MP_HASTE),
-            new LinkEntry("komory_bat_magic_haste", "Magic Haste", TYPE_GRANTED_ABILITY, 24, true, MP_HASTE),
+            new LinkEntry("komory_bat_magic_haste", "MP Haste", TYPE_GRANTED_ABILITY, 12, true, MP_HASTE),
+            new LinkEntry("komory_bat_magic_haste", "MP Haste", TYPE_GRANTED_ABILITY, 24, true, MP_HASTE),
             new LinkEntry("komory_bat_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 10, true, ATTACK_HASTE),
-            new LinkEntry("komory_bat_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 20, true, ATTACK_HASTE)
-            //new LinkEntry("komory_bat_confusion_block", "Confusion Block", TYPE_GRANTED_ABILITY, 30, true, CONFUSION_BLOCK)
+            new LinkEntry("komory_bat_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 20, true, ATTACK_HASTE),
+            new LinkEntry("komory_bat_confusion_block", "Confusion Block", TYPE_GRANTED_ABILITY, 30, true, CONFUSION_BLOCK)
     );
 
     public static List<DreamEaterLinkData.LinkEntry> getKomoryBatLinks() {

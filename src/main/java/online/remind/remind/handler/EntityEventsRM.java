@@ -205,9 +205,6 @@ public class EntityEventsRM {
 
 		if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
-				if (!playerData.getAbilityMap().containsKey(StringsRM.renewalBlock)) {
-					playerData.addAbility(StringsRM.renewalBlock, true);
-				}
 
 				if (!playerData.getAbilityMap().containsKey(StringsRM.focusBlock)) {
 					playerData.addAbility(StringsRM.focusBlock, true);
@@ -221,9 +218,6 @@ public class EntityEventsRM {
 					playerData.addAbility(StringsRM.stopBlock, true);
 				}
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.poisonBlock)) {
-					playerData.addAbility(StringsRM.poisonBlock, true);
-				}
 
 				if (!playerData.getAbilityMap().containsKey(StringsRM.blockReplenisher)) {
 					playerData.addAbility(StringsRM.blockReplenisher, true);

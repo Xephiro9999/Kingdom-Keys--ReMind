@@ -187,7 +187,7 @@ public class AbilityLinks extends MenuBackground {
         String name = dreamEater.getName();
 
         if (StringsRM.chirithy.equals(name)) {
-            addChirithyLinks(entries, global);
+            addChirithyLinks(entries, playerData);
             return entries;
         }
 
@@ -205,24 +205,18 @@ public class AbilityLinks extends MenuBackground {
         return entries;
     }
 
-    private void addChirithyLinks(List<DreamEaterLinkEntry> entries, GlobalDataRM global) {
-        boolean hasCure = global.getLearndedMagics().containsKey(Strings.Magic_Cure)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Cura)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Curaga);
+    private void addChirithyLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
+        int level = Math.max(1, playerData.getLevel());
 
-        boolean hasAero = global.getLearndedMagics().containsKey(Strings.Magic_Aero)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Aerora)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Aeroga);
+        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getChirithyLinks()) {
+            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
 
-        boolean hasEsuna = global.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_esuna")
-                || global.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_group_esuna");
+            String requirement = link.unlockLevel() <= 1
+                    ? link.type()
+                    : link.type() + " - Lv " + link.unlockLevel();
 
-        boolean hasAutoLife = global.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_auto-life");
-
-        entries.add(new DreamEaterLinkEntry("Cure Support", "Learn Cure", hasCure));
-        entries.add(new DreamEaterLinkEntry("Aero Support", "Learn Aero", hasAero));
-        entries.add(new DreamEaterLinkEntry("Esuna Support", "Learn Esuna", hasEsuna));
-        entries.add(new DreamEaterLinkEntry("Auto-Life Support", "Learn Auto-Life", hasAutoLife));
+            entries.add(new DreamEaterLinkEntry(link.displayName(), requirement, unlocked));
+        }
     }
 
     private void addMeowWowLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {

@@ -299,6 +299,8 @@
   "ability.ability_block_replenisher.desc": "Upon a successful guard, restore a small amount of MP. \nRestores more upon successful parry! \nRequires EFM Guard Skill.",
   "ability.ability_poison_block.name": "Poison Block",
   "ability.ability_poison_block.desc": "Upon a successful guard, inflict Poison on the attacker. \nStronger effect upon successful parry! \nRequires EFM Guard Skill.",
+  "ability.ability_confusion_block.name": "Confusion Block",
+  "ability.ability_confusion_block.desc": "Upon a successful guard, inflict Confusion on the attacker. \nStronger effect upon successful parry! \nRequires EFM Guard Skill.",
   "ability.ability_stop_block.name": "Stop Block",
   "ability.ability_stop_block.desc": "Upon a successful Parry, inflict Stop on the attacker. \nRequires EFM Parry Skill.",
   "ability.ability_royal_guard.name": "Royal Guard",

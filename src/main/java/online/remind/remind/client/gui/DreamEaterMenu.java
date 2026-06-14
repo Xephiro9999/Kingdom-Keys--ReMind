@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import online.kingdomkeys.kingdomkeys.ability.Ability;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
@@ -19,7 +18,6 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
 import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
@@ -276,6 +274,10 @@ public class DreamEaterMenu extends MenuBackground {
             return getProjectedMeowWowStats(ownerLevel);
         }
 
+        if (StringsRM.komoryBat.equals(name)) {
+            return getProjectedMeowWowStats(ownerLevel);
+        }
+
 
 
         // Future-proof fallback:
@@ -290,10 +292,12 @@ public class DreamEaterMenu extends MenuBackground {
     }
 
     private DreamEaterDisplayStats getProjectedChirithyStats(PlayerData playerData, int ownerLevel) {
-        float hp = 20F + (playerData.getMaxHP() / 2F);
-        float strength = (float) (2F + (playerData.getStrengthStat().getStat() / 5F));
-        float magic = (float) (5F + (playerData.getMagicStat().getStat() * 0.75F));
-        float defense = (float) (2F + (playerData.getDefenseStat().getStat() / 2F));
+        float hp = (int) Math.round(18 + (playerData.getMaxHP() * 0.55D) + (ownerLevel * 0.75D));
+        float strength = 1f;
+        float magic = (int) Math.round(10 + (playerData.getMagicStat().getStat() * 0.80D) + (ownerLevel * 0.15D));
+        float defense = (int) Math.round(4 + (playerData.getDefenseStat().getStat() * 0.65D) + (ownerLevel * 0.10D));
+
+
 
         return new DreamEaterDisplayStats(ownerLevel, hp, strength, magic, defense);
     }
@@ -424,7 +428,15 @@ public class DreamEaterMenu extends MenuBackground {
         String name = dreamEater.getName();
 
         if (StringsRM.chirithy.equals(name)) {
-            renderChirithyAbilities(global, col2X, button_statsY, dataWidth, spacer, d);
+            renderLinkDataAbilities(
+                    DreamEaterLinkData.getChirithyLinks(),
+                    playerData,
+                    col2X,
+                    button_statsY,
+                    dataWidth,
+                    spacer,
+                    d
+            );
             return;
         }
 
@@ -499,136 +511,6 @@ public class DreamEaterMenu extends MenuBackground {
         }
 
         return d;
-    }
-
-    private int renderChirithyAbilities(GlobalDataRM global, int col2X, int button_statsY, float dataWidth, int spacer, int d) {
-        if (global.getLearndedMagics().containsKey(Strings.Magic_Cure)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Cura)
-                || global.getLearndedMagics().containsKey(Strings.Magic_Curaga)) {
-
-            switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure))) {
-                case 2:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Curaga", "LEARNED", 0x7a8487));
-                    break;
-                case 1:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cura", "LEARNED", 0x7a8487));
-                    break;
-                default:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "LEARNED", 0x7a8487));
-                    break;
-            }
-        } else {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Cure", "Requires Cure Unlocked", 0x000000));
-        }
-
-        if (global.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_esuna")) {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Esuna", "LEARNED", 0x7a8487));
-        } else {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Esuna", "Requires Esuna Unlocked", 0x000000));
-        }
-
-        if (global.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
-            switch (global.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero))) {
-                case 2:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aeroga", "LEARNED", 0x7a8487));
-                    break;
-                case 1:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aerora", "LEARNED", 0x7a8487));
-                    break;
-                default:
-                    addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aero", "LEARNED", 0x7a8487));
-                    break;
-            }
-        } else {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Aero", "Requires Aero Unlocked", 0x000000));
-        }
-
-        if (global.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_auto-life")) {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "LEARNED", 0x7a8487));
-        } else {
-            addRenderableWidget(abilities = new MenuColourBox(col2X, button_statsY + (d++ * spacer), (int) dataWidth, "Auto-Life", "Requires Auto-Life Unlocked", 0x000000));
-        }
-
-        return d;
-    }
-
-    private void renderMeowWowAbilities(PlayerData playerData, int col2X, int button_statsY, float dataWidth, int spacer, int d) {
-        int level = Math.max(1, playerData.getLevel());
-
-        addRenderableWidget(abilities = new MenuColourBox(
-                col2X,
-                button_statsY + (d++ * spacer),
-                (int) dataWidth,
-                getMeowWowCureName(level),
-                "Lv " + getMeowWowCureUnlockLevel(level),
-                0x7a8487
-        ));
-
-        addRenderableWidget(abilities = new MenuColourBox(
-                col2X,
-                button_statsY + (d++ * spacer),
-                (int) dataWidth,
-                getMeowWowBalloonName(level),
-                "Lv " + getMeowWowBalloonUnlockLevel(level),
-                0x7a8487
-        ));
-
-        addRenderableWidget(abilities = new MenuColourBox(
-                col2X,
-                button_statsY + (d++ * spacer),
-                (int) dataWidth,
-                "Slow",
-                "Lv 1",
-                0x7a8487
-        ));
-    }
-
-    private String getMeowWowCureName(int level) {
-        if (level >= 20) {
-            return "Curaga";
-        }
-
-        if (level >= 10) {
-            return "Cura";
-        }
-
-        return "Cure";
-    }
-
-    private int getMeowWowCureUnlockLevel(int level) {
-        if (level >= 20) {
-            return 20;
-        }
-
-        if (level >= 10) {
-            return 10;
-        }
-
-        return 1;
-    }
-
-    private String getMeowWowBalloonName(int level) {
-        if (level >= 25) {
-            return "Balloonga";
-        }
-
-        if (level >= 16) {
-            return "Balloonra";
-        }
-
-        return "Balloon";
-    }
-
-    private int getMeowWowBalloonUnlockLevel(int level) {
-        if (level >= 25) {
-            return 25;
-        }
-
-        if (level >= 16) {
-            return 16;
-        }
-
-        return 1;
     }
 
     private static class DreamEaterDisplayStats {

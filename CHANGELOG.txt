@@ -333,3 +333,4 @@ Please note, this can be given via `/give @s kkremind:ability_orb[kkremind:abili
 	- Fixed Org's leaving option taking Hearts despite not having enough Hearts
 	- Added feedback to some buttons in the Panel System.
 	- Org Glide should feel better at just one.
+

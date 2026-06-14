@@ -70,7 +70,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private int cureCooldown = 60;
     private int aeroCooldown = 60;
     private int esunaCooldown = 60;
-    private double autoLifeCooldown = 60;
+    private int autoLifeCooldown = 60;
     private int castCooldown = 60;
     private float mpHasteMult;
 
@@ -124,16 +124,33 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
             PlayerData ownerData = PlayerData.get(owner);
 
-            this.hp = (int) (20 + (ownerData.getMaxHP() / 2D));
-            this.str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-            this.mag = (int) (5 + (ownerData.getMagicStat().getStat() * 0.75D));
-            this.def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
+            int ownerLevel = Math.max(1, ownerData.getLevel());
 
-            this.setHealth((float) hp);
+            this.hp = (int) Math.round(18 + (ownerData.getMaxHP() * 0.55D) + (ownerLevel * 0.75D));
+            this.str = 1;
+            this.mag = (int) Math.round(10 + (ownerData.getMagicStat().getStat() * 0.80D) + (ownerLevel * 0.15D));
+            this.def = (int) Math.round(4 + (ownerData.getDefenseStat().getStat() * 0.65D) + (ownerLevel * 0.10D));
+
+            this.chirithyHP = this.hp;
+            this.chirithyStrength = this.str;
+            this.chirithyMagic = this.mag;
+            this.chirithyDefense = this.def;
+
+            if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
+                this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.hp);
+            }
+
+            if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+                this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.str);
+            }
+
+            if (this.getAttribute(Attributes.ARMOR) != null) {
+                this.getAttribute(Attributes.ARMOR).setBaseValue(this.def);
+            }
+
+            this.setHealth(this.getMaxHealth());
         }
     }
-
-
 
     public void updateStatsFromOwner() {
         if (owner == null) {
@@ -146,10 +163,16 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return;
         }
 
-        hp = (int) (20 + (ownerData.getMaxHP() / 2D));
-        str = (int) (2 + (ownerData.getStrengthStat().getStat() / 5D));
-        mag = (int) (5 + (ownerData.getMagicStat().getStat() * 0.75D));
-        def = (int) (2 + (ownerData.getDefenseStat().getStat() / 2D));
+        int ownerLevel = Math.max(1, ownerData.getLevel());
+
+        hp = (int) Math.round(18 + (ownerData.getMaxHP() * 0.55D) + (ownerLevel * 0.75D));
+
+        // Chirithy is pure support. STR is intentionally low.
+        str = 1;
+
+        mag = (int) Math.round(10 + (ownerData.getMagicStat().getStat() * 0.80D) + (ownerLevel * 0.15D));
+
+        def = (int) Math.round(4 + (ownerData.getDefenseStat().getStat() * 0.65D) + (ownerLevel * 0.10D));
 
         chirithyHP = hp;
         chirithyStrength = str;
@@ -240,297 +263,384 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
 
-    private void castSupportMagic(){
-        float healAmount;
+    private void castSupportMagic() {
+        if (owner == null || !owner.isAlive()) {
+            return;
+        }
+
         PlayerData ownerData = PlayerData.get(owner);
         GlobalDataRM globalData = ModDataRM.getGlobal(owner);
 
-        if (ownerData == null) return;
-        if (ownerData.isAbilityEquipped(Strings.mpHaste) || ownerData.isAbilityEquipped(Strings.mpHastera) || ownerData.isAbilityEquipped(Strings.mpHastega)) {
-            int mpHastes = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHaste);
-            int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastera);
-            int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastega);
-            mpHasteMult = (mpHastes * 0.15f) + (mpHasteras * 0.3f) + (mpHastegas * 0.45f);
-            //System.out.println("MP Haste Mult: " + mpHasteMult);
-        }
-
-        if (cureCooldown <= 0){
-            cureCooldown = 0;
-        }
-        if (aeroCooldown <= 0){
-            aeroCooldown = 0;
-        }
-        if (esunaCooldown <= 0){
-            esunaCooldown = 0;
-        }
-        if (autoLifeCooldown <= 0){
-            autoLifeCooldown = 0;
-        }
-
-
-        if (cureCooldown > 0){
-            cureCooldown--;
-            cureCooldown -= (int) mpHasteMult;
+        if (ownerData == null || globalData == null) {
             return;
         }
 
-        if (aeroCooldown > 0){
-            aeroCooldown--;
-            aeroCooldown -= (int) mpHasteMult;
+        updateMpHasteMult(ownerData);
+        tickSupportCooldowns();
+
+        if (castCooldown > 0) {
             return;
         }
 
-        if (esunaCooldown > 0){
-            esunaCooldown--;
-            esunaCooldown -= (int) mpHasteMult;
+        // Highest priority: if owner is KO or low HP, heal first.
+        if (tryCastCure(globalData, true)) {
             return;
         }
 
-        if (autoLifeCooldown > 0){
-            autoLifeCooldown--;
-            autoLifeCooldown -= (int) mpHasteMult;
+        // Remove harmful effects before anything else.
+        if (tryCastEsuna(globalData)) {
             return;
         }
 
-        if (castCooldown > 0){
-            castCooldown--;
+        // Keep Auto-Life up when possible.
+        if (tryCastAutoLife(globalData)) {
+            return;
         }
 
-        if (owner != null && owner.isAlive()){
+        // Shield owner after taking damage.
+        if (tryCastAero(globalData)) {
+            return;
+        }
 
+        // Normal healing if owner is hurt but not critical.
+        if (tryCastCure(globalData, false)) {
+            return;
+        }
 
+        // Lowest priority: Chirithy heals itself only if owner is safe.
+        trySelfHeal();
+    }
 
-            if (castCooldown == 0) {
+    private void updateMpHasteMult(PlayerData ownerData) {
+        mpHasteMult = 0F;
 
-                if (ownerData == null ||globalData == null) return;
+        if (ownerData == null) {
+            return;
+        }
 
-                // --------------- Cure ---------------------
+        int mpHastes = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHaste);
+        int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastera);
+        int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastega);
 
-                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
+        mpHasteMult = (mpHastes * 0.15F) + (mpHasteras * 0.3F) + (mpHastegas * 0.45F);
+    }
 
-                    if (cureCooldown == 0 && castCooldown == 0) {
-                        if (owner.isHurt() || owner.hasEffect(ModMobEffects.KO)) {
+    private void tickSupportCooldowns() {
+        int reduction = 1 + Math.max(0, (int) (mpHasteMult * 5F));
 
-                            int cureLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
+        if (cureCooldown > 0) {
+            cureCooldown = Math.max(0, cureCooldown - reduction);
+        }
 
+        if (aeroCooldown > 0) {
+            aeroCooldown = Math.max(0, aeroCooldown - reduction);
+        }
 
-                            switch (cureLevel) {
-                                case 0:
-                                    // Cure
-                                    healAmount = (float) mag;
-                                    owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cure.get(), SoundSource.PLAYERS, 1f, 1f);
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Cure!"));
-                                    break;
+        if (esunaCooldown > 0) {
+            esunaCooldown = Math.max(0, esunaCooldown - reduction);
+        }
 
-                                case 1:
-                                    // Cura
-                                    healAmount = mag * 1.1f;
-                                    owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cura.get(), SoundSource.PLAYERS, 1f, 1f);
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Cura!"));
-                                    break;
+        if (autoLifeCooldown > 0) {
+            autoLifeCooldown = Math.max(0, autoLifeCooldown - reduction);
+        }
 
-                                case 2:
-                                    // Curaga
-                                    healAmount = mag * 1.25f;
-                                    owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.curaga.get(), SoundSource.PLAYERS, 1f, 1f);
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Curaga!"));
-                                    break;
+        if (castCooldown > 0) {
+            castCooldown = Math.max(0, castCooldown - 1);
+        }
+    }
 
-                                default:
-                                    healAmount = (float) mag;
-                                    owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cure.get(), SoundSource.PLAYERS, 1f, 1f);
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Cure!"));
-                                    break;
-                            }
+    private boolean tryCastCure(GlobalDataRM globalData, boolean emergencyOnly) {
+        if (cureCooldown > 0 || castCooldown > 0) {
+            return false;
+        }
 
-                            ((ServerLevel) owner.level()).sendParticles(
-                                    ParticleTypes.HAPPY_VILLAGER,
-                                    owner.getX(),
-                                    owner.getY() + 2.3D,
-                                    owner.getZ(),
-                                    5,
-                                    0D,
-                                    0D,
-                                    0D,
-                                    0D
-                            );
+        if (!globalData.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
+            return false;
+        }
 
-                            owner.heal(healAmount);
+        boolean ownerKO = owner.hasEffect(ModMobEffects.KO);
+        boolean ownerCritical = owner.getHealth() <= owner.getMaxHealth() * 0.4F;
 
-                            if (owner.hasEffect(ModMobEffects.KO)) {
-                                owner.removeEffect(ModMobEffects.KO);
-                            }
+        if (emergencyOnly && !ownerKO && !ownerCritical) {
+            return false;
+        }
 
-                            this.startCasting();
-                            cureCooldown = 180;
-                            castCooldown = 40;
-                        }
-                    }
-                }
+        if (!emergencyOnly && (!owner.isHurt() || ownerCritical || ownerKO)) {
+            return false;
+        }
 
+        int cureLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
 
+        float healAmount;
+        String spellName;
 
+        switch (cureLevel) {
+            case 1:
+                healAmount = (float) (chirithyMagic * 1.1F);
+                spellName = "Cura";
+                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cura.get(), SoundSource.PLAYERS, 1F, 1F);
+                break;
 
-                // --------------- Aero ---------------------
+            case 2:
+                healAmount = (float) (chirithyMagic * 1.25F);
+                spellName = "Curaga";
+                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.curaga.get(), SoundSource.PLAYERS, 1F, 1F);
+                break;
 
-                if (globalData.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
-                    if (aeroCooldown == 0 && castCooldown == 0) {
-                        if (owner.hurtTime > 0) {
+            case 0:
+            default:
+                healAmount = (float) chirithyMagic;
+                spellName = "Cure";
+                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cure.get(), SoundSource.PLAYERS, 1F, 1F);
+                break;
+        }
 
-                            int aeroLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
+        owner.heal(healAmount);
 
-                            int amplifier = aeroLevel;
-                            int time;
+        if (owner.hasEffect(ModMobEffects.KO)) {
+            owner.removeEffect(ModMobEffects.KO);
+        }
 
-                            switch (aeroLevel) {
-                                case 0:
-                                    // Aero
-                                    time = (int) (chirithyMagic * 100);
-                                    owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time * 20, amplifier, false, false, true));
+        if (owner.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.HAPPY_VILLAGER,
+                    owner.getX(),
+                    owner.getY() + 2.3D,
+                    owner.getZ(),
+                    8,
+                    0.25D,
+                    0.25D,
+                    0.25D,
+                    0.02D
+            );
+        }
 
-                                    PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
-                                    owner.level().playSound(
-                                            null,
-                                            owner.position().x(),
-                                            owner.position().y(),
-                                            owner.position().z(),
-                                            ModSounds.aero1.get(),
-                                            SoundSource.PLAYERS,
-                                            1F,
-                                            1F
-                                    );
+        owner.sendSystemMessage(Component.literal("<Chirithy> " + spellName + "!"));
 
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Aero! Winds guard you!"));
-                                    break;
+        this.startCasting();
 
-                                case 1:
-                                    // Aerora
-                                    time = (int) (chirithyMagic * 125);
-                                    owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time * 20, amplifier, false, false, true));
+        cureCooldown = emergencyOnly ? 120 : 180;
+        castCooldown = 30;
 
-                                    PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
-                                    owner.level().playSound(
-                                            null,
-                                            owner.position().x(),
-                                            owner.position().y(),
-                                            owner.position().z(),
-                                            ModSounds.aero1.get(),
-                                            SoundSource.PLAYERS,
-                                            1F,
-                                            1F
-                                    );
+        return true;
+    }
 
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Aerora! Winds guard you!"));
-                                    break;
+    private boolean tryCastAero(GlobalDataRM globalData) {
+        if (aeroCooldown > 0 || castCooldown > 0) {
+            return false;
+        }
 
-                                case 2:
-                                    // Aeroga
-                                    time = (int) (chirithyMagic * 150);
-                                    owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time * 20, amplifier, false, false, true));
+        if (!globalData.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
+            return false;
+        }
 
-                                    PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
-                                    owner.level().playSound(
-                                            null,
-                                            owner.position().x(),
-                                            owner.position().y(),
-                                            owner.position().z(),
-                                            ModSounds.aero1.get(),
-                                            SoundSource.PLAYERS,
-                                            1F,
-                                            1F
-                                    );
+        if (owner.hurtTime <= 0) {
+            return false;
+        }
 
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Aeroga! Winds guard you!"));
-                                    break;
+        int aeroLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
 
-                                default:
-                                    // Fallback to Aero if something weird happens
-                                    time = (int) (chirithyMagic * 100);
-                                    owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, time * 20, 0, false, false, true));
+        int amplifier = Math.max(0, aeroLevel);
+        int durationTicks;
+        String spellName;
 
-                                    PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
-                                    owner.level().playSound(
-                                            null,
-                                            owner.position().x(),
-                                            owner.position().y(),
-                                            owner.position().z(),
-                                            ModSounds.aero1.get(),
-                                            SoundSource.PLAYERS,
-                                            1F,
-                                            1F
-                                    );
+        switch (aeroLevel) {
+            case 1:
+                durationTicks = 20 * 35;
+                spellName = "Aerora";
+                break;
 
-                                    owner.sendSystemMessage(Component.literal("<Chirithy> Aero! Winds guard you!"));
-                                    break;
-                            }
+            case 2:
+                durationTicks = 20 * 45;
+                spellName = "Aeroga";
+                break;
 
-                            this.startCasting();
-                            aeroCooldown = 300;
-                            castCooldown = 20;
-                        }
-                    }
-                }
+            case 0:
+            default:
+                durationTicks = 20 * 25;
+                spellName = "Aero";
+                break;
+        }
 
-                // Heal Self
-                if (cureCooldown == 0 && castCooldown == 0) {
-                    if (this.getHealth() < this.getMaxHealth() && !owner.isHurt()) {
-                        this.heal((float) mag);
-                        ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER.getType(), this.getX(), this.getY() + 2.3D, this.getZ(), 5, 0D, 0D, 0D, 0D);
-                        this.level().playSound(null, this.position().x(), this.position().y(), this.position().z(), ModSounds.cure.get(), SoundSource.NEUTRAL, 1f, 1f);
-                        owner.sendSystemMessage(Component.literal("<Chirithy> Gotta patch myself up!"));
-                        this.startCasting();
-                        cureCooldown = 400;
-                        castCooldown = 20;
+        owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, durationTicks, amplifier, false, false, true));
 
-                    }
-                }
+        PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
 
-                // Esuna Logic
+        owner.level().playSound(
+                null,
+                owner.getX(),
+                owner.getY(),
+                owner.getZ(),
+                ModSounds.aero1.get(),
+                SoundSource.PLAYERS,
+                1F,
+                1F
+        );
 
-                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_esuna")) || globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_group_esuna"))) {
-                    if (esunaCooldown == 0 && castCooldown == 0) {
+        owner.sendSystemMessage(Component.literal("<Chirithy> " + spellName + "! Winds guard you!"));
 
-                        List<Holder<MobEffect>> toRemove = new ArrayList<>();
+        this.startCasting();
 
-                        Iterator<MobEffectInstance> iterator = owner.getActiveEffects().iterator();
+        aeroCooldown = 260;
+        castCooldown = 25;
 
-                        while (iterator.hasNext()){
-                            MobEffectInstance effect = iterator.next();
+        return true;
+    }
 
-                            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
-                                toRemove.add(effect.getEffect());
-                            }
-                        }
+    private boolean tryCastEsuna(GlobalDataRM globalData) {
+        if (esunaCooldown > 0 || castCooldown > 0) {
+            return false;
+        }
 
-                        if (!toRemove.isEmpty()){
-                            for (Holder<MobEffect> effect : toRemove){
-                                owner.removeEffect(effect);
-                            }
-                            owner.sendSystemMessage(Component.literal("<Chirithy> No more ailments!"));
-                            owner.level().playSound(null, owner.position().x(), owner.position().y(), owner.position().z(), ModSoundsRM.ESUNA.get(), SoundSource.PLAYERS, 1F, 1F);
-                            this.startCasting();
-                            esunaCooldown = 600;
-                            castCooldown = 20;
-                        }
-                    }
-                }
+        boolean hasEsuna =
+                globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_esuna")
+                        || globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_group_esuna");
 
-                // Auto-Life
-                if (globalData.getLearndedMagics().containsKey((KingdomKeysReMind.MODID + ":" + "magic_auto-life"))) {
-                    if (!owner.hasEffect(ModMobEffectsRM.AUTO_LIFE)){
-                        if (autoLifeCooldown == 0 && castCooldown == 0){
-                            owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE,Integer.MAX_VALUE, 0,false,false));
-                            owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSoundsRM.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
-                            owner.sendSystemMessage(Component.literal("<Chirithy> Not gonna let you die! Auto-Life!"));
-                            this.startCasting();
-                            autoLifeCooldown = ModConfigs.autoLifeCD * 1200;
-                            castCooldown = 20;
+        if (!hasEsuna) {
+            return false;
+        }
 
-                        }
-                    }
-                }
+        List<Holder<MobEffect>> toRemove = new ArrayList<>();
+
+        for (MobEffectInstance effect : owner.getActiveEffects()) {
+            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                toRemove.add(effect.getEffect());
             }
         }
+
+        if (toRemove.isEmpty()) {
+            return false;
+        }
+
+        for (Holder<MobEffect> effect : toRemove) {
+            owner.removeEffect(effect);
+        }
+
+        owner.level().playSound(
+                null,
+                owner.getX(),
+                owner.getY(),
+                owner.getZ(),
+                ModSoundsRM.ESUNA.get(),
+                SoundSource.PLAYERS,
+                1F,
+                1F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Chirithy> No more ailments!"));
+
+        if (owner.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.ENCHANT,
+                    owner.getX(),
+                    owner.getY() + 1.3D,
+                    owner.getZ(),
+                    12,
+                    0.35D,
+                    0.55D,
+                    0.35D,
+                    0.03D
+            );
+        }
+
+        this.startCasting();
+
+        esunaCooldown = 420;
+        castCooldown = 25;
+
+        return true;
+    }
+
+    private boolean tryCastAutoLife(GlobalDataRM globalData) {
+        if (autoLifeCooldown > 0 || castCooldown > 0) {
+            return false;
+        }
+
+        if (!globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_auto-life")) {
+            return false;
+        }
+
+        if (owner.hasEffect(ModMobEffectsRM.AUTO_LIFE)) {
+            return false;
+        }
+
+        // Do not waste time casting Auto-Life if the owner needs immediate healing.
+        if (owner.getHealth() <= owner.getMaxHealth() * 0.5F || owner.hasEffect(ModMobEffects.KO)) {
+            return false;
+        }
+
+        owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE, Integer.MAX_VALUE, 0, false, false));
+
+        owner.level().playSound(
+                null,
+                owner.getX(),
+                owner.getY(),
+                owner.getZ(),
+                ModSoundsRM.AUTOLIFE.get(),
+                SoundSource.PLAYERS,
+                1F,
+                1F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Chirithy> Not gonna let you die! Auto-Life!"));
+
+        this.startCasting();
+
+        autoLifeCooldown = (int) (ModConfigs.autoLifeCD * 1200);
+        castCooldown = 35;
+
+        return true;
+    }
+
+    private boolean trySelfHeal() {
+        if (cureCooldown > 0 || castCooldown > 0) {
+            return false;
+        }
+
+        if (!this.isAlive() || this.getHealth() >= this.getMaxHealth()) {
+            return false;
+        }
+
+        // Owner safety check. Chirithy should not self-heal while owner needs help.
+        if (owner.isHurt() || owner.hurtTime > 0 || owner.hasEffect(ModMobEffects.KO)) {
+            return false;
+        }
+
+        this.heal((float) chirithyMagic);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.HAPPY_VILLAGER,
+                    this.getX(),
+                    this.getY() + this.getBbHeight() + 0.4D,
+                    this.getZ(),
+                    5,
+                    0.25D,
+                    0.25D,
+                    0.25D,
+                    0.02D
+            );
+        }
+
+        this.level().playSound(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                ModSounds.cure.get(),
+                SoundSource.NEUTRAL,
+                1F,
+                1F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Chirithy> Gotta patch myself up!"));
+
+        this.startCasting();
+
+        cureCooldown = 300;
+        castCooldown = 25;
+
+        return true;
     }
 
     @Override
@@ -584,17 +694,14 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 .add(Attributes.FOLLOW_RANGE, 50.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1000.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.0D)
-                .add(Attributes.ATTACK_DAMAGE, 0.5D);
+                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.0D)
+                .add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     public int getMagic(){
         return (int) chirithyMagic;
-    }
-
-    public int getDefence(){
-        return 10;
     }
 
     @Override

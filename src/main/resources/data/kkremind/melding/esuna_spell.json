@@ -4,7 +4,7 @@
   "ingredient2": "kingdomkeys:spellpoison",
   "output": {
     "type": "item",
-    "item": "kkremind:esuna_spell",
+    "item": "kingdomkeys:spellesuna",
     "quantity": 1
   },
   "tier": 2

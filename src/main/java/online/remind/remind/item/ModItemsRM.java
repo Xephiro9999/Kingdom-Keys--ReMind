@@ -27,7 +27,6 @@ public class ModItemsRM{
         slowSpell = ITEMS.register("slow_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow")),
         holySpell = ITEMS.register("holy_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy")),
         ruinSpell = ITEMS.register("ruin_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin")),
-        balloonSpell = ITEMS.register("balloon_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_balloon")),
         ultimaSpell = ITEMS.register("ultima_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ultima")),
         cometSpell = ITEMS.register("comet_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_comet")),
         berserkSpell = ITEMS.register("berserk_spell",() -> new RMMagicSpellItem(new Item.Properties(),KingdomKeysReMind.MODID+":magic_berserk")),
@@ -37,20 +36,15 @@ public class ModItemsRM{
         silenceSpell = ITEMS.register("silence_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_silence")),
         esunaSpell = ITEMS.register("esuna_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_esuna")),
         dispelSpell = ITEMS.register("dispel_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_dispel")),
-        warpSpell = ITEMS.register("warp_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_warp")),
         faithSpell = ITEMS.register("faith_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_faith")),
         regenSpell = ITEMS.register("regen_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
         stealSpell = ITEMS.register("steal_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_steal")),
-        sparkSpell = ITEMS.register("spark_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
-        mineSquareSpell = ITEMS.register("mine_square_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
-        mineShieldSpell = ITEMS.register("mine_shield_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
         confuseSpell = ITEMS.register("confuse_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse")),
 
         hasteraSpell = ITEMS.register("haste1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_haste")),
         slowraSpell = ITEMS.register("slow1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow")),
         holyraSpell = ITEMS.register("holy1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy")),
         ruinraSpell = ITEMS.register("ruin1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin")),
-        balloonraSpell = ITEMS.register("balloon1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_balloon")),
         meteorSpell = ITEMS.register("comet1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_comet")),
         berserkraSpell = ITEMS.register("berserk1_spell",() -> new RMMagicSpellItem(new Item.Properties(),KingdomKeysReMind.MODID+":magic_berserk")),
         drainraSpell = ITEMS.register("drain1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_drain")),
@@ -58,9 +52,6 @@ public class ModItemsRM{
         silenceraSpell = ITEMS.register("silence1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_silence")),
         groupEsunaSpell = ITEMS.register("esuna1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_esuna")),
         regenraSpell = ITEMS.register("regen1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
-        sparkraSpell = ITEMS.register("spark1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
-        mineSquare1Spell = ITEMS.register("mine_square1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
-        mineShield1Spell = ITEMS.register("mine_shield1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
         confuse1Spell = ITEMS.register("confuse1_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse")),
 
 
@@ -68,19 +59,12 @@ public class ModItemsRM{
         slowgaSpell = ITEMS.register("slow2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_slow")),
         holygaSpell = ITEMS.register("holy2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_holy")),
         ruingaSpell = ITEMS.register("ruin2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_ruin")),
-        balloongaSpell = ITEMS.register("balloon2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_balloon")),
         berserkgaSpell = ITEMS.register("berserk2_spell",() -> new RMMagicSpellItem(new Item.Properties(),KingdomKeysReMind.MODID+":magic_berserk")),
         draingaSpell = ITEMS.register("drain2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_drain")),
         osmosegaSpell = ITEMS.register("osmose2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_osmose")),
         silencegaSpell = ITEMS.register("silence2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_silence")),
         regengaSpell = ITEMS.register("regen2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_regen")),
-        sparkgaSpell = ITEMS.register("spark2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_spark")),
-        mineSquare2Spell = ITEMS.register("mine_square2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
-        mineShield2Spell = ITEMS.register("mine_shield2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
         confuse2Spell = ITEMS.register("confuse2_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_confuse")),
-
-        mineSquare3Spell = ITEMS.register("mine_square3_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_square")),
-        mineShield3Spell = ITEMS.register("mine_shield3_spell", () -> new RMMagicSpellItem(new Item.Properties(), KingdomKeysReMind.MODID+":magic_mine_shield")),
 
 
         // Attack Orbs

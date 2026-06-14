@@ -13,22 +13,8 @@ import java.util.function.Supplier;
 
 public class RMMagicSpellItem extends MagicSpellItem implements ICreativeTabRM {
     private static final Map<Supplier<Item>, Supplier<Item>> CONVERSIONS = Map.ofEntries(
-            Map.entry(ModItemsRM.sparkSpell, ModItems.sparkSpell),
-            Map.entry(ModItemsRM.sparkraSpell, ModItems.sparkraSpell),
-            Map.entry(ModItemsRM.sparkgaSpell, ModItems.sparkgaSpell),
-            Map.entry(ModItemsRM.balloonSpell, ModItems.balloonSpell),
-            Map.entry(ModItemsRM.balloonraSpell, ModItems.balloonraSpell),
-            Map.entry(ModItemsRM.balloongaSpell, ModItems.balloongaSpell),
-            Map.entry(ModItemsRM.warpSpell, ModItems.warpSpell),
-            Map.entry(ModItemsRM.esunaSpell, ModItems.esunaSpell),
-            Map.entry(ModItemsRM.mineShieldSpell, ModItems.mineShieldSpell),
-            Map.entry(ModItemsRM.mineShield1Spell, ModItems.mineShieldSpell),
-            Map.entry(ModItemsRM.mineShield2Spell, ModItems.mineShieldSpell),
-            Map.entry(ModItemsRM.mineShield3Spell, ModItems.mineSeekerSpell),
-            Map.entry(ModItemsRM.mineSquareSpell, ModItems.mineSquareSpell),
-            Map.entry(ModItemsRM.mineSquare1Spell, ModItems.mineSquareSpell),
-            Map.entry(ModItemsRM.mineSquare2Spell, ModItems.mineSquareSpell),
-            Map.entry(ModItemsRM.mineSquare3Spell, ModItems.mineSeekerSpell)
+
+            Map.entry(ModItemsRM.esunaSpell, ModItems.esunaSpell)
     );
 
     public RMMagicSpellItem(Properties properties, String name) {
