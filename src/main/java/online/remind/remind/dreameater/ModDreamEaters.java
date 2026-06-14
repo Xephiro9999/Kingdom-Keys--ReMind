@@ -20,7 +20,8 @@ public class ModDreamEaters {
     public static final Supplier<DreamEater>
             NONE = DREAM_EATERS.register(StringsRM.none, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.none), order++)),
             CHIRITHY = DREAM_EATERS.register(StringsRM.chirithy, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.chirithy), order++)),
-            MEOW_WOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++));
+            MEOW_WOW = DREAM_EATERS.register(StringsRM.meowWow, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.meowWow), order++)),
+            KOMORY_BAT = DREAM_EATERS.register(StringsRM.komoryBat, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.komoryBat), order++));
 
 
 }

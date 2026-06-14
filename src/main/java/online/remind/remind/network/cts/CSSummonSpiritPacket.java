@@ -21,6 +21,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.spirits.ChirithyEntity;
+import online.remind.remind.entity.spirits.KomoryBatEntity;
 import online.remind.remind.entity.spirits.MeowWowEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -155,6 +156,24 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 owner.level().addFreshEntity(meowWow);
                 summonedDreamEater = meowWow;
+                break;
+            }
+
+            case StringsRM.komoryBat: {
+                KomoryBatEntity.removeExistingKomoryBat(serverLevel, owner.getUUID());
+
+                KomoryBatEntity komoryBat = new KomoryBatEntity(owner.level(), owner);
+                komoryBat.setOwnerUUID(owner.getUUID());
+                komoryBat.setPos(owner.getX(), owner.getY() + 2.4D, owner.getZ());
+
+                int variant = kkData.getAlignment() != Utils.OrgMember.NONE
+                        ? KomoryBatEntity.VARIANT_ORG
+                        : KomoryBatEntity.VARIANT_NORMAL;
+
+                komoryBat.setVariant(variant);
+
+                owner.level().addFreshEntity(komoryBat);
+                summonedDreamEater = komoryBat;
                 break;
             }
 

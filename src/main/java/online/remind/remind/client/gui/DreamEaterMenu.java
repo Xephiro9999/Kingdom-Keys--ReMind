@@ -265,6 +265,8 @@ public class DreamEaterMenu extends MenuBackground {
             return getProjectedMeowWowStats(ownerLevel);
         }
 
+
+
         // Future-proof fallback:
         // Unknown Dream Eaters still show something instead of breaking the menu.
         return new DreamEaterDisplayStats(
@@ -375,6 +377,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         if (StringsRM.meowWow.equals(dreamEater.getName())) {
             return "Meow Wow";
+        }
+
+        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
+            return "Komory Bat";
         }
 
         return dreamEater.getName();

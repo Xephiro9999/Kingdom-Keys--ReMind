@@ -116,6 +116,7 @@ public class StringsRM {
         none = "none",
         chirithy = StringsRM.DE_Prefix+"chirithy",
         meowWow = StringsRM.DE_Prefix+"meowwow",
+        komoryBat = StringsRM.DE_Prefix+"komory_bat",
 
         // Grand Magics
         seekerMine = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"seeker_mine",

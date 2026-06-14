@@ -533,6 +533,8 @@
   "key.kkremind.summonspirit": "Summon Spirit",
 
   "entity.kkremind.chirithy": "Chirithy",
+  "entity.kkremind.meow_wow": "Meow Wow",
+  "entity.kkremind.komory_bat": "Komory Bat",
 
   "effect.kkremind.haste_rm": "Haste (Re:Mind)",
   "effect.kkremind.haste_rm.1": "Hastera",
@@ -548,7 +550,8 @@
 
   "dreameater.none.name": "None",
   "dreameater.dreameater_chirithy.name": "Chirithy",
-  "dreameater.dreameater_meowwow.name": "Meow Wow"
+  "dreameater.dreameater_meowwow.name": "Meow Wow",
+  "dreameater.dreameater_komory_bat.name": "Komory Bat"
 
 
 }
