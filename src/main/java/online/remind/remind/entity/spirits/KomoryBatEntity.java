@@ -13,7 +13,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,14 +32,21 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.DreamEaterPetHelper;
 import online.remind.remind.dreameater.ModDreamEaters;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.entity.magic.DrainEntity;
 import online.remind.remind.lib.StringsRM;
+import online.remind.remind.magic.magicDrain;
 import online.remind.remind.network.PacketHandlerRM;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -59,6 +69,17 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
     private static final double SONIC_BOOM_RADIUS = 1.35D;
     private static final int SONIC_BOOM_WINDUP_TICKS = 22;
     private static final int SONIC_BOOM_HIT_TICK = 11;
+
+    private int confusingWavesCooldown = 0;
+    private int zeroGravityCooldown = 0;
+    private int drainCooldown = 0;
+    private int hasteCooldown = 0;
+    private int supportCastCooldown = 0;
+
+    private double komoryHP = 32.7D;
+    private double komoryStrength = 8.2D;
+    private double komoryMagic = 10.8D;
+    private double komoryDefense = 5.9D;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(KomoryBatEntity.class, EntityDataSerializers.INT);
@@ -146,6 +167,28 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
+    private void tickKomorySupportCooldowns() {
+        if (this.confusingWavesCooldown > 0) {
+            this.confusingWavesCooldown--;
+        }
+
+        if (this.zeroGravityCooldown > 0) {
+            this.zeroGravityCooldown--;
+        }
+
+        if (this.drainCooldown > 0) {
+            this.drainCooldown--;
+        }
+
+        if (this.hasteCooldown > 0) {
+            this.hasteCooldown--;
+        }
+
+        if (this.supportCastCooldown > 0) {
+            this.supportCastCooldown--;
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -213,6 +256,8 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
             this.attackCooldown--;
         }
 
+        tickKomorySupportCooldowns();
+
         if (this.getAttackAnimTicks() > 0) {
             this.setAttackAnimTicks(this.getAttackAnimTicks() - 1);
 
@@ -225,7 +270,348 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         followOwner(owner);
         updateCombatTarget(owner);
         tryStartSonicBoom(owner);
+        castKomorySupportMoves(owner);
+
     }
+
+    private void castKomorySupportMoves(Player owner) {
+        if (owner == null || !owner.isAlive()) {
+            return;
+        }
+
+        if (this.supportCastCooldown > 0) {
+            return;
+        }
+
+        if (this.getAttackAnimTicks() > 0) {
+            return;
+        }
+
+        PlayerData ownerData = PlayerData.get(owner);
+
+        if (ownerData == null) {
+            return;
+        }
+
+        int level = Math.max(1, ownerData.getLevel());
+
+        // Haste - Lv 20
+        if (level >= 20 && this.hasteCooldown <= 0 && !owner.hasEffect(ModMobEffectsRM.HASTE_RM)) {
+            castHaste(owner);
+            return;
+        }
+
+        LivingEntity target = this.target;
+
+        if (target == null || !canKomoryBatAttack(owner, target)) {
+            return;
+        }
+
+        // Drain - Lv 8
+        // Uses it more when Komory or owner is hurt, but can still use it offensively.
+        if (level >= 8 && this.drainCooldown <= 0) {
+            if (this.getHealth() < this.getMaxHealth() || owner.getHealth() < owner.getMaxHealth() || this.random.nextFloat() < 0.35F) {
+                castDrain(owner, target);
+                return;
+            }
+        }
+
+        // Zero Gravity / Zero Gravira / Zero Graviga - Lv 5 / 15 / 25
+        if (level >= 5 && this.zeroGravityCooldown <= 0 && !target.hasEffect(ModMobEffects.ZERO_GRAVITY)) {
+            castZeroGravity(owner, target, getZeroGravityTier(level));
+            return;
+        }
+
+        // Confusing Waves - Lv 1
+        if (this.confusingWavesCooldown <= 0 && !target.hasEffect(ModMobEffectsRM.CONFUSE)) {
+            castConfusingWaves(owner, target);
+        }
+    }
+
+    private void castConfusingWaves(Player owner, LivingEntity target) {
+        double radius = 4.0D;
+        int duration = 20 * 8;
+
+        AABB box = target.getBoundingBox().inflate(radius, 2.5D, radius);
+
+        boolean hitSomething = false;
+
+        for (LivingEntity entity : this.level().getEntitiesOfClass(
+                LivingEntity.class,
+                box,
+                entity -> canKomoryBatAttack(owner, entity)
+        )) {
+            entity.addEffect(new MobEffectInstance(
+                    ModMobEffectsRM.CONFUSE,
+                    duration,
+                    0,
+                    false,
+                    false,
+                    true
+            ));
+
+            hitSomething = true;
+        }
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.WITCH,
+                    target.getX(),
+                    target.getY() + target.getBbHeight() * 0.65D,
+                    target.getZ(),
+                    35,
+                    1.3D,
+                    0.45D,
+                    1.3D,
+                    0.04D
+            );
+
+            serverLevel.sendParticles(
+                    ParticleTypes.PORTAL,
+                    target.getX(),
+                    target.getY() + target.getBbHeight() * 0.65D,
+                    target.getZ(),
+                    20,
+                    1.0D,
+                    0.35D,
+                    1.0D,
+                    0.08D
+            );
+        }
+
+        this.level().playSound(
+                null,
+                target.blockPosition(),
+                SoundEvents.ILLUSIONER_CAST_SPELL,
+                SoundSource.NEUTRAL,
+                0.75F,
+                1.35F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Komory Bat> Confusing Waves!"));
+
+        this.confusingWavesCooldown = hitSomething ? 20 * 16 : 20 * 4;
+        this.supportCastCooldown = 20 * 3;
+    }
+
+    private void castZeroGravity(Player owner, LivingEntity target, int tier) {
+        double radius = 3.5D + tier;
+        int duration = 20 * (4 + (tier * 2));
+        int amplifier = Math.max(0, tier - 1);
+
+        AABB box = target.getBoundingBox().inflate(radius, 2.5D, radius);
+
+        boolean hitSomething = false;
+
+        for (LivingEntity entity : this.level().getEntitiesOfClass(
+                LivingEntity.class,
+                box,
+                entity -> canKomoryBatAttack(owner, entity)
+        )) {
+            entity.addEffect(new MobEffectInstance(
+                    ModMobEffects.ZERO_GRAVITY,
+                    duration,
+                    amplifier,
+                    false,
+                    false,
+                    true
+            ));
+
+
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.25D + (tier * 0.07D), 0.0D));
+            entity.hasImpulse = true;
+
+            hitSomething = true;
+        }
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.END_ROD,
+                    target.getX(),
+                    target.getY() + target.getBbHeight() * 0.5D,
+                    target.getZ(),
+                    45,
+                    radius * 0.35D,
+                    0.7D,
+                    radius * 0.35D,
+                    0.04D
+            );
+
+            serverLevel.sendParticles(
+                    ParticleTypes.REVERSE_PORTAL,
+                    target.getX(),
+                    target.getY() + target.getBbHeight() * 0.5D,
+                    target.getZ(),
+                    30,
+                    radius * 0.25D,
+                    0.45D,
+                    radius * 0.25D,
+                    0.05D
+            );
+        }
+
+        this.level().playSound(
+                null,
+                target.blockPosition(),
+                ModSounds.zeroGravity.get(),
+                SoundSource.NEUTRAL,
+                0.65F,
+                1.0F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Komory Bat> " + getZeroGravityName(tier) + "!"));
+
+        this.zeroGravityCooldown = hitSomething ? 20 * 22 : 20 * 10;
+        this.supportCastCooldown = 20 * 6;
+    }
+
+    private int getZeroGravityTier(int level) {
+        if (level >= 25) {
+            return 3;
+        }
+
+        if (level >= 15) {
+            return 2;
+        }
+
+        return 1;
+    }
+
+    private String getZeroGravityName(int tier) {
+        if (tier >= 3) {
+            return "Zero Graviga";
+        }
+
+        if (tier >= 2) {
+            return "Zero Gravira";
+        }
+
+        return "Zero Gravity";
+    }
+
+    private void castDrain(Player owner, LivingEntity target) {
+        if (owner == null || target == null) {
+            return;
+        }
+
+        if (!canKomoryBatAttack(owner, target)) {
+            return;
+        }
+
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        float dmgMult = 1.0F;
+
+        DrainEntity drain = new DrainEntity(
+                this.level(),
+                this,       // origin: Komory Bat
+                owner,      // caster/owner: player
+                dmgMult,
+                target      // lock-on target
+        );
+
+        Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.55D, 0.0D);
+        Vec3 targetPos = target.position().add(0.0D, target.getBbHeight() * 0.55D, 0.0D);
+        Vec3 direction = targetPos.subtract(start);
+
+        if (direction.lengthSqr() > 0.001D) {
+            direction = direction.normalize();
+
+            drain.setPos(start.x, start.y, start.z);
+            drain.shoot(direction.x, direction.y, direction.z, 0.75F, 0.0F);
+        }
+
+        this.level().addFreshEntity(drain);
+
+        owner.sendSystemMessage(Component.literal("<Komory Bat> Drain!"));
+
+        this.drainCooldown = 20 * 14;
+        this.supportCastCooldown = 20 * 2;
+    }
+
+    private float getKomoryDrainDamage(Player owner) {
+        PlayerData ownerData = PlayerData.get(owner);
+
+        if (ownerData == null) {
+            return Math.max(2.0F, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.75F);
+        }
+
+        int level = Mth.clamp(ownerData.getLevel(), 1, 100);
+
+        // Lv 1 Komory Bat MAG from your chart was 10.8.
+        // Lv 3 MAG was 16, so early growth is +2.6 per level.
+        // This keeps Drain magic-based but controlled.
+        float komoryMagic;
+
+        if (level <= 3) {
+            komoryMagic = 10.8F + ((level - 1) * 2.6F);
+        } else {
+            komoryMagic = 16.0F + ((level - 3) * 0.55F);
+        }
+
+        return Math.max(2.0F, komoryMagic * 0.45F);
+    }
+
+    private void castHaste(Player owner) {
+        if (owner == null || !owner.isAlive()) {
+            return;
+        }
+
+        int duration = 20 * 30; // 30 seconds
+
+        owner.addEffect(new MobEffectInstance(
+                ModMobEffectsRM.HASTE_RM,
+                duration,
+                0,
+                false,
+                false,
+                true
+        ));
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.ELECTRIC_SPARK,
+                    owner.getX(),
+                    owner.getY() + owner.getBbHeight() * 0.7D,
+                    owner.getZ(),
+                    35,
+                    0.45D,
+                    0.65D,
+                    0.45D,
+                    0.08D
+            );
+
+            serverLevel.sendParticles(
+                    ParticleTypes.HAPPY_VILLAGER,
+                    owner.getX(),
+                    owner.getY() + owner.getBbHeight() * 0.85D,
+                    owner.getZ(),
+                    10,
+                    0.35D,
+                    0.35D,
+                    0.35D,
+                    0.02D
+            );
+        }
+
+        this.level().playSound(
+                null,
+                owner.blockPosition(),
+                ModSoundsRM.HASTE.get(),
+                SoundSource.PLAYERS,
+                0.65F,
+                1.55F
+        );
+
+        owner.sendSystemMessage(Component.literal("<Komory Bat> Haste!"));
+
+        this.hasteCooldown = 20 * 55;
+        this.supportCastCooldown = 20 * 3;
+    }
+
+
 
     @Nullable
     private ServerPlayer getOwnerPlayerFromServer(UUID ownerId) {
@@ -240,6 +626,23 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         }
 
         return server.getPlayerList().getPlayer(ownerId);
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        InteractionResult result = DreamEaterPetHelper.tryPetDreamEater(
+                this,
+                player,
+                hand,
+                this.getOwnerUUID(),
+                "Komory Bat"
+        );
+
+        if (result != InteractionResult.PASS) {
+            return result;
+        }
+
+        return super.mobInteract(player, hand);
     }
 
     private void followOwner(Player owner) {
@@ -341,7 +744,8 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
         this.setAttackAnimTicks(SONIC_BOOM_WINDUP_TICKS);
         this.didSonicBoomHit = false;
-        this.attackCooldown = 70;
+        this.attackCooldown = 20 * 5;
+        this.supportCastCooldown = 20 * 3;
     }
 
     @Override
@@ -408,7 +812,7 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
         direction = direction.normalize();
 
-        double damage = this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float damage = getKomoryPhysicalDamage(0.65F);
 
         Vec3 end = origin.add(direction.scale(SONIC_BOOM_RANGE));
 
@@ -437,7 +841,7 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
                 continue;
             }
 
-            entity.hurt(this.damageSources().mobAttack(this), (float) damage);
+            entity.hurt(this.damageSources().mobAttack(this), damage);
 
             Vec3 knockback = direction.scale(0.75D).add(0.0D, 0.12D, 0.0D);
             entity.push(knockback.x, knockback.y, knockback.z);
@@ -497,22 +901,23 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         }
 
         int level = Mth.clamp(ownerData.getLevel(), 1, 100);
+        KomoryBatStats stats = getKomoryBatStatsForLevel(level);
 
-        double hp = 32.7D + ((level - 1) * 0.65D);
-        double strength = 8.2D + (level * 1.9D);
-        double magic = 10.8D + ((level - 1) * 2.60D);
-        double defense = 5.9D + (level * 0.05D);
+        this.komoryHP = stats.hp;
+        this.komoryStrength = stats.strength;
+        this.komoryMagic = stats.magic;
+        this.komoryDefense = stats.defense;
 
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(hp);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.komoryHP);
         }
 
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strength);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.komoryStrength);
         }
 
         if (this.getAttribute(Attributes.ARMOR) != null) {
-            this.getAttribute(Attributes.ARMOR).setBaseValue(defense);
+            this.getAttribute(Attributes.ARMOR).setBaseValue(this.komoryDefense);
         }
 
         if (this.getAttribute(Attributes.FLYING_SPEED) != null) {
@@ -522,6 +927,64 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         if (this.getHealth() > this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
         }
+    }
+
+    private static KomoryBatStats getKomoryBatStatsForLevel(int level) {
+        level = Mth.clamp(level, 1, 100);
+
+        /*
+         * Lv 1:
+         * HP 32.7 / STR 8.2 / MAG 10.8 / DEF 5.9
+         *
+         * Lv 3:
+         * HP 34 / STR 12 / MAG 16 / DEF 6
+         */
+        double hp;
+        double strength;
+        double magic;
+        double defense;
+
+        if (level <= 3) {
+            hp = 32.7D + ((level - 1) * 0.65D);
+            strength = 8.2D + ((level - 1) * 1.9D);
+            magic = 10.8D + ((level - 1) * 2.6D);
+            defense = 5.9D + ((level - 1) * 0.05D);
+        } else {
+            /*
+             * Controlled post-Lv3 growth.
+             * Keeps Lv3 exact, then scales to Lv100 without exploding.
+             */
+            int extraLevels = level - 3;
+
+            hp = 34.0D + (extraLevels * 2.15D);
+            strength = 12.0D + (extraLevels * 0.48D);
+            magic = 16.0D + (extraLevels * 0.62D);
+            defense = 6.0D + (extraLevels * 0.22D);
+        }
+
+        return new KomoryBatStats(hp, strength, magic, defense);
+    }
+
+    private static class KomoryBatStats {
+        private final double hp;
+        private final double strength;
+        private final double magic;
+        private final double defense;
+
+        private KomoryBatStats(double hp, double strength, double magic, double defense) {
+            this.hp = hp;
+            this.strength = strength;
+            this.magic = magic;
+            this.defense = defense;
+        }
+    }
+
+    private float getKomoryPhysicalDamage(float multiplier) {
+        return Math.max(1.0F, (float) (this.komoryStrength * multiplier));
+    }
+
+    private float getKomoryMagicDamage(float multiplier) {
+        return Math.max(1.0F, (float) (this.komoryMagic * multiplier));
     }
 
     private void updateVariantFromOwner(Player owner) {

@@ -196,6 +196,11 @@ public class AbilityLinks extends MenuBackground {
             return entries;
         }
 
+        if (StringsRM.komoryBat.equals(name)) {
+            addKomoryBatLinks(entries, playerData);
+            return entries;
+        }
+
         entries.add(new DreamEaterLinkEntry("No Ability Links", "Future Dream Eater", false));
         return entries;
     }
@@ -242,6 +247,28 @@ public class AbilityLinks extends MenuBackground {
         }
     }
 
+    private void addKomoryBatLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
+        int level = Math.max(1, playerData.getLevel());
+
+        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getKomoryBatLinks()) {
+            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
+
+            String requirement;
+
+            if (link.unlockLevel() <= 1) {
+                requirement = link.type();
+            } else {
+                requirement = link.type() + " - Lv " + link.unlockLevel();
+            }
+
+            entries.add(new DreamEaterLinkEntry(
+                    link.displayName(),
+                    requirement,
+                    unlocked
+            ));
+        }
+    }
+
     private String getDreamEaterDisplayName(DreamEater dreamEater) {
         if (dreamEater == null) {
             return "N/A";
@@ -253,6 +280,10 @@ public class AbilityLinks extends MenuBackground {
 
         if (StringsRM.meowWow.equals(dreamEater.getName())) {
             return "Meow Wow";
+        }
+
+        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
+            return "Komory Bat";
         }
 
         return dreamEater.getName();

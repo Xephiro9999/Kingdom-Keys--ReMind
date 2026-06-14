@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -37,6 +39,7 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.dreameater.DreamEaterPetHelper;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
@@ -105,6 +108,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
 
+
     public ChirithyEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
         super((EntityType<? extends TamableAnimal>) type, worldIn);
 
@@ -128,6 +132,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             this.setHealth((float) hp);
         }
     }
+
+
 
     public void updateStatsFromOwner() {
         if (owner == null) {
@@ -527,6 +533,22 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
     }
 
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        InteractionResult result = DreamEaterPetHelper.tryPetDreamEater(
+                this,
+                player,
+                hand,
+                this.getOwnerUUID(),
+                "Chirithy"
+        );
+
+        if (result != InteractionResult.PASS) {
+            return result;
+        }
+
+        return super.mobInteract(player, hand);
+    }
 
     @Override
     protected void updateWalkAnimation(float pPartialTick){

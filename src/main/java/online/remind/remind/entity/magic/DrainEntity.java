@@ -54,6 +54,21 @@ public class DrainEntity extends ThrowableProjectile {
 
     }
 
+    public DrainEntity(Level world, LivingEntity origin, Player caster, float dmgMult, LivingEntity lockOnEntity) {
+        super(ModEntitiesRM.TYPE_DRAIN.get(), caster, world);
+
+        this.blocksBuilding = true;
+        this.dmgMult = dmgMult;
+        this.lockOnEntity = lockOnEntity;
+        this.setOwner(caster);
+
+        this.setPos(
+                origin.getX(),
+                origin.getY() + origin.getBbHeight() * 0.55D,
+                origin.getZ()
+        );
+    }
+
     @Override
     public void tick() {
         if (this.tickCount > maxTicks) {

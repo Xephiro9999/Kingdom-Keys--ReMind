@@ -44,6 +44,28 @@ public class DreamEaterLinkData {
         return MEOW_WOW_LINKS;
     }
 
+    private static final List<LinkEntry> KOMORY_BAT_LINKS = List.of(
+            // Spirit skills. These are NOT granted to the player.
+            new LinkEntry("komory_bat_supersonics", "Supersonics", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("komory_bat_confusing_waves", "Confusing Waves", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("komory_bat_zero_gravity", "Zero Gravity", TYPE_SPIRIT_SKILL, 5, false, ""),
+            new LinkEntry("komory_bat_drain", "Drain", TYPE_SPIRIT_SKILL, 8, false, ""),
+            new LinkEntry("komory_bat_zero_gravira", "Zero Gravira", TYPE_SPIRIT_SKILL, 15, false, ""),
+            new LinkEntry("komory_bat_haste", "Haste", TYPE_SPIRIT_SKILL, 20, false, ""),
+            new LinkEntry("komory_bat_zero_graviga", "Zero Graviga", TYPE_SPIRIT_SKILL, 25, false, ""),
+
+
+            new LinkEntry("komory_bat_magic_haste", "Magic Haste", TYPE_GRANTED_ABILITY, 12, true, MP_HASTE),
+            new LinkEntry("komory_bat_magic_haste", "Magic Haste", TYPE_GRANTED_ABILITY, 24, true, MP_HASTE),
+            new LinkEntry("komory_bat_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 10, true, ATTACK_HASTE),
+            new LinkEntry("komory_bat_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 20, true, ATTACK_HASTE)
+            //new LinkEntry("komory_bat_confusion_block", "Confusion Block", TYPE_GRANTED_ABILITY, 30, true, CONFUSION_BLOCK)
+    );
+
+    public static List<DreamEaterLinkData.LinkEntry> getKomoryBatLinks() {
+        return KOMORY_BAT_LINKS;
+    }
+
     public static boolean isUnlocked(LinkEntry entry, int level) {
         return level >= entry.unlockLevel();
     }
