@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_confuse",
+  "target": "kingdomkeys:magic_confuse",
 
   "elements": ["STATUS","MAGIC"],
   "specific_styles": [],
