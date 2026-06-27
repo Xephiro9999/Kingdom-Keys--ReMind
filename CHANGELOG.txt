@@ -334,3 +334,43 @@ Please note, this can be given via `/give @s kkremind:ability_orb[kkremind:abili
 	- Added feedback to some buttons in the Panel System.
 	- Org Glide should feel better at just one.
 
+------------------------------------------------------------------------------------------------------------------------
+
+# 6.26.2
+
+## New Dream Eaters
+	### Meow Wow
+		A Melee Offensive Support
+		Can cast Cure, Balloon, and Slow
+
+	### Komory Bat
+		A Ranged Offensive Debuffer
+		Can cast Haste, Drain, and Zero Gravity
+
+## New System - Spirit Links
+	Each Dream Eater will have close to if not exactly what they had in DDD and sticking to it as much as possible. Bonuses will be granted as they level up.
+	Dream Eater must be summoned for it to gain XP. Each Dream Eater will have their own XP Multipliers/Growth.
+	This will be changed later to be more faithful to DDD.
+
+## New Items
+	Dream Eater Charms, for now there's only two. One for Meow Wow, the other for Komory Bat. More will be added as more Dream Eaters are added.
+
+## New Server CONFIG
+	Dream Eater XP Multiplier: Default of 1.0 (x1), setting this config to 0 will result in no XP gains for the Dream Eaters.
+
+## New Ability
+	### Confusion Block (Epic Fight Related)
+		Inflicts confusion on the attacker upon successful guard. Parrying increases the effect.
+
+## Changes
+	- Chirithy has gained a rework since Meow Wow and Komory Bat were added and now better reflects it's intended role as a Pure-Support.
+	- Renewal Block is no longer given at level 1 upon login. It is now given by Chirithy (when active) at level 20.
+	- Poison Block is no longer given at level 1 upon login. It is now given by Meow Wow (when active) at level 35.
+	- Haste is slightly buffed and no longer affects your FOV
+	- Fortuna, Blitzer's Dream, Legend's Fang, and Fierce Deity Key are now added to Roxas' Keyblade pool
+	- Spells removed from the Synth tag
+	- Refactors for the Style Change System due to new/current KK Version (Thanks to Willaby_Neko)
+
+## Fixes
+	- Chirithy is no longer immortal.
+	- You can now pet the Dream Eaters.
