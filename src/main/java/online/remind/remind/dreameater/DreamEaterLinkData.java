@@ -35,7 +35,7 @@ public class DreamEaterLinkData {
             new LinkEntry("chirithy_aeroga", "Aeroga", TYPE_SPIRIT_SKILL, 35, false, ""),
 
             // Guardian/passive support abilities.
-            new LinkEntry("chirithy_hp_boost", "HP Boost", TYPE_GRANTED_ABILITY, 1, true, HP_BOOST),
+            new LinkEntry("chirithy_hp_boost", "HP Boost", TYPE_GRANTED_ABILITY, 5, true, HP_BOOST),
             //new LinkEntry("chirithy_defense_boost", "Defense Boost", TYPE_GRANTED_ABILITY, 5, true, DEFENSE_BOOST),
             new LinkEntry("chirithy_magic_haste", "MP Haste", TYPE_GRANTED_ABILITY, 10, true, MP_HASTE),
             new LinkEntry("chirithy_leaf_bracer", "Leaf Bracer", TYPE_GRANTED_ABILITY, 15, true, LEAF_BRACER),

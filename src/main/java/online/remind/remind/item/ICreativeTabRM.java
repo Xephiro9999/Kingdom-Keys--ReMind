@@ -3,7 +3,7 @@ package online.remind.remind.item;
 public interface ICreativeTabRM {
 
     enum Tab {
-        SPELLS, SHOTLOCKS, MISC, NONE
+        SPELLS, SHOTLOCKS, MISC, DREAMEATERS, NONE
     }
 
     Tab getTab();

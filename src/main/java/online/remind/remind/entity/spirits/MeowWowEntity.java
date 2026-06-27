@@ -10,14 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -60,7 +58,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.lib.StringsRM;
-import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -153,6 +150,9 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
         }
 
         return meowWow;
+    }
+
+    public static void removeExistingMeowWow(ServerLevel serverLevel, UUID uuid) {
     }
 
     @Override
@@ -574,8 +574,6 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
                 1F
         );
 
-        owner.sendSystemMessage(Component.literal("<Meow Wow> Slow!"));
-
         this.setAttackAnimTicks(24);
         this.slowCooldown = hitSomething ? 220 : 40;
         this.castCooldown = 20 * 8;
@@ -677,8 +675,6 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
             owner.removeEffect(ModMobEffects.KO);
         }
 
-        owner.sendSystemMessage(Component.literal("<Meow Wow> " + spellName + "!"));
-
         this.setAttackAnimTicks(24);
         this.cureCooldown = 20 * 20;
         this.castCooldown = 20 * 8;
@@ -720,8 +716,6 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
                     0D
             );
         }
-
-        owner.sendSystemMessage(Component.literal("<Meow Wow> Gotta patch myself up!"));
 
         this.setAttackAnimTicks(24);
         this.cureCooldown = 20 *20;
@@ -765,9 +759,7 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
                 1F,
                 1F
         );
-
-        owner.sendSystemMessage(Component.literal("<Meow Wow> " + spellName + "!"));
-
+        
         this.setAttackAnimTicks(24);
         this.balloonCooldown = 20 * 12;
         this.castCooldown = 20 * 8;
@@ -937,10 +929,10 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
         int level = 1;
 
         if (owner instanceof Player player) {
-            PlayerData ownerData = PlayerData.get(player);
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-            if (ownerData != null) {
-                level = Math.max(1, ownerData.getLevel());
+            if (globalData != null) {
+                level = globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_MEOW_WOW);
             }
         }
 
@@ -1291,6 +1283,20 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
             }
 
             return this.meowWow.distanceToSqr(this.owner) > this.stopDistance * this.stopDistance;
+        }
+
+        public static void removeExistingMeowWow(ServerLevel level, UUID ownerUUID) {
+            MinecraftServer server = level.getServer();
+
+            for (ServerLevel serverLevel : server.getAllLevels()) {
+                for (Entity entity : serverLevel.getAllEntities()) {
+                    if (entity instanceof MeowWowEntity meowWow) {
+                        if (ownerUUID.equals(meowWow.getOwnerUUID())) {
+                            meowWow.discard();
+                        }
+                    }
+                }
+            }
         }
 
         @Override

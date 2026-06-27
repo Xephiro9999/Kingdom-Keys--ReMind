@@ -94,7 +94,19 @@ public class DreamEaterAbilityLinkHelper {
         boolean changed = false;
 
         UUID uuid = player.getUUID();
-        int level = Math.max(1, playerData.getLevel());
+        int level = 1;
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+        if (globalData != null) {
+            String dreamEaterRL = globalData.getDreamEaterRL();
+
+            if (dreamEaterRL != null && !dreamEaterRL.isEmpty()) {
+                level = globalData.getDreamEaterLevel(dreamEaterRL);
+            }
+        }
+
+        level = Math.max(1, level);
 
         Map<String, Integer> activeAbilities = ACTIVE_ABILITY_GRANTS.computeIfAbsent(uuid, id -> new HashMap<>());
         Set<String> wantedAbilityIds = new HashSet<>();

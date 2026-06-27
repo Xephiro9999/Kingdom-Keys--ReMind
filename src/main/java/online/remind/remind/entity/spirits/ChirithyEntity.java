@@ -17,7 +17,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -28,7 +35,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
-import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -50,28 +56,28 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
-    
-    Player owner;
 
+    private Player owner;
     private UUID ownerUUID;
-
 
     private double chirithyHP;
     private double chirithyStrength;
     private double chirithyMagic;
     private double chirithyDefense;
+
     private int cureCooldown = 60;
     private int aeroCooldown = 60;
     private int esunaCooldown = 60;
     private int autoLifeCooldown = 60;
     private int castCooldown = 60;
+
     private float mpHasteMult;
 
     public static final int
@@ -86,8 +92,63 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(ChirithyEntity.class, EntityDataSerializers.INT);
 
-
     public final AnimationState castAnimationState = new AnimationState();
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private static class ChirithyStats {
+        final int hp;
+        final int strength;
+        final int magic;
+        final int defense;
+
+        ChirithyStats(int hp, int strength, int magic, int defense) {
+            this.hp = hp;
+            this.strength = strength;
+            this.magic = magic;
+            this.defense = defense;
+        }
+    }
+
+    private static ChirithyStats getChirithyStatsForLevel(int level) {
+        level = Math.max(1, Math.min(level, GlobalDataRM.DREAM_EATER_MAX_LEVEL));
+
+        int hp = 22 + (int) Math.round((level - 1) * 1.25D);
+
+        // Chirithy is pure support. STR should stay low.
+        int strength = 1;
+
+        if (level >= 50) {
+            strength = 2;
+        }
+
+        if (level >= 90) {
+            strength = 3;
+        }
+
+        int magic = 8 + (int) Math.round((level - 1) * 0.55D);
+        int defense = 4 + (int) Math.round((level - 1) * 0.35D);
+
+        return new ChirithyStats(hp, strength, magic, defense);
+    }
+
+    public ChirithyEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
+        super((EntityType<? extends TamableAnimal>) type, worldIn);
+    }
+
+    public ChirithyEntity(Level worldIn, Player owner) {
+        this(ModEntitiesRM.TYPE_CHIRITHY.get(), worldIn);
+
+        if (owner != null) {
+            this.owner = owner;
+            this.setOwnerUUID(owner.getUUID());
+            this.setTame(true, true);
+
+            updateStatsFromOwner();
+
+            this.setHealth(this.getMaxHealth());
+        }
+    }
 
     private void startCasting() {
         if (!castAnimationState.isStarted()) {
@@ -107,110 +168,65 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         this.entityData.set(VARIANT, variant);
     }
 
-
-
-    public ChirithyEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
-        super((EntityType<? extends TamableAnimal>) type, worldIn);
-
-    }
-
-    public ChirithyEntity(Level worldIn, Player owner) {
-        this(ModEntitiesRM.TYPE_CHIRITHY.get(), worldIn);
-
-        if (owner != null) {
-            this.owner = owner;
-            this.setOwnerUUID(owner.getUUID());
-            this.setTame(true, true);
-
-            PlayerData ownerData = PlayerData.get(owner);
-
-            int ownerLevel = Math.max(1, ownerData.getLevel());
-
-            this.hp = (int) Math.round(18 + (ownerData.getMaxHP() * 0.55D) + (ownerLevel * 0.75D));
-            this.str = 1;
-            this.mag = (int) Math.round(10 + (ownerData.getMagicStat().getStat() * 0.80D) + (ownerLevel * 0.15D));
-            this.def = (int) Math.round(4 + (ownerData.getDefenseStat().getStat() * 0.65D) + (ownerLevel * 0.10D));
-
-            this.chirithyHP = this.hp;
-            this.chirithyStrength = this.str;
-            this.chirithyMagic = this.mag;
-            this.chirithyDefense = this.def;
-
-            if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-                this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.hp);
-            }
-
-            if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-                this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.str);
-            }
-
-            if (this.getAttribute(Attributes.ARMOR) != null) {
-                this.getAttribute(Attributes.ARMOR).setBaseValue(this.def);
-            }
-
-            this.setHealth(this.getMaxHealth());
-        }
-    }
-
     public void updateStatsFromOwner() {
         if (owner == null) {
             return;
         }
 
-        PlayerData ownerData = PlayerData.get(owner);
+        GlobalDataRM globalData = ModDataRM.getGlobal(owner);
 
-        if (ownerData == null) {
+        if (globalData == null) {
             return;
         }
 
-        int ownerLevel = Math.max(1, ownerData.getLevel());
+        int chirithyLevel = globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_CHIRITHY);
+        ChirithyStats stats = getChirithyStatsForLevel(chirithyLevel);
 
-        hp = (int) Math.round(18 + (ownerData.getMaxHP() * 0.55D) + (ownerLevel * 0.75D));
+        hp = stats.hp;
+        str = stats.strength;
+        mag = stats.magic;
+        def = stats.defense;
 
-        // Chirithy is pure support. STR is intentionally low.
-        str = 1;
-
-        mag = (int) Math.round(10 + (ownerData.getMagicStat().getStat() * 0.80D) + (ownerLevel * 0.15D));
-
-        def = (int) Math.round(4 + (ownerData.getDefenseStat().getStat() * 0.65D) + (ownerLevel * 0.10D));
-
-        chirithyHP = hp;
-        chirithyStrength = str;
-        chirithyMagic = mag;
-        chirithyDefense = def;
+        chirithyHP = stats.hp;
+        chirithyStrength = stats.strength;
+        chirithyMagic = stats.magic;
+        chirithyDefense = stats.defense;
 
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(hp);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(stats.hp);
         }
 
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(str);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(stats.strength);
         }
 
         if (this.getAttribute(Attributes.ARMOR) != null) {
-            this.getAttribute(Attributes.ARMOR).setBaseValue(def);
+            this.getAttribute(Attributes.ARMOR).setBaseValue(stats.defense);
         }
 
-        // Do NOT heal every tick.
-        // Only clamp down if max HP got lower.
+        if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        }
+
         if (this.getHealth() > this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
         }
 
-        this.setStr(str);
-        this.setMag(mag);
-        this.setDef(def);
+        this.setStr(stats.strength);
+        this.setMag(stats.magic);
+        this.setDef(stats.defense);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide) return;
+        if (this.level().isClientSide) {
+            return;
+        }
 
         UUID ownerId = this.getOwnerUUID();
 
-        // No owner UUID = invalid summon
         if (ownerId == null) {
             this.discard();
             return;
@@ -218,13 +234,11 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         Player owner = this.level().getPlayerByUUID(ownerId);
 
-        // Owner is not in this dimension / not loaded / offline
         if (owner == null) {
             this.discard();
             return;
         }
 
-        // Keep your field synced
         this.owner = owner;
 
         GlobalDataRM data = ModDataRM.getGlobal(owner);
@@ -251,7 +265,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return;
         }
 
-        if (!data.getDreamEaterRL().equals(ModDreamEaters.CHIRITHY.get().getRegistryName().toString())) {
+        String selectedDreamEater = data.getDreamEaterRL();
+        String chirithyRL = ModDreamEaters.CHIRITHY.get().getRegistryName().toString();
+
+        if (!chirithyRL.equals(selectedDreamEater)) {
             data.setHasDreamEaterSummoned(false);
             data.setDreamEaterUUID(null);
             PacketHandlerRM.syncGlobalToAllAround(owner, data);
@@ -261,7 +278,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         castSupportMagic();
     }
-
 
     private void castSupportMagic() {
         if (owner == null || !owner.isAlive()) {
@@ -282,32 +298,26 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return;
         }
 
-        // Highest priority: if owner is KO or low HP, heal first.
         if (tryCastCure(globalData, true)) {
             return;
         }
 
-        // Remove harmful effects before anything else.
         if (tryCastEsuna(globalData)) {
             return;
         }
 
-        // Keep Auto-Life up when possible.
         if (tryCastAutoLife(globalData)) {
             return;
         }
 
-        // Shield owner after taking damage.
         if (tryCastAero(globalData)) {
             return;
         }
 
-        // Normal healing if owner is hurt but not critical.
         if (tryCastCure(globalData, false)) {
             return;
         }
 
-        // Lowest priority: Chirithy heals itself only if owner is safe.
         trySelfHeal();
     }
 
@@ -326,7 +336,18 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     private void tickSupportCooldowns() {
-        int reduction = 1 + Math.max(0, (int) (mpHasteMult * 5F));
+        int chirithyLevel = 1;
+
+        if (owner != null) {
+            GlobalDataRM globalData = ModDataRM.getGlobal(owner);
+
+            if (globalData != null) {
+                chirithyLevel = globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_CHIRITHY);
+            }
+        }
+
+        int levelBonus = chirithyLevel / 25;
+        int reduction = 1 + levelBonus + Math.max(0, (int) (mpHasteMult * 5F));
 
         if (cureCooldown > 0) {
             cureCooldown = Math.max(0, cureCooldown - reduction);
@@ -564,7 +585,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return false;
         }
 
-        // Do not waste time casting Auto-Life if the owner needs immediate healing.
         if (owner.getHealth() <= owner.getMaxHealth() * 0.5F || owner.hasEffect(ModMobEffects.KO)) {
             return false;
         }
@@ -601,7 +621,6 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return false;
         }
 
-        // Owner safety check. Chirithy should not self-heal while owner needs help.
         if (owner.isHurt() || owner.hurtTime > 0 || owner.hasEffect(ModMobEffects.KO)) {
             return false;
         }
@@ -661,33 +680,26 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     @Override
-    protected void updateWalkAnimation(float pPartialTick){
+    protected void updateWalkAnimation(float pPartialTick) {
         float f;
-        if (this.getPose() == Pose.STANDING){
-            f = Math.min(pPartialTick * 6F, 1f);
+
+        if (this.getPose() == Pose.STANDING) {
+            f = Math.min(pPartialTick * 6F, 1F);
         } else {
-            f = 0f;
+            f = 0F;
         }
-        this.walkAnimation.update(f, 0.2f);
+
+        this.walkAnimation.update(f, 0.2F);
     }
-
-
-
 
     @Override
-    protected void registerGoals(){
-
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 5F));
-        this.goalSelector.addGoal(3, new ChirithyGoal(this, 0.85d,2.0f,10.0f,false));
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this,0.25D));
+        this.goalSelector.addGoal(3, new ChirithyGoal(this, 0.85D, 2.0F, 10.0F, false));
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.25D));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-
-        // Targeting
-        //this.targetSelector.addGoal(1);
-
     }
-
 
     public static AttributeSupplier.Builder registerAttributes() {
         return Mob.createLivingAttributes()
@@ -700,8 +712,22 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
-    public int getMagic(){
+    public int getMagic() {
         return (int) chirithyMagic;
+    }
+
+    public int getChirithyLevel() {
+        if (owner == null) {
+            return 1;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(owner);
+
+        if (globalData == null) {
+            return 1;
+        }
+
+        return globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_CHIRITHY);
     }
 
     @Override
@@ -720,15 +746,18 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount){
+    public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
-        if (attacker != null && this.getOwner() != null && attacker.getUUID().equals(this.getOwner().getUUID())){
+        UUID ownerId = this.getOwnerUUID();
+
+        if (attacker != null && ownerId != null && attacker.getUUID().equals(ownerId)) {
             return false;
-        } else {
-            if (chirithyDefense > 0){
-                amount = (float) Math.round((amount * 100 / (300 + chirithyDefense)));
-            }
         }
+
+        if (chirithyDefense > 0) {
+            amount = (float) Math.round((amount * 100 / (300 + chirithyDefense)));
+        }
+
         return super.hurt(source, amount);
     }
 
@@ -738,12 +767,13 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     @Override
-    protected void doPush(Entity entity) {}
+    protected void doPush(Entity entity) {
+    }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(VARIANT, 0); // 0 = normal, 1 = alt
+        builder.define(VARIANT, 0);
     }
 
     @Override
@@ -763,10 +793,10 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         return false;
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-
+        // Keeping this empty because your original class did not define GeckoLib controllers here.
+        // If your renderer expects controllers, we can wire idle/walk/cast next.
     }
 
     public static void removeExistingChirithy(ServerLevel level, UUID ownerUUID) {
@@ -785,10 +815,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return this.cache;
     }
-
-    private BaseDreamEaterEntity data;
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -798,9 +826,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             compound.putUUID("DreamEaterOwner", this.getOwnerUUID());
         }
 
-        if (this.data != null) {
-            compound.put("data", this.data.serializeNBT());
-        }
+        compound.putInt("Variant", this.getVariant());
     }
 
     @Override
@@ -811,12 +837,8 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             this.setOwnerUUID(compound.getUUID("DreamEaterOwner"));
         }
 
-        if (this.data == null) {
-            this.data = new BaseDreamEaterEntity((EntityType<? extends TamableAnimal>) this.getType(), this.level());
-        }
-
-        if (compound.contains("data")) {
-            this.data.readAdditionalSaveData(compound.getCompound("data"));
+        if (compound.contains("Variant")) {
+            this.setVariant(compound.getInt("Variant"));
         }
     }
 }

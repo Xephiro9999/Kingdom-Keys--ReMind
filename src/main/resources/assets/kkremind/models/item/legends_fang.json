@@ -1,58 +1,64 @@
 {
   "parent": "neoforge:item/default",
-  "loader": "neoforge:obj",
-  "flip_v" : "true",
-  "model": "kkremind:models/item/keyblade/legends_fang.obj",
+  "loader": "neoforge:separate_transforms",
   "textures": {
-    "layer0": "kkremind:textures/item/keyblades/legends_fang"
   },
-  "display": {
-    "firstperson_righthand": {
-      "rotation": [0.0, 0.0, 0.0 ],
-      "translation": [6, 14.5, 5 ],
-      "scale": [0.65, 0.65, 0.65]
+  "base": {
+    "parent": "neoforge:item/default",
+    "loader": "neoforge:obj",
+    "flip_v": "true",
+    "model": "kkremind:models/item/keyblade/legends_fang.obj",
+    "textures": {
+      "layer0": "kkremind:textures/item/keyblades/legends_fang"
     },
-    "thirdperson_righthand": {
-      "rotation": [0.0, 0.0, 0.0 ],
-      "translation": [6, 14.5, 5 ],
-      "scale": [0.7, 0.7, 0.7]
+    "display": {
+      "firstperson_righthand": {
+        "rotation": [0.0, 0.0, 0.0],
+        "translation": [6.0, 14.5, 5.0],
+        "scale": [0.65, 0.65, 0.65]
+      },
+      "thirdperson_righthand": {
+        "rotation": [0.0, 0.0, 0.0],
+        "translation": [6.0, 14.5, 5.0],
+        "scale": [0.7, 0.7, 0.7]
+      },
+      "firstperson_lefthand": {
+        "rotation": [0.0, 0.0, 0.0],
+        "translation": [-6.0, 14.5, 5.0],
+        "scale": [0.65, 0.65, 0.65]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0.0, 0.0, 0.0],
+        "translation": [-6.0, 14.5, 5.0],
+        "scale": [0.7, 0.7, 0.7]
+      },
+      "gui": {
+        "rotation": [0.0, 90.0, 0.0],
+        "translation": [0.0, -1.25, 0.0],
+        "scale": [0.215, 0.215, 0.215]
+      },
+      "ground": {
+        "rotation": [0.0, 90.0, 45.0],
+        "translation": [2.0, 7.0, 0.0],
+        "scale": [0.75, 0.75, 0.75]
+      },
+      "fixed": {
+        "rotation": [0.0, 0.0, 0.0],
+        "translation": [0.0, 0.0, 0.0],
+        "scale": [0.25, 0.25, 0.25]
+      }
     },
-    "firstperson_lefthand": {
-      "rotation": [0.0, 0, 0.0 ],
-      "translation": [-6, 14.5, 5 ],
-      "scale": [0.65, 0.65, 0.65]
-    },
-    "thirdperson_lefthand": {
-      "rotation": [0.0, 0.0, 0.0 ],
-      "translation": [-6, 14.5, 5 ],
-      "scale": [0.7, 0.7, 0.7]
-    },
-    "gui": {
-      "rotation": [0, 90.0, 0 ],
-      "translation": [0.0, 1.0, 0.0 ],
-      "scale": [0.35, 0.35, 0.35]
-    },
-    "ground": {
-      "rotation": [0, 90.0, 45.0 ],
-      "translation": [2.0, 7.0, 0.0 ],
-      "scale": [0.75, 0.75, 0.75]
-    },
-    "fixed": {
-      "rotation": [0.0, 0.0, 0.0 ],
-      "translation": [0.0, 0.0, 0.0 ],
-      "scale": [0.25, 0.25, 0.25]
+    "visibility": {
+      "object_1": "hide",
+      "object_2": "default",
+      "object_3": "show"
     }
-  },
-  "visibility": {
-		"object_1": "hide",
-		"object_2": "default",
-		"object_3": "show"
   },
   "perspectives": {
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "kkremind:textures/item/keyblades/blitzers_dream"
+        "layer0": "kkremind:item/keyblades/legends_fang_gui"
       }
     }
   }

@@ -25,6 +25,7 @@ public class CommonConfig {
     // Dream Eater Configs
     public ModConfigSpec.BooleanValue spiritsEnabled;
     public ModConfigSpec.DoubleValue autoLifeCD;
+    public ModConfigSpec.DoubleValue xpMulti;
 
 
     // UW Ability
@@ -111,7 +112,7 @@ public class CommonConfig {
                 .defineInRange("Panels Cap:", 50, 1, 9999);
 
         builder.pop();
-        builder.push("Spirits");
+        builder.push("Spirits/Dream Eaters");
         spiritsEnabled = builder
                 .comment("If set to 'true', allows the usage of the Dream Eater menus.")
                 .comment("Default: true")
@@ -120,6 +121,10 @@ public class CommonConfig {
                 .comment("Sets how long before Chirithy can cast Auto-Life on you again in minutes.")
                 .comment("Default: 5.0.")
                 .defineInRange("Chirithy Auto-Life Cooldown", 5.0,1,1000);
+        xpMulti = builder
+                .comment("Sets the Serverside EXP Multi for Dream Eaters.")
+                .comment("Default: 1.0, Setting this to 0 WILL DISABLE DREAM EATERS LEVELING UP!")
+                .defineInRange("Dream Eater EXP Multiplier", 1.0, 0, 1000);
 
         builder.pop();
         builder.push("Ultima Weapon Ability");

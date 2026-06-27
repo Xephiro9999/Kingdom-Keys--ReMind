@@ -48,6 +48,7 @@ public class ModConfigs {
         // Dream Eater Configs
         spiritsEnabled = COMMON.spiritsEnabled.get();
         autoLifeCD = COMMON.autoLifeCD.get();
+        xpMulti = COMMON.xpMulti.get();
 
         // Ultima Weapon Ability Configs
         ultimaPositiveSTR = COMMON.ultimaPositiveSTR.get();
@@ -89,6 +90,7 @@ public class ModConfigs {
     // Dream Eaters
     public static boolean spiritsEnabled;
     public static double autoLifeCD;
+    public static double xpMulti;
 
     // Ultima Weapon Ability
     public static int ultimaPositiveSTR;

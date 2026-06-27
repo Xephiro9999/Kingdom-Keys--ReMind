@@ -5,6 +5,7 @@
   "itemGroup.addonmagictab": "KK ReMind: Attacks & Magics",
   "itemGroup.addonshotlocktab": "KK ReMind: Shotlocks",
   "itemGroup.addonmisctab": "KK ReMind: Misc",
+  "itemGroup.dreameaters": "KK ReMind: Dream Eaters",
 
 
 
@@ -437,6 +438,9 @@
   "item.kkremind.heart_coin": "Heart Coin",
   "item.kkremind.ability_orb": "Ability Orb",
   "item.kkremind.slot_releaser": "Slot Releaser",
+
+  "item.kkremind.meow_wow_charm": "Meow Wow Charm",
+  "item.kkremind.komory_bat_charm": "Komory Bat Charm",
 
 
   "key.categories.kkremind": "Re:Mind",

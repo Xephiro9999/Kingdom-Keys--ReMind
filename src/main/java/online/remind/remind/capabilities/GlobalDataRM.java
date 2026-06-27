@@ -57,6 +57,16 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     public static final int ORGANIZATION_PANEL_MAX_SLOTS =
             ORGANIZATION_PANEL_MAX_WIDTH * ORGANIZATION_PANEL_MAX_HEIGHT;
 
+    // Dream Eater Leveling
+    private final java.util.LinkedHashMap<String, Integer> dreamEaterLevels = new java.util.LinkedHashMap<>();
+    private final java.util.LinkedHashMap<String, Integer> dreamEaterExp = new java.util.LinkedHashMap<>();
+
+    public static final int DREAM_EATER_MAX_LEVEL = 100;
+
+    public static final String DREAM_EATER_CHIRITHY = KingdomKeysReMind.MODID + ":dreameater_chirithy";
+    public static final String DREAM_EATER_MEOW_WOW = KingdomKeysReMind.MODID + ":dreameater_meowwow";
+    public static final String DREAM_EATER_KOMORY_BAT = KingdomKeysReMind.MODID + ":dreameater_komory_bat";
+
     private int unlockedOrganizationPanelSlots = ORGANIZATION_PANEL_STARTING_SLOTS;
 
     private PanelGrid organizationPanelGrid = new PanelGrid(
@@ -93,6 +103,8 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     private boolean donorGiven;
     private boolean darkMode;
+
+    private final java.util.List<String> unlockedDreamEaters = new java.util.ArrayList<>();
 
     private LinkedHashMap<String, Integer> learnedMagics = new LinkedHashMap<>();
 
@@ -291,6 +303,37 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         storage.put("magic_names", magicNames);
 
+
+        normalizeUnlockedDreamEaters();
+
+        net.minecraft.nbt.ListTag unlockedDreamEatersTag = new net.minecraft.nbt.ListTag();
+
+        for (String dreamEaterRL : this.unlockedDreamEaters) {
+            unlockedDreamEatersTag.add(net.minecraft.nbt.StringTag.valueOf(dreamEaterRL));
+        }
+
+        storage.put("unlockedDreamEaters", unlockedDreamEatersTag);
+
+        CompoundTag dreamEaterProgressTag = new CompoundTag();
+
+        java.util.LinkedHashSet<String> allDreamEaters = new java.util.LinkedHashSet<>();
+        allDreamEaters.addAll(this.dreamEaterLevels.keySet());
+        allDreamEaters.addAll(this.dreamEaterExp.keySet());
+
+        for (String dreamEaterRL : allDreamEaters) {
+            if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+                continue;
+            }
+
+            CompoundTag progressTag = new CompoundTag();
+            progressTag.putInt("Level", getDreamEaterLevel(dreamEaterRL));
+            progressTag.putInt("Exp", getDreamEaterExp(dreamEaterRL));
+
+            dreamEaterProgressTag.put(dreamEaterRL, progressTag);
+        }
+
+        storage.put("DreamEaterProgress", dreamEaterProgressTag);
+
         return storage;
     }
 
@@ -374,6 +417,8 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         this.setDonorGiven(properties.getBoolean("donor_grant"));
 
+        // ----------------------------------- Dream Eaters - Load ------------------------------------------------------
+
         if (properties.contains("DreamEaterUUID")) {
             this.setDreamEaterUUID(properties.getUUID("DreamEaterUUID"));
         } else {
@@ -381,6 +426,82 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         }
 
         this.setDreamEaterRL(properties.getString("dreamEaterRL"));
+
+        this.unlockedDreamEaters.clear();
+
+        if (properties.contains("unlockedDreamEaters", Tag.TAG_LIST)) {
+            net.minecraft.nbt.ListTag unlockedDreamEatersTag =
+                    properties.getList("unlockedDreamEaters", net.minecraft.nbt.Tag.TAG_STRING);
+
+            for (int i = 0; i < unlockedDreamEatersTag.size(); i++) {
+                String id = unlockedDreamEatersTag.getString(i);
+
+                if (id == null || id.isEmpty()) {
+                    continue;
+                }
+
+                if (id.length() > 128) {
+                    continue;
+                }
+
+                if (!id.contains(":")) {
+                    continue;
+                }
+
+                this.unlockedDreamEaters.add(id);
+
+                if (this.unlockedDreamEaters.size() >= 64) {
+                    break;
+                }
+            }
+        }
+
+
+
+        normalizeUnlockedDreamEaters();
+
+        // -----------------------------------------------------------------------------------
+
+        // ---------------------------------------Dream Eater Leveling--------------------------------------------
+
+        this.dreamEaterLevels.clear();
+        this.dreamEaterExp.clear();
+
+        if (properties.contains("DreamEaterProgress", Tag.TAG_COMPOUND)) {
+            CompoundTag dreamEaterProgressTag = properties.getCompound("DreamEaterProgress");
+
+            for (String dreamEaterRL : dreamEaterProgressTag.getAllKeys()) {
+                if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+                    continue;
+                }
+
+                if (dreamEaterRL.length() > 128 || !dreamEaterRL.contains(":")) {
+                    continue;
+                }
+
+                CompoundTag progressTag = dreamEaterProgressTag.getCompound(dreamEaterRL);
+
+                int level = Math.max(1, Math.min(
+                        progressTag.getInt("Level"),
+                        DREAM_EATER_MAX_LEVEL
+                ));
+
+                int exp = Math.max(0, progressTag.getInt("Exp"));
+
+                this.dreamEaterLevels.put(dreamEaterRL, level);
+                this.dreamEaterExp.put(dreamEaterRL, exp);
+            }
+        }
+
+        // Chirithy exists by default.
+        ensureDreamEaterProgress(DREAM_EATER_CHIRITHY);
+
+        // Any unlocked Dream Eater should have progress.
+        for (String dreamEaterRL : this.unlockedDreamEaters) {
+            ensureDreamEaterProgress(dreamEaterRL);
+        }
+
+        // -----------------------------------------------------------------------------------
 
         learnedMagics.clear();
 
@@ -988,6 +1109,229 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     public LinkedHashMap<String, Integer> getOrganizationPanelAbilityBonuses() {
         return this.organizationPanelAbilityBonuses;
+    }
+
+    public boolean hasDreamEaterUnlocked(String dreamEaterRL) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return false;
+        }
+
+        if (DREAM_EATER_CHIRITHY.equals(dreamEaterRL)) {
+            return true;
+        }
+
+        return this.unlockedDreamEaters.contains(dreamEaterRL);
+    }
+
+    public void unlockDreamEater(String dreamEaterRL) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return;
+        }
+
+        if (dreamEaterRL.length() > 128) {
+            return;
+        }
+
+        if (!dreamEaterRL.contains(":")) {
+            return;
+        }
+
+        normalizeUnlockedDreamEaters();
+
+        if (!this.unlockedDreamEaters.contains(dreamEaterRL)) {
+            this.unlockedDreamEaters.add(dreamEaterRL);
+        }
+
+        ensureDreamEaterProgress(dreamEaterRL);
+    }
+
+    public void setUnlockedDreamEaters(java.util.Collection<String> dreamEaters) {
+        this.unlockedDreamEaters.clear();
+
+        if (dreamEaters != null) {
+            for (String dreamEaterRL : dreamEaters) {
+                if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+                    continue;
+                }
+
+                if (dreamEaterRL.length() > 128) {
+                    continue;
+                }
+
+                if (!dreamEaterRL.contains(":")) {
+                    continue;
+                }
+
+                this.unlockedDreamEaters.add(dreamEaterRL);
+            }
+        }
+
+        normalizeUnlockedDreamEaters();
+    }
+
+    public java.util.List<String> getUnlockedDreamEaters() {
+        return this.unlockedDreamEaters;
+    }
+
+    private void normalizeUnlockedDreamEaters() {
+        java.util.LinkedHashSet<String> cleaned = new java.util.LinkedHashSet<>();
+
+        for (String id : this.unlockedDreamEaters) {
+            if (id == null || id.isEmpty()) {
+                continue;
+            }
+
+            if (id.length() > 128) {
+                continue;
+            }
+
+            if (!id.contains(":")) {
+                continue;
+            }
+
+            cleaned.add(id);
+
+            if (cleaned.size() >= 64) {
+                break;
+            }
+        }
+
+        this.unlockedDreamEaters.clear();
+        this.unlockedDreamEaters.addAll(cleaned);
+    }
+
+    public void ensureDreamEaterProgress(String dreamEaterRL) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return;
+        }
+
+        if (dreamEaterRL.length() > 128 || !dreamEaterRL.contains(":")) {
+            return;
+        }
+
+        this.dreamEaterLevels.putIfAbsent(dreamEaterRL, 1);
+        this.dreamEaterExp.putIfAbsent(dreamEaterRL, 0);
+    }
+
+    public int getDreamEaterLevel(String dreamEaterRL) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return 1;
+        }
+
+        ensureDreamEaterProgress(dreamEaterRL);
+
+        return Math.max(1, Math.min(
+                this.dreamEaterLevels.getOrDefault(dreamEaterRL, 1),
+                DREAM_EATER_MAX_LEVEL
+        ));
+    }
+
+    public int getDreamEaterExp(String dreamEaterRL) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return 0;
+        }
+
+        ensureDreamEaterProgress(dreamEaterRL);
+
+        return Math.max(0, this.dreamEaterExp.getOrDefault(dreamEaterRL, 0));
+    }
+
+    public int getDreamEaterExpToNextLevel(String dreamEaterRL) {
+        int level = getDreamEaterLevel(dreamEaterRL);
+
+        if (level >= DREAM_EATER_MAX_LEVEL) {
+            return 0;
+        }
+
+        return 50 + (level * level * 10);
+    }
+
+    public boolean addDreamEaterExp(String dreamEaterRL, int amount) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty() || amount <= 0) {
+            return false;
+        }
+
+        ensureDreamEaterProgress(dreamEaterRL);
+
+        int level = getDreamEaterLevel(dreamEaterRL);
+        int exp = getDreamEaterExp(dreamEaterRL);
+
+        if (level >= DREAM_EATER_MAX_LEVEL) {
+            this.dreamEaterLevels.put(dreamEaterRL, DREAM_EATER_MAX_LEVEL);
+            this.dreamEaterExp.put(dreamEaterRL, 0);
+            return false;
+        }
+
+        exp += amount;
+        boolean leveledUp = false;
+
+        while (level < DREAM_EATER_MAX_LEVEL) {
+            int needed = 50 + (level * level * 10);
+
+            if (exp < needed) {
+                break;
+            }
+
+            exp -= needed;
+            level++;
+            leveledUp = true;
+        }
+
+        if (level >= DREAM_EATER_MAX_LEVEL) {
+            level = DREAM_EATER_MAX_LEVEL;
+            exp = 0;
+        }
+
+        this.dreamEaterLevels.put(dreamEaterRL, level);
+        this.dreamEaterExp.put(dreamEaterRL, exp);
+
+        return leveledUp;
+    }
+
+    public java.util.LinkedHashMap<String, Integer> getDreamEaterLevels() {
+        return this.dreamEaterLevels;
+    }
+
+    public java.util.LinkedHashMap<String, Integer> getDreamEaterExpMap() {
+        return this.dreamEaterExp;
+    }
+
+    public void setDreamEaterProgress(
+            java.util.Map<String, Integer> levels,
+            java.util.Map<String, Integer> exp
+    ) {
+        this.dreamEaterLevels.clear();
+        this.dreamEaterExp.clear();
+
+        if (levels != null) {
+            for (java.util.Map.Entry<String, Integer> entry : levels.entrySet()) {
+                String id = entry.getKey();
+
+                if (id == null || id.isEmpty() || id.length() > 128 || !id.contains(":")) {
+                    continue;
+                }
+
+                int level = Math.max(1, Math.min(entry.getValue(), DREAM_EATER_MAX_LEVEL));
+                this.dreamEaterLevels.put(id, level);
+            }
+        }
+
+        if (exp != null) {
+            for (java.util.Map.Entry<String, Integer> entry : exp.entrySet()) {
+                String id = entry.getKey();
+
+                if (id == null || id.isEmpty() || id.length() > 128 || !id.contains(":")) {
+                    continue;
+                }
+
+                int value = Math.max(0, entry.getValue());
+                this.dreamEaterExp.put(id, value);
+            }
+        }
+
+        for (String id : this.dreamEaterLevels.keySet()) {
+            this.dreamEaterExp.putIfAbsent(id, 0);
+        }
     }
 
 }

@@ -84,49 +84,75 @@ public class ChangeSpirit extends MenuBackground {
 
         float topBarHeight = (float) height * 0.17F;
         int button_statsY = (int) topBarHeight + 5;
-        int button_stats_playerY = button_statsY;
 
         float buttonPosX = (float) width * 0.03F;
-        float subButtonPosX = buttonPosX + 10;
-
         float buttonWidth = ((float) width * 0.1744F) - 20;
 
-        float dataWidth = ((float) width * 0.1744F) - 10;
-
-        int col1X = (int) (subButtonPosX + buttonWidth + 40), col2X = (int) (col1X + dataWidth * 2) + 10;
-
-        int i = 0;
+        int shownIndex = 0;
 
         globalData = ModDataRM.getGlobal(minecraft.player);
 
-        for (i = 0; i < ModDreamEaters.registry.stream().toList().size(); i++) {
-            DreamEater dreamEater = ModDreamEaters.registry.stream().toList().get(i);
-            MenuButton btn = new MenuButton((int) buttonPosX, button_statsY + 18 * i, (int) buttonWidth, dreamEater.getTranslationKey(), MenuButton.ButtonType.BUTTON, false, (e) -> {
-                select(dreamEater.getRegistryName().toString());
-            });
-            btn.setData(dreamEater.getRegistryName().toString());
-            addRenderableWidget(btn);
+        if (globalData != null) {
+            for (DreamEater dreamEater : ModDreamEaters.registry.stream().toList()) {
+                if (dreamEater == null || dreamEater.getRegistryName() == null) {
+                    continue;
+                }
+
+                if (StringsRM.none.equals(dreamEater.getName())) {
+                    continue;
+                }
+
+                String dreamEaterRL = dreamEater.getRegistryName().toString();
+
+                // Chirithy is always visible by default.
+                // Everything else requires being unlocked.
+                if (!StringsRM.chirithy.equals(dreamEater.getName())
+                        && !globalData.hasDreamEaterUnlocked(dreamEaterRL)) {
+                    continue;
+                }
+
+                int dreamEaterLevel = globalData.getDreamEaterLevel(dreamEaterRL);
+
+                String buttonText = getDreamEaterDisplayName(dreamEater) + " Lv. " + dreamEaterLevel;
+
+                if (dreamEaterRL.equals(globalData.getDreamEaterRL())) {
+                    buttonText = ChatFormatting.GOLD + buttonText;
+                }
+
+                MenuButton btn = new MenuButton(
+                        (int) buttonPosX,
+                        button_statsY + 18 * shownIndex,
+                        (int) buttonWidth,
+                        buttonText,
+                        MenuButton.ButtonType.BUTTON,
+                        false,
+                        (e) -> select(dreamEaterRL)
+                );
+
+                btn.setData(dreamEaterRL);
+                addRenderableWidget(btn);
+
+                shownIndex++;
+            }
         }
 
-        addRenderableWidget(new MenuButton((int) buttonPosX, button_statsY + 18 * i++, (int) buttonWidth, (Strings.Gui_Menu_Back), MenuButton.ButtonType.BUTTON, false, (e) -> {
-            action("back");
-        }));
+        addRenderableWidget(new MenuButton(
+                (int) buttonPosX,
+                button_statsY + 18 * shownIndex,
+                (int) buttonWidth,
+                Strings.Gui_Menu_Back,
+                MenuButton.ButtonType.BUTTON,
+                false,
+                (e) -> action("back")
+        ));
     }
+
 
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-
-        if (globalData == null)
+        if (globalData == null) {
             return;
-
-        //Read every button data and if it's the selected one render it in gold
-        for (Renderable renderable : renderables) {
-            if (renderable instanceof MenuButton btn && btn.getData() != null && !btn.getData().isEmpty()) {
-                if (btn.getData().equals(globalData.getDreamEaterRL())) {
-                    btn.setMessage(Component.literal(ChatFormatting.GOLD + btn.getMessage().getString()));
-                }
-            }
         }
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -164,17 +190,64 @@ public class ChangeSpirit extends MenuBackground {
         int boxH = 145;
 
         guiGraphics.fill(boxX - 4, boxY - 16, boxX + boxW + 4, boxY + boxH + 4, 0xAA000000);
+        String dreamEaterRL = dreamEater.getRegistryName().toString();
+
+        int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
+        int dreamEaterExp = global.getDreamEaterExp(dreamEaterRL);
+        int dreamEaterExpNeeded = global.getDreamEaterExpToNextLevel(dreamEaterRL);
+
+        String nameLine = getDreamEaterDisplayName(dreamEater);
+        String levelLine = "Lv. " + dreamEaterLevel;
+
+        String expLine;
+
+        if (dreamEaterExpNeeded <= 0) {
+            expLine = "EXP MAX";
+        } else {
+            expLine = "EXP " + dreamEaterExp + " / " + dreamEaterExpNeeded;
+        }
+
         guiGraphics.drawString(
                 minecraft.font,
-                getDreamEaterDisplayName(dreamEater),
+                nameLine,
                 boxX + 8,
                 boxY - 12,
                 0xFFFFFF,
                 false
         );
 
-        int centerX = boxX + (boxW / 2);
-        int bottomY = boxY + boxH - 10;
+        guiGraphics.drawString(
+                minecraft.font,
+                levelLine,
+                boxX + 8,
+                boxY,
+                0xFFD966,
+                false
+        );
+
+        guiGraphics.drawString(
+                minecraft.font,
+                expLine,
+                boxX + 8,
+                boxY + 10,
+                0xffae00,
+                false
+        );
+
+        if (dreamEaterExpNeeded > 0) {
+            int barX = boxX + 8;
+            int barY = boxY + 21;
+            int barW = boxW - 16;
+            int barH = 5;
+
+            float progress = Math.min(1.0F, Math.max(0.0F, dreamEaterExp / (float) dreamEaterExpNeeded));
+            int filledW = (int) (barW * progress);
+
+            guiGraphics.fill(barX - 1, barY - 1, barX + barW + 1, barY + barH + 1, 0xAA000000);
+            guiGraphics.fill(barX, barY, barX + barW, barY + barH, 0xFF222222);
+            guiGraphics.fill(barX, barY, barX + filledW, barY + barH, 0xFFf0ac19);
+        }
+
         int scale = getPreviewScale(dreamEater);
 
         entity.tickCount = minecraft.player.tickCount;
@@ -182,7 +255,7 @@ public class ChangeSpirit extends MenuBackground {
         InventoryScreen.renderEntityInInventoryFollowsMouse(
                 guiGraphics,
                 boxX,
-                boxY,
+                boxY + 24,
                 boxX + boxW,
                 boxY + boxH,
                 scale,

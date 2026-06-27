@@ -7,7 +7,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.item.*;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.function.Supplier;
@@ -119,7 +121,12 @@ public class ModItemsRM{
         meteorShower = ITEMS.register("meteor_shower_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":meteor_shower")),
         darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockOrbItem(new Item.Properties(),KingdomKeysReMind.MODID+":dark_divide")),
 
-        // Ability Orb?
+    // Dream Eater Charms
+        meowWowCharm = ITEMS.register("meow_wow_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_MEOW_WOW, "Meow Wow")),
+        komoryBatCharm = ITEMS.register("komory_bat_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_KOMORY_BAT, "Komory Bat")),
+
+
+    // Ability Orb?
         abilityOrb = ITEMS.register("ability_orb", () -> new AbilityOrbItem(new Item.Properties(), "")),
 
         // Org Panel System

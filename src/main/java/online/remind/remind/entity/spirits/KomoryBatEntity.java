@@ -70,16 +70,16 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
     private static final int SONIC_BOOM_WINDUP_TICKS = 22;
     private static final int SONIC_BOOM_HIT_TICK = 11;
 
-    private int confusingWavesCooldown = 0;
-    private int zeroGravityCooldown = 0;
-    private int drainCooldown = 0;
-    private int hasteCooldown = 0;
+    private int confusingWavesCooldown = 20 * 9 ;
+    private int zeroGravityCooldown = 20 * 5;
+    private int drainCooldown = 20 * 10;
+    private int hasteCooldown = 20 * 12;
     private int supportCastCooldown = 20 * 7; // 7 Seconds Delay on Summon
 
-    private double komoryHP = 32.7D;
-    private double komoryStrength = 8.2D;
-    private double komoryMagic = 10.8D;
-    private double komoryDefense = 5.9D;
+    private double komoryHP = 32.0D;
+    private double komoryStrength = 8.0D;
+    private double komoryMagic = 10.0D;
+    private double komoryDefense = 6.0D;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(KomoryBatEntity.class, EntityDataSerializers.INT);
@@ -388,9 +388,7 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
                 1.35F
         );
 
-        owner.sendSystemMessage(Component.literal("<Komory Bat> Confusing Waves!"));
-
-        this.confusingWavesCooldown = hitSomething ? 20 * 16 : 20 * 4;
+        this.confusingWavesCooldown = hitSomething ? 20 * 16 : 20 * 5;
         this.supportCastCooldown = 20 * 3;
     }
 
@@ -459,7 +457,6 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
                 1.0F
         );
 
-        owner.sendSystemMessage(Component.literal("<Komory Bat> " + getZeroGravityName(tier) + "!"));
 
         this.zeroGravityCooldown = hitSomething ? 20 * 22 : 20 * 10;
         this.supportCastCooldown = 20 * 6;
@@ -532,7 +529,6 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
         this.level().addFreshEntity(drain);
 
-        owner.sendSystemMessage(Component.literal("<Komory Bat> Drain!"));
 
         this.drainCooldown = 20 * 14;
         this.supportCastCooldown = 20 * 2;
@@ -611,8 +607,6 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
                 0.65F,
                 1.55F
         );
-
-        owner.sendSystemMessage(Component.literal("<Komory Bat> Haste!"));
 
         this.hasteCooldown = 20 * 55;
         this.supportCastCooldown = 20 * 3;
@@ -902,12 +896,16 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
     private void applyOwnerScaling(Player owner) {
         PlayerData ownerData = PlayerData.get(owner);
+        int level = 1;
 
-        if (ownerData == null) {
-            return;
+        if (owner instanceof Player player) {
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+            if (globalData != null) {
+                level = globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_KOMORY_BAT);
+            }
         }
 
-        int level = Mth.clamp(ownerData.getLevel(), 1, 100);
         KomoryBatStats stats = getKomoryBatStatsForLevel(level);
 
         this.komoryHP = stats.hp;

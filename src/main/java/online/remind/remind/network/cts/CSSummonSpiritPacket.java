@@ -106,11 +106,6 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
         String dreamEaterRL = globalData.getDreamEaterRL();
 
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            owner.displayClientMessage(Component.literal("You don't have a Dream Eater Equipped!"), true);
-            return;
-        }
-
         DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
 
         if (dreamEater == null) {
@@ -118,16 +113,28 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
             return;
         }
 
+        if (StringsRM.none.equals(dreamEater.getName())) {
+            owner.displayClientMessage(Component.literal("You don't have a Dream Eater Equipped!"), true);
+            return;
+        }
+
+        if (!globalData.hasDreamEaterUnlocked(dreamEaterRL)) {
+            owner.displayClientMessage(Component.literal("You have not unlocked this Dream Eater yet."), true);
+            return;
+        }
+
         Entity summonedDreamEater = null;
 
+
+        ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
+        MeowWowEntity.removeExistingMeowWow(serverLevel, owner.getUUID());
+        KomoryBatEntity.removeExistingKomoryBat(serverLevel, owner.getUUID());
+
+
+
         switch (dreamEater.getName()) {
-            case StringsRM.none: {
-                owner.displayClientMessage(Component.literal("You don't have a Dream Eater Equipped!"), true);
-                return;
-            }
 
             case StringsRM.chirithy: {
-                ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
 
                 ChirithyEntity chirithy = new ChirithyEntity(owner.level(), owner);
                 chirithy.setOwnerUUID(owner.getUUID());
