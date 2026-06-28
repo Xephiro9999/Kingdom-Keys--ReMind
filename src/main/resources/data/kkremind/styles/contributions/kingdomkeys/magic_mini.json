@@ -1,5 +1,5 @@
 {
-  "target": "kkremind:magic_slow",
+  "target": "kingdomkeys:magic_mini",
 
   "elements": ["STATUS", "MAGIC"],
   "specific_styles": [],
