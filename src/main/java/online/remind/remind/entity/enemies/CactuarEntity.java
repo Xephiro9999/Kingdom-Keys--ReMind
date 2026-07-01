@@ -1,0 +1,980 @@
+package online.remind.remind.entity.enemies;
+
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import online.remind.remind.entity.ModEntitiesRM;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+public class CactuarEntity extends Monster implements GeoEntity {
+
+    public static final int VARIANT_NORMAL = 0;
+    public static final int VARIANT_JUMBO = 1;
+
+    public static final int ACTION_NONE = 0;
+    public static final int ACTION_KICK = 1;
+    public static final int ACTION_NEEDLES = 2;
+    public static final int ACTION_JUMBO_STOMP = 3;
+    public static final int ACTION_KER_PLUNK = 4;
+    public static final int ACTION_DEATH = 5;
+
+    private static final int NORMAL_NEEDLES_TICKS = 48;
+    private static final int JUMBO_NEEDLES_TICKS = 64;
+
+    private int needleVolleyTicks = 0;
+    private int needleVolleyInterval = 0;
+    private int needleTargetId = -1;
+
+    private int needleHitInterval = 0;
+    private int needleHitsRemaining = 0;
+    private float needleDamagePerHit = 0.0F;
+    private boolean needleVolleyJumbo = false;
+    private boolean needleDamageApplied = false;
+    private static final int KER_PLUNK_TICKS = 90;
+    private static final int DEATH_ANIMATION_TICKS = 70;
+
+    private static final EntityDataAccessor<Integer> VARIANT =
+            SynchedEntityData.defineId(CactuarEntity.class, EntityDataSerializers.INT);
+
+    private static final EntityDataAccessor<Integer> ACTION =
+            SynchedEntityData.defineId(CactuarEntity.class, EntityDataSerializers.INT);
+
+    private static final EntityDataAccessor<Integer> ACTION_TICKS =
+            SynchedEntityData.defineId(CactuarEntity.class, EntityDataSerializers.INT);
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private static final RawAnimation IDLE_ANIM =
+            RawAnimation.begin().thenLoop("idle");
+
+    private static final RawAnimation KICK_ANIM =
+            RawAnimation.begin().thenPlay("attack_normal");
+
+    private static final RawAnimation NEEDLES_ANIM =
+            RawAnimation.begin().thenPlay("needles");
+
+    private static final RawAnimation JUMBO_STOMP_ANIM =
+            RawAnimation.begin().thenPlay("jumbo_attack");
+
+    private static final RawAnimation KER_PLUNK_ANIM =
+            RawAnimation.begin().thenPlay("ker_plunk");
+
+    private static final RawAnimation DEATH_ANIM =
+            RawAnimation.begin().thenPlayAndHold("death");
+
+    private String currentAnimation = "none";
+
+    private int needlesCooldown = 80;
+    private int escapeCooldown = 100;
+
+    private int jumboStompCooldown = 60;
+    private int jumboNeedlesCooldown = 120;
+    private int kerPlunkCooldown = 200;
+    private int kerPlunkImpactTicks = 0;
+
+    private boolean escaping = false;
+    private int escapeTicks = 0;
+
+    public CactuarEntity(EntityType<? extends CactuarEntity> type, Level level) {
+        super(type, level);
+
+        if (isJumboType(type)) {
+            this.setVariant(VARIANT_JUMBO);
+        } else {
+            this.setVariant(VARIANT_NORMAL);
+        }
+    }
+
+    private boolean isJumboType(EntityType<?> type) {
+        try {
+            return type == ModEntitiesRM.TYPE_JUMBO_CACTUAR.get();
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public boolean isJumbo() {
+        return this.getVariant() == VARIANT_JUMBO;
+    }
+
+    public int getVariant() {
+        return this.entityData.get(VARIANT);
+    }
+
+    public void setVariant(int variant) {
+        this.entityData.set(VARIANT, variant);
+    }
+
+    public int getCactuarAction() {
+        return this.entityData.get(ACTION);
+    }
+
+    public int getCactuarActionTicks() {
+        return this.entityData.get(ACTION_TICKS);
+    }
+
+    public boolean isCactuarDeathAnimating() {
+        return this.deathTime > 0 || this.getHealth() <= 0.0F || this.getCactuarAction() == ACTION_DEATH;
+    }
+
+    public float getDeathBackFallProgress(float partialTick) {
+        if (!this.isCactuarDeathAnimating()) {
+            return 0.0F;
+        }
+
+        int action = this.getCactuarAction();
+        int actionTicks = this.getCactuarActionTicks();
+
+        if (action == ACTION_DEATH && actionTicks > 0) {
+            float used = DEATH_ANIMATION_TICKS - actionTicks;
+            return Math.max(0.0F, Math.min(1.0F, used / 28.0F));
+        }
+
+        if (this.deathTime > 0) {
+            return Math.max(0.0F, Math.min(1.0F, (this.deathTime + partialTick) / 28.0F));
+        }
+
+        return 0.0F;
+    }
+
+    private boolean isKerPlunking() {
+        return this.getCactuarAction() == ACTION_KER_PLUNK && this.getCactuarActionTicks() > 0;
+    }
+
+    private boolean isNeedlesAnimating() {
+        return this.getCactuarAction() == ACTION_NEEDLES && this.getCactuarActionTicks() > 0;
+    }
+
+    private boolean isActionBusy() {
+        int action = this.getCactuarAction();
+
+        return action != ACTION_NONE
+                && action != ACTION_DEATH
+                && this.getCactuarActionTicks() > 0;
+    }
+
+    private void setAction(int action, int ticks) {
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        this.entityData.set(ACTION, action);
+        this.entityData.set(ACTION_TICKS, Math.max(0, ticks));
+        this.currentAnimation = "none";
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, VARIANT_NORMAL);
+        builder.define(ACTION, ACTION_NONE);
+        builder.define(ACTION_TICKS, 0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+
+        if (!this.isJumbo()) {
+            this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.35D, true));
+            this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.9D));
+        } else {
+            this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 0.85D, true));
+            this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.45D));
+        }
+
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    public static AttributeSupplier.Builder createNormalAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 18.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.34D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.15D);
+    }
+
+    public static AttributeSupplier.Builder createJumboAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 280.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.18D)
+                .add(Attributes.ATTACK_DAMAGE, 14.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 2.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.95D);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        if (this.isDeadOrDying()) {
+            return;
+        }
+
+        tickActionAnimation();
+
+        if (this.isKerPlunking()) {
+            lockKerPlunkMovement();
+        }
+
+        tickCooldowns();
+        tickNeedleVolley();
+
+        if (this.isJumbo()) {
+            tickJumboCombat();
+        } else {
+            tickNormalCombat();
+        }
+    }
+
+    private void lockKerPlunkMovement() {
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = true;
+        this.hurtMarked = true;
+    }
+
+    private void tickActionAnimation() {
+        int action = this.entityData.get(ACTION);
+
+        if (action == ACTION_DEATH) {
+            return;
+        }
+
+        int ticks = this.entityData.get(ACTION_TICKS);
+
+        if (ticks <= 0) {
+            if (action != ACTION_NONE) {
+                this.entityData.set(ACTION, ACTION_NONE);
+                this.currentAnimation = "none";
+            }
+
+            return;
+        }
+
+        ticks--;
+        this.entityData.set(ACTION_TICKS, ticks);
+
+        if (ticks <= 0) {
+            this.entityData.set(ACTION, ACTION_NONE);
+            this.currentAnimation = "none";
+        }
+    }
+
+    private void tickCooldowns() {
+        if (this.needlesCooldown > 0) {
+            this.needlesCooldown--;
+        }
+
+        if (this.escapeCooldown > 0) {
+            this.escapeCooldown--;
+        }
+
+        if (this.jumboStompCooldown > 0) {
+            this.jumboStompCooldown--;
+        }
+
+        if (this.jumboNeedlesCooldown > 0) {
+            this.jumboNeedlesCooldown--;
+        }
+
+        if (this.kerPlunkCooldown > 0) {
+            this.kerPlunkCooldown--;
+        }
+
+        if (this.kerPlunkImpactTicks > 0) {
+            this.kerPlunkImpactTicks--;
+
+            if (this.kerPlunkImpactTicks == 35) {
+                doKerPlunkImpact();
+            }
+        }
+    }
+
+    private void tickNeedleVolley() {
+        if (this.needleVolleyTicks <= 0) {
+            return;
+        }
+
+        if (this.getCactuarAction() != ACTION_NEEDLES || this.getCactuarActionTicks() <= 0) {
+            clearNeedleVolley();
+            return;
+        }
+
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            clearNeedleVolley();
+            return;
+        }
+
+        Entity entity = serverLevel.getEntity(this.needleTargetId);
+
+        if (!(entity instanceof LivingEntity target) || !target.isAlive()) {
+            clearNeedleVolley();
+            return;
+        }
+
+        /*
+         * Visible needles.
+         * Normal = smaller bursts.
+         * Jumbo = much denser bursts.
+         */
+        if (this.needleVolleyInterval <= 0) {
+            if (this.needleVolleyJumbo) {
+                spawnNeedleArrows(target, 10, 2.25F, 4.5F);
+                this.needleVolleyInterval = 1;
+            } else {
+                spawnNeedleArrows(target, 4, 1.85F, 3.0F);
+                this.needleVolleyInterval = 2;
+            }
+        } else {
+            this.needleVolleyInterval--;
+        }
+
+        /*
+         * Rapid multi-hit damage.
+         * This is the part that makes it FEEL like 1,000 / 10,000 hits.
+         */
+        if (this.needleHitsRemaining > 0) {
+            if (this.needleHitInterval <= 0) {
+                doNeedleMultiHit(serverLevel, target);
+
+                this.needleHitsRemaining--;
+
+                if (this.needleVolleyJumbo) {
+                    this.needleHitInterval = 0; // every tick
+                } else {
+                    this.needleHitInterval = 1; // every other tick
+                }
+            } else {
+                this.needleHitInterval--;
+            }
+        }
+
+        this.needleVolleyTicks--;
+
+        if (this.needleVolleyTicks <= 0) {
+            clearNeedleVolley();
+        }
+    }
+
+    private void clearNeedleVolley() {
+        this.needleVolleyTicks = 0;
+        this.needleVolleyInterval = 0;
+        this.needleTargetId = -1;
+        this.needleVolleyJumbo = false;
+        this.needleHitInterval = 0;
+        this.needleHitsRemaining = 0;
+        this.needleDamagePerHit = 0.0F;
+    }
+
+    private void tickNormalCombat() {
+        if (this.escaping) {
+            tickEscape();
+            return;
+        }
+
+        if (this.isActionBusy()) {
+            return;
+        }
+
+        LivingEntity target = this.getTarget();
+
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        double distanceSqr = this.distanceToSqr(target);
+
+        if (this.needlesCooldown <= 0 && distanceSqr <= 144.0D && this.hasLineOfSight(target)) {
+            doThousandNeedles(target);
+            return;
+        }
+
+        if (this.escapeCooldown <= 0) {
+            boolean lowHealth = this.getHealth() <= this.getMaxHealth() * 0.35F;
+            boolean randomEscape = this.random.nextFloat() < 0.015F;
+
+            if (lowHealth || randomEscape) {
+                startEscape(target);
+            }
+        }
+    }
+
+    private void tickJumboCombat() {
+        if (this.isActionBusy()) {
+            if (this.isKerPlunking()) {
+                lockKerPlunkMovement();
+            }
+
+            return;
+        }
+
+        LivingEntity target = this.getTarget();
+
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        double distanceSqr = this.distanceToSqr(target);
+
+        if (this.kerPlunkCooldown <= 0 && distanceSqr <= 225.0D) {
+            doKerPlunkStart(target);
+            return;
+        }
+
+        if (this.jumboNeedlesCooldown <= 0 && distanceSqr <= 225.0D && this.hasLineOfSight(target)) {
+            doTenThousandNeedles(target);
+            return;
+        }
+
+        if (this.jumboStompCooldown <= 0 && distanceSqr <= 36.0D) {
+            doJumboStomp();
+        }
+    }
+
+    private void doThousandNeedles(LivingEntity target) {
+        playActionAnimation(ACTION_NEEDLES, NORMAL_NEEDLES_TICKS);
+        startNeedleVolley(target, false, NORMAL_NEEDLES_TICKS);
+
+        this.level().playSound(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                SoundEvents.ARROW_SHOOT,
+                SoundSource.HOSTILE,
+                1.0F,
+                1.6F
+        );
+
+        this.needlesCooldown = 120;
+    }
+
+    private void doTenThousandNeedles(LivingEntity target) {
+        playActionAnimation(ACTION_NEEDLES, JUMBO_NEEDLES_TICKS);
+        startNeedleVolley(target, true, JUMBO_NEEDLES_TICKS);
+
+        this.level().playSound(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                SoundEvents.ARROW_SHOOT,
+                SoundSource.HOSTILE,
+                1.5F,
+                0.7F
+        );
+
+        this.jumboNeedlesCooldown = 180;
+    }
+
+    private void startNeedleVolley(LivingEntity target, boolean jumbo, int ticks) {
+        this.needleTargetId = target.getId();
+        this.needleVolleyJumbo = jumbo;
+        this.needleVolleyTicks = ticks;
+        this.needleVolleyInterval = 0;
+        this.needleHitInterval = 0;
+
+        if (jumbo) {
+            /*
+             * 10,000 Needles feeling:
+             * 70 tiny hits across the animation.
+             * Total damage: 35.0F
+             */
+            this.needleHitsRemaining = 70;
+            this.needleDamagePerHit = 0.5F;
+        } else {
+            /*
+             * 1,000 Needles feeling:
+             * 25 tiny hits across the animation.
+             * Total damage: 10.0F
+             */
+            this.needleHitsRemaining = 25;
+            this.needleDamagePerHit = 0.4F;
+        }
+    }
+
+    private void doNeedleMultiHit(ServerLevel serverLevel, LivingEntity target) {
+        /*
+         * Minecraft normally blocks rapid repeated hurt calls with invulnerability frames.
+         * Resetting this lets the tiny hits actually register.
+         */
+        target.invulnerableTime = 0;
+
+        target.hurt(this.damageSources().mobAttack(this), this.needleDamagePerHit);
+
+        Vec3 hitPos = new Vec3(
+                target.getX(),
+                target.getY() + target.getBbHeight() * 0.55D,
+                target.getZ()
+        );
+
+        int particles = this.needleVolleyJumbo ? 10 : 4;
+
+        serverLevel.sendParticles(
+                ParticleTypes.CRIT,
+                hitPos.x,
+                hitPos.y,
+                hitPos.z,
+                particles,
+                this.needleVolleyJumbo ? 0.75D : 0.35D,
+                this.needleVolleyJumbo ? 0.75D : 0.35D,
+                this.needleVolleyJumbo ? 0.75D : 0.35D,
+                this.needleVolleyJumbo ? 0.14D : 0.08D
+        );
+
+        if (this.tickCount % (this.needleVolleyJumbo ? 2 : 4) == 0) {
+            this.level().playSound(
+                    null,
+                    target.getX(),
+                    target.getY(),
+                    target.getZ(),
+                    SoundEvents.ARROW_HIT,
+                    SoundSource.HOSTILE,
+                    this.needleVolleyJumbo ? 0.9F : 0.55F,
+                    this.needleVolleyJumbo ? 1.8F : 1.35F
+            );
+        }
+    }
+
+    private void spawnNeedleArrows(LivingEntity target, int count, float speed, float spread) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        Vec3 start = new Vec3(
+                this.getX(),
+                this.getY() + this.getBbHeight() * 0.72D,
+                this.getZ()
+        );
+
+        Vec3 targetPos = new Vec3(
+                target.getX(),
+                target.getY() + target.getBbHeight() * 0.55D,
+                target.getZ()
+        );
+
+        Vec3 baseDirection = targetPos.subtract(start).normalize();
+
+        for (int i = 0; i < count; i++) {
+            CactuarNeedleProjectile needle = new CactuarNeedleProjectile(
+                    ModEntitiesRM.TYPE_CACTUAR_NEEDLE.get(),
+                    this.level(),
+                    this
+            );
+
+            double offsetX = (this.random.nextDouble() - 0.5D) * 0.85D;
+            double offsetY = (this.random.nextDouble() - 0.5D) * 0.55D;
+            double offsetZ = (this.random.nextDouble() - 0.5D) * 0.85D;
+
+            Vec3 spawnPos = start.add(offsetX, offsetY, offsetZ);
+
+            needle.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+            needle.setBaseDamage(0.0D);
+            needle.setNoGravity(true);
+
+            double randomX = baseDirection.x + ((this.random.nextDouble() - 0.5D) * 0.12D);
+            double randomY = baseDirection.y + ((this.random.nextDouble() - 0.5D) * 0.09D);
+            double randomZ = baseDirection.z + ((this.random.nextDouble() - 0.5D) * 0.12D);
+
+            needle.shoot(randomX, randomY, randomZ, speed, spread);
+
+            serverLevel.addFreshEntity(needle);
+        }
+    }
+
+    private void doJumboStomp() {
+        playActionAnimation(ACTION_JUMBO_STOMP, 35);
+
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        AABB area = this.getBoundingBox().inflate(4.5D, 1.5D, 4.5D);
+
+        for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, area, this::canHitTarget)) {
+            target.hurt(this.damageSources().mobAttack(this), 16.0F);
+
+            Vec3 knock = target.position().subtract(this.position()).normalize().scale(1.2D);
+            target.setDeltaMovement(target.getDeltaMovement().add(knock.x, 0.45D, knock.z));
+            target.hurtMarked = true;
+        }
+
+        serverLevel.sendParticles(
+                ParticleTypes.POOF,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                60,
+                3.5D,
+                0.25D,
+                3.5D,
+                0.08D
+        );
+
+        this.level().playSound(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                SoundEvents.GENERIC_EXPLODE,
+                SoundSource.HOSTILE,
+                1.3F,
+                0.55F
+        );
+
+        this.jumboStompCooldown = 90;
+    }
+
+    private void doKerPlunkStart(LivingEntity target) {
+        playActionAnimation(ACTION_KER_PLUNK, KER_PLUNK_TICKS);
+
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = true;
+        this.hurtMarked = true;
+
+        this.kerPlunkImpactTicks = 65;
+        this.kerPlunkCooldown = 260;
+    }
+
+    private void doKerPlunkImpact() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+
+        AABB area = this.getBoundingBox().inflate(14.0D, 2.0D, 14.0D);
+
+        for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, area, this::canHitTarget)) {
+            target.hurt(this.damageSources().mobAttack(this), 28.0F);
+
+            Vec3 knock = target.position().subtract(this.position()).normalize().scale(2.75D);
+            target.setDeltaMovement(target.getDeltaMovement().add(knock.x, 1.5D, knock.z));
+            target.hurtMarked = true;
+        }
+
+        serverLevel.sendParticles(
+                ParticleTypes.EXPLOSION,
+                this.getX(),
+                this.getY() + 0.2D,
+                this.getZ(),
+                10,
+                3.0D,
+                0.25D,
+                3.0D,
+                0.0D
+        );
+
+        serverLevel.sendParticles(
+                ParticleTypes.POOF,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                120,
+                5.0D,
+                0.4D,
+                5.0D,
+                0.12D
+        );
+
+        this.level().playSound(
+                null,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                SoundEvents.GENERIC_EXPLODE,
+                SoundSource.HOSTILE,
+                2.0F,
+                0.45F
+        );
+    }
+
+    private boolean canHitTarget(LivingEntity target) {
+        if (target == this) {
+            return false;
+        }
+
+        if (target instanceof CactuarEntity) {
+            return false;
+        }
+
+        return target.isAlive();
+    }
+
+    private void startEscape(LivingEntity target) {
+        this.escaping = true;
+        this.escapeTicks = 0;
+        this.setTarget(null);
+
+        Vec3 away = this.position().subtract(target.position()).normalize();
+
+        this.setDeltaMovement(
+                away.x * 0.85D,
+                0.15D,
+                away.z * 0.85D
+        );
+
+        this.hasImpulse = true;
+        this.hurtMarked = true;
+    }
+
+    private void tickEscape() {
+        this.escapeTicks++;
+
+        LivingEntity lastTarget = this.getLastHurtByMob();
+
+        Vec3 away;
+
+        if (lastTarget != null) {
+            away = this.position().subtract(lastTarget.position()).normalize();
+        } else {
+            away = this.getLookAngle().scale(-1.0D);
+        }
+
+        double moveX = this.getX() + away.x * 16.0D;
+        double moveZ = this.getZ() + away.z * 16.0D;
+
+        this.getNavigation().moveTo(moveX, this.getY(), moveZ, 1.55D);
+
+        if (this.escapeTicks > 100) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(
+                        ParticleTypes.POOF,
+                        this.getX(),
+                        this.getY() + 0.8D,
+                        this.getZ(),
+                        18,
+                        0.4D,
+                        0.6D,
+                        0.4D,
+                        0.05D
+                );
+            }
+
+            this.discard();
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        boolean hit = super.doHurtTarget(entity);
+
+        if (!hit || this.level().isClientSide) {
+            return hit;
+        }
+
+        if (this.isActionBusy()) {
+            return true;
+        }
+
+        if (this.isJumbo()) {
+            playActionAnimation(ACTION_JUMBO_STOMP, 28);
+        } else {
+            playActionAnimation(ACTION_KICK, 14);
+        }
+
+        return true;
+    }
+
+    private void playActionAnimation(int action, int ticks) {
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        this.entityData.set(ACTION, action);
+        this.entityData.set(ACTION_TICKS, ticks);
+        this.currentAnimation = "none";
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        if (!this.level().isClientSide) {
+            clearNeedleVolley();
+            this.entityData.set(ACTION, ACTION_DEATH);
+            this.entityData.set(ACTION_TICKS, DEATH_ANIMATION_TICKS);
+            this.currentAnimation = "none";
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+            lockDeathYaw();
+        }
+
+        super.die(source);
+
+        if (!this.level().isClientSide) {
+            this.entityData.set(ACTION, ACTION_DEATH);
+            this.entityData.set(ACTION_TICKS, DEATH_ANIMATION_TICKS);
+            this.currentAnimation = "none";
+            lockDeathYaw();
+        }
+    }
+
+    @Override
+    protected void tickDeath() {
+        this.deathTime++;
+
+        if (!this.level().isClientSide) {
+            lockDeathYaw();
+
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+
+            if (this.entityData.get(ACTION) != ACTION_DEATH) {
+                this.entityData.set(ACTION, ACTION_DEATH);
+                this.currentAnimation = "none";
+            }
+
+            int remaining = Math.max(1, DEATH_ANIMATION_TICKS - this.deathTime);
+            this.entityData.set(ACTION_TICKS, remaining);
+
+            if (this.deathTime >= DEATH_ANIMATION_TICKS) {
+                this.level().broadcastEntityEvent(this, (byte) 60);
+                this.remove(Entity.RemovalReason.KILLED);
+            }
+        }
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this,
+                "main_controller",
+                0,
+                this::mainPredicate
+        ));
+    }
+
+    private PlayState mainPredicate(AnimationState<CactuarEntity> state) {
+        int action = this.getCactuarAction();
+        int actionTicks = this.getCactuarActionTicks();
+
+        if (this.deathTime > 0 || this.getHealth() <= 0.0F || action == ACTION_DEATH) {
+            setAnimation(state, "death", DEATH_ANIM);
+            return PlayState.CONTINUE;
+        }
+
+        if (action != ACTION_NONE && actionTicks > 0) {
+            switch (action) {
+                case ACTION_KICK -> setAnimation(state, "attack_normal", KICK_ANIM);
+                case ACTION_NEEDLES -> setAnimation(state, "needles", NEEDLES_ANIM);
+                case ACTION_JUMBO_STOMP -> setAnimation(state, "jumbo_attack", JUMBO_STOMP_ANIM);
+                case ACTION_KER_PLUNK -> setAnimation(state, "ker_plunk", KER_PLUNK_ANIM);
+                default -> setAnimation(state, "idle", IDLE_ANIM);
+            }
+
+            return PlayState.CONTINUE;
+        }
+
+        setAnimation(state, "idle", IDLE_ANIM);
+        return PlayState.CONTINUE;
+    }
+
+    private void setAnimation(AnimationState<CactuarEntity> state, String name, RawAnimation animation) {
+        if (name.equals(this.currentAnimation)) {
+            return;
+        }
+
+        this.currentAnimation = name;
+        state.getController().forceAnimationReset();
+        state.getController().setAnimation(animation);
+    }
+
+    @Override
+    protected void updateWalkAnimation(float partialTick) {
+        float speed;
+
+        if (this.getPose() == Pose.STANDING) {
+            speed = Math.min(partialTick * 6.0F, 1.0F);
+        } else {
+            speed = 0.0F;
+        }
+
+        this.walkAnimation.update(speed, 0.2F);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (this.isJumbo()) {
+            amount *= 0.65F;
+        }
+
+        return super.hurt(source, amount);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("CactuarVariant", this.getVariant());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+
+        if (tag.contains("CactuarVariant")) {
+            this.setVariant(tag.getInt("CactuarVariant"));
+        }
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    private void lockDeathYaw() {
+        this.setYRot(0.0F);
+        this.yRotO = 0.0F;
+
+        this.setXRot(0.0F);
+        this.xRotO = 0.0F;
+
+        this.setYHeadRot(0.0F);
+        this.yHeadRotO = 0.0F;
+
+        this.yBodyRot = 0.0F;
+        this.yBodyRotO = 0.0F;
+    }
+}

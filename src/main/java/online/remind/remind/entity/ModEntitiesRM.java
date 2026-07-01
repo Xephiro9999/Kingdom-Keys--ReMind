@@ -22,15 +22,15 @@ import online.remind.remind.client.model.mob.chirithyModel;
 import online.remind.remind.client.model.reactioncommand.DarkMineModel;
 import online.remind.remind.client.model.reactioncommand.LightBeamModel;
 import online.remind.remind.client.render.*;
-import online.remind.remind.client.render.mob.ChirithyRenderer;
-import online.remind.remind.client.render.mob.KomoryBatRenderer;
-import online.remind.remind.client.render.mob.MeowWowRenderer;
+import online.remind.remind.client.render.mob.*;
 import online.remind.remind.client.render.reactioncommand.DarkMineEntityRenderer;
 import online.remind.remind.client.render.reactioncommand.LightBeamEntityRenderer;
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
 import online.remind.remind.entity.attacks.*;
+import online.remind.remind.entity.enemies.CactuarEntity;
 import online.remind.remind.entity.limits.firagaPillarEntity;
 import online.remind.remind.entity.magic.*;
+import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
 import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
 import online.remind.remind.entity.spirits.ChirithyEntity;
@@ -108,6 +108,39 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<ChirithyEntity>> TYPE_CHIRITHY = createEntityType(ChirithyEntity::new, MobCategory.MONSTER, "chirithy", 1F, 1F);
     public static final Supplier<EntityType<MeowWowEntity>> TYPE_MEOW_WOW = createEntityType(MeowWowEntity::new, MobCategory.MONSTER, "meow_wow", 1F, 1F);
     public static final Supplier<EntityType<KomoryBatEntity>> TYPE_KOMORY_BAT = createEntityType(KomoryBatEntity::new, MobCategory.MONSTER, "komory_bat", 0.5F, 0.5F);
+
+
+    // Enemies
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CactuarEntity>> TYPE_CACTUAR =
+            ENTITIES.register("cactuar", () ->
+                    EntityType.Builder.<CactuarEntity>of(CactuarEntity::new, MobCategory.MONSTER)
+                            .sized(0.75F, 0.75F)
+                            .clientTrackingRange(8)
+                            .updateInterval(2)
+                            .build("cactuar")
+            );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CactuarEntity>> TYPE_JUMBO_CACTUAR =
+            ENTITIES.register("jumbo_cactuar", () ->
+                    EntityType.Builder.<CactuarEntity>of(CactuarEntity::new, MobCategory.MONSTER)
+                            .sized(6.0F, 14.0F)
+                            .clientTrackingRange(12)
+                            .updateInterval(2)
+                            .build("jumbo_cactuar")
+            );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CactuarNeedleProjectile>> TYPE_CACTUAR_NEEDLE =
+            ENTITIES.register("cactuar_needle", () ->
+                    EntityType.Builder.<CactuarNeedleProjectile>of(CactuarNeedleProjectile::new, MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .clientTrackingRange(64)
+                            .updateInterval(1)
+                            .build("cactuar_needle")
+            );
+
+
+
     public static final Supplier<Item> CHIRITHY_EGG = ModItemsRM.ITEMS.register("chirithy_spawn_egg", () -> new DeferredSpawnEggItem(TYPE_CHIRITHY, 0xAAAAFF, 0xFF00FF, PROPERTIES));
 
 
@@ -201,6 +234,10 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_MEOW_WOW.get(), MeowWowRenderer::new);
         event.registerEntityRenderer(TYPE_KOMORY_BAT.get(), KomoryBatRenderer::new);
 
+        event.registerEntityRenderer(TYPE_CACTUAR.get(), CactuarRenderer::new);
+        event.registerEntityRenderer(TYPE_JUMBO_CACTUAR.get(), CactuarRenderer::new);
+        event.registerEntityRenderer(TYPE_CACTUAR_NEEDLE.get(), CactuarNeedleRenderer::new);
+
 
     }
 
@@ -209,6 +246,10 @@ public class ModEntitiesRM {
         event.put(TYPE_CHIRITHY.get(), ChirithyEntity.registerAttributes().build());
         event.put(TYPE_MEOW_WOW.get(), MeowWowEntity.createAttributes().build());
         event.put(TYPE_KOMORY_BAT.get(), KomoryBatEntity.createAttributes().build());
+
+
+        event.put(TYPE_CACTUAR.get(), CactuarEntity.createNormalAttributes().build());
+        event.put(TYPE_JUMBO_CACTUAR.get(), CactuarEntity.createJumboAttributes().build());
     }
 
 
