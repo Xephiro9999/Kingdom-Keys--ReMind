@@ -1,0 +1,19 @@
+{
+  "cost": 1000,
+  "ingredients": [
+    {
+      "material": "kingdomkeys:soothing_shard",
+      "quantity": "3"
+    },
+    {
+      "material": "kingdomkeys:pulsing_shard",
+      "quantity": "2"
+    }
+  ],
+  "output": {
+    "type": "item",
+    "item": "kkremind:meow_wow_charm",
+    "quantity": 1
+  },
+  "tier": 1
+}
