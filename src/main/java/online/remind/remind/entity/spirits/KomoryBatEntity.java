@@ -1,5 +1,6 @@
 package online.remind.remind.entity.spirits;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +30,8 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -40,6 +43,7 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.dreameater.DreamEaterPetHelper;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.effect.ModMobEffectsRM;
@@ -80,6 +84,12 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
     private double komoryStrength = 8.0D;
     private double komoryMagic = 10.0D;
     private double komoryDefense = 6.0D;
+
+    private static final int KOMORY_BAT_FEED_COOLDOWN_TICKS = 10;
+    private static final int SPIDER_EYE_FEED_EXP = 15;
+    private static final int PHANTOM_MEMBRANE_FEED_EXP = 45;
+
+    private int komoryBatFeedCooldown = 0;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(KomoryBatEntity.class, EntityDataSerializers.INT);
@@ -207,6 +217,10 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         }
 
         ServerPlayer owner = getOwnerPlayerFromServer(ownerId);
+
+        if (this.komoryBatFeedCooldown > 0) {
+            this.komoryBatFeedCooldown--;
+        }
 
         // Owner logged out, changed dimension, or is no longer loaded in this level.
         if (owner == null || owner.level() != this.level()) {
@@ -631,7 +645,15 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        InteractionResult result = DreamEaterPetHelper.tryPetDreamEater(
+        ItemStack heldStack = player.getItemInHand(hand);
+
+        int feedExp = getKomoryBatFeedExp(heldStack);
+
+        if (feedExp > 0) {
+            return feedKomoryBat(player, heldStack, feedExp);
+        }
+
+        InteractionResult petResult = DreamEaterPetHelper.tryPetDreamEater(
                 this,
                 player,
                 hand,
@@ -639,11 +661,74 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
                 "Komory Bat"
         );
 
-        if (result != InteractionResult.PASS) {
-            return result;
+        if (petResult != InteractionResult.PASS) {
+            return petResult;
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    private InteractionResult feedKomoryBat(Player player, ItemStack heldStack, int feedExp) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!isKomoryBatOwner(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                    Component.literal("This Komory Bat does not belong to you.")
+                            .withStyle(ChatFormatting.RED),
+                    true
+            );
+
+            return InteractionResult.CONSUME;
+        }
+
+        if (this.komoryBatFeedCooldown > 0) {
+            return InteractionResult.CONSUME;
+        }
+
+        if (!serverPlayer.getAbilities().instabuild) {
+            heldStack.shrink(1);
+        }
+
+        this.komoryBatFeedCooldown = KOMORY_BAT_FEED_COOLDOWN_TICKS;
+
+        DreamEaterExpHandler.giveDreamEaterExp(
+                serverPlayer,
+                GlobalDataRM.DREAM_EATER_KOMORY_BAT,
+                feedExp,
+                this
+        );
+
+        return InteractionResult.CONSUME;
+    }
+
+    private int getKomoryBatFeedExp(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0;
+        }
+
+        if (stack.is(Items.SPIDER_EYE)) {
+            return SPIDER_EYE_FEED_EXP;
+        }
+
+        if (stack.is(Items.PHANTOM_MEMBRANE)) {
+            return PHANTOM_MEMBRANE_FEED_EXP;
+        }
+
+        return 0;
+    }
+
+    private boolean isKomoryBatOwner(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        if (this.getOwnerUUID() == null) {
+            return false;
+        }
+
+        return this.getOwnerUUID().equals(player.getUUID());
     }
 
     private void followOwner(Player owner) {

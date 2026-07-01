@@ -1,5 +1,6 @@
 package online.remind.remind.entity.spirits;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,8 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
@@ -45,6 +48,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.dreameater.DreamEaterPetHelper;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
@@ -98,6 +102,12 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
     private int castCooldown = 0;
     private float mpHasteMult = 0F;
     private int ownerMissingTicks = 0;
+
+    private static final int MEOW_WOW_FEED_COOLDOWN_TICKS = 10;
+    private static final int COD_FEED_EXP = 12;
+    private static final int SALMON_FEED_EXP = 15;
+
+    private int meowWowFeedCooldown = 0;
 
     private static final ResourceLocation MAGIC_BALLOON =
             ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_balloon");
@@ -201,10 +211,17 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
-
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        InteractionResult result = DreamEaterPetHelper.tryPetDreamEater(
+        ItemStack heldStack = player.getItemInHand(hand);
+
+        int feedExp = getMeowWowFeedExp(heldStack);
+
+        if (feedExp > 0) {
+            return feedMeowWow(player, heldStack, feedExp);
+        }
+
+        InteractionResult petResult = DreamEaterPetHelper.tryPetDreamEater(
                 this,
                 player,
                 hand,
@@ -212,11 +229,74 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
                 "Meow Wow"
         );
 
-        if (result != InteractionResult.PASS) {
-            return result;
+        if (petResult != InteractionResult.PASS) {
+            return petResult;
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    private InteractionResult feedMeowWow(Player player, ItemStack heldStack, int feedExp) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!isMeowWowOwner(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                    Component.literal("This Meow Wow does not belong to you.")
+                            .withStyle(ChatFormatting.RED),
+                    true
+            );
+
+            return InteractionResult.CONSUME;
+        }
+
+        if (this.meowWowFeedCooldown > 0) {
+            return InteractionResult.CONSUME;
+        }
+
+        if (!serverPlayer.getAbilities().instabuild) {
+            heldStack.shrink(1);
+        }
+
+        this.meowWowFeedCooldown = MEOW_WOW_FEED_COOLDOWN_TICKS;
+
+        DreamEaterExpHandler.giveDreamEaterExp(
+                serverPlayer,
+                GlobalDataRM.DREAM_EATER_MEOW_WOW,
+                feedExp,
+                this
+        );
+
+        return InteractionResult.CONSUME;
+    }
+
+    private int getMeowWowFeedExp(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0;
+        }
+
+        if (stack.is(Items.COD)) {
+            return COD_FEED_EXP;
+        }
+
+        if (stack.is(Items.SALMON)) {
+            return SALMON_FEED_EXP;
+        }
+
+        return 0;
+    }
+
+    private boolean isMeowWowOwner(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        if (this.getOwnerUUID() == null) {
+            return false;
+        }
+
+        return this.getOwnerUUID().equals(player.getUUID());
     }
 
     @Override
@@ -289,6 +369,10 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
 
         if (this.attackCooldown > 0) {
             this.attackCooldown--;
+        }
+
+        if (this.meowWowFeedCooldown > 0) {
+            this.meowWowFeedCooldown--;
         }
 
         if (this.getAttackAnimTicks() > 0) {

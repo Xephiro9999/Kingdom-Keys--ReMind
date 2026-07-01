@@ -30,9 +30,11 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -1162,6 +1164,8 @@ public class CactuarEntity extends Monster implements GeoEntity {
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
 
+        dropCactusLoot(level);
+
         if (!this.isJumbo()) {
             return;
         }
@@ -1205,6 +1209,29 @@ public class CactuarEntity extends Monster implements GeoEntity {
         );
 
         PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
+    }
+
+    private void dropCactusLoot(ServerLevel level) {
+        int amount;
+
+        if (this.isJumbo()) {
+            amount = 16 + this.random.nextInt(17); // 16–32 cactus
+        } else {
+            amount = 1 + this.random.nextInt(3); // 1–3 cactus
+        }
+
+        ItemStack cactus = new ItemStack(Items.CACTUS, amount);
+
+        ItemEntity itemEntity = new ItemEntity(
+                level,
+                this.getX(),
+                this.getY() + 0.5D,
+                this.getZ(),
+                cactus
+        );
+
+        itemEntity.setDefaultPickUpDelay();
+        level.addFreshEntity(itemEntity);
     }
 
     @Override

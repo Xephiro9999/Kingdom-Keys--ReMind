@@ -1,12 +1,8 @@
 package online.remind.remind.dreameater;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -15,22 +11,22 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
-import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCShowOverlayPacket;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.entity.spirits.CactuarSpiritEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.spirits.KomoryBatEntity;
 import online.remind.remind.entity.spirits.MeowWowEntity;
 import online.remind.remind.network.PacketHandlerRM;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +43,11 @@ public class DreamEaterExpHandler {
             return;
         }
 
-        ServerPlayer owner = getOwnerFromDamageSource(event.getSource().getEntity(), serverLevel);
+        ServerPlayer owner = getOwnerFromDamageSource(
+                event.getSource().getEntity(),
+                event.getSource().getDirectEntity(),
+                serverLevel
+        );
 
         if (owner == null) {
             return;
@@ -69,7 +69,10 @@ public class DreamEaterExpHandler {
             return;
         }
 
-        // Only the currently equipped/summoned Dream Eater gets EXP.
+        /*
+         * Only the currently equipped/summoned Dream Eater gets EXP from kills.
+         * Feeding can still use giveDreamEaterExp(...) directly.
+         */
         if (!globalData.hasDreamEaterSummoned()) {
             return;
         }
@@ -85,31 +88,85 @@ public class DreamEaterExpHandler {
             return;
         }
 
-        int oldLevel = globalData.getDreamEaterLevel(dreamEaterRL);
-
-        boolean leveledUp = globalData.addDreamEaterExp(dreamEaterRL, exp);
-
-        int newLevel = globalData.getDreamEaterLevel(dreamEaterRL);
-        int currentExp = globalData.getDreamEaterExp(dreamEaterRL);
-        int expNeeded = globalData.getDreamEaterExpToNextLevel(dreamEaterRL);
-
-        String dreamEaterName = getDreamEaterDisplayName(dreamEaterRL);
         Entity summonedDreamEater = getSummonedDreamEaterEntity(serverLevel, globalData);
 
-        if (leveledUp) {
+        giveDreamEaterExp(
+                owner,
+                dreamEaterRL,
+                exp,
+                summonedDreamEater,
+                false
+        );
+    }
+
+    public static boolean giveDreamEaterExp(
+            ServerPlayer owner,
+            String dreamEaterRL,
+            int amount,
+            Entity effectTarget
+    ) {
+        return giveDreamEaterExp(owner, dreamEaterRL, amount, effectTarget, true);
+    }
+
+    public static boolean giveDreamEaterExp(
+            ServerPlayer owner,
+            String dreamEaterRL,
+            int amount,
+            Entity effectTarget,
+            boolean showSmallGainMessage
+    ) {
+        if (owner == null || dreamEaterRL == null || dreamEaterRL.isEmpty() || amount <= 0) {
+            return false;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(owner);
+
+        if (globalData == null) {
+            return false;
+        }
+
+        if (!globalData.hasDreamEaterUnlocked(dreamEaterRL)) {
+            return false;
+        }
+
+        int oldLevel = globalData.getDreamEaterLevel(dreamEaterRL);
+
+        boolean leveledUp = globalData.addDreamEaterExp(dreamEaterRL, amount);
+
+        int newLevel = globalData.getDreamEaterLevel(dreamEaterRL);
+
+        Entity target = effectTarget;
+
+        if (target == null && owner.level() instanceof ServerLevel serverLevel) {
+            target = getSummonedDreamEaterEntity(serverLevel, globalData);
+        }
+
+        if (target == null) {
+            target = owner;
+        }
+
+        String dreamEaterName = getDreamEaterDisplayName(dreamEaterRL);
+
+        if (leveledUp || newLevel > oldLevel) {
             int levelsGained = Math.max(1, newLevel - oldLevel);
 
-            if (summonedDreamEater != null) {
-                DreamEaterLevelUpSwirlHandler.start(summonedDreamEater);
-            } else {
-                DreamEaterLevelUpSwirlHandler.start(owner);
-            }
+            DreamEaterLevelUpSwirlHandler.start(target);
 
             sendDreamEaterLevelUpOverlay(owner, dreamEaterName, newLevel, levelsGained);
-            playLevelUpEffects(owner, summonedDreamEater);
+            playLevelUpEffects(owner, target);
+        } else if (showSmallGainMessage) {
+            playSmallExpGainEffects(owner, target);
+
+            owner.displayClientMessage(
+                    Component.literal(dreamEaterName + " gained " + amount + " EXP.")
+                            .withStyle(ChatFormatting.GREEN),
+                    true
+            );
         }
 
         PacketHandlerRM.syncGlobalToAllAround(owner, globalData);
+
+        return leveledUp || newLevel > oldLevel;
     }
 
     private static void sendDreamEaterLevelUpOverlay(
@@ -118,8 +175,6 @@ public class DreamEaterExpHandler {
             int newLevel,
             int levelsGained
     ) {
-        PlayerData playerData = PlayerData.get(owner);
-
         List<String> levelUpLines = new ArrayList<>();
 
         if (levelsGained > 1) {
@@ -154,10 +209,10 @@ public class DreamEaterExpHandler {
         );
     }
 
-
-
-    private static void playSmallExpGainSound(ServerPlayer owner, Entity summonedDreamEater) {
-        Entity target = summonedDreamEater != null ? summonedDreamEater : owner;
+    private static void playSmallExpGainEffects(ServerPlayer owner, Entity target) {
+        if (target == null) {
+            target = owner;
+        }
 
         if (!(target.level() instanceof ServerLevel level)) {
             return;
@@ -173,10 +228,24 @@ public class DreamEaterExpHandler {
                 0.18F,
                 1.65F
         );
+
+        level.sendParticles(
+                ParticleTypes.HAPPY_VILLAGER,
+                target.getX(),
+                target.getY() + target.getBbHeight() * 0.75D,
+                target.getZ(),
+                8,
+                0.35D,
+                0.35D,
+                0.35D,
+                0.05D
+        );
     }
 
-    private static void playLevelUpEffects(ServerPlayer owner, Entity summonedDreamEater) {
-        Entity target = summonedDreamEater != null ? summonedDreamEater : owner;
+    private static void playLevelUpEffects(ServerPlayer owner, Entity target) {
+        if (target == null) {
+            target = owner;
+        }
 
         if (!(target.level() instanceof ServerLevel level)) {
             return;
@@ -191,15 +260,12 @@ public class DreamEaterExpHandler {
                 baseX,
                 baseY,
                 baseZ,
-                ModSounds.levelup,
+                ModSounds.levelup.get(),
                 SoundSource.PLAYERS,
                 0.65F,
                 0.85F
         );
     }
-
-
-
 
     private static Entity getSummonedDreamEaterEntity(ServerLevel currentLevel, GlobalDataRM globalData) {
         UUID dreamEaterUUID = globalData.getDreamEaterUUID();
@@ -238,15 +304,51 @@ public class DreamEaterExpHandler {
             return "Komory Bat";
         }
 
+        if (GlobalDataRM.DREAM_EATER_CACTUAR.equals(dreamEaterRL)) {
+            return "Cactuar";
+        }
+
         return "Dream Eater";
     }
 
-    private static ServerPlayer getOwnerFromDamageSource(Entity attacker, ServerLevel level) {
-        if (attacker instanceof ServerPlayer serverPlayer) {
+    private static ServerPlayer getOwnerFromDamageSource(Entity attacker, Entity directEntity, ServerLevel level) {
+        ServerPlayer owner = getOwnerFromEntity(attacker, level);
+
+        if (owner != null) {
+            return owner;
+        }
+
+        owner = getOwnerFromEntity(directEntity, level);
+
+        if (owner != null) {
+            return owner;
+        }
+
+        if (attacker instanceof Projectile projectile) {
+            owner = getOwnerFromEntity(projectile.getOwner(), level);
+
+            if (owner != null) {
+                return owner;
+            }
+        }
+
+        if (directEntity instanceof Projectile projectile) {
+            owner = getOwnerFromEntity(projectile.getOwner(), level);
+
+            if (owner != null) {
+                return owner;
+            }
+        }
+
+        return null;
+    }
+
+    private static ServerPlayer getOwnerFromEntity(Entity entity, ServerLevel level) {
+        if (entity instanceof ServerPlayer serverPlayer) {
             return serverPlayer;
         }
 
-        if (attacker instanceof ChirithyEntity chirithy && chirithy.getOwnerUUID() != null) {
+        if (entity instanceof ChirithyEntity chirithy && chirithy.getOwnerUUID() != null) {
             Player player = level.getPlayerByUUID(chirithy.getOwnerUUID());
 
             if (player instanceof ServerPlayer serverPlayer) {
@@ -256,7 +358,7 @@ public class DreamEaterExpHandler {
             return null;
         }
 
-        if (attacker instanceof MeowWowEntity meowWow && meowWow.getOwnerUUID() != null) {
+        if (entity instanceof MeowWowEntity meowWow && meowWow.getOwnerUUID() != null) {
             Player player = level.getPlayerByUUID(meowWow.getOwnerUUID());
 
             if (player instanceof ServerPlayer serverPlayer) {
@@ -266,8 +368,18 @@ public class DreamEaterExpHandler {
             return null;
         }
 
-        if (attacker instanceof KomoryBatEntity komoryBat && komoryBat.getOwnerUUID() != null) {
+        if (entity instanceof KomoryBatEntity komoryBat && komoryBat.getOwnerUUID() != null) {
             Player player = level.getPlayerByUUID(komoryBat.getOwnerUUID());
+
+            if (player instanceof ServerPlayer serverPlayer) {
+                return serverPlayer;
+            }
+
+            return null;
+        }
+
+        if (entity instanceof CactuarSpiritEntity cactuarSpirit && cactuarSpirit.getOwnerUUID() != null) {
+            Player player = level.getPlayerByUUID(cactuarSpirit.getOwnerUUID());
 
             if (player instanceof ServerPlayer serverPlayer) {
                 return serverPlayer;
@@ -300,6 +412,10 @@ public class DreamEaterExpHandler {
 
         if (GlobalDataRM.DREAM_EATER_KOMORY_BAT.equals(dreamEaterRL)) {
             return 1.05F;
+        }
+
+        if (GlobalDataRM.DREAM_EATER_CACTUAR.equals(dreamEaterRL)) {
+            return 1.25F;
         }
 
         return 1.00F;

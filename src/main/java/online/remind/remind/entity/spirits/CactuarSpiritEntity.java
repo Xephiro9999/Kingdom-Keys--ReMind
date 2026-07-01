@@ -1,7 +1,9 @@
 package online.remind.remind.entity.spirits;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -10,6 +12,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,6 +24,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -27,6 +33,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
 import online.remind.remind.network.PacketHandlerRM;
@@ -88,6 +95,12 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
     private int needleHitInterval = 0;
     private int needleHitsRemaining = 0;
     private float needleDamagePerHit = 0.0F;
+
+
+    private static final int CACTUS_FEED_EXP = 15;
+    private static final int CACTUS_FEED_COOLDOWN_TICKS = 10;
+
+    private int cactusFeedCooldown = 20;
 
     public CactuarSpiritEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -235,6 +248,10 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
 
         if (this.tickCount % 40 == 0) {
             this.applyOwnerScaling(owner);
+        }
+
+        if (this.cactusFeedCooldown > 0) {
+            this.cactusFeedCooldown--;
         }
 
         tickCooldowns();
@@ -774,4 +791,60 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
+
+    private boolean isCactuarSpiritOwner(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        if (this.getOwnerUUID() == null) {
+            return false;
+        }
+
+        return this.getOwnerUUID().equals(player.getUUID());
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack heldStack = player.getItemInHand(hand);
+
+        if (!heldStack.is(Items.CACTUS)) {
+            return super.mobInteract(player, hand);
+        }
+
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!isCactuarSpiritOwner(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                    Component.literal("This Cactuar Spirit does not belong to you.")
+                            .withStyle(ChatFormatting.RED),
+                    true
+            );
+
+            return InteractionResult.CONSUME;
+        }
+
+        if (this.cactusFeedCooldown > 0) {
+            return InteractionResult.CONSUME;
+        }
+
+        if (!serverPlayer.getAbilities().instabuild) {
+            heldStack.shrink(1);
+        }
+
+        this.cactusFeedCooldown = CACTUS_FEED_COOLDOWN_TICKS;
+
+        DreamEaterExpHandler.giveDreamEaterExp(
+                serverPlayer,
+                GlobalDataRM.DREAM_EATER_CACTUAR,
+                CACTUS_FEED_EXP,
+                this
+        );
+
+        return InteractionResult.CONSUME;
+    }
+
+
 }
