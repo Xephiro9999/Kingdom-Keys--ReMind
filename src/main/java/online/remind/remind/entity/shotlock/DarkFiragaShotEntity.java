@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import online.kingdomkeys.kingdomkeys.entity.ModEntities;
 import online.kingdomkeys.kingdomkeys.entity.shotlock.BaseShotlockShotEntity;
+import online.remind.remind.entity.ModEntitiesRM;
 import org.joml.Vector3f;
 
 import java.awt.*;
@@ -25,12 +26,12 @@ public class DarkFiragaShotEntity extends BaseShotlockShotEntity {
     }
 
     public DarkFiragaShotEntity(Level world) {
-        super(ModEntities.TYPE_VOLLEY_SHOTLOCK_SHOT.get(), world);
+        super(ModEntitiesRM.TYPE_SHOTLOCK_DARK_FIRAGA_SHOT.get(), world);
         this.blocksBuilding = true;
     }
 
     public DarkFiragaShotEntity(Level world, LivingEntity player, Entity target, double dmg) {
-        super(ModEntities.TYPE_VOLLEY_SHOTLOCK_SHOT.get(), world, player, target, dmg);
+        super(ModEntitiesRM.TYPE_SHOTLOCK_DARK_FIRAGA_SHOT.get(), world, player, target, dmg);
     }
 
     @Override

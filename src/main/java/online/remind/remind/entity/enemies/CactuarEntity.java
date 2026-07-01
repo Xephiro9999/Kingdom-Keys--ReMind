@@ -309,19 +309,19 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder createNormalAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 120.0D)
+                .add(Attributes.MAX_HEALTH, 202.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.34D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.25D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.15D);
     }
 
     public static AttributeSupplier.Builder createJumboAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 6000.0D)
+                .add(Attributes.MAX_HEALTH, 3000.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.18D)
-                .add(Attributes.ATTACK_DAMAGE, 14.0D)
+                .add(Attributes.ATTACK_DAMAGE, 21.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 2.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.95D);
