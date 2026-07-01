@@ -23,6 +23,8 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     private final List<String> situationSpells = new ArrayList<>();
 
+    private boolean defeatedJumboCactuar;
+
     private int hasteTicks;
     private int hasteLevel;
     private int slowTicks;
@@ -66,6 +68,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     public static final String DREAM_EATER_CHIRITHY = KingdomKeysReMind.MODID + ":dreameater_chirithy";
     public static final String DREAM_EATER_MEOW_WOW = KingdomKeysReMind.MODID + ":dreameater_meowwow";
     public static final String DREAM_EATER_KOMORY_BAT = KingdomKeysReMind.MODID + ":dreameater_komory_bat";
+    public static final String DREAM_EATER_CACTUAR = KingdomKeysReMind.MODID + ":dreameater_cactuar";
 
     private int unlockedOrganizationPanelSlots = ORGANIZATION_PANEL_STARTING_SLOTS;
 
@@ -293,6 +296,8 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         storage.putBoolean("dreamEaterSummoned", this.hasDreamEaterSummoned());
         storage.putString("dreamEaterRL", this.getDreamEaterRL());
 
+        storage.putBoolean("defeatedJumboCactuar", this.hasDefeatedJumboCactuar());
+
         storage.putBoolean("donor_grant", this.getDonorGiven());
 
         CompoundTag magicNames = new CompoundTag();
@@ -426,6 +431,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         }
 
         this.setDreamEaterRL(properties.getString("dreamEaterRL"));
+        this.setDefeatedJumboCactuar(properties.getBoolean("defeatedJumboCactuar"));
 
         this.unlockedDreamEaters.clear();
 
@@ -1332,6 +1338,14 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         for (String id : this.dreamEaterLevels.keySet()) {
             this.dreamEaterExp.putIfAbsent(id, 0);
         }
+    }
+
+    public boolean hasDefeatedJumboCactuar() {
+        return this.defeatedJumboCactuar;
+    }
+
+    public void setDefeatedJumboCactuar(boolean defeated) {
+        this.defeatedJumboCactuar = defeated;
     }
 
 }

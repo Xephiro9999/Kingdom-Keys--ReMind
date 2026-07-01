@@ -29,6 +29,7 @@ import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.DreamEaterLinkData;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.entity.spirits.CactuarSpiritEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.spirits.KomoryBatEntity;
 import online.remind.remind.entity.spirits.MeowWowEntity;
@@ -93,7 +94,6 @@ public class DreamEaterMenu extends MenuBackground {
     public void init() {
         super.init();
 
-        Minecraft mc = Minecraft.getInstance();
         MusicManager.start();
 
         this.renderables.clear();
@@ -302,6 +302,18 @@ public class DreamEaterMenu extends MenuBackground {
         return dreamEater.getRegistryName().toString();
     }
 
+    private boolean isCactuar(DreamEater dreamEater) {
+        if (dreamEater == null) {
+            return false;
+        }
+
+        String name = dreamEater.getName();
+
+        return StringsRM.cactuar.equals(name)
+                || "dreameater_cactuar".equals(name)
+                || "cactuar".equals(name);
+    }
+
     private DreamEaterDisplayStats getDisplayStats(GlobalDataRM global, PlayerData playerData, DreamEater dreamEater) {
         String dreamEaterRL = getDreamEaterRL(dreamEater);
 
@@ -317,7 +329,10 @@ public class DreamEaterMenu extends MenuBackground {
                 float strength = getEntityAttribute(livingEntity, Attributes.ATTACK_DAMAGE, 0F);
                 float defense = getEntityAttribute(livingEntity, Attributes.ARMOR, 0F);
 
-                // Minecraft has no vanilla magic attribute, so MAG is projected by Dream Eater type.
+                /*
+                 * Minecraft has no vanilla magic attribute,
+                 * so MAG is projected by Dream Eater type.
+                 */
                 float magic = getProjectedMagicForDreamEater(dreamEater, dreamEaterLevel);
 
                 return new DreamEaterDisplayStats(
@@ -366,6 +381,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         if (StringsRM.komoryBat.equals(name)) {
             return getProjectedKomoryBatStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
+        }
+
+        if (isCactuar(dreamEater)) {
+            return getProjectedCactuarStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
         }
 
         return new DreamEaterDisplayStats(
@@ -486,6 +505,35 @@ public class DreamEaterMenu extends MenuBackground {
         return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
     }
 
+    private DreamEaterDisplayStats getProjectedCactuarStats(int level, int currentExp, int expNeeded) {
+        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
+
+        /*
+         * Cactuar is meant to be fast, evasive, and needle-focused.
+         * Lower HP/DEF than Meow Wow, better STR, low MAG.
+         */
+        float hp;
+        float strength;
+        float magic;
+        float defense;
+
+        if (level <= 3) {
+            hp = (float) (28.0D + ((level - 1) * 0.75D));
+            strength = (float) (10.0D + ((level - 1) * 2.0D));
+            magic = (float) (4.0D + ((level - 1) * 0.75D));
+            defense = (float) (4.0D + ((level - 1) * 0.15D));
+        } else {
+            int extraLevels = level - 3;
+
+            hp = (float) (30.0D + (extraLevels * 1.85D));
+            strength = (float) (14.0D + (extraLevels * 0.60D));
+            magic = (float) (5.5D + (extraLevels * 0.28D));
+            defense = (float) (4.3D + (extraLevels * 0.18D));
+        }
+
+        return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
+    }
+
     private float getProjectedMagicForDreamEater(DreamEater dreamEater, int dreamEaterLevel) {
         if (dreamEater == null) {
             return 0F;
@@ -503,6 +551,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         if (StringsRM.komoryBat.equals(name)) {
             return getProjectedKomoryBatStats(dreamEaterLevel, 0, 0).magic;
+        }
+
+        if (isCactuar(dreamEater)) {
+            return getProjectedCactuarStats(dreamEaterLevel, 0, 0).magic;
         }
 
         return 0F;
@@ -523,6 +575,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         if (StringsRM.komoryBat.equals(dreamEater.getName())) {
             return "Komory Bat";
+        }
+
+        if (isCactuar(dreamEater)) {
+            return "Cactuar";
         }
 
         return dreamEater.getName();
@@ -583,6 +639,19 @@ public class DreamEaterMenu extends MenuBackground {
         if (StringsRM.komoryBat.equals(name)) {
             renderLinkDataAbilities(
                     DreamEaterLinkData.getKomoryBatLinks(),
+                    dreamEaterLevel,
+                    col2X,
+                    button_statsY,
+                    dataWidth,
+                    spacer,
+                    d
+            );
+            return;
+        }
+
+        if (isCactuar(dreamEater)) {
+            renderLinkDataAbilities(
+                    DreamEaterLinkData.getCactuarLinks(),
                     dreamEaterLevel,
                     col2X,
                     button_statsY,
@@ -815,12 +884,26 @@ public class DreamEaterMenu extends MenuBackground {
             return previewDreamEaterEntity;
         }
 
+        if (isCactuar(dreamEater)) {
+            CactuarSpiritEntity cactuar = new CactuarSpiritEntity(ModEntitiesRM.TYPE_CACTUAR_SPIRIT.get(), minecraft.level);
+            cactuar.setOwnerUUID(minecraft.player.getUUID());
+            cactuar.setNoAi(true);
+            cactuar.setNoGravity(false);
+
+            previewDreamEaterEntity = cactuar;
+            return previewDreamEaterEntity;
+        }
+
         return null;
     }
 
     private int getPreviewScale(DreamEater dreamEater) {
         if (dreamEater == null) {
             return 35;
+        }
+
+        if (isCactuar(dreamEater)) {
+            return 58;
         }
 
         if (StringsRM.komoryBat.equals(dreamEater.getName())) {

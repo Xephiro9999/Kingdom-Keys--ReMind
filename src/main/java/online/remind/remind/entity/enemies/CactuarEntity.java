@@ -1,23 +1,27 @@
 package online.remind.remind.entity.enemies;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -28,11 +32,19 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.item.ModItemsRM;
+import online.remind.remind.network.PacketHandlerRM;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimationController;
@@ -43,6 +55,15 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class CactuarEntity extends Monster implements GeoEntity {
+
+    private static final ResourceKey<Biome> DESERT_BIOME =
+            ResourceKey.create(
+                    Registries.BIOME,
+                    ResourceLocation.fromNamespaceAndPath("minecraft", "desert")
+            );
+
+    private static final double JUMBO_SPAWN_CHANCE = 0.02D;
+    private static final double JUMBO_NEARBY_CHECK_RANGE = 128.0D;
 
     public static final int VARIANT_NORMAL = 0;
     public static final int VARIANT_JUMBO = 1;
@@ -912,6 +933,10 @@ public class CactuarEntity extends Monster implements GeoEntity {
             lockDeathYaw();
         }
 
+        if (!this.level().isClientSide && !this.isJumbo()) {
+            tryAwakenJumboCactuar(source);
+        }
+
         super.die(source);
 
         if (!this.level().isClientSide) {
@@ -920,6 +945,117 @@ public class CactuarEntity extends Monster implements GeoEntity {
             this.currentAnimation = "none";
             lockDeathYaw();
         }
+    }
+
+    private void tryAwakenJumboCactuar(DamageSource damageSource) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (!(damageSource.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        if (!serverLevel.getBiome(this.blockPosition()).is(DESERT_BIOME)) {
+            return;
+        }
+
+        if (this.random.nextDouble() > JUMBO_SPAWN_CHANCE) {
+            return;
+        }
+
+        if (hasNearbyJumboCactuar(serverLevel)) {
+            return;
+        }
+
+        CactuarEntity jumbo = ModEntitiesRM.TYPE_JUMBO_CACTUAR.get().create(serverLevel);
+
+        if (jumbo == null) {
+            return;
+        }
+
+        BlockPos spawnPos = findJumboSpawnPos(serverLevel, player);
+
+        if (spawnPos == null) {
+            return;
+        }
+
+        jumbo.setVariant(VARIANT_JUMBO);
+        jumbo.moveTo(
+                spawnPos.getX() + 0.5D,
+                spawnPos.getY(),
+                spawnPos.getZ() + 0.5D,
+                player.getYRot() + 180.0F,
+                0.0F
+        );
+
+        jumbo.setHealth(jumbo.getMaxHealth());
+
+        serverLevel.addFreshEntity(jumbo);
+
+        serverLevel.playSound(
+                null,
+                spawnPos,
+                SoundEvents.ENDER_DRAGON_GROWL,
+                SoundSource.HOSTILE,
+                1.5F,
+                1.25F
+        );
+
+        serverLevel.sendParticles(
+                ParticleTypes.EXPLOSION,
+                spawnPos.getX() + 0.5D,
+                spawnPos.getY() + 1.0D,
+                spawnPos.getZ() + 0.5D,
+                12,
+                2.5D,
+                1.5D,
+                2.5D,
+                0.05D
+        );
+
+        player.displayClientMessage(
+                Component.literal("The desert trembles... Jumbo Cactuar has appeared!")
+                        .withStyle(ChatFormatting.GOLD),
+                false
+        );
+    }
+
+    private boolean hasNearbyJumboCactuar(ServerLevel serverLevel) {
+        AABB box = this.getBoundingBox().inflate(JUMBO_NEARBY_CHECK_RANGE);
+
+        return !serverLevel.getEntitiesOfClass(
+                CactuarEntity.class,
+                box,
+                entity -> entity.isJumbo() && entity.isAlive()
+        ).isEmpty();
+    }
+
+    private BlockPos findJumboSpawnPos(ServerLevel serverLevel, ServerPlayer player) {
+        for (int attempts = 0; attempts < 24; attempts++) {
+            double angle = this.random.nextDouble() * Math.PI * 2.0D;
+            double distance = 18.0D + this.random.nextDouble() * 10.0D;
+
+            int x = Mth.floor(player.getX() + Math.cos(angle) * distance);
+            int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
+
+            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, player.blockPosition().getY() + 8, z);
+
+            while (pos.getY() > serverLevel.getMinBuildHeight() + 2) {
+                BlockPos below = pos.below();
+
+                if (serverLevel.getBiome(pos).is(DESERT_BIOME)
+                        && serverLevel.getBlockState(pos).isAir()
+                        && serverLevel.getBlockState(pos.above()).isAir()
+                        && serverLevel.getBlockState(below).isSolidRender(serverLevel, below)) {
+                    return pos.immutable();
+                }
+
+                pos.move(0, -1, 0);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -1010,6 +1146,67 @@ public class CactuarEntity extends Monster implements GeoEntity {
         return super.hurt(source, amount);
     }
 
+    private ServerPlayer getJumboCactuarKiller(DamageSource damageSource) {
+        if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
+            return serverPlayer;
+        }
+
+        if (this.getKillCredit() instanceof ServerPlayer serverPlayer) {
+            return serverPlayer;
+        }
+
+        return null;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+
+        if (!this.isJumbo()) {
+            return;
+        }
+
+        ServerPlayer killer = getJumboCactuarKiller(damageSource);
+
+        if (killer == null) {
+            return;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(killer);
+
+        if (globalData == null) {
+            return;
+        }
+
+        if (globalData.hasDefeatedJumboCactuar()) {
+            return;
+        }
+
+        ItemStack charm = new ItemStack(ModItemsRM.cactuarCharm.get());
+
+        boolean added = killer.getInventory().add(charm);
+
+        if (!added) {
+            killer.displayClientMessage(
+                    Component.literal("Your inventory is full! Clear a slot before defeating Jumbo Cactuar again.")
+                            .withStyle(ChatFormatting.RED),
+                    false
+            );
+
+            return;
+        }
+
+        globalData.setDefeatedJumboCactuar(true);
+
+        killer.displayClientMessage(
+                Component.literal("You received a Cactuar Charm!")
+                        .withStyle(ChatFormatting.GREEN),
+                false
+        );
+
+        PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -1042,5 +1239,38 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
         this.yBodyRot = 0.0F;
         this.yBodyRotO = 0.0F;
+    }
+
+    public static boolean checkCactuarSpawnRules(
+            EntityType<? extends CactuarEntity> type,
+            ServerLevelAccessor level,
+            MobSpawnType spawnType,
+            BlockPos pos,
+            RandomSource random
+    ) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+
+        if (!level.getBiome(pos).is(DESERT_BIOME)) {
+            return false;
+        }
+
+        if (!level.getBlockState(pos.below()).is(Blocks.SAND)
+                && !level.getBlockState(pos.below()).is(Blocks.RED_SAND)
+                && !level.getBlockState(pos.below()).is(Blocks.SANDSTONE)
+                && !level.getBlockState(pos.below()).is(Blocks.RED_SANDSTONE)) {
+            return false;
+        }
+
+        if (!level.getBlockState(pos).isAir()) {
+            return false;
+        }
+
+        if (!level.getBlockState(pos.above()).isAir()) {
+            return false;
+        }
+
+        return true;
     }
 }

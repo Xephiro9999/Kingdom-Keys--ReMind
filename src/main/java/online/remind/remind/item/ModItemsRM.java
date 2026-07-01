@@ -124,6 +124,7 @@ public class ModItemsRM{
     // Dream Eater Charms
         meowWowCharm = ITEMS.register("meow_wow_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_MEOW_WOW, "Meow Wow")),
         komoryBatCharm = ITEMS.register("komory_bat_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_KOMORY_BAT, "Komory Bat")),
+        cactuarCharm = ITEMS.register("cactuar_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_CACTUAR, "Cactuar")),
 
 
     // Ability Orb?

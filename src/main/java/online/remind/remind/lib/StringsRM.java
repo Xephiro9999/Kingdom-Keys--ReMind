@@ -187,8 +187,10 @@ public class StringsRM {
         chirithy = StringsRM.DE_Prefix+"chirithy",
         meowWow = StringsRM.DE_Prefix+"meowwow",
         komoryBat = StringsRM.DE_Prefix+"komory_bat",
+        cactuar = StringsRM.DE_Prefix+"cactuar",
 
-        // Grand Magics
+
+    // Grand Magics
         seekerMine = KingdomKeysReMind.MODID+":"+StringsRM.ABMA_Prefix+"seeker_mine",
 
         // FF Keyblade Abilities

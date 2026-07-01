@@ -99,6 +99,18 @@ public class DreamEaterLinkData {
         return KOMORY_BAT_LINKS;
     }
 
+    private static final List<LinkEntry> CACTUAR_LINKS = List.of(
+            // Spirit skills. These are NOT granted to the player.
+            new LinkEntry("cactuar_kick", "Kick", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("cactuar_1000_needles", "1,000 Needles", TYPE_SPIRIT_SKILL, 1, false, "")
+
+
+    );
+
+    public static List<LinkEntry> getCactuarLinks() {
+        return CACTUAR_LINKS;
+    }
+
     public static boolean isUnlocked(LinkEntry entry, int level) {
         return level >= entry.unlockLevel();
     }

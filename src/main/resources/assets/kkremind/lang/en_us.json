@@ -441,6 +441,7 @@
 
   "item.kkremind.meow_wow_charm": "Meow Wow Charm",
   "item.kkremind.komory_bat_charm": "Komory Bat Charm",
+  "item.kkremind.cactuar_charm": "Cactuar Charm",
 
 
   "key.categories.kkremind": "Re:Mind",
@@ -521,6 +522,7 @@
   "entity.kkremind.chirithy": "Chirithy",
   "entity.kkremind.meow_wow": "Meow Wow",
   "entity.kkremind.komory_bat": "Komory Bat",
+  "entity.kkremind.cactuar_spirit": "Cactuar",
 
   "entity.kkremind.cactuar": "Cactuar",
   "entity.kkremind.jumbo_cactuar": "Jumbo Cactuar",
@@ -540,7 +542,8 @@
   "dreameater.none.name": "None",
   "dreameater.dreameater_chirithy.name": "Chirithy",
   "dreameater.dreameater_meowwow.name": "Meow Wow",
-  "dreameater.dreameater_komory_bat.name": "Komory Bat"
+  "dreameater.dreameater_komory_bat.name": "Komory Bat",
+  "dreameater.dreameater_cactuar.name": "Cactuar"
 
 
 }

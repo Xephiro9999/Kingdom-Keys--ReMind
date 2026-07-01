@@ -21,13 +21,14 @@ import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.entity.enemies.CactuarEntity;
+import online.remind.remind.entity.spirits.CactuarSpiritEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.spirits.KomoryBatEntity;
 import online.remind.remind.entity.spirits.MeowWowEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSChangeSpiritPacket;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -47,6 +48,7 @@ public class ChangeSpirit extends MenuBackground {
         minecraft = Minecraft.getInstance();
     }
 
+    @Override
     public void onClose() {
         super.onClose();
 
@@ -62,6 +64,10 @@ public class ChangeSpirit extends MenuBackground {
     }
 
     protected void select(String rl) {
+        if (globalData == null || minecraft == null || minecraft.player == null) {
+            return;
+        }
+
         globalData.setDreamEaterRL(rl);
         PacketHandlerRM.sendToServer(new CSChangeSpiritPacket(rl));
         PacketHandlerRM.syncGlobalToAllAround(minecraft.player, globalData);
@@ -69,8 +75,9 @@ public class ChangeSpirit extends MenuBackground {
     }
 
     protected void action(String string) {
-        if (globalData == null)
+        if (globalData == null) {
             return;
+        }
 
         if (string.equals("back")) {
             minecraft.setScreen(new DreamEaterMenu());
@@ -104,10 +111,14 @@ public class ChangeSpirit extends MenuBackground {
 
                 String dreamEaterRL = dreamEater.getRegistryName().toString();
 
-                // Chirithy is always visible by default.
-                // Everything else requires being unlocked.
-                if (!StringsRM.chirithy.equals(dreamEater.getName())
-                        && !globalData.hasDreamEaterUnlocked(dreamEaterRL)) {
+                /*
+                 * Chirithy is always visible by default.
+                 * Everything else must be unlocked through GlobalDataRM.
+                 *
+                 * Cactuar will show only after:
+                 * globalData.unlockDreamEater("kkremind:dreameater_cactuar")
+                 */
+                if (!canShowDreamEater(dreamEater, dreamEaterRL)) {
                     continue;
                 }
 
@@ -147,7 +158,27 @@ public class ChangeSpirit extends MenuBackground {
         ));
     }
 
+    private boolean canShowDreamEater(DreamEater dreamEater, String dreamEaterRL) {
+        if (dreamEater == null || dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return false;
+        }
 
+        if (globalData == null) {
+            return false;
+        }
+
+        /*
+         * Default starter.
+         */
+        if (StringsRM.chirithy.equals(dreamEater.getName())) {
+            return true;
+        }
+
+        /*
+         * Everything else, including Cactuar, uses the unlock list.
+         */
+        return globalData.hasDreamEaterUnlocked(dreamEaterRL);
+    }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -190,6 +221,7 @@ public class ChangeSpirit extends MenuBackground {
         int boxH = 145;
 
         guiGraphics.fill(boxX - 4, boxY - 16, boxX + boxW + 4, boxY + boxH + 4, 0xAA000000);
+
         String dreamEaterRL = dreamEater.getRegistryName().toString();
 
         int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
@@ -329,6 +361,10 @@ public class ChangeSpirit extends MenuBackground {
             return "Komory Bat";
         }
 
+        if (StringsRM.cactuar.equals(dreamEater.getName())) {
+            return "Cactuar";
+        }
+
         return Utils.translateToLocal(dreamEater.getTranslationKey());
     }
 
@@ -352,7 +388,9 @@ public class ChangeSpirit extends MenuBackground {
             ChirithyEntity chirithy = new ChirithyEntity(ModEntitiesRM.TYPE_CHIRITHY.get(), minecraft.level);
             chirithy.setOwnerUUID(minecraft.player.getUUID());
 
-            // Match your summon packet variant behavior for Chirithy.
+            /*
+             * Match your summon packet variant behavior for Chirithy.
+             */
             chirithy.setVariant(isOrg ? 0 : 1);
 
             previewDreamEaterEntity = chirithy;
@@ -378,12 +416,27 @@ public class ChangeSpirit extends MenuBackground {
             return previewDreamEaterEntity;
         }
 
+        if (StringsRM.cactuar.equals(dreamEater.getName())
+                || "dreameater_cactuar".equals(dreamEater.getName())) {
+            CactuarSpiritEntity cactuar = new CactuarSpiritEntity(ModEntitiesRM.TYPE_CACTUAR_SPIRIT.get(), minecraft.level);
+            cactuar.setOwnerUUID(minecraft.player.getUUID());
+            cactuar.setNoAi(true);
+            cactuar.setNoGravity(false);
+
+            previewDreamEaterEntity = cactuar;
+            return previewDreamEaterEntity;
+        }
+
         return null;
     }
 
     private int getPreviewScale(DreamEater dreamEater) {
         if (dreamEater == null) {
             return 35;
+        }
+
+        if (StringsRM.cactuar.equals(dreamEater.getName())) {
+            return 58;
         }
 
         if (StringsRM.komoryBat.equals(dreamEater.getName())) {
@@ -400,6 +453,4 @@ public class ChangeSpirit extends MenuBackground {
 
         return 40;
     }
-
-
 }

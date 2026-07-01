@@ -456,6 +456,31 @@ public class DreamEaterAbilityLinkHelper {
         return dreamEater != null && StringsRM.komoryBat.equals(dreamEater.getName());
     }
 
+    private static boolean isCactuarEquipped(GlobalDataRM globalData) {
+        String dreamEaterRL = globalData.getDreamEaterRL();
+
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return false;
+        }
+
+        if (dreamEaterRL.equals("kkremind:dreameater_cactuar")
+                || dreamEaterRL.equals("kkremind:cactuar")) {
+            return true;
+        }
+
+        DreamEater dreamEater;
+
+        try {
+            dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
+        } catch (Exception e) {
+            return false;
+        }
+
+        return dreamEater != null
+                && (StringsRM.cactuar.equals(dreamEater.getName())
+                || "dreameater_cactuar".equals(dreamEater.getName()));
+    }
+
     private record AbilityGrant(String abilityId, int amount) {
     }
 }

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "minecraft:desert",
+  "spawners": {
+    "type": "kkremind:cactuar",
+    "weight": 28,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

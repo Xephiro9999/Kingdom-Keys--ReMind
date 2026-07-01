@@ -20,6 +20,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
+import online.remind.remind.entity.spirits.CactuarSpiritEntity;
 import online.remind.remind.entity.spirits.ChirithyEntity;
 import online.remind.remind.entity.spirits.KomoryBatEntity;
 import online.remind.remind.entity.spirits.MeowWowEntity;
@@ -125,17 +126,14 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
         Entity summonedDreamEater = null;
 
-
         ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
         MeowWowEntity.removeExistingMeowWow(serverLevel, owner.getUUID());
         KomoryBatEntity.removeExistingKomoryBat(serverLevel, owner.getUUID());
-
-
+        CactuarSpiritEntity.removeExistingCactuarSpirit(serverLevel, owner.getUUID());
 
         switch (dreamEater.getName()) {
 
             case StringsRM.chirithy: {
-
                 ChirithyEntity chirithy = new ChirithyEntity(owner.level(), owner);
                 chirithy.setOwnerUUID(owner.getUUID());
                 chirithy.setPos(owner.getX(), owner.getY() + 2.0D, owner.getZ());
@@ -149,8 +147,6 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
             }
 
             case StringsRM.meowWow: {
-                ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
-
                 MeowWowEntity meowWow = new MeowWowEntity(owner.level(), owner);
                 meowWow.setOwnerUUID(owner.getUUID());
                 meowWow.setPos(owner.getX(), owner.getY() + 2.0D, owner.getZ());
@@ -167,8 +163,6 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
             }
 
             case StringsRM.komoryBat: {
-                KomoryBatEntity.removeExistingKomoryBat(serverLevel, owner.getUUID());
-
                 KomoryBatEntity komoryBat = new KomoryBatEntity(owner.level(), owner);
                 komoryBat.setOwnerUUID(owner.getUUID());
                 komoryBat.setPos(owner.getX(), owner.getY() + 2.4D, owner.getZ());
@@ -181,6 +175,17 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 owner.level().addFreshEntity(komoryBat);
                 summonedDreamEater = komoryBat;
+                break;
+            }
+
+            case "dreameater_cactuar":
+            case "cactuar": {
+                CactuarSpiritEntity cactuar = new CactuarSpiritEntity(owner.level(), owner);
+                cactuar.setOwnerUUID(owner.getUUID());
+                cactuar.setPos(owner.getX(), owner.getY() + 1.0D, owner.getZ());
+
+                owner.level().addFreshEntity(cactuar);
+                summonedDreamEater = cactuar;
                 break;
             }
 
