@@ -2,12 +2,17 @@ package online.remind.remind.entity.enemies;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -124,6 +129,67 @@ public class CactuarEntity extends Monster implements GeoEntity {
         }
     }
 
+    private final ServerBossEvent bossEvent =
+            new ServerBossEvent(
+                    Component.literal("Jumbo Cactuar"),
+                    BossEvent.BossBarColor.GREEN,
+                    BossEvent.BossBarOverlay.PROGRESS
+            );
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+
+        if (this.isJumbo()) {
+            this.bossEvent.addPlayer(player);
+        }
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        this.bossEvent.removeAllPlayers();
+        super.remove(reason);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        if (this.isJumbo()) {
+            return false;
+        }
+
+        return super.removeWhenFarAway(distanceToClosestPlayer);
+    }
+
+    private void updateBossBar() {
+        if (!this.isJumbo()) {
+            this.bossEvent.removeAllPlayers();
+            return;
+        }
+
+        this.bossEvent.setName(this.hasCustomName() ? this.getDisplayName() : Component.literal("Jumbo Cactuar"));
+
+        float progress = this.getMaxHealth() <= 0.0F ? 0.0F : this.getHealth() / this.getMaxHealth();
+        this.bossEvent.setProgress(Mth.clamp(progress, 0.0F, 1.0F));
+    }
+
+    private boolean isKKWaterDamage(DamageSource source) {
+        if (source == null || source.typeHolder().unwrapKey().isEmpty()) {
+            return false;
+        }
+
+        String namespace = source.typeHolder().unwrapKey().get().location().getNamespace();
+        String path = source.typeHolder().unwrapKey().get().location().getPath();
+
+        return ("kingdomkeys".equals(namespace) || "kkremind".equals(namespace))
+                && path.contains("water");
+    }
+
     public boolean isJumbo() {
         return this.getVariant() == VARIANT_JUMBO;
     }
@@ -222,7 +288,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder createNormalAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 18.0D)
+                .add(Attributes.MAX_HEALTH, 120.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.34D)
                 .add(Attributes.ATTACK_DAMAGE, 3.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
@@ -232,7 +298,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder createJumboAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 280.0D)
+                .add(Attributes.MAX_HEALTH, 6000.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.18D)
                 .add(Attributes.ATTACK_DAMAGE, 14.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 2.0D)
@@ -243,6 +309,10 @@ public class CactuarEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+
+        if (!this.level().isClientSide && this.isJumbo()) {
+            updateBossBar();
+        }
 
         if (this.level().isClientSide) {
             return;
@@ -523,7 +593,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
              * Total damage: 35.0F
              */
             this.needleHitsRemaining = 70;
-            this.needleDamagePerHit = 0.5F;
+            this.needleDamagePerHit = 0.75F;
         } else {
             /*
              * 1,000 Needles feeling:
@@ -531,7 +601,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
              * Total damage: 10.0F
              */
             this.needleHitsRemaining = 25;
-            this.needleDamagePerHit = 0.4F;
+            this.needleDamagePerHit = 0.5F;
         }
     }
 
@@ -937,10 +1007,6 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.isJumbo()) {
-            amount *= 0.65F;
-        }
-
         return super.hurt(source, amount);
     }
 
