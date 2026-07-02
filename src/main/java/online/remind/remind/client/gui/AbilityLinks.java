@@ -9,8 +9,6 @@ import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
-import online.kingdomkeys.kingdomkeys.util.Utils;
-import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
@@ -106,7 +104,9 @@ public class AbilityLinks extends MenuBackground {
             return;
         }
 
-        int playerLevel = Math.max(1, playerData.getLevel());
+        String dreamEaterRL = global.getDreamEaterRL();
+
+        int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
 
         addRenderableWidget(new MenuColourBox(
                 col1X,
@@ -122,7 +122,7 @@ public class AbilityLinks extends MenuBackground {
                 buttonY + (row++ * spacer),
                 (int) dataWidth,
                 "Level:",
-                "" + playerLevel,
+                "" + dreamEaterLevel,
                 0xffffff
         ));
 
@@ -201,6 +201,11 @@ public class AbilityLinks extends MenuBackground {
             return entries;
         }
 
+        if (StringsRM.cactuar.equals(name)) {
+            addCactuarLinks(entries, playerData);
+            return entries;
+        }
+
         entries.add(new DreamEaterLinkEntry("No Ability Links", "Future Dream Eater", false));
         return entries;
     }
@@ -263,6 +268,28 @@ public class AbilityLinks extends MenuBackground {
         }
     }
 
+    private void addCactuarLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
+        int level = Math.max(1, playerData.getLevel());
+
+        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getCactuarLinks()) {
+            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
+
+            String requirement;
+
+            if (link.unlockLevel() <= 1) {
+                requirement = link.type();
+            } else {
+                requirement = link.type() + " - Lv " + link.unlockLevel();
+            }
+
+            entries.add(new DreamEaterLinkEntry(
+                    link.displayName(),
+                    requirement,
+                    unlocked
+            ));
+        }
+    }
+
     private String getDreamEaterDisplayName(DreamEater dreamEater) {
         if (dreamEater == null) {
             return "N/A";
@@ -278,6 +305,10 @@ public class AbilityLinks extends MenuBackground {
 
         if (StringsRM.komoryBat.equals(dreamEater.getName())) {
             return "Komory Bat";
+        }
+
+        if (StringsRM.cactuar.equals(dreamEater.getName())){
+            return "Cactuar";
         }
 
         return dreamEater.getName();

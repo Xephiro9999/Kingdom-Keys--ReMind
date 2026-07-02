@@ -249,5 +249,12 @@
         "stream": true
       }
     ]
+  },
+  "records/dont_be_afraid_ff8": {
+    "sounds": [
+      {"name": "kkremind:records/dont_be_afraid_ff8",
+        "stream": true
+      }
+    ]
   }
 }

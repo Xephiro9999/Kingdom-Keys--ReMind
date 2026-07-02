@@ -1,6 +1,7 @@
 package online.remind.remind.entity.enemies;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,6 +40,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
@@ -56,6 +59,10 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 public class CactuarEntity extends Monster implements GeoEntity {
 
     private static final ResourceKey<Biome> DESERT_BIOME =
@@ -66,6 +73,15 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     private static final double JUMBO_SPAWN_CHANCE = 0.02D;
     private static final double JUMBO_NEARBY_CHECK_RANGE = 128.0D;
+
+    private static final String JUMBO_BOSS_MUSIC_SOUND = KingdomKeysReMind.MODID + ":records/dont_be_afraid_ff8";
+    private static final int JUMBO_BOSS_MUSIC_REFRESH_TICKS = 20 * 110;
+    private static final int JUMBO_SUPPRESS_MC_MUSIC_TICKS = 20 * 5;
+    private static final double JUMBO_BOSS_MUSIC_RANGE = 96.0D;
+
+    private final Set<UUID> jumboBossMusicPlayers = new HashSet<>();
+    private int jumboBossMusicRefreshTicks = JUMBO_BOSS_MUSIC_REFRESH_TICKS;
+    private int jumboSuppressMcMusicTicks = JUMBO_SUPPRESS_MC_MUSIC_TICKS;
 
     public static final int VARIANT_NORMAL = 0;
     public static final int VARIANT_JUMBO = 1;
@@ -171,12 +187,23 @@ public class CactuarEntity extends Monster implements GeoEntity {
     @Override
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
-        this.bossEvent.removePlayer(player);
+
+        if (this.isJumbo()) {
+            this.bossEvent.removePlayer(player);
+            stopJumboBossMusic(player);
+        }
     }
 
     @Override
-    public void remove(Entity.RemovalReason reason) {
-        this.bossEvent.removeAllPlayers();
+    public void remove(RemovalReason reason) {
+        if (!this.level().isClientSide && this.isJumbo()) {
+            stopJumboBossMusicForAll();
+
+            if (this.bossEvent != null) {
+                this.bossEvent.removeAllPlayers();
+            }
+        }
+
         super.remove(reason);
     }
 
@@ -335,6 +362,10 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
         if (!this.level().isClientSide && this.isJumbo()) {
             updateBossBar();
+        }
+
+        if (!this.level().isClientSide && this.isJumbo()) {
+            tickJumboBossMusic();
         }
 
         if (this.level().isClientSide) {
@@ -939,6 +970,10 @@ public class CactuarEntity extends Monster implements GeoEntity {
             tryAwakenJumboCactuar(source);
         }
 
+        if (!this.level().isClientSide && this.isJumbo()) {
+            stopJumboBossMusicForAll();
+        }
+
         super.die(source);
 
         if (!this.level().isClientSide) {
@@ -1299,5 +1334,235 @@ public class CactuarEntity extends Monster implements GeoEntity {
         }
 
         return true;
+    }
+    private void tickJumboBossMusic() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.bossEvent == null) {
+            return;
+        }
+
+        if (!shouldPlayJumboBossMusic()) {
+            stopJumboBossMusicForAll();
+            this.jumboBossMusicRefreshTicks = JUMBO_BOSS_MUSIC_REFRESH_TICKS;
+            this.jumboSuppressMcMusicTicks = JUMBO_SUPPRESS_MC_MUSIC_TICKS;
+            return;
+        }
+
+        Set<UUID> allowedPlayers = new HashSet<>();
+
+        for (ServerPlayer player : this.bossEvent.getPlayers()) {
+            if (canPlayerHearJumboBossMusic(player)) {
+                UUID uuid = player.getUUID();
+                allowedPlayers.add(uuid);
+
+                suppressMinecraftMusic(player);
+
+                if (!this.jumboBossMusicPlayers.contains(uuid)) {
+                    startJumboBossMusic(player, false);
+                }
+            } else {
+                stopJumboBossMusic(player);
+            }
+        }
+
+        for (UUID uuid : new HashSet<>(this.jumboBossMusicPlayers)) {
+            if (allowedPlayers.contains(uuid)) {
+                continue;
+            }
+
+            ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(uuid);
+
+            if (player != null) {
+                stopJumboBossMusic(player);
+            } else {
+                this.jumboBossMusicPlayers.remove(uuid);
+            }
+        }
+
+        this.jumboSuppressMcMusicTicks--;
+
+        if (this.jumboSuppressMcMusicTicks <= 0) {
+            suppressMinecraftMusicForCurrentListeners(serverLevel);
+            this.jumboSuppressMcMusicTicks = JUMBO_SUPPRESS_MC_MUSIC_TICKS;
+        }
+
+        this.jumboBossMusicRefreshTicks--;
+
+        if (this.jumboBossMusicRefreshTicks <= 0) {
+            refreshJumboBossMusic(serverLevel);
+            this.jumboBossMusicRefreshTicks = JUMBO_BOSS_MUSIC_REFRESH_TICKS;
+        }
+    }
+
+    private boolean shouldPlayJumboBossMusic() {
+        if (!this.isJumbo()) {
+            return false;
+        }
+
+        if (!this.isAlive()) {
+            return false;
+        }
+
+        LivingEntity target = this.getTarget();
+
+        if (target == null || !target.isAlive()) {
+            return false;
+        }
+
+        return this.distanceToSqr(target) <= JUMBO_BOSS_MUSIC_RANGE * JUMBO_BOSS_MUSIC_RANGE;
+    }
+
+    private boolean canPlayerHearJumboBossMusic(ServerPlayer player) {
+        if (player == null) {
+            return false;
+        }
+
+        if (!player.isAlive()) {
+            return false;
+        }
+
+        if (player.level() != this.level()) {
+            return false;
+        }
+
+        return player.distanceToSqr(this) <= JUMBO_BOSS_MUSIC_RANGE * JUMBO_BOSS_MUSIC_RANGE;
+    }
+
+    private void refreshJumboBossMusic(ServerLevel serverLevel) {
+        for (UUID uuid : new HashSet<>(this.jumboBossMusicPlayers)) {
+            ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(uuid);
+
+            if (player == null) {
+                this.jumboBossMusicPlayers.remove(uuid);
+                continue;
+            }
+
+            if (!canPlayerHearJumboBossMusic(player)) {
+                stopJumboBossMusic(player);
+                continue;
+            }
+
+            startJumboBossMusic(player, true);
+        }
+    }
+
+    private void startJumboBossMusic(ServerPlayer player, boolean restart) {
+        if (player == null) {
+            return;
+        }
+
+        UUID uuid = player.getUUID();
+
+        if (!restart && this.jumboBossMusicPlayers.contains(uuid)) {
+            suppressMinecraftMusic(player);
+            return;
+        }
+
+        suppressMinecraftMusic(player);
+
+        if (restart) {
+            stopJumboBossMusic(player);
+            suppressMinecraftMusic(player);
+        }
+
+        /*
+         * Boss music uses the RECORD channel so /stopsound @s music
+         * can cancel vanilla Minecraft music without cancelling this.
+         */
+        runJumboMusicCommand(
+                player,
+                "playsound " + JUMBO_BOSS_MUSIC_SOUND + " record @s ~ ~ ~ 0.85 1.0 0.0"
+        );
+
+        this.jumboBossMusicPlayers.add(uuid);
+    }
+
+    private void stopJumboBossMusic(ServerPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        runJumboMusicCommand(
+                player,
+                "stopsound @s record " + JUMBO_BOSS_MUSIC_SOUND
+        );
+
+        this.jumboBossMusicPlayers.remove(player.getUUID());
+    }
+
+    private void suppressMinecraftMusicForCurrentListeners(ServerLevel serverLevel) {
+        for (UUID uuid : new HashSet<>(this.jumboBossMusicPlayers)) {
+            ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(uuid);
+
+            if (player == null) {
+                this.jumboBossMusicPlayers.remove(uuid);
+                continue;
+            }
+
+            if (!canPlayerHearJumboBossMusic(player)) {
+                stopJumboBossMusic(player);
+                continue;
+            }
+
+            suppressMinecraftMusic(player);
+        }
+    }
+
+    private void suppressMinecraftMusic(ServerPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        /*
+         * This cancels vanilla/background Minecraft music only.
+         * It does not stop Jumbo music because Jumbo music plays on the RECORD channel.
+         */
+        runJumboMusicCommand(
+                player,
+                "stopsound @s music"
+        );
+    }
+
+    private void stopJumboBossMusicForAll() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            this.jumboBossMusicPlayers.clear();
+            return;
+        }
+
+        for (UUID uuid : new HashSet<>(this.jumboBossMusicPlayers)) {
+            ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(uuid);
+
+            if (player != null) {
+                stopJumboBossMusic(player);
+            } else {
+                this.jumboBossMusicPlayers.remove(uuid);
+            }
+        }
+
+        this.jumboBossMusicPlayers.clear();
+    }
+
+    private void runJumboMusicCommand(ServerPlayer player, String command) {
+        if (player == null || command == null || command.isEmpty()) {
+            return;
+        }
+
+        MinecraftServer server = player.getServer();
+
+        if (server == null) {
+            return;
+        }
+
+        try {
+            CommandSourceStack source = player.createCommandSourceStack()
+                    .withSuppressedOutput()
+                    .withPermission(4);
+
+            server.getCommands().performPrefixedCommand(source, command);
+        } catch (Exception ignored) {
+        }
     }
 }
