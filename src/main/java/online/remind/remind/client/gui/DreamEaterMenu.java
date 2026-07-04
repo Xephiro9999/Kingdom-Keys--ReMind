@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,7 +16,6 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.cts.CSOpenMenu;
-import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
@@ -26,16 +24,11 @@ import online.remind.remind.client.gui.dreameaters.ChangeSpirit;
 import online.remind.remind.client.gui.dreameaters.CreateSpirit;
 import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.dreameater.DreamEater;
-import online.remind.remind.dreameater.DreamEaterLinkData;
+import online.remind.remind.dreameater.DreamEaterInfo;
 import online.remind.remind.dreameater.ModDreamEaters;
-import online.remind.remind.entity.ModEntitiesRM;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
-import online.remind.remind.lib.StringsRM;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.Locale;
 
 public class DreamEaterMenu extends MenuBackground {
 
@@ -62,7 +55,10 @@ public class DreamEaterMenu extends MenuBackground {
 
         Screen next = Minecraft.getInstance().screen;
 
-        if (!(next instanceof DreamEaterMenu || next instanceof ChangeSpirit || next instanceof CreateSpirit || next instanceof AbilityLinks)) {
+        if (!(next instanceof DreamEaterMenu
+                || next instanceof ChangeSpirit
+                || next instanceof CreateSpirit
+                || next instanceof AbilityLinks)) {
             MusicManager.stop();
         }
     }
@@ -71,21 +67,25 @@ public class DreamEaterMenu extends MenuBackground {
         if (string.equals("back")) {
             MusicManager.stop();
             PacketHandler.sendToServer(new CSOpenMenu());
+            return;
         }
 
         if (string.equals("changeSpirit")) {
             minecraft.setScreen(new ChangeSpirit());
+            return;
         }
 
         if (string.equals("createSpirit")) {
             minecraft.setScreen(new CreateSpirit());
+            return;
         }
 
         if (string.equals("abilityLinks")) {
             minecraft.setScreen(new AbilityLinks());
+            return;
         }
 
-        if (string.equals("wip")) {
+        if (string.equals("wip") && minecraft.player != null) {
             minecraft.player.playSound(ModSounds.error.get());
         }
     }
@@ -95,7 +95,6 @@ public class DreamEaterMenu extends MenuBackground {
         super.init();
 
         MusicManager.start();
-
         this.renderables.clear();
 
         float topBarHeight = (float) height * 0.17F;
@@ -108,11 +107,9 @@ public class DreamEaterMenu extends MenuBackground {
         float dataWidth = ((float) width * 0.1744F) - 10;
 
         int col1X = (int) (subButtonPosX + buttonWidth + 40);
-        int col2X = (int) (col1X + dataWidth * 2) + 10;
 
         int i = 0;
         int c = 0;
-        int d = 0;
         int spacer = 14;
 
         addRenderableWidget(changeSpirit = new MenuButton(
@@ -122,7 +119,7 @@ public class DreamEaterMenu extends MenuBackground {
                 "Change Spirit",
                 MenuButton.ButtonType.BUTTON,
                 true,
-                (e) -> action("changeSpirit")
+                e -> action("changeSpirit")
         ));
 
         addRenderableWidget(createSpirit = new MenuButton(
@@ -132,7 +129,7 @@ public class DreamEaterMenu extends MenuBackground {
                 "Create Spirit",
                 MenuButton.ButtonType.BUTTON,
                 false,
-                (e) -> action("createSpirit")
+                e -> action("createSpirit")
         ));
 
         addRenderableWidget(abilityLinks = new MenuButton(
@@ -142,7 +139,7 @@ public class DreamEaterMenu extends MenuBackground {
                 "Ability Links",
                 MenuButton.ButtonType.BUTTON,
                 true,
-                (e) -> action("abilityLinks")
+                e -> action("abilityLinks")
         ));
 
         addRenderableWidget(backButton = new MenuButton(
@@ -152,8 +149,12 @@ public class DreamEaterMenu extends MenuBackground {
                 Strings.Gui_Menu_Back,
                 MenuButton.ButtonType.BUTTON,
                 false,
-                (e) -> action("back")
+                e -> action("back")
         ));
+
+        if (minecraft == null || minecraft.player == null) {
+            return;
+        }
 
         GlobalDataRM global = ModDataRM.getGlobal(minecraft.player);
         PlayerData playerData = PlayerData.get(minecraft.player);
@@ -163,8 +164,9 @@ public class DreamEaterMenu extends MenuBackground {
         }
 
         DreamEater dreamEater = getEquippedDreamEater(global);
+        String dreamEaterRL = getEquippedDreamEaterRL(global, dreamEater);
 
-        if (dreamEater == null || StringsRM.none.equals(dreamEater.getName())) {
+        if (isNoDreamEaterEquipped(dreamEaterRL, dreamEater)) {
             addRenderableWidget(name = new MenuColourBox(
                     col1X,
                     button_statsY + (c++ * spacer),
@@ -176,28 +178,14 @@ public class DreamEaterMenu extends MenuBackground {
             return;
         }
 
-        String dreamEaterRL = getDreamEaterRL(dreamEater);
-
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            addRenderableWidget(name = new MenuColourBox(
-                    col1X,
-                    button_statsY + (c++ * spacer),
-                    (int) dataWidth,
-                    "Name:",
-                    "N/A",
-                    0xffffff
-            ));
-            return;
-        }
-
-        DreamEaterDisplayStats stats = getDisplayStats(global, playerData, dreamEater);
+        DreamEaterDisplayStats stats = getDisplayStats(global, playerData, dreamEater, dreamEaterRL);
 
         addRenderableWidget(name = new MenuColourBox(
                 col1X,
                 button_statsY + (c++ * spacer),
                 (int) dataWidth,
                 "Name:",
-                getDreamEaterDisplayName(dreamEater),
+                getDreamEaterDisplayName(dreamEater, dreamEaterRL),
                 0xffffff
         ));
 
@@ -206,7 +194,7 @@ public class DreamEaterMenu extends MenuBackground {
                 button_statsY + (c++ * spacer),
                 (int) dataWidth,
                 "Level:",
-                "" + stats.level,
+                String.valueOf(stats.level),
                 0xffffff
         ));
 
@@ -258,10 +246,13 @@ public class DreamEaterMenu extends MenuBackground {
                 formatStat(stats.defense),
                 0xbf8d14
         ));
-
     }
 
     private DreamEater getEquippedDreamEater(GlobalDataRM global) {
+        if (global == null) {
+            return null;
+        }
+
         String dreamEaterRL = global.getDreamEaterRL();
 
         if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
@@ -275,6 +266,18 @@ public class DreamEaterMenu extends MenuBackground {
         }
     }
 
+    private String getEquippedDreamEaterRL(GlobalDataRM global, DreamEater dreamEater) {
+        if (global != null) {
+            String dreamEaterRL = global.getDreamEaterRL();
+
+            if (dreamEaterRL != null && !dreamEaterRL.isEmpty()) {
+                return dreamEaterRL;
+            }
+        }
+
+        return getDreamEaterRL(dreamEater);
+    }
+
     private String getDreamEaterRL(DreamEater dreamEater) {
         if (dreamEater == null || dreamEater.getRegistryName() == null) {
             return "";
@@ -283,22 +286,35 @@ public class DreamEaterMenu extends MenuBackground {
         return dreamEater.getRegistryName().toString();
     }
 
-    private boolean isCactuar(DreamEater dreamEater) {
+    private boolean isNoDreamEaterEquipped(String dreamEaterRL, DreamEater dreamEater) {
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            return true;
+        }
+
+        if ("none".equalsIgnoreCase(dreamEaterRL)
+                || "kkremind:none".equalsIgnoreCase(dreamEaterRL)) {
+            return true;
+        }
+
         if (dreamEater == null) {
             return false;
         }
 
         String name = dreamEater.getName();
 
-        return StringsRM.cactuar.equals(name)
-                || "dreameater_cactuar".equals(name)
-                || "cactuar".equals(name);
+        return name == null
+                || name.isEmpty()
+                || "none".equalsIgnoreCase(name)
+                || "kkremind:none".equalsIgnoreCase(name);
     }
 
-    private DreamEaterDisplayStats getDisplayStats(GlobalDataRM global, PlayerData playerData, DreamEater dreamEater) {
-        String dreamEaterRL = getDreamEaterRL(dreamEater);
-
-        int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
+    private DreamEaterDisplayStats getDisplayStats(
+            GlobalDataRM global,
+            PlayerData playerData,
+            DreamEater dreamEater,
+            String dreamEaterRL
+    ) {
+        int dreamEaterLevel = Math.max(1, global.getDreamEaterLevel(dreamEaterRL));
         int dreamEaterExp = global.getDreamEaterExp(dreamEaterRL);
         int dreamEaterExpNeeded = global.getDreamEaterExpToNextLevel(dreamEaterRL);
 
@@ -311,8 +327,8 @@ public class DreamEaterMenu extends MenuBackground {
                 float defense = getEntityAttribute(livingEntity, Attributes.ARMOR, 0F);
 
                 /*
-                 * Minecraft has no vanilla magic attribute,
-                 * so MAG is projected by Dream Eater type.
+                 * Minecraft has no vanilla magic attribute.
+                 * MAG is projected from the central Dream Eater metadata.
                  */
                 float magic = getProjectedMagicForDreamEater(dreamEater, dreamEaterLevel);
 
@@ -328,7 +344,13 @@ public class DreamEaterMenu extends MenuBackground {
             }
         }
 
-        return getProjectedStatsForDreamEater(dreamEater, playerData, dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
+        return getProjectedStatsForDreamEater(
+                dreamEater,
+                playerData,
+                dreamEaterLevel,
+                dreamEaterExp,
+                dreamEaterExpNeeded
+        );
     }
 
     private float getEntityAttribute(
@@ -336,7 +358,7 @@ public class DreamEaterMenu extends MenuBackground {
             net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
             float fallback
     ) {
-        if (entity.getAttribute(attribute) == null) {
+        if (entity == null || entity.getAttribute(attribute) == null) {
             return fallback;
         }
 
@@ -350,229 +372,123 @@ public class DreamEaterMenu extends MenuBackground {
             int dreamEaterExp,
             int dreamEaterExpNeeded
     ) {
-        String name = dreamEater.getName();
-
-        if (StringsRM.chirithy.equals(name)) {
-            return getProjectedChirithyStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
-        }
-
-        if (StringsRM.meowWow.equals(name)) {
-            return getProjectedMeowWowStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
-        }
-
-        if (StringsRM.komoryBat.equals(name)) {
-            return getProjectedKomoryBatStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
-        }
-
-        if (isCactuar(dreamEater)) {
-            return getProjectedCactuarStats(dreamEaterLevel, dreamEaterExp, dreamEaterExpNeeded);
-        }
+        DreamEaterInfo.DreamEaterStats stats =
+                DreamEaterInfo.getProjectedStats(dreamEater, playerData, dreamEaterLevel);
 
         return new DreamEaterDisplayStats(
                 dreamEaterLevel,
                 dreamEaterExp,
                 dreamEaterExpNeeded,
-                (float) playerData.getMaxHP(),
-                (float) playerData.getStrengthStat().getStat(),
-                (float) playerData.getMagicStat().getStat(),
-                (float) playerData.getDefenseStat().getStat()
+                stats.maxHP(),
+                stats.strength(),
+                stats.magic(),
+                stats.defense()
         );
     }
 
-    private DreamEaterDisplayStats getProjectedChirithyStats(int level, int currentExp, int expNeeded) {
-        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
-
-        float hp = 22 + (float) Math.round((level - 1) * 1.25D);
-
-        float strength = 1F;
-
-        if (level >= 50) {
-            strength = 2F;
-        }
-
-        if (level >= 90) {
-            strength = 3F;
-        }
-
-        float magic = 8 + (float) Math.round((level - 1) * 0.55D);
-        float defense = 4 + (float) Math.round((level - 1) * 0.35D);
-
-        return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
+    private float getProjectedMagicForDreamEater(DreamEater dreamEater, int dreamEaterLevel) {
+        return DreamEaterInfo.getProjectedMagic(dreamEater, dreamEaterLevel);
     }
 
-    private DreamEaterDisplayStats getProjectedMeowWowStats(int level, int currentExp, int expNeeded) {
-        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
+    private String getDreamEaterDisplayName(DreamEater dreamEater, String dreamEaterRL) {
+        String displayName = null;
 
-        if (level < 3) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 36F, 8.4F, 11.1F, 6.6F);
+        if (dreamEater != null) {
+            displayName = DreamEaterInfo.getDisplayName(dreamEater);
         }
 
-        if (level < 6) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 37F, 12F, 16F, 6F);
+        if (shouldPrettifyDisplayName(displayName)) {
+            displayName = DreamEaterInfo.getDisplayName(dreamEaterRL);
         }
 
-        if (level < 8) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 46F, 15F, 20F, 8F);
+        if (shouldPrettifyDisplayName(displayName)) {
+            String rawName = dreamEater != null ? dreamEater.getName() : null;
+
+            if (rawName == null || rawName.isEmpty()) {
+                rawName = dreamEaterRL;
+            }
+
+            displayName = prettifyDreamEaterName(rawName);
         }
 
-        if (level < 10) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 52F, 17F, 22F, 9F);
+        if (displayName == null || displayName.isEmpty()) {
+            return "Dream Eater";
         }
 
-        if (level < 12) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 58F, 19F, 25F, 10F);
-        }
-
-        if (level < 14) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 63F, 21F, 27F, 11F);
-        }
-
-        if (level < 16) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 69F, 23F, 30F, 12F);
-        }
-
-        if (level < 18) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 75F, 24F, 32F, 12F);
-        }
-
-        if (level < 20) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 81F, 26F, 35F, 13F);
-        }
-
-        if (level < 22) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 86F, 28F, 37F, 14F);
-        }
-
-        if (level < 24) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 92F, 30F, 40F, 15F);
-        }
-
-        if (level < 26) {
-            return new DreamEaterDisplayStats(level, currentExp, expNeeded, 98F, 32F, 42F, 16F);
-        }
-
-        int extraLevels = level - 26;
-
-        float hp = 104F + (extraLevels * 2.5F);
-        float strength = 34F + (extraLevels * 0.50F);
-        float magic = 45F + (extraLevels * 0.65F);
-        float defense = 17F + (extraLevels * 0.25F);
-
-        return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
+        return displayName;
     }
 
-    private DreamEaterDisplayStats getProjectedKomoryBatStats(int level, int currentExp, int expNeeded) {
-        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
-
-        float hp;
-        float strength;
-        float magic;
-        float defense;
-
-        if (level <= 3) {
-            hp = (float) (32.7D + ((level - 1) * 0.65D));
-            strength = (float) (8.2D + ((level - 1) * 1.9D));
-            magic = (float) (10.8D + ((level - 1) * 2.6D));
-            defense = (float) (5.9D + ((level - 1) * 0.05D));
-        } else {
-            int extraLevels = level - 3;
-
-            hp = (float) (34.0D + (extraLevels * 2.15D));
-            strength = (float) (12.0D + (extraLevels * 0.48D));
-            magic = (float) (16.0D + (extraLevels * 0.62D));
-            defense = (float) (6.0D + (extraLevels * 0.22D));
+    private boolean shouldPrettifyDisplayName(String displayName) {
+        if (displayName == null || displayName.trim().isEmpty()) {
+            return true;
         }
 
-        return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
-    }
+        String cleaned = displayName.trim();
 
-    private DreamEaterDisplayStats getProjectedCactuarStats(int level, int currentExp, int expNeeded) {
-        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
+        if (cleaned.contains(":")) {
+            return true;
+        }
+
+        if (cleaned.contains("_")) {
+            return true;
+        }
+
+        if (cleaned.startsWith("dreameater")) {
+            return true;
+        }
 
         /*
-         * Cactuar is meant to be fast, evasive, and needle-focused.
-         * Lower HP/DEF than Meow Wow, better STR, low MAG.
+         * If the helper ever returns a raw lowercase key like "tonberry",
+         * still make the menu display "Tonberry".
          */
-        float hp;
-        float strength;
-        float magic;
-        float defense;
-
-        if (level <= 3) {
-            hp = (float) (28.0D + ((level - 1) * 0.75D));
-            strength = (float) (10.0D + ((level - 1) * 2.0D));
-            magic = (float) (4.0D + ((level - 1) * 0.75D));
-            defense = (float) (4.0D + ((level - 1) * 0.15D));
-        } else {
-            int extraLevels = level - 3;
-
-            hp = (float) (30.0D + (extraLevels * 1.85D));
-            strength = (float) (14.0D + (extraLevels * 0.60D));
-            magic = (float) (5.5D + (extraLevels * 0.28D));
-            defense = (float) (4.3D + (extraLevels * 0.18D));
-        }
-
-        return new DreamEaterDisplayStats(level, currentExp, expNeeded, hp, strength, magic, defense);
+        return cleaned.equals(cleaned.toLowerCase(Locale.ROOT)) && !cleaned.contains(" ");
     }
 
-    private float getProjectedMagicForDreamEater(DreamEater dreamEater, int dreamEaterLevel) {
-        if (dreamEater == null) {
-            return 0F;
+    private String prettifyDreamEaterName(String rawName) {
+        if (rawName == null || rawName.trim().isEmpty()) {
+            return "Dream Eater";
         }
 
-        String name = dreamEater.getName();
+        String cleaned = rawName.trim();
 
-        if (StringsRM.chirithy.equals(name)) {
-            return getProjectedChirithyStats(dreamEaterLevel, 0, 0).magic;
+        if (cleaned.contains(":")) {
+            cleaned = cleaned.substring(cleaned.indexOf(':') + 1);
         }
 
-        if (StringsRM.meowWow.equals(name)) {
-            return getProjectedMeowWowStats(dreamEaterLevel, 0, 0).magic;
+        if (cleaned.startsWith("dreameater_")) {
+            cleaned = cleaned.substring("dreameater_".length());
         }
 
-        if (StringsRM.komoryBat.equals(name)) {
-            return getProjectedKomoryBatStats(dreamEaterLevel, 0, 0).magic;
+        cleaned = cleaned.replace('_', ' ').trim();
+
+        if (cleaned.isEmpty()) {
+            return "Dream Eater";
         }
 
-        if (isCactuar(dreamEater)) {
-            return getProjectedCactuarStats(dreamEaterLevel, 0, 0).magic;
+        StringBuilder builder = new StringBuilder();
+        boolean capitalizeNext = true;
+
+        for (char c : cleaned.toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                builder.append(c);
+                capitalizeNext = true;
+                continue;
+            }
+
+            builder.append(capitalizeNext ? Character.toUpperCase(c) : c);
+            capitalizeNext = false;
         }
 
-        return 0F;
-    }
-
-    private String getDreamEaterDisplayName(DreamEater dreamEater) {
-        if (dreamEater == null) {
-            return "N/A";
-        }
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            return "Chirithy";
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            return "Meow Wow";
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            return "Komory Bat";
-        }
-
-        if (isCactuar(dreamEater)) {
-            return "Cactuar";
-        }
-
-        return dreamEater.getName();
+        return builder.toString();
     }
 
     private String formatStat(float value) {
         if (Math.abs(value - Math.round(value)) < 0.01F) {
-            return "" + Math.round(value);
+            return String.valueOf(Math.round(value));
         }
 
-        return String.format("%.1f", value);
+        return String.format(Locale.ROOT, "%.1f", value);
     }
-
 
     private static class DreamEaterDisplayStats {
         private final int level;
@@ -622,20 +538,19 @@ public class DreamEaterMenu extends MenuBackground {
         }
 
         DreamEater dreamEater = getEquippedDreamEater(global);
+        String dreamEaterRL = getEquippedDreamEaterRL(global, dreamEater);
 
-        if (dreamEater == null || StringsRM.none.equals(dreamEater.getName())) {
+        if (isNoDreamEaterEquipped(dreamEaterRL, dreamEater)) {
             return;
         }
 
-        LivingEntity entity = getOrCreatePreviewEntity(dreamEater, playerData);
+        LivingEntity entity = getOrCreatePreviewEntity(dreamEater, dreamEaterRL, playerData);
 
         if (entity == null) {
             return;
         }
 
-        String dreamEaterRL = getDreamEaterRL(dreamEater);
-
-        int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
+        int dreamEaterLevel = Math.max(1, global.getDreamEaterLevel(dreamEaterRL));
         int dreamEaterExp = global.getDreamEaterExp(dreamEaterRL);
         int dreamEaterExpNeeded = global.getDreamEaterExpToNextLevel(dreamEaterRL);
 
@@ -648,7 +563,7 @@ public class DreamEaterMenu extends MenuBackground {
 
         guiGraphics.drawString(
                 minecraft.font,
-                getDreamEaterDisplayName(dreamEater),
+                getDreamEaterDisplayName(dreamEater, dreamEaterRL),
                 boxX + 8,
                 boxY - 12,
                 0xFFFFFF,
@@ -709,84 +624,37 @@ public class DreamEaterMenu extends MenuBackground {
         );
     }
 
-    private LivingEntity getOrCreatePreviewEntity(DreamEater dreamEater, PlayerData playerData) {
-        if (minecraft == null || minecraft.level == null || minecraft.player == null || dreamEater == null) {
+    private LivingEntity getOrCreatePreviewEntity(
+            DreamEater dreamEater,
+            String dreamEaterRL,
+            PlayerData playerData
+    ) {
+        if (minecraft == null
+                || minecraft.level == null
+                || minecraft.player == null
+                || dreamEater == null
+                || playerData == null) {
             return null;
         }
 
-        String key = dreamEater.getName() + ":" + playerData.getAlignment();
+        String key = dreamEaterRL + ":" + playerData.getAlignment();
 
         if (previewDreamEaterEntity != null && key.equals(previewDreamEaterKey)) {
             return previewDreamEaterEntity;
         }
 
         previewDreamEaterKey = key;
-        previewDreamEaterEntity = null;
+        previewDreamEaterEntity = DreamEaterInfo.createPreviewEntity(
+                dreamEater,
+                minecraft.level,
+                minecraft.player,
+                playerData
+        );
 
-        boolean isOrg = playerData.getAlignment() != Utils.OrgMember.NONE;
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            ChirithyEntity chirithy = new ChirithyEntity(ModEntitiesRM.TYPE_CHIRITHY.get(), minecraft.level);
-            chirithy.setOwnerUUID(minecraft.player.getUUID());
-            chirithy.setVariant(isOrg ? 0 : 1);
-
-            previewDreamEaterEntity = chirithy;
-            return previewDreamEaterEntity;
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            MeowWowEntity meowWow = new MeowWowEntity(ModEntitiesRM.TYPE_MEOW_WOW.get(), minecraft.level);
-            meowWow.setOwnerUUID(minecraft.player.getUUID());
-            meowWow.setVariant(isOrg ? MeowWowEntity.VARIANT_ORG : MeowWowEntity.VARIANT_NORMAL);
-
-            previewDreamEaterEntity = meowWow;
-            return previewDreamEaterEntity;
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            KomoryBatEntity komoryBat = new KomoryBatEntity(ModEntitiesRM.TYPE_KOMORY_BAT.get(), minecraft.level);
-            komoryBat.setOwnerUUID(minecraft.player.getUUID());
-            komoryBat.setVariant(isOrg ? KomoryBatEntity.VARIANT_ORG : KomoryBatEntity.VARIANT_NORMAL);
-            komoryBat.setNoGravity(true);
-
-            previewDreamEaterEntity = komoryBat;
-            return previewDreamEaterEntity;
-        }
-
-        if (isCactuar(dreamEater)) {
-            CactuarSpiritEntity cactuar = new CactuarSpiritEntity(ModEntitiesRM.TYPE_CACTUAR_SPIRIT.get(), minecraft.level);
-            cactuar.setOwnerUUID(minecraft.player.getUUID());
-            cactuar.setNoAi(true);
-            cactuar.setNoGravity(false);
-
-            previewDreamEaterEntity = cactuar;
-            return previewDreamEaterEntity;
-        }
-
-        return null;
+        return previewDreamEaterEntity;
     }
 
     private int getPreviewScale(DreamEater dreamEater) {
-        if (dreamEater == null) {
-            return 35;
-        }
-
-        if (isCactuar(dreamEater)) {
-            return 58;
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            return 65;
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            return 42;
-        }
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            return 48;
-        }
-
-        return 40;
+        return DreamEaterInfo.getPreviewScale(dreamEater);
     }
 }

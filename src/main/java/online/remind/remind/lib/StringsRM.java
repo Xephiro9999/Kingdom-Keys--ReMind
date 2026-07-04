@@ -188,6 +188,7 @@ public class StringsRM {
         meowWow = StringsRM.DE_Prefix+"meowwow",
         komoryBat = StringsRM.DE_Prefix+"komory_bat",
         cactuar = StringsRM.DE_Prefix+"cactuar",
+        tonberry = StringsRM.DE_Prefix+"tonberry",
 
 
     // Grand Magics

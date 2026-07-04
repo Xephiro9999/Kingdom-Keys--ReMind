@@ -22,10 +22,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.*;
 import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.ArrayList;
@@ -308,6 +305,10 @@ public class DreamEaterExpHandler {
             return "Cactuar";
         }
 
+        if (GlobalDataRM.DREAM_EATER_TONBERRY.equals(dreamEaterRL)) {
+            return "Tonberry";
+        }
+
         return "Dream Eater";
     }
 
@@ -388,6 +389,16 @@ public class DreamEaterExpHandler {
             return null;
         }
 
+        if (entity instanceof TonberrySpiritEntity tonberrySpirit && tonberrySpirit.getOwnerUUID() != null) {
+            Player player = level.getPlayerByUUID(tonberrySpirit.getOwnerUUID());
+
+            if (player instanceof ServerPlayer serverPlayer) {
+                return serverPlayer;
+            }
+
+            return null;
+        }
+
         return null;
     }
 
@@ -416,6 +427,10 @@ public class DreamEaterExpHandler {
 
         if (GlobalDataRM.DREAM_EATER_CACTUAR.equals(dreamEaterRL)) {
             return 1.25F;
+        }
+
+        if (GlobalDataRM.DREAM_EATER_TONBERRY.equals(dreamEaterRL)) {
+            return 1.15F;
         }
 
         return 1.00F;

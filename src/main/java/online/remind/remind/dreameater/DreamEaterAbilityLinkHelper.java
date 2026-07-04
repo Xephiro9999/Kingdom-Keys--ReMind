@@ -1,6 +1,5 @@
 package online.remind.remind.dreameater;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -12,11 +11,8 @@ import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.lib.StringsRM;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,10 +27,14 @@ public class DreamEaterAbilityLinkHelper {
      * IMPORTANT:
      * This helper treats Dream Eater Link-granted abilities as TEMPORARY ONLY.
      *
-     * That means any ability ID returned by DreamEaterLinkData as a player grant
-     * will be controlled exactly by the currently equipped Dream Eater.
+     * Any ability ID returned by DreamEaterLinkData through DreamEaterInfoRM
+     * is controlled exactly by the currently equipped Dream Eater.
      *
      * This is intentional to purge old duped link abilities.
+     *
+     * Future-proofing:
+     * To add a new Dream Eater later, add its metadata/link supplier to
+     * DreamEaterInfoRM. This file should not need another per-Spirit branch.
      */
 
     @SubscribeEvent
@@ -47,6 +47,10 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
+        /*
+         * Once per second is enough.
+         * This keeps equipped link abilities synced without constantly writing data.
+         */
         if (player.tickCount % 20 != 0) {
             return;
         }
@@ -71,31 +75,26 @@ public class DreamEaterAbilityLinkHelper {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if (playerData == null || globalData == null || playerData.getAbilityMap() == null) {
+        if (playerData == null || globalData == null) {
+            clearAllGrants(player, true);
             return;
         }
 
-        List<DreamEaterLinkData.LinkEntry> links = getEquippedDreamEaterLinks(globalData);
+        String dreamEaterRL = globalData.getDreamEaterRL();
+
+        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
+            clearAllGrants(player, true);
+            return;
+        }
+
+        List<DreamEaterLinkData.LinkEntry> links = DreamEaterInfo.getLinks(dreamEaterRL);
 
         if (links == null || links.isEmpty()) {
-            boolean changed = removeAllDreamEaterLinkAbilities(playerData);
-
-            if (changed) {
-                sync(player);
-            }
-
+            clearAllGrants(player, true);
             return;
         }
 
-        int level = getEquippedDreamEaterLevel(globalData);
-
-        Map<String, Integer> desiredGrants = buildDesiredAbilityGrants(links, level);
-
-        boolean changed = enforceExactDreamEaterAbilityState(playerData, desiredGrants);
-
-        if (changed) {
-            sync(player);
-        }
+        applyDreamEaterAbilityLinks(player, playerData, globalData, links);
     }
 
     public static void onDreamEaterChanged(ServerPlayer player) {
@@ -131,42 +130,54 @@ public class DreamEaterAbilityLinkHelper {
         }
     }
 
-    private static List<DreamEaterLinkData.LinkEntry> getEquippedDreamEaterLinks(GlobalDataRM globalData) {
-        if (globalData == null) {
-            return Collections.emptyList();
-        }
-
-        if (isChirithyEquipped(globalData)) {
-            return DreamEaterLinkData.getChirithyLinks();
-        }
-
-        if (isMeowWowEquipped(globalData)) {
-            return DreamEaterLinkData.getMeowWowLinks();
-        }
-
-        if (isKomoryBatEquipped(globalData)) {
-            return DreamEaterLinkData.getKomoryBatLinks();
-        }
-
-        if (isCactuarEquipped(globalData)) {
-            return DreamEaterLinkData.getCactuarLinks();
-        }
-
-        return Collections.emptyList();
-    }
-
-    private static int getEquippedDreamEaterLevel(GlobalDataRM globalData) {
-        if (globalData == null) {
-            return 1;
+    private static void applyDreamEaterAbilityLinks(
+            ServerPlayer player,
+            PlayerData playerData,
+            GlobalDataRM globalData,
+            List<DreamEaterLinkData.LinkEntry> links
+    ) {
+        if (player == null || playerData == null || globalData == null) {
+            return;
         }
 
         String dreamEaterRL = globalData.getDreamEaterRL();
 
         if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return 1;
+            clearAllGrants(player, true);
+            return;
         }
 
-        return Math.max(1, globalData.getDreamEaterLevel(dreamEaterRL));
+        int dreamEaterLevel = Math.max(1, globalData.getDreamEaterLevel(dreamEaterRL));
+
+        Map<String, Integer> desiredGrants = buildDesiredAbilityGrants(links, dreamEaterLevel);
+
+        boolean changed = enforceExactDreamEaterAbilityState(playerData, desiredGrants);
+
+        if (changed) {
+            sync(player);
+        }
+    }
+
+    private static void clearAllGrants(ServerPlayer player, boolean syncIfChanged) {
+        if (player == null) {
+            return;
+        }
+
+        PlayerData playerData = PlayerData.get(player);
+
+        if (playerData == null || playerData.getAbilityMap() == null) {
+            return;
+        }
+
+        boolean changed = removeAllDreamEaterLinkAbilities(playerData);
+
+        if (purgeEmptyDreamEaterAbilityEntries(playerData)) {
+            changed = true;
+        }
+
+        if (changed && syncIfChanged) {
+            sync(player);
+        }
     }
 
     private static Map<String, Integer> buildDesiredAbilityGrants(
@@ -216,7 +227,7 @@ public class DreamEaterAbilityLinkHelper {
 
         boolean changed = false;
 
-        Set<String> allDreamEaterAbilityIds = getAllDreamEaterGrantedAbilityIds();
+        Set<String> allDreamEaterAbilityIds = DreamEaterInfo.getAllGrantedAbilityIds();
 
         for (String abilityId : allDreamEaterAbilityIds) {
             if (abilityId == null || abilityId.isEmpty()) {
@@ -255,7 +266,7 @@ public class DreamEaterAbilityLinkHelper {
 
         boolean changed = false;
 
-        for (String abilityId : getAllDreamEaterGrantedAbilityIds()) {
+        for (String abilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
             if (abilityId == null || abilityId.isEmpty()) {
                 continue;
             }
@@ -269,128 +280,34 @@ public class DreamEaterAbilityLinkHelper {
         return changed;
     }
 
-    private static Set<String> getAllDreamEaterGrantedAbilityIds() {
-        Set<String> abilityIds = new HashSet<>();
-
-        collectGrantedAbilityIds(abilityIds, DreamEaterLinkData.getChirithyLinks());
-        collectGrantedAbilityIds(abilityIds, DreamEaterLinkData.getMeowWowLinks());
-        collectGrantedAbilityIds(abilityIds, DreamEaterLinkData.getKomoryBatLinks());
-        collectGrantedAbilityIds(abilityIds, DreamEaterLinkData.getCactuarLinks());
-
-        return abilityIds;
-    }
-
-    private static void collectGrantedAbilityIds(
-            Set<String> abilityIds,
-            List<DreamEaterLinkData.LinkEntry> links
-    ) {
-        if (abilityIds == null || links == null) {
-            return;
+    private static boolean purgeEmptyDreamEaterAbilityEntries(PlayerData playerData) {
+        if (playerData == null || playerData.getAbilityMap() == null) {
+            return false;
         }
 
-        for (DreamEaterLinkData.LinkEntry link : links) {
-            if (link == null) {
-                continue;
-            }
+        boolean changed = false;
 
-            if (!link.grantsPlayerAbility()) {
-                continue;
-            }
-
-            String abilityId = link.abilityId();
-
+        for (String abilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
             if (abilityId == null || abilityId.isEmpty()) {
                 continue;
             }
 
-            abilityIds.add(abilityId);
-        }
-    }
+            int[] data = playerData.getAbilityMap().get(abilityId);
 
-    private static boolean isChirithyEquipped(GlobalDataRM globalData) {
-        String dreamEaterRL = globalData.getDreamEaterRL();
+            if (data == null) {
+                continue;
+            }
 
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return false;
-        }
+            int owned = data.length > 0 ? data[0] : 0;
+            int equipped = data.length > 1 ? data[1] : 0;
 
-        if (dreamEaterRL.equals("kkremind:chirithy")
-                || dreamEaterRL.equals("kkremind:dreameater_chirithy")) {
-            return true;
-        }
-
-        DreamEater dreamEater = getDreamEater(dreamEaterRL);
-
-        return dreamEater != null && StringsRM.chirithy.equals(dreamEater.getName());
-    }
-
-    private static boolean isMeowWowEquipped(GlobalDataRM globalData) {
-        String dreamEaterRL = globalData.getDreamEaterRL();
-
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return false;
+            if (owned <= 0 && equipped <= 0) {
+                playerData.getAbilityMap().remove(abilityId);
+                changed = true;
+            }
         }
 
-        if (dreamEaterRL.equals("kkremind:meow_wow")
-                || dreamEaterRL.equals("kkremind:meowwow")
-                || dreamEaterRL.equals("kkremind:dreameater_meowwow")
-                || dreamEaterRL.equals("kkremind:dreameater_meow_wow")) {
-            return true;
-        }
-
-        DreamEater dreamEater = getDreamEater(dreamEaterRL);
-
-        return dreamEater != null && StringsRM.meowWow.equals(dreamEater.getName());
-    }
-
-    private static boolean isKomoryBatEquipped(GlobalDataRM globalData) {
-        String dreamEaterRL = globalData.getDreamEaterRL();
-
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return false;
-        }
-
-        if (dreamEaterRL.equals("kkremind:komory_bat")
-                || dreamEaterRL.equals("kkremind:komorybat")
-                || dreamEaterRL.equals("kkremind:dreameater_komory_bat")) {
-            return true;
-        }
-
-        DreamEater dreamEater = getDreamEater(dreamEaterRL);
-
-        return dreamEater != null && StringsRM.komoryBat.equals(dreamEater.getName());
-    }
-
-    private static boolean isCactuarEquipped(GlobalDataRM globalData) {
-        String dreamEaterRL = globalData.getDreamEaterRL();
-
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return false;
-        }
-
-        if (dreamEaterRL.equals("kkremind:dreameater_cactuar")
-                || dreamEaterRL.equals("kkremind:cactuar")) {
-            return true;
-        }
-
-        DreamEater dreamEater = getDreamEater(dreamEaterRL);
-
-        return dreamEater != null
-                && (StringsRM.cactuar.equals(dreamEater.getName())
-                || "dreameater_cactuar".equals(dreamEater.getName())
-                || "cactuar".equals(dreamEater.getName()));
-    }
-
-    private static DreamEater getDreamEater(String dreamEaterRL) {
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
-        } catch (Exception e) {
-            return null;
-        }
+        return changed;
     }
 
     private static void sync(ServerPlayer player) {

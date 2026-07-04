@@ -116,6 +116,19 @@ public class DreamEaterLinkData {
         return CACTUAR_LINKS;
     }
 
+
+    private static final List<LinkEntry> TONBERRY_LINKS = List.of(
+            // Spirit skills. These are NOT granted to the player.
+            new LinkEntry("tonberry_attack", "Doink!", TYPE_SPIRIT_SKILL, 1, false, ""),
+            new LinkEntry("tonberry_skill", "Everyone's Grudge", TYPE_SPIRIT_SKILL, 1, false, "")
+
+
+    );
+
+    public static List<LinkEntry> getTonberryLinks() {
+        return TONBERRY_LINKS;
+    }
+
     public static boolean isUnlocked(LinkEntry entry, int level) {
         return level >= entry.unlockLevel();
     }

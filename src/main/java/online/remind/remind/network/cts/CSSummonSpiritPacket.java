@@ -20,10 +20,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.dreameater.ModDreamEaters;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.*;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -186,6 +183,17 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
 
                 owner.level().addFreshEntity(cactuar);
                 summonedDreamEater = cactuar;
+                break;
+            }
+
+            case "dreameater_tonberry":
+            case "tonberry": {
+                TonberrySpiritEntity tonberry = new TonberrySpiritEntity(owner.level(), owner);
+                tonberry.setOwnerUUID(owner.getUUID());
+                tonberry.setPos(owner.getX(), owner.getY() + 0.1D, owner.getZ());
+
+                owner.level().addFreshEntity(tonberry);
+                summonedDreamEater = tonberry;
                 break;
             }
 

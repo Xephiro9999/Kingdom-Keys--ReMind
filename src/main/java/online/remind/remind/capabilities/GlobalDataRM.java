@@ -24,6 +24,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     private final List<String> situationSpells = new ArrayList<>();
 
     private boolean defeatedJumboCactuar;
+    private boolean defeatedTonberryKing;
 
     private int hasteTicks;
     private int hasteLevel;
@@ -68,7 +69,10 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     public static final String DREAM_EATER_CHIRITHY = KingdomKeysReMind.MODID + ":dreameater_chirithy";
     public static final String DREAM_EATER_MEOW_WOW = KingdomKeysReMind.MODID + ":dreameater_meowwow";
     public static final String DREAM_EATER_KOMORY_BAT = KingdomKeysReMind.MODID + ":dreameater_komory_bat";
+
+    // Non-KH Dream Eaters
     public static final String DREAM_EATER_CACTUAR = KingdomKeysReMind.MODID + ":dreameater_cactuar";
+    public static final String DREAM_EATER_TONBERRY = KingdomKeysReMind.MODID + ":dreameater_tonberry";
 
     private int unlockedOrganizationPanelSlots = ORGANIZATION_PANEL_STARTING_SLOTS;
 
@@ -297,6 +301,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
         storage.putString("dreamEaterRL", this.getDreamEaterRL());
 
         storage.putBoolean("defeatedJumboCactuar", this.hasDefeatedJumboCactuar());
+        storage.putBoolean("defeatedTonberryKing", this.hasDefeatedTonberryKing());
 
         storage.putBoolean("donor_grant", this.getDonorGiven());
 
@@ -432,6 +437,7 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         this.setDreamEaterRL(properties.getString("dreamEaterRL"));
         this.setDefeatedJumboCactuar(properties.getBoolean("defeatedJumboCactuar"));
+        this.setDefeatedTonberryKing(properties.getBoolean("defeatedTonberryKing"));
 
         this.unlockedDreamEaters.clear();
 
@@ -1346,6 +1352,14 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
     public void setDefeatedJumboCactuar(boolean defeated) {
         this.defeatedJumboCactuar = defeated;
+    }
+
+    public boolean hasDefeatedTonberryKing() {
+        return this.defeatedTonberryKing;
+    }
+
+    public void setDefeatedTonberryKing(boolean defeated) {
+        this.defeatedTonberryKing = defeated;
     }
 
 }

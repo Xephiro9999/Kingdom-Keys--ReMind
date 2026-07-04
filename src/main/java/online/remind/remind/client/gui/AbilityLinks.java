@@ -2,7 +2,6 @@ package online.remind.remind.client.gui.dreameaters;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.resources.ResourceLocation;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuBackground;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.MenuColourBox;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
@@ -13,9 +12,8 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
 import online.remind.remind.client.sound.MusicManager;
-import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.DreamEaterInfo;
 import online.remind.remind.dreameater.DreamEaterLinkData;
-import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.lib.StringsRM;
 
 import java.awt.Color;
@@ -37,7 +35,10 @@ public class AbilityLinks extends MenuBackground {
 
         Screen next = Minecraft.getInstance().screen;
 
-        if (!(next instanceof DreamEaterMenu || next instanceof ChangeSpirit || next instanceof CreateSpirit || next instanceof AbilityLinks)) {
+        if (!(next instanceof DreamEaterMenu
+                || next instanceof ChangeSpirit
+                || next instanceof CreateSpirit
+                || next instanceof AbilityLinks)) {
             MusicManager.stop();
         }
     }
@@ -45,6 +46,7 @@ public class AbilityLinks extends MenuBackground {
     protected void action(String string) {
         if (string.equals("back")) {
             minecraft.setScreen(new DreamEaterMenu());
+            return;
         }
 
         if (string.equals("locked")) {
@@ -93,27 +95,39 @@ public class AbilityLinks extends MenuBackground {
         PlayerData playerData = PlayerData.get(minecraft.player);
 
         if (global == null || playerData == null) {
-            addRenderableWidget(new MenuColourBox(col1X, buttonY, (int) dataWidth, "Error:", "Missing player data", 0xbf1414));
-            return;
-        }
-
-        DreamEater dreamEater = getEquippedDreamEater(global);
-
-        if (dreamEater == null || StringsRM.none.equals(dreamEater.getName())) {
-            addRenderableWidget(new MenuColourBox(col1X, buttonY, (int) dataWidth, "Dream Eater:", "None Equipped", 0xffffff));
+            addRenderableWidget(new MenuColourBox(
+                    col1X,
+                    buttonY,
+                    (int) dataWidth,
+                    "Error:",
+                    "Missing player data",
+                    0xbf1414
+            ));
             return;
         }
 
         String dreamEaterRL = global.getDreamEaterRL();
 
-        int dreamEaterLevel = global.getDreamEaterLevel(dreamEaterRL);
+        if (isNoDreamEaterEquipped(dreamEaterRL)) {
+            addRenderableWidget(new MenuColourBox(
+                    col1X,
+                    buttonY,
+                    (int) dataWidth,
+                    "Dream Eater:",
+                    "None Equipped",
+                    0xffffff
+            ));
+            return;
+        }
+
+        int dreamEaterLevel = Math.max(1, global.getDreamEaterLevel(dreamEaterRL));
 
         addRenderableWidget(new MenuColourBox(
                 col1X,
                 buttonY + (row++ * spacer),
                 (int) dataWidth,
                 "Dream Eater:",
-                getDreamEaterDisplayName(dreamEater),
+                getDreamEaterDisplayName(dreamEaterRL),
                 0xffffff
         ));
 
@@ -122,17 +136,47 @@ public class AbilityLinks extends MenuBackground {
                 buttonY + (row++ * spacer),
                 (int) dataWidth,
                 "Level:",
-                "" + dreamEaterLevel,
+                String.valueOf(dreamEaterLevel),
                 0xffffff
         ));
 
         row++;
 
-        addRenderableWidget(new MenuColourBox(col1X, buttonY + (row * spacer), (int) dataWidth, "Ability", "", 0xffffff));
-        addRenderableWidget(new MenuColourBox(col2X, buttonY + (row * spacer), (int) dataWidth, "Requirement", "", 0xffffff));
-        addRenderableWidget(new MenuColourBox(col3X, buttonY + (row++ * spacer), (int) dataWidth, "Status", "", 0xffffff));
+        addRenderableWidget(new MenuColourBox(
+                col1X,
+                buttonY + (row * spacer),
+                (int) dataWidth,
+                "Ability",
+                "",
+                0xffffff
+        ));
 
-        List<DreamEaterLinkEntry> entries = getAbilityLinksForDreamEater(dreamEater, global, playerData);
+        addRenderableWidget(new MenuColourBox(
+                col2X,
+                buttonY + (row * spacer),
+                (int) dataWidth,
+                "Requirement",
+                "",
+                0xffffff
+        ));
+
+        addRenderableWidget(new MenuColourBox(
+                col3X,
+                buttonY + (row++ * spacer),
+                (int) dataWidth,
+                "Status",
+                "",
+                0xffffff
+        ));
+
+        List<DreamEaterLinkEntry> entries = getAbilityLinksForDreamEater(
+                dreamEaterRL,
+                dreamEaterLevel
+        );
+
+        if (entries.isEmpty()) {
+            entries.add(new DreamEaterLinkEntry("No Ability Links", "Future Dream Eater", false));
+        }
 
         for (DreamEaterLinkEntry entry : entries) {
             int color = entry.unlocked ? 0x7a8487 : 0x444444;
@@ -167,151 +211,68 @@ public class AbilityLinks extends MenuBackground {
         }
     }
 
-    private DreamEater getEquippedDreamEater(GlobalDataRM global) {
-        String dreamEaterRL = global.getDreamEaterRL();
-
+    private boolean isNoDreamEaterEquipped(String dreamEaterRL) {
         if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            return null;
+            return true;
         }
 
-        return ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
+        if (StringsRM.none.equals(dreamEaterRL)) {
+            return true;
+        }
+
+        if ("none".equalsIgnoreCase(dreamEaterRL)) {
+            return true;
+        }
+
+        return "kkremind:none".equalsIgnoreCase(dreamEaterRL);
     }
 
-    private List<DreamEaterLinkEntry> getAbilityLinksForDreamEater(DreamEater dreamEater, GlobalDataRM global, PlayerData playerData) {
+    private String getDreamEaterDisplayName(String dreamEaterRL) {
+        return DreamEaterInfo.getDisplayName(dreamEaterRL);
+    }
+
+    private List<DreamEaterLinkEntry> getAbilityLinksForDreamEater(
+            String dreamEaterRL,
+            int dreamEaterLevel
+    ) {
         List<DreamEaterLinkEntry> entries = new ArrayList<>();
 
-        if (dreamEater == null) {
+        List<DreamEaterLinkData.LinkEntry> links = DreamEaterInfo.getLinks(dreamEaterRL);
+
+        if (links == null || links.isEmpty()) {
             return entries;
         }
 
-        String name = dreamEater.getName();
+        dreamEaterLevel = Math.max(1, dreamEaterLevel);
 
-        if (StringsRM.chirithy.equals(name)) {
-            addChirithyLinks(entries, playerData);
-            return entries;
+        for (DreamEaterLinkData.LinkEntry link : links) {
+            if (link == null) {
+                continue;
+            }
+
+            boolean unlocked = DreamEaterLinkData.isUnlocked(link, dreamEaterLevel);
+            String requirement = getRequirementText(link);
+
+            entries.add(new DreamEaterLinkEntry(
+                    link.displayName(),
+                    requirement,
+                    unlocked
+            ));
         }
 
-        if (StringsRM.meowWow.equals(name)) {
-            addMeowWowLinks(entries, playerData);
-            return entries;
-        }
-
-        if (StringsRM.komoryBat.equals(name)) {
-            addKomoryBatLinks(entries, playerData);
-            return entries;
-        }
-
-        if (StringsRM.cactuar.equals(name)) {
-            addCactuarLinks(entries, playerData);
-            return entries;
-        }
-
-        entries.add(new DreamEaterLinkEntry("No Ability Links", "Future Dream Eater", false));
         return entries;
     }
 
-    private void addChirithyLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
-        int level = Math.max(1, playerData.getLevel());
-
-        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getChirithyLinks()) {
-            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
-
-            String requirement = link.unlockLevel() <= 1
-                    ? link.type()
-                    : link.type() + " - Lv " + link.unlockLevel();
-
-            entries.add(new DreamEaterLinkEntry(link.displayName(), requirement, unlocked));
-        }
-    }
-
-    private void addMeowWowLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
-        int level = Math.max(1, playerData.getLevel());
-
-        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getMeowWowLinks()) {
-            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
-
-            String requirement;
-
-            if (link.unlockLevel() <= 1) {
-                requirement = link.type();
-            } else {
-                requirement = link.type() + " - Lv " + link.unlockLevel();
-            }
-
-            entries.add(new DreamEaterLinkEntry(
-                    link.displayName(),
-                    requirement,
-                    unlocked
-            ));
-        }
-    }
-
-    private void addKomoryBatLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
-        int level = Math.max(1, playerData.getLevel());
-
-        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getKomoryBatLinks()) {
-            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
-
-            String requirement;
-
-            if (link.unlockLevel() <= 1) {
-                requirement = link.type();
-            } else {
-                requirement = link.type() + " - Lv " + link.unlockLevel();
-            }
-
-            entries.add(new DreamEaterLinkEntry(
-                    link.displayName(),
-                    requirement,
-                    unlocked
-            ));
-        }
-    }
-
-    private void addCactuarLinks(List<DreamEaterLinkEntry> entries, PlayerData playerData) {
-        int level = Math.max(1, playerData.getLevel());
-
-        for (DreamEaterLinkData.LinkEntry link : DreamEaterLinkData.getCactuarLinks()) {
-            boolean unlocked = DreamEaterLinkData.isUnlocked(link, level);
-
-            String requirement;
-
-            if (link.unlockLevel() <= 1) {
-                requirement = link.type();
-            } else {
-                requirement = link.type() + " - Lv " + link.unlockLevel();
-            }
-
-            entries.add(new DreamEaterLinkEntry(
-                    link.displayName(),
-                    requirement,
-                    unlocked
-            ));
-        }
-    }
-
-    private String getDreamEaterDisplayName(DreamEater dreamEater) {
-        if (dreamEater == null) {
-            return "N/A";
+    private String getRequirementText(DreamEaterLinkData.LinkEntry link) {
+        if (link == null) {
+            return "";
         }
 
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            return "Chirithy";
+        if (link.unlockLevel() <= 1) {
+            return link.type();
         }
 
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            return "Meow Wow";
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            return "Komory Bat";
-        }
-
-        if (StringsRM.cactuar.equals(dreamEater.getName())){
-            return "Cactuar";
-        }
-
-        return dreamEater.getName();
+        return link.type() + " - Lv " + link.unlockLevel();
     }
 
     private static class DreamEaterLinkEntry {

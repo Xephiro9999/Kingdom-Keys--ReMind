@@ -25,6 +25,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.item.ModItemsRM;
+import online.remind.remind.network.PacketHandlerRM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -486,5 +490,62 @@ public class TonberryKingEntity extends TonberryEntity {
     public void remove(RemovalReason reason) {
         this.bossEvent.removeAllPlayers();
         super.remove(reason);
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+
+        ServerPlayer killer = getTonberryKingKiller(damageSource);
+
+        if (killer == null) {
+            return;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(killer);
+
+        if (globalData == null) {
+            return;
+        }
+
+        if (globalData.hasDefeatedTonberryKing()) {
+            return;
+        }
+
+        ItemStack charm = new ItemStack(ModItemsRM.tonberryCharm.get());
+
+        boolean added = killer.getInventory().add(charm);
+
+        if (!added) {
+            killer.displayClientMessage(
+                    Component.literal("Your inventory is full! Clear a slot before defeating Tonberry King again.")
+                            .withStyle(ChatFormatting.RED),
+                    false
+            );
+
+            return;
+        }
+
+        globalData.setDefeatedTonberryKing(true);
+
+        killer.displayClientMessage(
+                Component.literal("You received a Tonberry Charm!")
+                        .withStyle(ChatFormatting.DARK_PURPLE),
+                false
+        );
+
+        PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
+    }
+
+    private ServerPlayer getTonberryKingKiller(DamageSource damageSource) {
+        if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
+            return serverPlayer;
+        }
+
+        if (this.getKillCredit() instanceof ServerPlayer serverPlayer) {
+            return serverPlayer;
+        }
+
+        return null;
     }
 }

@@ -10,10 +10,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.*;
 
 import java.util.UUID;
 
@@ -105,6 +102,7 @@ public class DreamEaterSessionEvents {
             MeowWowEntity.removeExistingMeowWow(level, ownerUUID);
             KomoryBatEntity.removeExistingKomoryBat(level, ownerUUID);
             CactuarSpiritEntity.removeExistingCactuarSpirit(level, ownerUUID);
+            TonberrySpiritEntity.removeExistingTonberrySpirit(level, ownerUUID);
         }
     }
 }

@@ -19,13 +19,11 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.gui.DreamEaterMenu;
 import online.remind.remind.client.sound.MusicManager;
 import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.DreamEaterInfo;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.enemies.CactuarEntity;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.*;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.cts.CSChangeSpiritPacket;
@@ -345,27 +343,7 @@ public class ChangeSpirit extends MenuBackground {
     }
 
     private String getDreamEaterDisplayName(DreamEater dreamEater) {
-        if (dreamEater == null) {
-            return "N/A";
-        }
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            return "Chirithy";
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            return "Meow Wow";
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            return "Komory Bat";
-        }
-
-        if (StringsRM.cactuar.equals(dreamEater.getName())) {
-            return "Cactuar";
-        }
-
-        return Utils.translateToLocal(dreamEater.getTranslationKey());
+        return DreamEaterInfo.getDisplayName(dreamEater);
     }
 
     private LivingEntity getOrCreatePreviewEntity(DreamEater dreamEater, PlayerData playerData) {
@@ -373,84 +351,32 @@ public class ChangeSpirit extends MenuBackground {
             return null;
         }
 
-        String key = dreamEater.getName() + ":" + playerData.getAlignment();
+        String key = getDreamEaterRL(dreamEater) + ":" + playerData.getAlignment();
 
         if (previewDreamEaterEntity != null && key.equals(previewDreamEaterKey)) {
             return previewDreamEaterEntity;
         }
 
         previewDreamEaterKey = key;
-        previewDreamEaterEntity = null;
+        previewDreamEaterEntity = DreamEaterInfo.createPreviewEntity(
+                dreamEater,
+                minecraft.level,
+                minecraft.player,
+                playerData
+        );
 
-        boolean isOrg = playerData.getAlignment() != Utils.OrgMember.NONE;
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            ChirithyEntity chirithy = new ChirithyEntity(ModEntitiesRM.TYPE_CHIRITHY.get(), minecraft.level);
-            chirithy.setOwnerUUID(minecraft.player.getUUID());
-
-            /*
-             * Match your summon packet variant behavior for Chirithy.
-             */
-            chirithy.setVariant(isOrg ? 0 : 1);
-
-            previewDreamEaterEntity = chirithy;
-            return previewDreamEaterEntity;
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            MeowWowEntity meowWow = new MeowWowEntity(ModEntitiesRM.TYPE_MEOW_WOW.get(), minecraft.level);
-            meowWow.setOwnerUUID(minecraft.player.getUUID());
-            meowWow.setVariant(isOrg ? MeowWowEntity.VARIANT_ORG : MeowWowEntity.VARIANT_NORMAL);
-
-            previewDreamEaterEntity = meowWow;
-            return previewDreamEaterEntity;
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            KomoryBatEntity komoryBat = new KomoryBatEntity(ModEntitiesRM.TYPE_KOMORY_BAT.get(), minecraft.level);
-            komoryBat.setOwnerUUID(minecraft.player.getUUID());
-            komoryBat.setVariant(isOrg ? KomoryBatEntity.VARIANT_ORG : KomoryBatEntity.VARIANT_NORMAL);
-            komoryBat.setNoGravity(true);
-
-            previewDreamEaterEntity = komoryBat;
-            return previewDreamEaterEntity;
-        }
-
-        if (StringsRM.cactuar.equals(dreamEater.getName())
-                || "dreameater_cactuar".equals(dreamEater.getName())) {
-            CactuarSpiritEntity cactuar = new CactuarSpiritEntity(ModEntitiesRM.TYPE_CACTUAR_SPIRIT.get(), minecraft.level);
-            cactuar.setOwnerUUID(minecraft.player.getUUID());
-            cactuar.setNoAi(true);
-            cactuar.setNoGravity(false);
-
-            previewDreamEaterEntity = cactuar;
-            return previewDreamEaterEntity;
-        }
-
-        return null;
+        return previewDreamEaterEntity;
     }
 
     private int getPreviewScale(DreamEater dreamEater) {
-        if (dreamEater == null) {
-            return 35;
+        return DreamEaterInfo.getPreviewScale(dreamEater);
+    }
+
+    private String getDreamEaterRL(DreamEater dreamEater) {
+        if (dreamEater == null || dreamEater.getRegistryName() == null) {
+            return "";
         }
 
-        if (StringsRM.cactuar.equals(dreamEater.getName())) {
-            return 58;
-        }
-
-        if (StringsRM.komoryBat.equals(dreamEater.getName())) {
-            return 65;
-        }
-
-        if (StringsRM.meowWow.equals(dreamEater.getName())) {
-            return 42;
-        }
-
-        if (StringsRM.chirithy.equals(dreamEater.getName())) {
-            return 48;
-        }
-
-        return 40;
+        return dreamEater.getRegistryName().toString();
     }
 }

@@ -36,11 +36,18 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightBlock;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class TonberryEntity extends Monster implements GeoEntity {
+
+    private static final int LIGHT_UPDATE_INTERVAL_TICKS = 4;
+
+    private BlockPos activeLightBlockPos = null;
+    private int lightUpdateTicks = 0;
 
     protected static final int ACTION_NONE = 0;
     protected static final int ACTION_STAB = 1;
@@ -143,11 +150,95 @@ public class TonberryEntity extends Monster implements GeoEntity {
         }
 
         if (!this.level().isClientSide) {
+            tickTonberryLight();
             updateCombatTargetTracking();
             tickTonberryAction();
             tickDelayedStab();
             tickEveryonesGrudge();
         }
+    }
+
+    private void tickTonberryLight() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.lightUpdateTicks > 0) {
+            this.lightUpdateTicks--;
+            return;
+        }
+
+        this.lightUpdateTicks = LIGHT_UPDATE_INTERVAL_TICKS;
+
+        BlockPos lightPos = getTonberryLightPosition();
+
+        if (this.activeLightBlockPos != null && !this.activeLightBlockPos.equals(lightPos)) {
+            removeTonberryLightBlock(serverLevel, this.activeLightBlockPos);
+            this.activeLightBlockPos = null;
+        }
+
+        if (!canPlaceTonberryLight(serverLevel, lightPos)) {
+            return;
+        }
+
+        int lightLevel = getTonberryLightLevel();
+
+        serverLevel.setBlock(
+                lightPos,
+                Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, lightLevel),
+                3
+        );
+
+        this.activeLightBlockPos = lightPos.immutable();
+    }
+
+    private BlockPos getTonberryLightPosition() {
+        if (this instanceof TonberryKingEntity) {
+            return this.blockPosition().above(2);
+        }
+
+        return this.blockPosition().above();
+    }
+
+    protected int getTonberryLightLevel() {
+        if (this instanceof TonberryKingEntity) {
+            return 15;
+        }
+
+        return 12;
+    }
+
+    private boolean canPlaceTonberryLight(ServerLevel serverLevel, BlockPos pos) {
+        BlockState state = serverLevel.getBlockState(pos);
+
+        return state.isAir() || state.is(Blocks.LIGHT);
+    }
+
+    private void removeTonberryLightBlock(ServerLevel serverLevel, BlockPos pos) {
+        BlockState state = serverLevel.getBlockState(pos);
+
+        if (state.is(Blocks.LIGHT)) {
+            serverLevel.removeBlock(pos, false);
+        }
+    }
+
+    private void removeTonberryLightBlock() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.activeLightBlockPos == null) {
+            return;
+        }
+
+        removeTonberryLightBlock(serverLevel, this.activeLightBlockPos);
+        this.activeLightBlockPos = null;
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        removeTonberryLightBlock();
+        super.remove(reason);
     }
 
     private void updateCombatTargetTracking() {
@@ -608,5 +699,95 @@ public class TonberryEntity extends Monster implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    public static boolean canSpawnUndergroundCave(
+            EntityType<? extends Monster> type,
+            net.minecraft.world.level.ServerLevelAccessor level,
+            net.minecraft.world.entity.MobSpawnType spawnType,
+            BlockPos pos,
+            net.minecraft.util.RandomSource random
+    ) {
+        /*
+         * Only Overworld-style underground caves.
+         */
+        if (level.getLevel().dimension() != Level.OVERWORLD) {
+            return false;
+        }
+
+        /*
+         * No surface spawns.
+         */
+        if (level.canSeeSky(pos)) {
+            return false;
+        }
+
+        /*
+         * Keep them meaningfully underground.
+         */
+        if (pos.getY() > level.getSeaLevel() - 12) {
+            return false;
+        }
+
+        /*
+         * Do not spawn in tiny tunnels.
+         */
+        if (!hasLargeCaveSpace(level, pos)) {
+            return false;
+        }
+
+        /*
+         * Needs solid ground.
+         */
+        BlockPos below = pos.below();
+        BlockState belowState = level.getBlockState(below);
+
+        if (!belowState.isFaceSturdy(level, below, net.minecraft.core.Direction.UP)) {
+            return false;
+        }
+
+        /*
+         * Needs room for the entity.
+         */
+        if (!level.isEmptyBlock(pos) || !level.isEmptyBlock(pos.above())) {
+            return false;
+        }
+
+        /*
+         * Still obey vanilla monster spawning rules.
+         */
+        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    private static boolean hasLargeCaveSpace(net.minecraft.world.level.ServerLevelAccessor level, BlockPos center) {
+        int airBlocks = 0;
+        int tallColumns = 0;
+
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -5; dz <= 5; dz++) {
+                boolean columnHasStandingRoom =
+                        level.isEmptyBlock(center.offset(dx, 0, dz))
+                                && level.isEmptyBlock(center.offset(dx, 1, dz))
+                                && level.isEmptyBlock(center.offset(dx, 2, dz));
+
+                if (columnHasStandingRoom) {
+                    tallColumns++;
+                }
+
+                for (int dy = -1; dy <= 4; dy++) {
+                    BlockPos checkPos = center.offset(dx, dy, dz);
+
+                    if (level.isEmptyBlock(checkPos)) {
+                        airBlocks++;
+                    }
+                }
+            }
+        }
+
+        /*
+         * These are the "large cave" requirements.
+         * Lower these if Tonberries feel too rare.
+         */
+        return airBlocks >= 230 && tallColumns >= 18;
     }
 }

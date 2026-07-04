@@ -35,10 +35,7 @@ import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
 import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
-import online.remind.remind.entity.spirits.CactuarSpiritEntity;
-import online.remind.remind.entity.spirits.ChirithyEntity;
-import online.remind.remind.entity.spirits.KomoryBatEntity;
-import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.*;
 import online.remind.remind.item.ModItemsRM;
 
 import java.util.function.Supplier;
@@ -112,6 +109,7 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<MeowWowEntity>> TYPE_MEOW_WOW = createEntityType(MeowWowEntity::new, MobCategory.MONSTER, "meow_wow", 1F, 1F);
     public static final Supplier<EntityType<KomoryBatEntity>> TYPE_KOMORY_BAT = createEntityType(KomoryBatEntity::new, MobCategory.MONSTER, "komory_bat", 0.5F, 0.5F);
     public static final Supplier<EntityType<CactuarSpiritEntity>> TYPE_CACTUAR_SPIRIT = createEntityType(CactuarSpiritEntity::new, MobCategory.MONSTER, "cactuar_spirit", 0.75F, 0.75F);
+    public static final Supplier<EntityType<TonberrySpiritEntity>> TYPE_TONBERRY_SPIRIT = createEntityType(TonberrySpiritEntity::new, MobCategory.CREATURE, "tonberry_spirit", 0.8F, 1.6F);
 
 
     // Enemies
@@ -257,6 +255,7 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_KOMORY_BAT.get(), KomoryBatRenderer::new);
 
         event.registerEntityRenderer(TYPE_CACTUAR_SPIRIT.get(), CactuarSpiritRenderer::new);
+        event.registerEntityRenderer(TYPE_TONBERRY_SPIRIT.get(), TonberrySpiritRenderer::new);
 
         event.registerEntityRenderer(TYPE_CACTUAR.get(), CactuarRenderer::new);
         event.registerEntityRenderer(TYPE_JUMBO_CACTUAR.get(), CactuarRenderer::new);
@@ -274,6 +273,7 @@ public class ModEntitiesRM {
         event.put(TYPE_MEOW_WOW.get(), MeowWowEntity.createAttributes().build());
         event.put(TYPE_KOMORY_BAT.get(), KomoryBatEntity.createAttributes().build());
         event.put(TYPE_CACTUAR_SPIRIT.get(), CactuarSpiritEntity.createAttributes().build());
+        event.put(TYPE_TONBERRY_SPIRIT.get(), TonberrySpiritEntity.createAttributes().build());
 
 
         event.put(TYPE_CACTUAR.get(), CactuarEntity.createNormalAttributes().build());

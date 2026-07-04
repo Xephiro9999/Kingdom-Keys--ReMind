@@ -24,7 +24,8 @@ public class ModDreamEaters {
             KOMORY_BAT = DREAM_EATERS.register(StringsRM.komoryBat, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.komoryBat), order++)),
 
         // FF Spirits
-            CACTUAR = DREAM_EATERS.register(StringsRM.cactuar, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.cactuar), order++));
+            CACTUAR = DREAM_EATERS.register(StringsRM.cactuar, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.cactuar), order++)),
+            TONBERRY = DREAM_EATERS.register(StringsRM.tonberry, () -> new DreamEater(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, StringsRM.tonberry), order++));
 
 
 }
