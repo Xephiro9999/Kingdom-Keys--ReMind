@@ -139,12 +139,14 @@ public class CactuarEntity extends Monster implements GeoEntity {
 
     private String currentAnimation = "none";
 
-    private int needlesCooldown = 80;
+    // Ticks * Number of Seconds
+
+    private int needlesCooldown = 20 * 10;
     private int escapeCooldown = 100;
 
     private int jumboStompCooldown = 60;
-    private int jumboNeedlesCooldown = 120;
-    private int kerPlunkCooldown = 200;
+    private int jumboNeedlesCooldown = 20 * 20;
+    private int kerPlunkCooldown = 20 * 10;
     private int kerPlunkImpactTicks = 0;
 
     private boolean escaping = false;
@@ -1474,7 +1476,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
          */
         runJumboMusicCommand(
                 player,
-                "playsound " + JUMBO_BOSS_MUSIC_SOUND + " record @s ~ ~ ~ 0.85 1.0 0.0"
+                "playsound " + JUMBO_BOSS_MUSIC_SOUND + " record @s ~ ~ ~ 0.55 1.0 0.0"
         );
 
         this.jumboBossMusicPlayers.add(uuid);

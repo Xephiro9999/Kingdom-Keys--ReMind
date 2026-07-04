@@ -28,6 +28,8 @@ import online.remind.remind.client.render.reactioncommand.LightBeamEntityRendere
 import online.remind.remind.client.render.shotlock.BioShotEntityRenderer;
 import online.remind.remind.entity.attacks.*;
 import online.remind.remind.entity.enemies.CactuarEntity;
+import online.remind.remind.entity.enemies.TonberryEntity;
+import online.remind.remind.entity.enemies.TonberryKingEntity;
 import online.remind.remind.entity.limits.firagaPillarEntity;
 import online.remind.remind.entity.magic.*;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
@@ -141,6 +143,24 @@ public class ModEntitiesRM {
                             .build("cactuar_needle")
             );
 
+    public static final DeferredHolder<EntityType<?>, EntityType<TonberryEntity>> TYPE_TONBERRY =
+            ENTITIES.register("tonberry", () ->
+                    EntityType.Builder.<TonberryEntity>of(TonberryEntity::new, MobCategory.MONSTER)
+                            .sized(0.8F, 1.6F)
+                            .clientTrackingRange(8)
+                            .updateInterval(2)
+                            .build("tonberry")
+            );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TonberryKingEntity>> TYPE_TONBERRY_KING =
+            ENTITIES.register("tonberry_king", () ->
+                    EntityType.Builder.<TonberryKingEntity>of(TonberryKingEntity::new, MobCategory.MONSTER)
+                            .sized(2.2F, 2.6F)
+                            .clientTrackingRange(8)
+                            .updateInterval(2)
+                            .build("tonberry_king")
+            );
+
 
 
     public static final Supplier<Item> CHIRITHY_EGG = ModItemsRM.ITEMS.register("chirithy_spawn_egg", () -> new DeferredSpawnEggItem(TYPE_CHIRITHY, 0xAAAAFF, 0xFF00FF, PROPERTIES));
@@ -242,6 +262,9 @@ public class ModEntitiesRM {
         event.registerEntityRenderer(TYPE_JUMBO_CACTUAR.get(), CactuarRenderer::new);
         event.registerEntityRenderer(TYPE_CACTUAR_NEEDLE.get(), CactuarNeedleRenderer::new);
 
+        event.registerEntityRenderer(ModEntitiesRM.TYPE_TONBERRY.get(), TonberryRenderer::new);
+        event.registerEntityRenderer(ModEntitiesRM.TYPE_TONBERRY_KING.get(), TonberryRenderer::new);
+
 
     }
 
@@ -255,6 +278,9 @@ public class ModEntitiesRM {
 
         event.put(TYPE_CACTUAR.get(), CactuarEntity.createNormalAttributes().build());
         event.put(TYPE_JUMBO_CACTUAR.get(), CactuarEntity.createJumboAttributes().build());
+
+        event.put(ModEntitiesRM.TYPE_TONBERRY.get(), TonberryEntity.createAttributes().build());
+        event.put(ModEntitiesRM.TYPE_TONBERRY_KING.get(), TonberryKingEntity.createAttributes().build());
     }
 
 

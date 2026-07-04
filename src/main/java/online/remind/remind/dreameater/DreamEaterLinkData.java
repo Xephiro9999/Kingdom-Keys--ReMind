@@ -21,6 +21,8 @@ public class DreamEaterLinkData {
     public static final String ATTACK_HASTE = "kkremind:ability_attack_haste";
     public static final String RENEWAL_BLOCK = "kkremind:ability_renewal_block";
     public static final String POISON_BLOCK = "kkremind:ability_poison_block";
+    public static final String HP_WALKER = "kkremind:ability_hp_walker";
+
 
 
     private static final List<LinkEntry> CHIRITHY_LINKS = List.of(
@@ -102,7 +104,10 @@ public class DreamEaterLinkData {
     private static final List<LinkEntry> CACTUAR_LINKS = List.of(
             // Spirit skills. These are NOT granted to the player.
             new LinkEntry("cactuar_kick", "Kick", TYPE_SPIRIT_SKILL, 1, false, ""),
-            new LinkEntry("cactuar_1000_needles", "1,000 Needles", TYPE_SPIRIT_SKILL, 1, false, "")
+            new LinkEntry("cactuar_1000_needles", "1,000 Needles", TYPE_SPIRIT_SKILL, 1, false, ""),
+
+            new LinkEntry("cactuar_hp_walker", "HP Walker", TYPE_GRANTED_ABILITY, 10, true, HP_WALKER),
+            new LinkEntry("cactuar_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 15, true, ATTACK_HASTE)
 
 
     );

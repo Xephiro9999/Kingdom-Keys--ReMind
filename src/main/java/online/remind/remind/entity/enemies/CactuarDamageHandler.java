@@ -2,6 +2,7 @@ package online.remind.remind.entity.enemies;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.neoforged.bus.api.EventPriority;
@@ -21,8 +22,17 @@ public class CactuarDamageHandler {
      * including Kingdom Keys / Keyblade damage changes.
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onCactuarDamage(LivingDamageEvent.Pre event) {
-        if (!(event.getEntity() instanceof CactuarEntity cactuar)) {
+    public static void onEnemyDamage(LivingDamageEvent.Pre event) {
+        if (event.getEntity().level().isClientSide) {
+            return;
+        }
+
+        DamageSource source = event.getSource();
+
+        /*
+         * Do not mess with /kill, void, admin-kill style damage, etc.
+         */
+        if (source != null && source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return;
         }
 
@@ -32,15 +42,35 @@ public class CactuarDamageHandler {
             return;
         }
 
-        boolean waterDamage = isKKWaterDamage(event.getSource());
-
-        if (cactuar.isJumbo()) {
-            damage = handleJumboDamage(damage, waterDamage);
-        } else {
-            damage = handleNormalCactuarDamage(damage, waterDamage);
+        if (event.getEntity() instanceof CactuarEntity cactuar) {
+            damage = handleCactuarDamage(cactuar, source, damage);
+            event.setNewDamage(Math.max(1.0F, damage));
+            return;
         }
 
-        event.setNewDamage(Math.max(1.0F, damage));
+        /*
+         * Check TonberryKingEntity BEFORE TonberryEntity because King extends Tonberry.
+         */
+        if (event.getEntity() instanceof TonberryKingEntity tonberryKing) {
+            damage = handleTonberryKingDamage(tonberryKing, source, damage);
+            event.setNewDamage(Math.max(1.0F, damage));
+            return;
+        }
+
+        if (event.getEntity() instanceof TonberryEntity tonberry) {
+            damage = handleTonberryDamage(tonberry, source, damage);
+            event.setNewDamage(Math.max(1.0F, damage));
+        }
+    }
+
+    private static float handleCactuarDamage(CactuarEntity cactuar, DamageSource source, float damage) {
+        boolean waterDamage = isKKWaterDamage(source);
+
+        if (cactuar.isJumbo()) {
+            return handleJumboCactuarDamage(damage, waterDamage);
+        }
+
+        return handleNormalCactuarDamage(damage, waterDamage);
     }
 
     private static float handleNormalCactuarDamage(float damage, boolean waterDamage) {
@@ -51,7 +81,7 @@ public class CactuarDamageHandler {
         return damage;
     }
 
-    private static float handleJumboDamage(float damage, boolean waterDamage) {
+    private static float handleJumboCactuarDamage(float damage, boolean waterDamage) {
         if (waterDamage) {
             /*
              * Water is the weakness.
@@ -66,6 +96,35 @@ public class CactuarDamageHandler {
             damage *= 0.25F;
             damage = Math.min(damage, 35.0F);
         }
+
+        return damage;
+    }
+
+    private static float handleTonberryDamage(TonberryEntity tonberry, DamageSource source, float damage) {
+        /*
+         * Tonberry should be tanky and scary.
+         *
+         * This makes huge Kingdom Keys / Keyblade burst hits not delete it instantly.
+         * Normal Tonberry still takes more damage than Tonberry King.
+         */
+        damage *= 0.35F;
+        damage = Math.min(damage, 65.0F);
+
+        return damage;
+    }
+
+    private static float handleTonberryKingDamage(TonberryKingEntity tonberryKing, DamageSource source, float damage) {
+        /*
+         * Tonberry King is a triggered boss.
+         *
+         * With 2500+ HP, this makes the fight last long enough for mechanics:
+         * - slow approach
+         * - stab wind-up
+         * - Everyone's Grudge counter
+         * - boss reward pacing
+         */
+        damage *= 0.18F;
+        damage = Math.min(damage, 55.0F);
 
         return damage;
     }
