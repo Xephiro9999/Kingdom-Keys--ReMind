@@ -428,3 +428,23 @@ This update includes fixes for known exploits. Server owners are strongly encour
 
 - Dark Divide crash fix
 - Ability Link Menu now shows Dream Eater level instead of Player Level
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 7.26.2
+
+## Additions:
+
+## New Enemies
+
+### Tonberry
+Mysterious being living in dungeons. Walks slowly towards the enemy and kills that enemy with the Chef's Knife.
+
+### Tonberry King, BOSS
+The king of the Tonberries. Appears to seek revenge for all defeated Tonberries.
+
+## Changes:
+Increased Cooldowns on some of Cactuar and Jumbo Cactuar's attacks.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
