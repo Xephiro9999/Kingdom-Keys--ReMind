@@ -11,14 +11,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,11 +34,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEaterExpHandler;
+import online.remind.remind.entity.ModEntitiesRM;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -74,9 +75,48 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
     private static final int EMERALD_FEED_EXP = 30;
     private static final int FEED_COOLDOWN_TICKS = 10;
 
+    private static final int STAT_UPDATE_INTERVAL_TICKS = 20;
+
     private static final double FOLLOW_START_DISTANCE = 8.0D;
     private static final double FOLLOW_STOP_DISTANCE = 4.0D;
     private static final double TELEPORT_DISTANCE = 20.0D;
+
+    /*
+     * Tonberry Spirit stat identity:
+     *
+     * Slow.
+     * Very tanky.
+     * High physical damage.
+     * Low magic contribution.
+     *
+     * These values intentionally let it compete with Cactuar at the same Dream Eater level,
+     * while still feeling different. Cactuar is faster and multi-hit. Tonberry is slower,
+     * heavier, and hits harder per attack.
+     */
+    private static final double BASE_MAX_HEALTH = 55.0D;
+    private static final double LEVEL_TO_MAX_HEALTH = 2.75D;
+    private static final double OWNER_HP_TO_MAX_HEALTH = 0.75D;
+    private static final double OWNER_DEF_TO_MAX_HEALTH = 1.85D;
+    private static final double MAX_HEALTH_CAP = 650.0D;
+
+    private static final double BASE_ATTACK = 8.0D;
+    private static final double LEVEL_TO_ATTACK = 0.50D;
+    private static final double OWNER_STR_TO_ATTACK = 0.55D;
+    private static final double ATTACK_CAP = 120.0D;
+
+    private static final double BASE_ARMOR = 8.0D;
+    private static final double LEVEL_TO_ARMOR = 0.18D;
+    private static final double OWNER_DEF_TO_ARMOR = 0.20D;
+    private static final double ARMOR_CAP = 38.0D;
+
+    private static final double BASE_SPEED = 0.135D;
+    private static final double LEVEL_TO_SPEED = 0.0006D;
+    private static final double OWNER_MAG_TO_SPEED = 0.00025D;
+    private static final double SPEED_CAP = 0.225D;
+
+    private static final double BASE_KNOCKBACK_RESISTANCE = 0.55D;
+    private static final double LEVEL_TO_KNOCKBACK_RESISTANCE = 0.002D;
+    private static final double KNOCKBACK_RESISTANCE_CAP = 0.92D;
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
             SynchedEntityData.defineId(TonberrySpiritEntity.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -115,25 +155,27 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
     private int pendingGrudgeDamageDelay = 0;
     private float pendingGrudgeDamage = 0.0F;
 
+    private boolean hasAppliedOwnerScaling = false;
+
     public TonberrySpiritEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
         this.xpReward = 0;
     }
 
     public TonberrySpiritEntity(Level level, Player owner) {
-        this(online.remind.remind.entity.ModEntitiesRM.TYPE_TONBERRY_SPIRIT.get(), level);
+        this(ModEntitiesRM.TYPE_TONBERRY_SPIRIT.get(), level);
         this.setOwnerUUID(owner.getUUID());
         this.moveTo(owner.getX(), owner.getY() + 0.1D, owner.getZ(), owner.getYRot(), owner.getXRot());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 44.0D)
-                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.ATTACK_DAMAGE, 12.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.16D)
-                .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ARMOR, 8.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.45D);
+                .add(Attributes.FOLLOW_RANGE, 36.0D)
+                .add(Attributes.ARMOR, 10.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.55D);
     }
 
     @Override
@@ -196,26 +238,110 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
             return;
         }
 
-        this.statUpdateTicks = 40;
+        this.statUpdateTicks = STAT_UPDATE_INTERVAL_TICKS;
         applyDreamEaterStats();
     }
 
     private void applyDreamEaterStats() {
         int level = getDreamEaterLevel();
+        Player owner = getOwnerPlayer();
+        PlayerData ownerData = owner != null ? PlayerData.get(owner) : null;
 
-        double maxHP = 42.0D + level * 1.35D;
-        double attack = 6.0D + level * 0.24D;
-        double armor = 7.0D + level * 0.13D;
-        double speed = 0.155D + Math.min(0.055D, level * 0.0006D);
+        applyOwnerScaling(level, ownerData);
+    }
 
-        setAttributeBaseValue(Attributes.MAX_HEALTH, maxHP);
+    private void applyOwnerScaling(int level, @Nullable PlayerData ownerData) {
+        level = Mth.clamp(level, 1, GlobalDataRM.DREAM_EATER_MAX_LEVEL);
+
+        double ownerMaxHP = getOwnerMaxHP(ownerData);
+        double ownerStrength = getOwnerStrength(ownerData);
+        double ownerMagic = getOwnerMagic(ownerData);
+        double ownerDefense = getOwnerDefense(ownerData);
+
+        double maxHealth = BASE_MAX_HEALTH
+                + level * LEVEL_TO_MAX_HEALTH
+                + ownerMaxHP * OWNER_HP_TO_MAX_HEALTH
+                + ownerDefense * OWNER_DEF_TO_MAX_HEALTH;
+
+        double attack = BASE_ATTACK
+                + level * LEVEL_TO_ATTACK
+                + ownerStrength * OWNER_STR_TO_ATTACK;
+
+        double armor = BASE_ARMOR
+                + level * LEVEL_TO_ARMOR
+                + ownerDefense * OWNER_DEF_TO_ARMOR;
+
+        double speed = BASE_SPEED
+                + Math.min(0.065D, level * LEVEL_TO_SPEED)
+                + Math.min(0.025D, ownerMagic * OWNER_MAG_TO_SPEED);
+
+        double knockbackResistance = BASE_KNOCKBACK_RESISTANCE
+                + level * LEVEL_TO_KNOCKBACK_RESISTANCE;
+
+        maxHealth = Mth.clamp(maxHealth, 1.0D, MAX_HEALTH_CAP);
+        attack = Mth.clamp(attack, 1.0D, ATTACK_CAP);
+        armor = Mth.clamp(armor, 0.0D, ARMOR_CAP);
+        speed = Mth.clamp(speed, BASE_SPEED, SPEED_CAP);
+        knockbackResistance = Mth.clamp(knockbackResistance, 0.0D, KNOCKBACK_RESISTANCE_CAP);
+
+        float oldMaxHealth = this.getMaxHealth();
+        float oldHealth = this.getHealth();
+        boolean wasFullHealth = oldMaxHealth <= 0.0F || oldHealth >= oldMaxHealth - 0.5F;
+
+        setAttributeBaseValue(Attributes.MAX_HEALTH, maxHealth);
         setAttributeBaseValue(Attributes.ATTACK_DAMAGE, attack);
         setAttributeBaseValue(Attributes.ARMOR, armor);
         setAttributeBaseValue(Attributes.MOVEMENT_SPEED, speed);
+        setAttributeBaseValue(Attributes.KNOCKBACK_RESISTANCE, knockbackResistance);
 
-        if (this.getHealth() > this.getMaxHealth()) {
-            this.setHealth(this.getMaxHealth());
+        float newMaxHealth = this.getMaxHealth();
+
+        /*
+         * First scaling pass should not leave Tonberry sitting at the weak default HP.
+         * After that, preserve HP percent unless it was already full.
+         */
+        if (!this.hasAppliedOwnerScaling || wasFullHealth) {
+            this.setHealth(newMaxHealth);
+        } else if (oldMaxHealth > 0.0F) {
+            float healthPercent = Mth.clamp(oldHealth / oldMaxHealth, 0.0F, 1.0F);
+            this.setHealth(Mth.clamp(newMaxHealth * healthPercent, 1.0F, newMaxHealth));
+        } else if (this.getHealth() > newMaxHealth) {
+            this.setHealth(newMaxHealth);
         }
+
+        this.hasAppliedOwnerScaling = true;
+    }
+
+    private double getOwnerMaxHP(@Nullable PlayerData ownerData) {
+        if (ownerData == null) {
+            return 20.0D;
+        }
+
+        return Math.max(20.0D, ownerData.getMaxHP());
+    }
+
+    private double getOwnerStrength(@Nullable PlayerData ownerData) {
+        if (ownerData == null || ownerData.getStrengthStat() == null) {
+            return 1.0D;
+        }
+
+        return Math.max(1.0D, ownerData.getStrengthStat().getStat());
+    }
+
+    private double getOwnerMagic(@Nullable PlayerData ownerData) {
+        if (ownerData == null || ownerData.getMagicStat() == null) {
+            return 1.0D;
+        }
+
+        return Math.max(1.0D, ownerData.getMagicStat().getStat());
+    }
+
+    private double getOwnerDefense(@Nullable PlayerData ownerData) {
+        if (ownerData == null || ownerData.getDefenseStat() == null) {
+            return 1.0D;
+        }
+
+        return Math.max(1.0D, ownerData.getDefenseStat().getStat());
     }
 
     private void setAttributeBaseValue(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, double value) {
@@ -239,7 +365,7 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
             return 1;
         }
 
-        return globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_TONBERRY);
+        return Math.max(1, globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_TONBERRY));
     }
 
     private void discardIfOwnerMissing() {
@@ -397,7 +523,7 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     private float getGrudgeChance() {
         int level = getDreamEaterLevel();
-        return Math.min(0.32F, 0.12F + level * 0.002F);
+        return Math.min(0.42F, 0.14F + level * 0.003F);
     }
 
     private void tryStartSpiritGrudge(LivingEntity target) {
@@ -436,12 +562,23 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     private float calculateSpiritGrudgeDamage() {
         int level = getDreamEaterLevel();
+        Player owner = getOwnerPlayer();
+        PlayerData ownerData = owner != null ? PlayerData.get(owner) : null;
+
+        double ownerStrength = getOwnerStrength(ownerData);
+        double ownerDefense = getOwnerDefense(ownerData);
 
         /*
          * Dream Eater version does NOT use player lifetime kills.
-         * Keeps it strong, but not server-breaking.
+         * It scales from Tonberry level + owner STR/DEF so it remains useful
+         * without becoming a server-breaking instant kill.
          */
-        return 7.0F + level * 0.55F;
+        double damage = 12.0D
+                + level * 0.85D
+                + ownerStrength * 0.50D
+                + ownerDefense * 0.18D;
+
+        return (float) Mth.clamp(damage, 8.0D, 180.0D);
     }
 
     private void applyPendingGrudgeDamage() {
@@ -717,17 +854,12 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.WITHER_SKELETON_HURT;
+        return ModSoundsRM.TONBERRY_ALIVE.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.WITHER_SKELETON_DEATH;
+        return ModSoundsRM.TONBERRY_DEATH.get();
     }
 
     public static void removeExistingTonberrySpirit(ServerLevel level, UUID ownerUUID) {

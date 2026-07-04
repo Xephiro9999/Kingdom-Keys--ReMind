@@ -16,6 +16,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -43,6 +44,7 @@ import net.minecraft.world.level.block.Blocks;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -184,6 +186,25 @@ public class CactuarEntity extends Monster implements GeoEntity {
         if (this.isJumbo()) {
             this.bossEvent.addPlayer(player);
         }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundsRM.CACTUAR_ALIVE.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundsRM.CACTUAR_DEATH.get();
+    }
+
+    @Override
+    public float getVoicePitch() {
+        if (this.isJumbo()) {
+            return 0.45F + (this.random.nextFloat() * 0.08F);
+        }
+
+        return 0.95F + (this.random.nextFloat() * 0.10F);
     }
 
     @Override

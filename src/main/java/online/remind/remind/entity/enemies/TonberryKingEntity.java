@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -547,5 +549,15 @@ public class TonberryKingEntity extends TonberryEntity {
         }
 
         return null;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundsRM.TONBERRY_KING_ALIVE.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundsRM.TONBERRY_KING_DEATH.get();
     }
 }

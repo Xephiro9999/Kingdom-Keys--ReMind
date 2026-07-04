@@ -58,7 +58,15 @@ public class ModSoundsRM {
             // Music
             DREAM_EATERS = registerSound("dream_eaters"),
             Record_One_Winged_Angel_KH1 = registerSound("records/one-winged_angel_kh1"),
-            Record_One_Winged_Angel_KH2 = registerSound("records/one-winged_angel_kh2");
+            Record_One_Winged_Angel_KH2 = registerSound("records/one-winged_angel_kh2"),
+
+            // Mob Sounds
+            CACTUAR_ALIVE = registerSound("cactuar_alive"),
+            CACTUAR_DEATH = registerSound("cactuar_death"),
+            TONBERRY_ALIVE = registerSound("tonberry_alive"),
+            TONBERRY_DEATH = registerSound("tonberry_death"),
+            TONBERRY_KING_ALIVE = registerSound("tonberry_king_alive"),
+            TONBERRY_KING_DEATH = registerSound("tonberry_king_death");
 
 
     public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {

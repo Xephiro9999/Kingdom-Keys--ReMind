@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,6 +34,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
@@ -844,6 +846,16 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
         );
 
         return InteractionResult.CONSUME;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundsRM.CACTUAR_ALIVE.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundsRM.CACTUAR_DEATH.get();
     }
 
 

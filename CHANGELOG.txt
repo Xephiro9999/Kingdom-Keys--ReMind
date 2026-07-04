@@ -435,6 +435,8 @@ This update includes fixes for known exploits. Server owners are strongly encour
 
 ## Additions:
 
+Added sounds for Cactuar/Jumbo Cactuar
+
 ## New Enemies
 
 ### Tonberry

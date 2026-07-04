@@ -10,6 +10,9 @@ public class DreamEaterLinkData {
     // ---------------- Base KK Abilities ---------------------------
     public static final String ITEM_BOOST = "kingdomkeys:ability_item_boost";
     public static final String MP_HASTE = "kingdomkeys:ability_mp_haste";
+    public static final String LUCKY_LUCKY = "kingdomkeys:ability_lucky_lucky";
+    public static final String TREASURE_MAGNET = "kingdomkeys:ability_treasure_magnet";
+    public static final String JACKPOT = "kingdomkeys:ability_jackpot";
     public static final String LEAF_BRACER = "kingdomkeys:ability_leaf_bracer";
     public static final String DAMAGE_CONTROL = "kingdomkeys:ability_damage_control";
     public static final String SECOND_CHANCE = "kingdomkeys:ability_second_chance";
@@ -107,7 +110,10 @@ public class DreamEaterLinkData {
             new LinkEntry("cactuar_1000_needles", "1,000 Needles", TYPE_SPIRIT_SKILL, 1, false, ""),
 
             new LinkEntry("cactuar_hp_walker", "HP Walker", TYPE_GRANTED_ABILITY, 10, true, HP_WALKER),
-            new LinkEntry("cactuar_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 15, true, ATTACK_HASTE)
+            new LinkEntry("cactuar_attack_haste", "Attack Haste", TYPE_GRANTED_ABILITY, 15, true, ATTACK_HASTE),
+            new LinkEntry("cactuar_lucky_lucky", "Lucky Lucky", TYPE_GRANTED_ABILITY, 20, true, LUCKY_LUCKY),
+            new LinkEntry("cactuar_lucky_lucky", "Lucky Lucky", TYPE_GRANTED_ABILITY, 25, true, LUCKY_LUCKY),
+            new LinkEntry("cactuar_jackpot", "Jackpot", TYPE_GRANTED_ABILITY, 30, true, JACKPOT)
 
 
     );
@@ -120,7 +126,12 @@ public class DreamEaterLinkData {
     private static final List<LinkEntry> TONBERRY_LINKS = List.of(
             // Spirit skills. These are NOT granted to the player.
             new LinkEntry("tonberry_attack", "Doink!", TYPE_SPIRIT_SKILL, 1, false, ""),
-            new LinkEntry("tonberry_skill", "Everyone's Grudge", TYPE_SPIRIT_SKILL, 1, false, "")
+            new LinkEntry("tonberry_skill", "Everyone's Grudge", TYPE_SPIRIT_SKILL, 1, false, ""),
+
+            new LinkEntry("tonberry_ability0", "Lucky Lucky", TYPE_GRANTED_ABILITY, 1, true, LUCKY_LUCKY),
+            new LinkEntry("tonberry_ability1", "Lucky Lucky", TYPE_GRANTED_ABILITY, 5, true, LUCKY_LUCKY),
+            new LinkEntry("tonberry_ability2", "Lucky Lucky", TYPE_GRANTED_ABILITY, 10, true, LUCKY_LUCKY),
+            new LinkEntry("tonberry_ability3", "Treasure Magnet", TYPE_GRANTED_ABILITY, 15, true, TREASURE_MAGNET)
 
 
     );

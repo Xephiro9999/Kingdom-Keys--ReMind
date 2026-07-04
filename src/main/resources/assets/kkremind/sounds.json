@@ -234,6 +234,36 @@
       "kkremind:swift_strike_en"
     ]
   },
+  "cactuar_alive": {
+    "sounds": [
+      "kkremind:cactuar_alive"
+    ]
+  },
+  "cactuar_death": {
+    "sounds": [
+      "kkremind:cactuar_death"
+    ]
+  },
+  "tonberry_alive": {
+    "sounds": [
+      "kkremind:tonberry_alive"
+    ]
+  },
+  "tonberry_death": {
+    "sounds": [
+      "kkremind:tonberry_death"
+    ]
+  },
+  "tonberry_king_alive": {
+    "sounds": [
+      "kkremind:tonberry_king_alive"
+    ]
+  },
+  "tonberry_king_death": {
+    "sounds": [
+      "kkremind:tonberry_king_death"
+    ]
+  },
   "records/one-winged_angel_kh1": {
     "sounds": [
       {
