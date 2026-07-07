@@ -1,7 +1,7 @@
 {
   "cost": 0,
   "ingredient1": "kkremind:drain_spell",
-  "ingredient2": "kingdomkeys:magnetspell",
+  "ingredient2": "kingdomkeys:spellmagnet",
   "output": {
     "type": "item",
     "item": "kkremind:osmose_spell",

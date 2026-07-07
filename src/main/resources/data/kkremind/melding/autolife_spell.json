@@ -1,6 +1,6 @@
 {
   "cost": 50000,
-  "ingredient1": "kingdomkeys:curagaspell",
+  "ingredient1": "kingdomkeys:spellcuraga",
   "ingredient2": "kkremind:regen2_spell",
   "output": {
     "type": "item",

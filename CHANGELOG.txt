@@ -448,5 +448,10 @@ The king of the Tonberries. Appears to seek revenge for all defeated Tonberries.
 ## Changes:
 Increased Cooldowns on some of Cactuar and Jumbo Cactuar's attacks.
 
+## Fixes:
+Certain meld recipes not showing/working.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------

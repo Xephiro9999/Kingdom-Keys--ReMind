@@ -1,6 +1,6 @@
 {
   "cost": 0,
-  "ingredient1": "kingdomkeys:curespell",
+  "ingredient1": "kingdomkeys:spellcure",
   "ingredient2": "kingdomkeys:spellpoison",
   "output": {
     "type": "item",

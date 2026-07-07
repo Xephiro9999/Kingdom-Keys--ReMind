@@ -1,6 +1,6 @@
 {
   "cost": 0,
-  "ingredient1": "kingdomkeys:firespell",
+  "ingredient1": "kingdomkeys:spellfire",
   "ingredient2": "kkremind:dark_strike_attack",
   "output": {
     "type": "item",

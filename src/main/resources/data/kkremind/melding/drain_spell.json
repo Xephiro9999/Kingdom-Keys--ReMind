@@ -1,6 +1,6 @@
 {
   "cost": 0,
-  "ingredient1": "kingdomkeys:magnetspell",
+  "ingredient1": "kingdomkeys:spellmagnet",
   "ingredient2": "kingdomkeys:spellpoison",
   "output": {
     "type": "item",
