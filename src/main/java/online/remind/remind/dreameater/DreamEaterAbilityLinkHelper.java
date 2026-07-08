@@ -1,6 +1,11 @@
 package online.remind.remind.dreameater;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -12,10 +17,11 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 @EventBusSubscriber(
         modid = KingdomKeysReMind.MODID,
@@ -25,17 +31,49 @@ public class DreamEaterAbilityLinkHelper {
 
     /*
      * IMPORTANT:
-     * This helper treats Dream Eater Link-granted abilities as TEMPORARY ONLY.
+     * Dream Eater Ability Links are now treated like FREE accessory/passive abilities.
      *
-     * Any ability ID returned by DreamEaterLinkData through DreamEaterInfoRM
-     * is controlled exactly by the currently equipped Dream Eater.
+     * They are NOT written into Kingdom Keys PlayerData abilityMap anymore.
+     * That means they should NOT consume AP and should NOT block normal ability equipping.
      *
-     * This is intentional to purge old duped link abilities.
+     * The active link abilities are stored separately in player persistent data.
      *
-     * Future-proofing:
-     * To add a new Dream Eater later, add its metadata/link supplier to
-     * DreamEaterInfoRM. This file should not need another per-Spirit branch.
+     * To make an ability effect recognize these, use:
+     *
+     * DreamEaterAbilityLinkHelper.hasAbility(player, "ability_magic_haste")
+     *
+     * or merge DreamEaterAbilityLinkHelper.getAccessoryAbilityIds(player)
+     * into your accessory/passive ability display.
      */
+
+    private static final String ROOT_KEY = "kkremind_dream_eater_link_accessory_abilities";
+    private static final String ABILITIES_KEY = "Abilities";
+    private static final String DREAM_EATER_RL_KEY = "DreamEaterRL";
+    private static final String DREAM_EATER_LEVEL_KEY = "DreamEaterLevel";
+
+    /*
+     * One-time migration flag.
+     *
+     * The old helper wrote Dream Eater link abilities directly into PlayerData abilityMap.
+     * That is what caused AP to be consumed.
+     *
+     * This purge removes those old AP-eating entries once.
+     */
+    private static final String LEGACY_PURGE_DONE_KEY = "kkremind_dream_eater_legacy_abilitymap_purge_done";
+
+    @SubscribeEvent
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        if (player.level().isClientSide) {
+            return;
+        }
+
+        purgeLegacyAbilityMapGrants(player);
+        refresh(player);
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Pre event) {
@@ -55,6 +93,7 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
+        purgeLegacyAbilityMapGrants(player);
         refresh(player);
     }
 
@@ -73,28 +112,34 @@ public class DreamEaterAbilityLinkHelper {
         }
 
         PlayerData playerData = PlayerData.get(player);
+        DreamEaterVirtualAbilityBridge.rememberOwner(playerData, player);
+
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
-        if (playerData == null || globalData == null) {
-            clearAllGrants(player, true);
+        if (globalData == null) {
+            clearAllGrants(player);
             return;
         }
 
         String dreamEaterRL = globalData.getDreamEaterRL();
 
         if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            clearAllGrants(player, true);
+            clearAllGrants(player);
             return;
         }
 
-        List<DreamEaterLinkData.LinkEntry> links = DreamEaterInfo.getLinks(dreamEaterRL);
+        java.util.List<DreamEaterLinkData.LinkEntry> links = DreamEaterInfo.getLinks(dreamEaterRL);
 
         if (links == null || links.isEmpty()) {
-            clearAllGrants(player, true);
+            clearAllGrants(player);
             return;
         }
 
-        applyDreamEaterAbilityLinks(player, playerData, globalData, links);
+        int dreamEaterLevel = Math.max(1, globalData.getDreamEaterLevel(dreamEaterRL));
+
+        Set<String> desiredGrants = buildDesiredAbilityGrants(links, dreamEaterLevel);
+
+        enforceExactDreamEaterAbilityState(player, dreamEaterRL, dreamEaterLevel, desiredGrants);
     }
 
     public static void onDreamEaterChanged(ServerPlayer player) {
@@ -102,13 +147,11 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
-        PlayerData playerData = PlayerData.get(player);
-
-        if (playerData != null && playerData.getAbilityMap() != null) {
-            removeAllDreamEaterLinkAbilities(playerData);
-            sync(player);
-        }
-
+        /*
+         * Clear the current virtual accessory grants immediately,
+         * then rebuild them from the newly equipped Dream Eater.
+         */
+        clearAllGrants(player);
         refresh(player);
     }
 
@@ -117,74 +160,18 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
-        PlayerData playerData = PlayerData.get(player);
-
-        if (playerData == null || playerData.getAbilityMap() == null) {
-            return;
-        }
-
-        boolean changed = removeAllDreamEaterLinkAbilities(playerData);
-
-        if (changed) {
-            sync(player);
-        }
+        /*
+         * These are temporary active grants.
+         * They will be rebuilt after login from the equipped Dream Eater.
+         */
+        clearAllGrants(player);
     }
 
-    private static void applyDreamEaterAbilityLinks(
-            ServerPlayer player,
-            PlayerData playerData,
-            GlobalDataRM globalData,
-            List<DreamEaterLinkData.LinkEntry> links
-    ) {
-        if (player == null || playerData == null || globalData == null) {
-            return;
-        }
-
-        String dreamEaterRL = globalData.getDreamEaterRL();
-
-        if (dreamEaterRL == null || dreamEaterRL.isEmpty()) {
-            clearAllGrants(player, true);
-            return;
-        }
-
-        int dreamEaterLevel = Math.max(1, globalData.getDreamEaterLevel(dreamEaterRL));
-
-        Map<String, Integer> desiredGrants = buildDesiredAbilityGrants(links, dreamEaterLevel);
-
-        boolean changed = enforceExactDreamEaterAbilityState(playerData, desiredGrants);
-
-        if (changed) {
-            sync(player);
-        }
-    }
-
-    private static void clearAllGrants(ServerPlayer player, boolean syncIfChanged) {
-        if (player == null) {
-            return;
-        }
-
-        PlayerData playerData = PlayerData.get(player);
-
-        if (playerData == null || playerData.getAbilityMap() == null) {
-            return;
-        }
-
-        boolean changed = removeAllDreamEaterLinkAbilities(playerData);
-
-        if (purgeEmptyDreamEaterAbilityEntries(playerData)) {
-            changed = true;
-        }
-
-        if (changed && syncIfChanged) {
-            sync(player);
-        }
-    }
-
-    private static Map<String, Integer> buildDesiredAbilityGrants(
-            List<DreamEaterLinkData.LinkEntry> links,
+    private static Set<String> buildDesiredAbilityGrants(
+            java.util.List<DreamEaterLinkData.LinkEntry> links,
             int level
     ) {
-        Map<String, Integer> desiredGrants = new HashMap<>();
+        Set<String> desiredGrants = new HashSet<>();
 
         if (links == null || links.isEmpty()) {
             return desiredGrants;
@@ -205,109 +192,342 @@ public class DreamEaterAbilityLinkHelper {
                 continue;
             }
 
-            String abilityId = link.abilityId();
+            String abilityId = normalizeAbilityId(link.abilityId());
 
-            if (abilityId == null || abilityId.isEmpty()) {
+            if (abilityId.isEmpty()) {
                 continue;
             }
 
-            desiredGrants.merge(abilityId, 1, Integer::sum);
+            desiredGrants.add(abilityId);
         }
 
         return desiredGrants;
     }
 
     private static boolean enforceExactDreamEaterAbilityState(
-            PlayerData playerData,
-            Map<String, Integer> desiredGrants
+            ServerPlayer player,
+            String dreamEaterRL,
+            int dreamEaterLevel,
+            Set<String> desiredGrants
     ) {
-        if (playerData == null || playerData.getAbilityMap() == null) {
+        if (player == null) {
             return false;
         }
 
-        boolean changed = false;
+        Set<String> currentGrants = getAccessoryAbilityIds(player);
 
-        Set<String> allDreamEaterAbilityIds = DreamEaterInfo.getAllGrantedAbilityIds();
+        CompoundTag root = getOrCreateRoot(player);
+        String currentRL = root.getString(DREAM_EATER_RL_KEY);
+        int currentLevel = root.getInt(DREAM_EATER_LEVEL_KEY);
 
-        for (String abilityId : allDreamEaterAbilityIds) {
+        if (currentGrants.equals(desiredGrants)
+                && currentRL.equals(dreamEaterRL)
+                && currentLevel == dreamEaterLevel) {
+            return false;
+        }
+
+        ListTag list = new ListTag();
+
+        TreeSet<String> sorted = new TreeSet<>(desiredGrants);
+
+        for (String abilityId : sorted) {
             if (abilityId == null || abilityId.isEmpty()) {
                 continue;
             }
 
-            int desiredAmount = desiredGrants.getOrDefault(abilityId, 0);
+            list.add(StringTag.valueOf(abilityId));
+        }
 
-            if (desiredAmount <= 0) {
-                if (playerData.getAbilityMap().containsKey(abilityId)) {
-                    playerData.getAbilityMap().remove(abilityId);
-                    changed = true;
+        root.putString(DREAM_EATER_RL_KEY, dreamEaterRL == null ? "" : dreamEaterRL);
+        root.putInt(DREAM_EATER_LEVEL_KEY, Math.max(1, dreamEaterLevel));
+        root.put(ABILITIES_KEY, list);
+
+        player.getPersistentData().put(ROOT_KEY, root);
+
+        return true;
+    }
+
+    private static void clearAllGrants(ServerPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        player.getPersistentData().remove(ROOT_KEY);
+    }
+
+    /**
+     * Returns true if the player has this ability from Dream Eater Ability Links.
+     *
+     * Use this in passive/effect checks.
+     */
+    public static boolean hasAbility(Player player, String abilityId) {
+        if (player == null) {
+            return false;
+        }
+
+        String normalized = normalizeAbilityId(abilityId);
+
+        if (normalized.isEmpty()) {
+            return false;
+        }
+
+        return getAccessoryAbilityIds(player).contains(normalized);
+    }
+
+    /**
+     * Alias for readability.
+     */
+    public static boolean hasDreamEaterLinkAbility(Player player, String abilityId) {
+        return hasAbility(player, abilityId);
+    }
+
+    /**
+     * Alias for treating Dream Eater Ability Links as accessory-style passives.
+     */
+    public static boolean hasAccessoryAbility(Player player, String abilityId) {
+        return hasAbility(player, abilityId);
+    }
+
+    /**
+     * Use this for UI display.
+     *
+     * These should be shown under something like:
+     * "Spirit Link Abilities"
+     * or merged into "Accessory Abilities."
+     */
+    public static Set<String> getAccessoryAbilityIds(Player player) {
+        Set<String> abilities = new HashSet<>();
+
+        if (player == null) {
+            return abilities;
+        }
+
+        /*
+         * First try to compute directly from the current Dream Eater data.
+         * This helps the client-side ability menu display the fake abilities
+         * without needing them to exist in Kingdom Keys abilityMap.
+         */
+        try {
+            GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+            if (globalData != null) {
+                String dreamEaterRL = globalData.getDreamEaterRL();
+
+                if (dreamEaterRL != null && !dreamEaterRL.isEmpty()) {
+                    java.util.List<DreamEaterLinkData.LinkEntry> links = DreamEaterInfo.getLinks(dreamEaterRL);
+
+                    if (links != null && !links.isEmpty()) {
+                        int dreamEaterLevel = Math.max(1, globalData.getDreamEaterLevel(dreamEaterRL));
+                        abilities.addAll(buildDesiredAbilityGrants(links, dreamEaterLevel));
+                    }
                 }
-
-                continue;
             }
+        } catch (Exception ignored) {
+        }
 
-            int[] current = playerData.getAbilityMap().get(abilityId);
+        if (!abilities.isEmpty()) {
+            return abilities;
+        }
 
-            if (current == null
-                    || current.length < 2
-                    || current[0] != desiredAmount
-                    || current[1] != desiredAmount) {
-                playerData.getAbilityMap().put(abilityId, new int[]{desiredAmount, desiredAmount});
-                changed = true;
+        /*
+         * Fallback to stored persistent data.
+         * This is what the server refresh writes.
+         */
+        CompoundTag data = player.getPersistentData();
+
+        if (!data.contains(ROOT_KEY, Tag.TAG_COMPOUND)) {
+            return abilities;
+        }
+
+        CompoundTag root = data.getCompound(ROOT_KEY);
+
+        if (!root.contains(ABILITIES_KEY, Tag.TAG_LIST)) {
+            return abilities;
+        }
+
+        ListTag list = root.getList(ABILITIES_KEY, Tag.TAG_STRING);
+
+        for (int i = 0; i < list.size(); i++) {
+            String abilityId = normalizeAbilityId(list.getString(i));
+
+            if (!abilityId.isEmpty()) {
+                abilities.add(abilityId);
             }
         }
 
-        return changed;
+        return abilities;
     }
 
-    private static boolean removeAllDreamEaterLinkAbilities(PlayerData playerData) {
+    public static boolean hasAnyDreamEaterAbilityLinks(Player player) {
+        return !getAccessoryAbilityIds(player).isEmpty();
+    }
+
+    public static String getCurrentDreamEaterRL(Player player) {
+        if (player == null) {
+            return "";
+        }
+
+        CompoundTag data = player.getPersistentData();
+
+        if (!data.contains(ROOT_KEY, Tag.TAG_COMPOUND)) {
+            return "";
+        }
+
+        return data.getCompound(ROOT_KEY).getString(DREAM_EATER_RL_KEY);
+    }
+
+    public static int getCurrentDreamEaterLevel(Player player) {
+        if (player == null) {
+            return 0;
+        }
+
+        CompoundTag data = player.getPersistentData();
+
+        if (!data.contains(ROOT_KEY, Tag.TAG_COMPOUND)) {
+            return 0;
+        }
+
+        return data.getCompound(ROOT_KEY).getInt(DREAM_EATER_LEVEL_KEY);
+    }
+
+    private static CompoundTag getOrCreateRoot(Player player) {
+        CompoundTag data = player.getPersistentData();
+
+        if (!data.contains(ROOT_KEY, Tag.TAG_COMPOUND)) {
+            data.put(ROOT_KEY, new CompoundTag());
+        }
+
+        return data.getCompound(ROOT_KEY);
+    }
+
+    /**
+     * One-time cleanup for old saves.
+     *
+     * The previous helper wrote Dream Eater link abilities into PlayerData abilityMap.
+     * That caused AP cost issues.
+     *
+     * This removes those old entries once, then marks the player as migrated.
+     */
+    private static void purgeLegacyAbilityMapGrants(ServerPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        PlayerData playerData = PlayerData.get(player);
+
         if (playerData == null || playerData.getAbilityMap() == null) {
-            return false;
+            return;
         }
 
         boolean changed = false;
+        java.util.Map<String, int[]> abilityMap = playerData.getAbilityMap();
 
-        for (String abilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
+        java.util.Set<String> idsToRemove = new java.util.HashSet<>();
+
+        for (String rawAbilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
+            collectAbilityIdVariants(idsToRemove, rawAbilityId);
+        }
+
+        for (String currentVirtualAbilityId : getAccessoryAbilityIds(player)) {
+            collectAbilityIdVariants(idsToRemove, currentVirtualAbilityId);
+        }
+
+        for (String abilityId : idsToRemove) {
             if (abilityId == null || abilityId.isEmpty()) {
                 continue;
             }
 
-            if (playerData.getAbilityMap().containsKey(abilityId)) {
-                playerData.getAbilityMap().remove(abilityId);
+            if (abilityMap.containsKey(abilityId)) {
+                abilityMap.remove(abilityId);
                 changed = true;
+                System.out.println("[KKReMind/DELinks] Removed AP-eating Dream Eater abilityMap entry: " + abilityId + " from " + player.getGameProfile().getName());
             }
         }
 
-        return changed;
+        if (changed) {
+            sync(player);
+        }
     }
 
-    private static boolean purgeEmptyDreamEaterAbilityEntries(PlayerData playerData) {
-        if (playerData == null || playerData.getAbilityMap() == null) {
-            return false;
+    private static void collectAbilityIdVariants(java.util.Set<String> out, String rawAbilityId) {
+        if (out == null || rawAbilityId == null || rawAbilityId.isEmpty()) {
+            return;
         }
 
-        boolean changed = false;
+        String id = rawAbilityId.trim().toLowerCase(java.util.Locale.ROOT);
 
-        for (String abilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
-            if (abilityId == null || abilityId.isEmpty()) {
-                continue;
-            }
-
-            int[] data = playerData.getAbilityMap().get(abilityId);
-
-            if (data == null) {
-                continue;
-            }
-
-            int owned = data.length > 0 ? data[0] : 0;
-            int equipped = data.length > 1 ? data[1] : 0;
-
-            if (owned <= 0 && equipped <= 0) {
-                playerData.getAbilityMap().remove(abilityId);
-                changed = true;
-            }
+        if (id.isEmpty()) {
+            return;
         }
 
-        return changed;
+        out.add(id);
+
+        String normalized = normalizeAbilityId(id);
+        out.add(normalized);
+
+        if (id.contains(":")) {
+            String[] split = id.split(":", 2);
+
+            if (split.length == 2) {
+                String namespace = split[0];
+                String path = split[1];
+
+                out.add(namespace + ":" + path);
+                out.add(path);
+
+                String normalizedPath = normalizeAbilityId(path);
+
+                out.add(normalizedPath);
+                out.add(namespace + ":" + normalizedPath);
+
+                if (path.startsWith("ability_")) {
+                    String noPrefix = path.substring("ability_".length());
+
+                    out.add(noPrefix);
+                    out.add(namespace + ":" + noPrefix);
+                } else {
+                    out.add("ability_" + path);
+                    out.add(namespace + ":ability_" + path);
+                }
+            }
+        } else {
+            out.add("kingdomkeys:" + id);
+            out.add("kingdomkeys:" + normalized);
+            out.add("kkremind:" + id);
+            out.add("kkremind:" + normalized);
+
+            if (id.startsWith("ability_")) {
+                String noPrefix = id.substring("ability_".length());
+
+                out.add(noPrefix);
+                out.add("kingdomkeys:" + noPrefix);
+                out.add("kkremind:" + noPrefix);
+            }
+        }
+    }
+
+    public static String normalizeAbilityId(String abilityId) {
+        if (abilityId == null) {
+            return "";
+        }
+
+        String id = abilityId.trim().toLowerCase(Locale.ROOT);
+
+        if (id.isEmpty()) {
+            return "";
+        }
+
+        /*
+         * Most Kingdom Keys ability IDs in your setup use ability_.
+         *
+         * If this is a namespaced ID like kingdomkeys:whatever,
+         * do not force ability_ onto it.
+         */
+        if (!id.contains(":") && !id.startsWith("ability_")) {
+            id = "ability_" + id;
+        }
+
+        return id;
     }
 
     private static void sync(ServerPlayer player) {
