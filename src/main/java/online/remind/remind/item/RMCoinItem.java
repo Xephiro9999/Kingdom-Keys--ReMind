@@ -23,13 +23,6 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
     private final Supplier<Integer> value;
     private final String type;
 
-    @Override
-    public Tab getTab() {
-        return Tab.MISC;
-    }
-
-
-
     public RMCoinItem(Properties properties, Supplier<Integer> value, String type) {
         super(properties);
         this.value = value;
@@ -117,5 +110,10 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
 
     public String getCoinType() {
         return type;
+    }
+
+    @Override
+    public Tab getTabRM() {
+        return Tab.MISC;
     }
 }

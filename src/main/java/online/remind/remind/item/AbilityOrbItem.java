@@ -28,11 +28,6 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
     }
 
     @Override
-    public Tab getTab(){
-        return Tab.MISC;
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
         String abilityIdString = player.getItemInHand(hand).get(ModComponentsRM.ABILITY.get());
@@ -84,5 +79,10 @@ public class AbilityOrbItem extends Item implements ICreativeTabRM {
         }
 
         tooltip.add(Component.literal("This orb doesn't contain an ability."));
+    }
+
+    @Override
+    public Tab getTabRM() {
+        return Tab.MISC;
     }
 }

@@ -22,11 +22,6 @@ public class ShotlockOrbItem extends Item implements ICreativeTabRM {
     }
 
     @Override
-    public Tab getTab(){
-        return Tab.SHOTLOCKS;
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
         PlayerData playerData = PlayerData.get(player);
         Shotlock shotlockInstance = ModShotlocks.registry.get(ResourceLocation.parse(shotlocks));
@@ -47,5 +42,10 @@ public class ShotlockOrbItem extends Item implements ICreativeTabRM {
         } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
             player.getOffhandItem().shrink(1);
         }
+    }
+
+    @Override
+    public Tab getTabRM() {
+        return Tab.SHOTLOCKS;
     }
 }

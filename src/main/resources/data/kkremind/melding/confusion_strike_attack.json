@@ -1,6 +1,6 @@
 {
   "cost": 0,
-  "ingredient1": "kkremind:confuse_spell",
+  "ingredient1": "kingdomkeys:spellconfuse",
   "ingredient2": "kkremind:quick_blitz_attack",
   "output": {
     "type": "item",

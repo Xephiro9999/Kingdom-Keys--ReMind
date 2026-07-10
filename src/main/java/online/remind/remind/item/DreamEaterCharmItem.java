@@ -26,11 +26,6 @@ public class DreamEaterCharmItem extends Item implements ICreativeTabRM {
     }
 
     @Override
-    public ICreativeTabRM.Tab getTab(){
-        return ICreativeTabRM.Tab.DREAMEATERS;
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, net.minecraft.world.entity.player.Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
@@ -81,5 +76,10 @@ public class DreamEaterCharmItem extends Item implements ICreativeTabRM {
 
         tooltip.add(Component.literal("Right-click to permanently unlock this Spirit.")
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+
+    @Override
+    public Tab getTabRM() {
+        return Tab.DREAMEATERS;
     }
 }

@@ -18,10 +18,6 @@ public class SlotReleaserItem extends Item implements ICreativeTabRM {
         super(properties);
     }
 
-    @Override
-    public ICreativeTabRM.Tab getTab() {
-        return ICreativeTabRM.Tab.MISC;
-    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -42,5 +38,10 @@ public class SlotReleaserItem extends Item implements ICreativeTabRM {
         }
 
         return InteractionResultHolder.consume(stack);
+    }
+
+    @Override
+    public Tab getTabRM() {
+        return Tab.MISC;
     }
 }

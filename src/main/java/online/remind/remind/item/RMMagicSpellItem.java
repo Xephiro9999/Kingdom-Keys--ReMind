@@ -43,7 +43,7 @@ public class RMMagicSpellItem extends MagicSpellItem implements ICreativeTabRM {
     }
 
     @Override
-    public Tab getTab() {
-        return Tab.SPELLS;
+    public ICreativeTabRM.Tab getTabRM() {
+        return ICreativeTabRM.Tab.SPELLS;
     }
 }

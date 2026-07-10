@@ -6,5 +6,5 @@ public interface ICreativeTabRM {
         SPELLS, SHOTLOCKS, MISC, DREAMEATERS, NONE
     }
 
-    Tab getTab();
+    Tab getTabRM();
 }

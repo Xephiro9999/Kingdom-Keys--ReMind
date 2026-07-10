@@ -123,10 +123,10 @@ public class KingdomKeysReMind {
     private static final Supplier<List<ItemStack>> rmKeyblades = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.KEYBLADES).toList());
     private static final Supplier<List<ItemStack>> rmKeychains = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.KEYCHAINS).toList());
     private static final Supplier<List<ItemStack>> rmEquipables = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTab tab && tab.getTab() == ICreativeTab.Tab.EQUIPABLES).toList());
-    private static final Supplier<List<ItemStack>> rmSpells = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.SPELLS).toList());
-    private static final Supplier<List<ItemStack>> rmShotlocks = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.SHOTLOCKS).toList());
-    private static final Supplier<List<ItemStack>> rmMisc = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.MISC).toList());
-    private static final Supplier<List<ItemStack>> rmDreamEaters = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTab() == ICreativeTabRM.Tab.DREAMEATERS).toList());
+    private static final Supplier<List<ItemStack>> rmSpells = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTabRM() == ICreativeTabRM.Tab.SPELLS).toList());
+    private static final Supplier<List<ItemStack>> rmShotlocks = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTabRM() == ICreativeTabRM.Tab.SHOTLOCKS).toList());
+    private static final Supplier<List<ItemStack>> rmMisc = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTabRM() == ICreativeTabRM.Tab.MISC).toList());
+    private static final Supplier<List<ItemStack>> rmDreamEaters = Suppliers.memoize(() -> rmItems.get().stream().filter(item -> item.getItem() instanceof ICreativeTabRM tab && tab.getTabRM() == ICreativeTabRM.Tab.DREAMEATERS).toList());
 
 
     public static final Supplier<CreativeModeTab>
