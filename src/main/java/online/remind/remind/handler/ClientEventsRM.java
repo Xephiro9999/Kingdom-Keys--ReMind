@@ -79,6 +79,11 @@ public class ClientEventsRM {
         //System.out.println(globalData.hasDreamEaterSummoned());
         if(globalData.hasDreamEaterSummoned()) {
             Entity dreamEaterEntity = ClientUtilsRM.getEntityByUUIDClient(globalData.getDreamEaterUUID());
+
+			if (dreamEaterEntity == null) {
+				return;
+			}
+
             int dreamEaterID = dreamEaterEntity.getId();
             event.addTarget(new CommandMenuItem.Builder(ResourceLocation.parse(globalData.getDreamEaterRL()),
                             Component.translatable(dreamEater.getTranslationKey()),

@@ -8,5 +8,12 @@
   {"item": "kkremind:silence_spell", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:slow_spell", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:berserk_spell", "amount": 1, "tier": 5, "cost": 5000},
+  {"item": "kkremind:fire_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:blizzard_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:thunder_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:water_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:aero_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:light_strike_attack", "amount": 1, "tier": 2, "cost": 500},
+  {"item": "kkremind:dark_strike_attack", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:slot_releaser", "amount": 1, "tier": 6, "cost": 10000}
 ]
