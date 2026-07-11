@@ -1,15 +1,20 @@
 package online.remind.remind.item;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SmithingTemplateItem;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import online.kingdomkeys.kingdomkeys.item.*;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.config.ModConfigs;
-import online.remind.remind.dreameater.DreamEater;
 import online.remind.remind.lib.StringsRM;
 
 import java.util.function.Supplier;
@@ -221,7 +226,33 @@ public class ModItemsRM{
 
         // Music Discs
 
+        // Armor Trims
 
+
+
+    public static final ResourceKey<TrimPattern> HEARTLESS_TRIM_PATTERN =
+            ResourceKey.create(
+                    Registries.TRIM_PATTERN,
+                    ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "heartless")
+            );
+
+    public static final DeferredHolder<Item, SmithingTemplateItem> HEARTLESS_ARMOR_TRIM_SMITHING_TEMPLATE =
+            ITEMS.register(
+                    "heartless_armor_trim_smithing_template",
+                    () -> SmithingTemplateItem.createArmorTrimTemplate(HEARTLESS_TRIM_PATTERN)
+            );
+
+    public static final ResourceKey<TrimPattern> NOBODY_TRIM_PATTERN =
+            ResourceKey.create(
+                    Registries.TRIM_PATTERN,
+                    ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "nobody")
+            );
+
+    public static final DeferredHolder<Item, SmithingTemplateItem> NOBODY_ARMOR_TRIM_SMITHING_TEMPLATE =
+            ITEMS.register(
+                    "nobody_armor_trim_smithing_template",
+                    () -> SmithingTemplateItem.createArmorTrimTemplate(NOBODY_TRIM_PATTERN)
+            );
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

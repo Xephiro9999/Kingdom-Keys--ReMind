@@ -1,0 +1,7 @@
+{
+  "asset_id": "kkremind:nobody",
+  "description": {
+    "translate": "trim_pattern.kkremind.nobody"
+  },
+  "template_item": "kkremind:nobody_armor_trim_smithing_template"
+}

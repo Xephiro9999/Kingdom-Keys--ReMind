@@ -1,7 +1,7 @@
 {
   "cost": 0,
   "ingredient1": "kingdomkeys:spellcura",
-  "ingredient2": "kkremind:quick_blitz2_attack",
+  "ingredient2": "kkremind:quick_blitz_attack",
   "output": {
     "type": "item",
     "item": "kkremind:slot_edge_attack",

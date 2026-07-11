@@ -1,0 +1,7 @@
+{
+  "asset_id": "kkremind:heartless",
+  "description": {
+    "translate": "trim_pattern.kkremind.heartless"
+  },
+  "template_item": "kkremind:heartless_armor_trim_smithing_template"
+}
