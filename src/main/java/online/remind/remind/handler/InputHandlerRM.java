@@ -7,12 +7,14 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.client.KKInputEvent;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.handler.InputHandler;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -53,8 +55,8 @@ public class InputHandlerRM {
 			// Light/Dark Step Abilities
 			if (InputHandler.qrCooldown <= 0 && (player.getDeltaMovement().x != 0 && player.getDeltaMovement().z != 0)) {
 				if (player.isSprinting()) {
-					int lightLevel = playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString());
-					int darkLevel = playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString());
+					int lightLevel = playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.location());
+					int darkLevel = playerData.getDriveFormLevel(ModDriveFormsRM.DARK.location());
 
 					// Org Quick Step
 					if (playerData.getAlignment() != Utils.OrgMember.NONE) {
@@ -72,8 +74,8 @@ public class InputHandlerRM {
 					}
 
 					// Twilight Step
-					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight)
-							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+					if (playerData.isFormActive(ModDriveFormsRM.TWILIGHT)
+							&& playerData.isAbilityEquipped(ModAbilities.QUICK_RUN)) {
 
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
@@ -95,8 +97,8 @@ public class InputHandlerRM {
 						);
 
 						event.setCanceled(true);
-					} else if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.rageForm)
-							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+					} else if (playerData.isFormActive(ModDriveFormsRM.RAGE)
+							&& playerData.isAbilityEquipped(ModAbilities.QUICK_RUN)) {
 
 						// Rage Run
 						float yaw = player.getYRot();
@@ -113,11 +115,11 @@ public class InputHandlerRM {
 					}
 
 					// Light Step
-					if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)
-							|| playerData.isAbilityEquipped(StringsRM.lightStep)
-							&& playerData.isAbilityEquipped(Strings.quickRun)
-							&& !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)
-							&& !playerData.isAbilityEquipped(StringsRM.darkStep)) {
+					if (playerData.isFormActive(ModDriveFormsRM.LIGHT)
+							|| playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_STEP)
+							&& playerData.isAbilityEquipped(ModAbilities.QUICK_RUN)
+							&& !playerData.isFormActive(ModDriveFormsRM.DARK)
+							&& !playerData.isAbilityEquipped(ModAbilitiesRM.DARK_STEP)) {
 
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
@@ -127,7 +129,7 @@ public class InputHandlerRM {
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.lightStepType));
 
 						// Light Form
-						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)) {
+						if (playerData.isFormActive(ModDriveFormsRM.LIGHT)) {
 							player.level().playSound(
 									player,
 									player.blockPosition(),
@@ -139,7 +141,7 @@ public class InputHandlerRM {
 
 							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
-						} else if (playerData.isAbilityEquipped(StringsRM.lightStep)) {
+						} else if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_STEP)) {
 							if (lightLevel > 2) {
 								player.level().playSound(
 										player,
@@ -157,10 +159,10 @@ public class InputHandlerRM {
 						}
 
 						event.setCanceled(true);
-					} else if (playerData.isAbilityEquipped(StringsRM.darkStep)
-							&& playerData.isAbilityEquipped(Strings.quickRun)
-							|| playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":form_dark")
-							&& playerData.isAbilityEquipped(Strings.quickRun)) {
+					} else if (playerData.isAbilityEquipped(ModAbilitiesRM.DARK_STEP)
+							&& playerData.isAbilityEquipped(ModAbilities.QUICK_RUN)
+							|| playerData.isFormActive(ModDriveFormsRM.DARK)
+							&& playerData.isAbilityEquipped(ModAbilities.QUICK_RUN)) {
 
 						float yaw = player.getYRot();
 						float motionX = -Mth.sin(yaw / 180.0f * (float) Math.PI);
@@ -170,7 +172,7 @@ public class InputHandlerRM {
 						PacketHandlerRM.sendToServer(new CSSetStepTicksPacket(10, StringsRM.darkStepType));
 
 						// Dark Mode
-						if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
+						if (playerData.isFormActive(ModDriveFormsRM.DARK)) {
 							player.level().playSound(
 									player,
 									player.blockPosition(),
@@ -182,7 +184,7 @@ public class InputHandlerRM {
 
 							player.push(motionX * power / 2, 0, motionZ * power / 2);
 							InputHandler.qrCooldown = 20;
-						} else if (playerData.isAbilityEquipped(StringsRM.darkStep)) {
+						} else if (playerData.isAbilityEquipped(ModAbilitiesRM.DARK_STEP)) {
 							if (darkLevel > 2) {
 								player.level().playSound(
 										player,

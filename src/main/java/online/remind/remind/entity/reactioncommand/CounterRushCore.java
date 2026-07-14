@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.particle.HitParticleType;
@@ -71,7 +72,7 @@ public class CounterRushCore extends ThrowableProjectile {
         //Since this is a temporary entity we can do the hits as a field here, otherwise we would need a capability for it
         if(hits <= 0 && getCaster() != null) //This is to prevent in every tick to refill the hits before it finishes
             if (!feverPitch) {
-                hits = 4 + (PlayerData.get(getCaster()).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5f);
+                hits = 4 + (PlayerData.get(getCaster()).getNumberOfAbilitiesEquipped(ModAbilitiesRM.ATTACK_HASTE) * 0.5f);
             } else {
                 hits = 4;
             }

@@ -10,9 +10,11 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import online.kingdomkeys.kingdomkeys.config.ModConfigs;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
@@ -35,7 +37,7 @@ public class DriveFormDark extends DriveForm {
                 PlayerData playerData = PlayerData.get(player);
                 GlobalDataRM formData = ModDataRM.getGlobal(player);
 
-                if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
+                if (playerData != null && playerData.isFormActive(ModDriveFormsRM.DARK)) {
                     double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);
                     //double mult = 1;
                     playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
@@ -49,7 +51,7 @@ public class DriveFormDark extends DriveForm {
 
     @Override
     public boolean displayInCommandMenu(Player player){
-        return PlayerData.get(player).isAbilityEquipped(StringsRM.darkPower);
+        return PlayerData.get(player).isAbilityEquipped(ModAbilitiesRM.DARK_POWER);
     }
 
     @Override

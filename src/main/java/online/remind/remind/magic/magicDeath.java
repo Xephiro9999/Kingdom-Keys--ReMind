@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
@@ -14,7 +15,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 
 public class magicDeath extends Magic {
 
-    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public magicDeath(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }
@@ -48,8 +49,8 @@ setTier(tier);
                     chance *= -1;
                 }
 
-                if (target.isAbilityEquipped(Strings.secondChance)){
-                    target.unequipAbility(Strings.secondChance, 0);
+                if (target.isAbilityEquipped(ModAbilities.SECOND_CHANCE)){
+                    target.unequipAbility(ModAbilities.SECOND_CHANCE.location(), 0);
                     //System.out.println("Unequipped pesky ability");
                     PacketHandler.syncToAllAround((Player) lockOnEntity, target);
                 }

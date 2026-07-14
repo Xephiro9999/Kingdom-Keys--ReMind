@@ -209,114 +209,114 @@ public class EpicFightEvents {
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.focusBlock)
-                        || playerData.isAbilityEquipped(StringsRM.stopBlock)
-                        || playerData.isAbilityEquipped(StringsRM.royalGuard)
-                        || playerData.isAbilityEquipped(StringsRM.poisonBlock)
-                        || playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.royalGuard, 0);
-                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
-                    playerData.unequipAbility(StringsRM.confusionBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock)
-                        || playerData.isAbilityEquipped(StringsRM.stopBlock)
-                        || playerData.isAbilityEquipped(StringsRM.royalGuard)
-                        || playerData.isAbilityEquipped(StringsRM.poisonBlock)
-                        || playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.royalGuard, 0);
-                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
-                    playerData.unequipAbility(StringsRM.confusionBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock)
-                        || playerData.isAbilityEquipped(StringsRM.focusBlock)
-                        || playerData.isAbilityEquipped(StringsRM.royalGuard)
-                        || playerData.isAbilityEquipped(StringsRM.poisonBlock)
-                        || playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                    playerData.unequipAbility(StringsRM.royalGuard, 0);
-                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
-                    playerData.unequipAbility(StringsRM.confusionBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock)
-                        || playerData.isAbilityEquipped(StringsRM.stopBlock)
-                        || playerData.isAbilityEquipped(StringsRM.focusBlock)
-                        || playerData.isAbilityEquipped(StringsRM.poisonBlock)
-                        || playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
-                    playerData.unequipAbility(StringsRM.confusionBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.POISON_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock)
-                        || playerData.isAbilityEquipped(StringsRM.stopBlock)
-                        || playerData.isAbilityEquipped(StringsRM.focusBlock)
-                        || playerData.isAbilityEquipped(StringsRM.royalGuard)
-                        || playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                    playerData.unequipAbility(StringsRM.royalGuard, 0);
-                    playerData.unequipAbility(StringsRM.confusionBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.CONFUSION_BLOCK.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.renewalBlock)
-                        || playerData.isAbilityEquipped(StringsRM.stopBlock)
-                        || playerData.isAbilityEquipped(StringsRM.focusBlock)
-                        || playerData.isAbilityEquipped(StringsRM.royalGuard)
-                        || playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+                        || playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)) {
 
-                    playerData.unequipAbility(StringsRM.renewalBlock, 0);
-                    playerData.unequipAbility(StringsRM.stopBlock, 0);
-                    playerData.unequipAbility(StringsRM.focusBlock, 0);
-                    playerData.unequipAbility(StringsRM.royalGuard, 0);
-                    playerData.unequipAbility(StringsRM.poisonBlock, 0);
+                    playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
                 }
             }
 
 
             if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.counterBlast) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-                    playerData.unequipAbility(StringsRM.counterBlast, 0);
-                    playerData.unequipAbility(StringsRM.counterRush, 0);
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH)) {
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_BLAST.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_RUSH.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterRush)) {
-                    playerData.unequipAbility(StringsRM.counterHammer, 0);
-                    playerData.unequipAbility(StringsRM.counterRush, 0);
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH)) {
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_HAMMER.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_RUSH.location(), 0);
                 }
             }
 
             if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
-                if (playerData.isAbilityEquipped(StringsRM.counterHammer) || playerData.isAbilityEquipped(StringsRM.counterBlast)) {
-                    playerData.unequipAbility(StringsRM.counterHammer, 0);
-                    playerData.unequipAbility(StringsRM.counterBlast, 0);
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST)) {
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_HAMMER.location(), 0);
+                    playerData.unequipAbility(ModAbilitiesRM.COUNTER_BLAST.location(), 0);
                 }
             }
         }

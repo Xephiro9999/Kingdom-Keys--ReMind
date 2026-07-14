@@ -8,7 +8,7 @@ import online.kingdomkeys.kingdomkeys.magic.Magic;
 
 public class magicSpark extends Magic {
 
-    public magicSpark(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public magicSpark(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

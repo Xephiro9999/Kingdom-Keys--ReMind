@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
@@ -150,7 +151,7 @@ public class SlotEdgeCollider extends ThrowableProjectile {
         int luckyLuckyCount = 0;
 
         if (playerData != null) {
-            luckyLuckyCount = playerData.getNumberOfAbilitiesEquipped(Strings.luckyLucky);
+            luckyLuckyCount = playerData.getNumberOfAbilitiesEquipped(ModAbilities.LUCKY_STRIKE);
         }
 
         // Each Lucky Lucky improves better reward odds.

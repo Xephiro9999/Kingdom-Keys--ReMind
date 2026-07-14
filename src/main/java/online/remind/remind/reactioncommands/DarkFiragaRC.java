@@ -5,12 +5,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -28,7 +31,7 @@ public class DarkFiragaRC extends ReactionCommand {
 	public void onUse(Player player, LivingEntity target, LivingEntity lockedOnEntity) {
 		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
-		float dmgMult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.3F) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.3F);
+		float dmgMult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.3F) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST) * 0.3F);
 		globalData.setRCCooldownTicks(60);
 		//System.out.println(globalData.getRCCooldownTicks());
 		playerData.remFocus(15);
@@ -46,7 +49,7 @@ public class DarkFiragaRC extends ReactionCommand {
 		PlayerData playerData = PlayerData.get(player);
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 		if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
-			if(playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())){
+			if(playerData.isFormActive(ModDriveForms.NONE)){
 				if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() && globalData.getRCCooldownTicks() == 0) {
 					if (playerData.getFocus() >= 15) {
 						return true;

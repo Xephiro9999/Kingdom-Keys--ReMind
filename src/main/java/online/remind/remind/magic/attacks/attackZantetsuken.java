@@ -12,7 +12,7 @@ import online.remind.remind.entity.attacks.zantetsukenCollider;
 
 public class attackZantetsuken extends Magic {
 
-    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackZantetsuken(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

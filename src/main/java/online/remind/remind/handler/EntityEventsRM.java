@@ -41,6 +41,7 @@ import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.item.KKResistanceType;
 import online.kingdomkeys.kingdomkeys.item.KeybladeItem;
@@ -91,18 +92,18 @@ public class EntityEventsRM {
 		GlobalDataRM globalData = ModDataRM.getGlobal(e.getPlayer());
 
 		if (e.getNewStack() != null && e.getNewStack().getItem() instanceof MagicSpellItem newSpell) {
-			ItemStack oldSpell = playerData.getEquippedMagics().get(newSpell.getMagic());
+			ItemStack oldSpell = e.getPreviousStack();
 
-			Magic newMagic = ModMagic.registry.get(ResourceLocation.parse(newSpell.getMagic()));
+			Magic newMagic = ModMagic.registry.get(newSpell.getMagic());
 			if (oldSpell != null && oldSpell.getItem() instanceof MagicSpellItem foundSpell) {
-				Magic oldMagic = ModMagic.registry.get(ResourceLocation.parse(foundSpell.getMagic()));
+				Magic oldMagic = ModMagic.registry.get(foundSpell.getMagic());
 
 				if (oldMagic.getTier() < newMagic.getTier()) {
-					globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newMagic.getTier());
+					globalData.setLearnedMagicLevel(newSpell.getMagic(), newMagic.getTier());
 					PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 				}
 			} else {
-				globalData.setLearnedMagicLevel(ResourceLocation.parse(newSpell.getMagic()), newMagic.getTier());
+				globalData.setLearnedMagicLevel(newSpell.getMagic(), newMagic.getTier());
 				PacketHandlerRM.syncGlobalToAllAround(e.getPlayer(), globalData);
 			}
 		}
@@ -206,34 +207,34 @@ public class EntityEventsRM {
 		if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.focusBlock)) {
-					playerData.addAbility(StringsRM.focusBlock, true);
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.FOCUS_BLOCK.location())) {
+					playerData.addAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), true);
 				}
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.royalGuard)) {
-					playerData.addAbility(StringsRM.royalGuard, true);
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.ROYAL_GUARD.location())) {
+					playerData.addAbility(ModAbilitiesRM.ROYAL_GUARD.location(), true);
 				}
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.stopBlock)) {
-					playerData.addAbility(StringsRM.stopBlock, true);
-				}
-
-
-				if (!playerData.getAbilityMap().containsKey(StringsRM.blockReplenisher)) {
-					playerData.addAbility(StringsRM.blockReplenisher, true);
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.STOP_BLOCK.location())) {
+					playerData.addAbility(ModAbilitiesRM.STOP_BLOCK.location(), true);
 				}
 
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.counterHammer)) {
-					playerData.addAbility(StringsRM.counterHammer, true);
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.BLOCK_REPLENISHER.location())) {
+					playerData.addAbility(ModAbilitiesRM.BLOCK_REPLENISHER.location(), true);
 				}
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.counterBlast)) {
-					playerData.addAbility(StringsRM.counterBlast, true);
+
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.COUNTER_HAMMER.location())) {
+					playerData.addAbility(ModAbilitiesRM.COUNTER_HAMMER.location(), true);
 				}
 
-				if (!playerData.getAbilityMap().containsKey(StringsRM.counterRush)) {
-					playerData.addAbility(StringsRM.counterRush, true);
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.COUNTER_BLAST.location())) {
+					playerData.addAbility(ModAbilitiesRM.COUNTER_BLAST.location(), true);
+				}
+
+				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.COUNTER_RUSH.location())) {
+					playerData.addAbility(ModAbilitiesRM.COUNTER_RUSH.location(), true);
 				}
 			}
 
@@ -310,7 +311,7 @@ public class EntityEventsRM {
 	 * @param AbilityName StringsRM.darkPower
 	 * @param formName    ModID + StringsRM.darkForm
 	 */
-	private void updateDriveAbilities(Player player, String AbilityName, String formName) {
+	private void updateDriveAbilities(Player player, ResourceLocation AbilityName, ResourceLocation formName) {
 		PlayerData playerData = PlayerData.get(player);
 
 		if (playerData.isAbilityEquipped(AbilityName)) { //if ability to use x form is equipped
@@ -319,20 +320,20 @@ public class EntityEventsRM {
 			}
 		}
 
-		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.get().getRegistryName().toString()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.get().getRegistryName().toString()) == 7) {
-			if (playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString()) == 0) {
-				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString(), 1);
+		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.location()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.location()) == 7) {
+			if (playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.location()) == 0) {
+				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.location(), 1);
 			}
 		}
 
 		// Formchanges
-		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.location(), 1);
+		playerData.setDriveFormLevel(ModDriveFormsRM.BLOOSTLUST.location(), 1);
 
 	}
 
@@ -352,33 +353,33 @@ public class EntityEventsRM {
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.DARK_STEP.get())) {
-			playerData.unequipAbility(StringsRM.lightStep, 0);
+			playerData.unequipAbility(ModAbilitiesRM.LIGHT_STEP.location(), 0);
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.LIGHT_STEP.get())) {
-			playerData.unequipAbility(StringsRM.darkStep, 0);
+			playerData.unequipAbility(ModAbilitiesRM.DARK_STEP.location(), 0);
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOW.get())) {
-			playerData.unequipAbility(Strings.mpHaste, 0);
+			playerData.unequipAbility(ModAbilities.MP_HASTE.location(), 0);
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWRA.get())) {
-			playerData.unequipAbility(Strings.mpHastera, 0);
+			playerData.unequipAbility(ModAbilities.MP_HASTERA.location(), 0);
 		}
 
 		if (event.getAbility().equals(ModAbilitiesRM.MP_SLOWGA.get())) {
-			playerData.unequipAbility(Strings.mpHastega, 0);
+			playerData.unequipAbility(ModAbilities.MP_HASTEGA.location(), 0);
 		}
 
 		if (event.getAbility().equals(ModAbilities.MP_HASTE.get())) {
-			playerData.unequipAbility(StringsRM.mpSlow, 0);
+			playerData.unequipAbility(ModAbilitiesRM.MP_SLOW.location(), 0);
 		}
 		if (event.getAbility().equals(ModAbilities.MP_HASTERA.get())) {
-			playerData.unequipAbility(StringsRM.mpSlowra, 0);
+			playerData.unequipAbility(ModAbilitiesRM.MP_SLOWRA.location(), 0);
 		}
 		if (event.getAbility().equals(ModAbilities.MP_HASTEGA.get())) {
-			playerData.unequipAbility(StringsRM.mpSlowga, 0);
+			playerData.unequipAbility(ModAbilitiesRM.MP_SLOWGA.location(), 0);
 		}
 
 	}
@@ -505,7 +506,7 @@ public class EntityEventsRM {
 				//System.out.println("Situation Spells: "+ remindData.getSituationSpells());
 
 				remindData.setSCooldownTicks(60);
-				if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+				if (!playerData.isFormActive(ModDriveForms.NONE)) {
 					remindData.setStyleTicks(100);
 				}
 
@@ -853,7 +854,7 @@ public class EntityEventsRM {
 		}
 
 		int exceedLevel = exceed.getAmplifier() + 1;
-		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST);
 
 		float exceedMultiplier = switch (exceedLevel) {
 			case 1 -> 1.25F;
@@ -972,7 +973,7 @@ public class EntityEventsRM {
 				if (playerData != null && globalData != null) {
 					RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
 					// Reset Rage form roll
-					if (!player.level().isClientSide() && !playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+					if (!player.level().isClientSide() && !playerData.isFormActive(ModDriveFormsRM.RAGE)) {
 						if(!Utils.isLowHP(player.getHealth(), player.getMaxHealth())) {
 							if(state.hasRolled) {
 								state.hasRolled = false;
@@ -982,27 +983,27 @@ public class EntityEventsRM {
 						}
 					}
 
-					updateDriveAbilities(player, StringsRM.darkPower, KingdomKeysReMind.MODID + ":" + StringsRM.darkForm);
-					updateDriveAbilities(player, StringsRM.rageAwakened, KingdomKeysReMind.MODID + ":" + StringsRM.rageForm);
-					updateDriveAbilities(player, StringsRM.wayToLight, KingdomKeysReMind.MODID + ":" + StringsRM.lightForm);
-					updateDriveAbilities(player, StringsRM.roadToDawn, KingdomKeysReMind.MODID+":"+ StringsRM.twilight);
-					updateDriveAbilities(player, StringsRM.Regen, KingdomKeysReMind.MODID + ":" + StringsRM.regenForm);
+					updateDriveAbilities(player, ModAbilitiesRM.DARK_POWER.location(), ModDriveFormsRM.DARK.location());
+					updateDriveAbilities(player, ModAbilitiesRM.RAGE_AWAKENED.location(), ModDriveFormsRM.RAGE.location());
+					updateDriveAbilities(player, ModAbilitiesRM.WAY_TO_LIGHT.location(), ModDriveFormsRM.LIGHT.location());
+					updateDriveAbilities(player, ModAbilitiesRM.ROAD_TO_DAWN.location(), ModDriveFormsRM.TWILIGHT.location());
+					updateDriveAbilities(player, ModAbilitiesRM.REGEN.location(), ModDriveFormsRM.REGEN.location());
 
 					// Light/Darkness Within
 
 					double boostWithin = (playerData.getStrengthStat().get() + playerData.getMagicStat().get()) / 2;
 
-					double regenBoost = (playerData.getMagicStat().get() * 0.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost));
+					double regenBoost = (playerData.getMagicStat().get() * 0.1f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST));
 
 					//System.out.println("STR: "+playerData.getStrengthStat().get());
 					//System.out.println("MAG: "+playerData.getMagicStat().get());
 
 					//System.out.println("Potential Boost: "+boostWithin);
 
-					int darknessWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1F));
-					int lightWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1F));
+					int darknessWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1F));
+					int lightWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1F));
 
-					if (playerData.isAbilityEquipped(StringsRM.lightWithin)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_WITHIN)) {
 						//System.out.println("Light Boost: "+ lightWithinBoost);
 						playerData.getStrengthStat().addModifier("light_within", lightWithinBoost, false, false);
 						playerData.getMagicStat().addModifier("light_within", lightWithinBoost, false, false);
@@ -1010,7 +1011,7 @@ public class EntityEventsRM {
 						playerData.getStrengthStat().removeModifier("light_within");
 						playerData.getMagicStat().removeModifier("light_within");
 					}
-					if (playerData.isAbilityEquipped(StringsRM.darknessWithin)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.DARKNESS_WITHIN)) {
 						//System.out.println("Dark Boost: "+ darknessWithinBoost);
 						playerData.getStrengthStat().addModifier("darkness_within", darknessWithinBoost, false, false);
 						playerData.getMagicStat().addModifier("darkness_within", darknessWithinBoost, false, false);
@@ -1019,18 +1020,18 @@ public class EntityEventsRM {
 						playerData.getMagicStat().removeModifier("darkness_within");
 					}
 
-					if (playerData.isAbilityEquipped(StringsRM.Regen)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.REGEN)){
 						playerData.getMagicStat().addModifier("regen_buff", regenBoost, false, false);
 					} else {
 						playerData.getMagicStat().removeModifier("regen_buff");
 					}
 
-					if (!playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+					if (!playerData.isFormActive(ModDriveFormsRM.RAGE)) {
 						playerData.getStrengthStat().removeModifier("Riskcharge");
 					}
 
 					// Vehemence
-					if (playerData.isAbilityEquipped(StringsRM.vehemence)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.VEHEMENCE)) {
 
 						int vehemenceSTR = (int) (playerData.getStrengthStat().getStat() * 0.25F);
 						int vehemenceDEF = (int) (playerData.getDefenseStat().getStat() * 0.25F);
@@ -1051,13 +1052,13 @@ public class EntityEventsRM {
 							playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF, false, false);
 							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
 						}
-					} else if (!playerData.isAbilityEquipped(StringsRM.vehemence)) {
+					} else if (!playerData.isAbilityEquipped(ModAbilitiesRM.VEHEMENCE)) {
 						playerData.getStrengthStat().removeModifier("Vehemence");
 						playerData.getMagicStat().removeModifier("Vehemence");
 						playerData.getDefenseStat().removeModifier("Vehemence");
 					}
 
-					if (playerData.isAbilityEquipped(StringsRM.dedication)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.DEDICATION)) {
 						if (playerData.getChosen() == SoAState.WARRIOR) {
 							playerData.getStrengthStat().addModifier("Dedication", (double) (playerData.getLevel()) / 2, false, true);
 						}
@@ -1075,7 +1076,7 @@ public class EntityEventsRM {
 
 					// Hearts Are Power Ability
 
-					if (playerData.isAbilityEquipped(StringsRM.heartsPower) && playerData.getAlignment() != Utils.OrgMember.NONE) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.HEARTS_POWER) && playerData.getAlignment() != Utils.OrgMember.NONE) {
 						float heartsBoost = (playerData.getHearts() * 0.0002f);
 						//System.out.println(playerData.getHearts() + " > " + heartsBoost);
 						float overBoost = heartsBoost * 0.025f;
@@ -1102,7 +1103,7 @@ public class EntityEventsRM {
 					}
 
 					// My Friends Are My Power
-					if (playerData.isAbilityEquipped(StringsRM.friendsPower)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.FRIEND_POWER)) {
 						Party party = worldData.getPartyFromMember(player.getUUID());
 						int friendBoost = 0;
 						if (party != null || globalData.hasDreamEaterSummoned()) {
@@ -1123,15 +1124,15 @@ public class EntityEventsRM {
 					}
 
 					// Attack Haste Ability
-					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.attackHaste)) {
-						double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste);
+					if (!player.level().isClientSide && playerData.isAbilityEquipped(ModAbilitiesRM.ATTACK_HASTE)) {
+						double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.ATTACK_HASTE);
 						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
-					} else if (!playerData.isAbilityEquipped(StringsRM.attackHaste)) {
+					} else if (!playerData.isAbilityEquipped(ModAbilitiesRM.ATTACK_HASTE)) {
 						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
 					}
 
 					// Ultima Weapon Ability
-					if (playerData.isAbilityEquipped(StringsRM.ultima_weapon_ability) || (OrganizationPanelAbilityHelper.hasAbility(player, StringsRM.ultima_weapon_ability))) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.ULTIMA_WEAPON_ABILITY) || (OrganizationPanelAbilityHelper.hasAbility(player, StringsRM.ultima_weapon_ability))) {
 						ItemStack heldStack = player.getMainHandItem();
 						Item heldItem = heldStack.getItem();
 
@@ -1224,8 +1225,8 @@ public class EntityEventsRM {
 					}
 
 					// HP Boost
-					if (playerData.isAbilityEquipped(StringsRM.hpBoost)) {
-						int countHP = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpBoost);
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.HP_BOOST)) {
+						int countHP = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.HP_BOOST);
 						int newHpBonus = countHP * 10;
 
 						int lastHp = globalData.getLastHpBoostBonus();
@@ -1251,8 +1252,8 @@ public class EntityEventsRM {
 
 
 					// MP Boost
-					if (playerData.isAbilityEquipped(StringsRM.mpBoost)) {
-						int countMP = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpBoost);
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.MP_BOOST)) {
+						int countMP = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_BOOST);
 						int newMpBonus = countMP * 10;
 
 						int lastMp = globalData.getLastMpBoostBonus();
@@ -1270,7 +1271,7 @@ public class EntityEventsRM {
 					}
 
 					// Tidus Keyblade
-					if (!player.level().isClientSide && playerData.isAbilityEquipped(StringsRM.Tidus)) {
+					if (!player.level().isClientSide && playerData.isAbilityEquipped(ModAbilitiesRM.TIDUS)) {
 						if (player.isUnderWater()) {
 							playerData.getStrengthStat().addModifier("Tidus", 5, false, false);
 							player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 10, 1));
@@ -1278,7 +1279,7 @@ public class EntityEventsRM {
 						} else if (!player.isUnderWater()) {
 							playerData.getStrengthStat().removeModifier("Tidus");
 						}
-					} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(StringsRM.Tidus)) {
+					} else if (!player.level().isClientSide && !playerData.isAbilityEquipped(ModAbilitiesRM.TIDUS)) {
 						playerData.getStrengthStat().removeModifier("Tidus");
 					}
 
@@ -1323,8 +1324,8 @@ public class EntityEventsRM {
 								globalData.remStyleTicks(1);
 								//System.out.println(globalData.getStyleTicks());
 							} else if (globalData.getStyleTicks() <= 0) {
-								if (ModDriveFormsRM.styles.contains(ResourceLocation.parse(playerData.getActiveDriveForm()))) { //Only check styles bruh
-									playerData.setActiveDriveForm(DriveForm.NONE.toString());
+								if (ModDriveFormsRM.styles.contains(playerData.getActiveDriveForm())) { //Only check styles bruh
+									playerData.setActiveDriveForm(DriveForm.NONE);
 								}
 							}
 
@@ -1344,10 +1345,10 @@ public class EntityEventsRM {
 
 							player.invulnerableTime = globalData.getStepTicks();
 
-							if (playerData.isAbilityEquipped(StringsRM.darkStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.DARK.get().getRegistryName().toString())) {
+							if (playerData.isAbilityEquipped(ModAbilitiesRM.DARK_STEP) || playerData.isFormActive(ModDriveFormsRM.DARK)) {
 								player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 							}
-							if (playerData.isAbilityEquipped(StringsRM.lightStep) || playerData.getActiveDriveForm().equals(ModDriveFormsRM.LIGHT.get().getRegistryName().toString())) {
+							if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_STEP) || playerData.isFormActive(ModDriveFormsRM.LIGHT)) {
 								player.level().playSound(null, player.blockPosition(), ModSoundsRM.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 							}
 						}
@@ -1538,12 +1539,12 @@ public class EntityEventsRM {
 				if (event.getEntity() instanceof Player player) {
 					PlayerData playerData = PlayerData.get(player);
 					// MP Slow Testing
-					if (playerData.isAbilityEquipped(StringsRM.mpSlow) || playerData.isAbilityEquipped(StringsRM.mpSlowra) || playerData.isAbilityEquipped(StringsRM.mpSlowga)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.MP_SLOW) || playerData.isAbilityEquipped(ModAbilitiesRM.MP_SLOWRA) || playerData.isAbilityEquipped(ModAbilitiesRM.MP_SLOWGA)){
 						//System.out.println(Utils.getMPHasteValue(playerData));
 						double val = 0;
-						val += (1.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlow));
-						val += (3.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlowra));
-						val += (5.5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.mpSlowga));
+						val += (1.5 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_SLOW));
+						val += (3.5 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_SLOWRA));
+						val += (5.5 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_SLOWGA));
 
 						//System.out.println("Slow Haste Value: "+val);
 
@@ -1561,14 +1562,14 @@ public class EntityEventsRM {
 					}
 
 					// One HP Ability
-					if (playerData.isAbilityEquipped(StringsRM.oneHP)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.ONE_HP)){
 						if (player.getHealth() > 1){
 							player.setHealth(1);
 						}
 					}
 
 					// Fever Pitch Passive
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())) {
+					if (playerData.isFormActive(ModDriveFormsRM.FEVER_PITCH)) {
 						player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED,2,1,true,true,true));
 					}
 
@@ -1580,38 +1581,38 @@ public class EntityEventsRM {
 					PlayerData playerData = PlayerData.get(player);
 					if (playerData != null) {
 						if (player.isSprinting()) {
-							if (player.tickCount % 40 == 0 && playerData.isAbilityEquipped(StringsRM.hpWalker)) {
-								int hpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.hpWalker);
+							if (player.tickCount % 40 == 0 && playerData.isAbilityEquipped(ModAbilitiesRM.HP_WALKER)) {
+								int hpWalkerMult = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.HP_WALKER);
 								player.heal(hpWalkerMult);
 							}
-							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.mpWalker)) {
+							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(ModAbilitiesRM.MP_WALKER)) {
 								if (!playerData.getRecharge()) {
-									int mpWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.mpWalker);
+									int mpWalkerMult = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_WALKER);
 									playerData.addMP(0.5 * mpWalkerMult);
 								}
 							}
-							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.expWalker) && player.onGround()) {
-								if (!playerData.isAbilityEquipped(Strings.zeroExp)) {
-									if (playerData.isAbilityEquipped(Strings.experienceBoost) && player.getHealth() <= player.getMaxHealth() / 2) {
-										int expBoost = playerData.getNumberOfAbilitiesEquipped(Strings.experienceBoost);
-										playerData.addExperience(player, (int) ((playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker) * expBoost)  * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
+							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(ModAbilitiesRM.EXP_WALKER) && player.onGround()) {
+								if (!playerData.isAbilityEquipped(ModAbilities.ZERO_EXP)) {
+									if (playerData.isAbilityEquipped(ModAbilities.EXPERIENCE_BOOST) && player.getHealth() <= player.getMaxHealth() / 2) {
+										int expBoost = playerData.getNumberOfAbilitiesEquipped(ModAbilities.EXPERIENCE_BOOST);
+										playerData.addExperience(player, (int) ((playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.EXP_WALKER) * expBoost)  * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
 									} else {
-										playerData.addExperience(player, (int) (playerData.getNumberOfAbilitiesEquipped(StringsRM.expWalker) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
+										playerData.addExperience(player, (int) (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.EXP_WALKER) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.xpMultiplier.get()), false, true);
 									}
 								}
 							}
-							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsRM.heartWalker)) {
-								playerData.addHearts((int) (5 * playerData.getNumberOfAbilitiesEquipped(StringsRM.heartWalker) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.heartMultiplier.get()));
+							if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(ModAbilitiesRM.HEART_WALKER)) {
+								playerData.addHearts((int) (5 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.HEART_WALKER) * online.kingdomkeys.kingdomkeys.config.ModConfigs.SERVER.heartMultiplier.get()));
 							}
-							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(StringsRM.focusWalker)) {
+							if (player.tickCount % 50 == 0 && playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_WALKER)) {
 								if (!playerData.getRecharge()) {
-									int focusWalkerMult = playerData.getNumberOfAbilitiesEquipped(StringsRM.focusWalker);
+									int focusWalkerMult = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.FOCUS_WALKER);
 									playerData.addFocus(0.5 * focusWalkerMult);
 								}
 							}
 						}
 
-						if (playerData.isAbilityEquipped(StringsRM.ribbon)){
+						if (playerData.isAbilityEquipped(ModAbilitiesRM.RIBBON)){
 							List<MobEffectInstance> effectsList = new ArrayList<>();
 							for (MobEffectInstance e : player.getActiveEffects()) {
 								if (e.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
@@ -1633,7 +1634,7 @@ public class EntityEventsRM {
 	public void playerHeal(LivingHealEvent event){
 		if (event.getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			if (playerData.isAbilityEquipped(StringsRM.oneHP)){
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.ONE_HP)){
 				event.setCanceled(true);
 			}
 		}
@@ -1694,7 +1695,7 @@ public class EntityEventsRM {
 		}
 
 		int exceedLevel = exceed.getAmplifier() + 1;
-		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
+		int fireBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST);
 
 		float baseBonusDamage = switch (exceedLevel) {
 			case 1 -> 8.0F;
@@ -1764,7 +1765,7 @@ public class EntityEventsRM {
 	public void onEffectAdded(MobEffectEvent.Added event){
 		if (event.getEntity() instanceof Player player){
 			PlayerData playerData = PlayerData.get(player);
-			if (playerData.isAbilityEquipped(StringsRM.ribbon)){
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RIBBON)){
 				MobEffectInstance effect = event.getEffectInstance();
 				if (effect != null){
 					var effectHolder = effect.getEffect();
@@ -1842,7 +1843,7 @@ public class EntityEventsRM {
 			// Rage form
 			float formMissingHP = (player.getHealth() / player.getMaxHealth()) * 100;
 			RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
-			if (!player.level().isClientSide() && !playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
+			if (!player.level().isClientSide() && !playerData.isFormActive(ModDriveFormsRM.RAGE)) {
 				if (Utils.isLowHP(player.getHealth(), player.getMaxHealth())) {
 					if (!state.hasRolled) {
 						double chance = calculateDynamicChance(formMissingHP);
@@ -1854,7 +1855,7 @@ public class EntityEventsRM {
 					}
 
 					if (state.shouldAppear) {
-						playerData.addReactionCommand(StringsRM.RageRC, player);
+						playerData.addReactionCommand(ResourceLocation.parse(StringsRM.RageRC), player);
 						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 				}
@@ -1878,13 +1879,13 @@ public class EntityEventsRM {
 			}
 
 			// Adrenaline
-			if (playerData.isAbilityEquipped(StringsRM.adrenaline)) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.ADRENALINE)) {
 				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
 					playerData.getStrengthStat().addModifier("adrenaline", 5, false, false);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);				}
 			}
 			// Critical Surge
-			if (playerData.isAbilityEquipped(StringsRM.critical_surge)){
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.CRITICAL_SURGE)){
 				if (player.getHealth() - event.getNewDamage() <= player.getMaxHealth() / 4){
 					playerData.getMagicStat().addModifier("critical_surge", 5, false, false);
 					PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);				}
@@ -1895,7 +1896,7 @@ public class EntityEventsRM {
 				PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 			}
 
-			if (playerData.isAbilityEquipped(StringsRM.Lyric1)){
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.LYRIC1)){
 				if (event.getSource().getMsgId().equals(KKResistanceType.lightning.toString()) || event.getSource().type().msgId().equals("lightning")){
 					float thunderDMG = event.getNewDamage();
 					//System.out.println("Thunder Resist, " + thunderDMG +" Reduced to -> "+ (thunderDMG - (thunderDMG *= 0.1f))); //Uncomment me for debugging ig
@@ -1906,7 +1907,7 @@ public class EntityEventsRM {
 			//Protect Abilities
 
 			// MP Shield
-			if (playerData.isAbilityEquipped(StringsRM.mpShield) && playerData.getMP() > 0 && !playerData.getRecharge()) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.MP_SHIELD) && playerData.getMP() > 0 && !playerData.getRecharge()) {
 				float DMGTaken = event.getNewDamage();
 
 				if (DMGTaken > playerData.getMP()) {
@@ -1915,13 +1916,13 @@ public class EntityEventsRM {
 				} else {
 					event.setNewDamage(0);
 					playerData.remMP(DMGTaken * 1.5);
-					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(Strings.mpRage));
-					if (playerData.isAbilityEquipped(Strings.mpRage) && playerData.getMP() > 11) {
+					float mpRageModifier = DMGTaken * (0.1f * playerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_RAGE));
+					if (playerData.isAbilityEquipped(ModAbilities.MP_RAGE) && playerData.getMP() > 11) {
 						playerData.addMP(mpRageModifier);
 						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
-					if (playerData.isAbilityEquipped(Strings.damageDrive)) {
-						playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(Strings.damageDrive)));
+					if (playerData.isAbilityEquipped(ModAbilities.DAMAGE_DRIVE)) {
+						playerData.addDP(DMGTaken * (0.1F * playerData.getNumberOfAbilitiesEquipped(ModAbilities.DAMAGE_DRIVE)));
 						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
 					}
 				}
@@ -1958,7 +1959,7 @@ public class EntityEventsRM {
 				}*/
 
 				// Critical Impact Passive
-				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())) {
+				if (playerData.isFormActive(ModDriveFormsRM.CRITICAL_IMPACT)) {
 					if (event.getSource().type().msgId().equals("player")) {
 						float dmg = playerData.getStrength(true) * 0.15f;
 						LivingEntity target = event.getEntity();
@@ -1968,7 +1969,7 @@ public class EntityEventsRM {
 				}
 
 				// Spellweaver Passive
-				if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())) {
+				if (playerData.isFormActive(ModDriveFormsRM.SPELLWEAVER)) {
 					if (event.getSource().type().msgId().equals("player")) {
 						float dmg = playerData.getMagic(true) * 0.1f;
 						LivingEntity target = event.getEntity();
@@ -1978,9 +1979,9 @@ public class EntityEventsRM {
 				}
 
 
-				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost);
+				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST);
 				float addDmg = (float) (crtBoosts * 3);
-				if (playerData.isAbilityEquipped(StringsRM.Jecht)){
+				if (playerData.isAbilityEquipped(ModAbilitiesRM.JECHT)){
 					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
 						//System.out.println(addDmg);
 						event.getEntity().hurt(event.getEntity().damageSources().magic(), addDmg);
@@ -1989,13 +1990,13 @@ public class EntityEventsRM {
 				}
 
 				// My Exclusive Ability
-				if (playerData.isAbilityEquipped(StringsRM.Xephiro)){
+				if (playerData.isAbilityEquipped(ModAbilitiesRM.XEPHIRO)){
 
 					float currentHP = player.getHealth();
 					float maxHP =  player.getMaxHealth();
 					float missingHPRatio = 1.f - (currentHP / maxHP);
 
-					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
+					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1f);
 					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
 					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
 					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
@@ -2013,19 +2014,19 @@ public class EntityEventsRM {
 
 
 				// Spellblade Ability
-				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost);
-				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost);
-				int thundBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost);
-				int waterBoosts = playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost);
-				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
-				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost);
+				int fireBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST);
+				int blizBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.BLIZZARD_BOOST);
+				int thundBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST);
+				int waterBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.WATER_BOOST);
+				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST);
+				int lightBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST);
 
 				// ((Base STR * 0.25) + (Base MAG * 0.25)) / 2 -- this is to make it so the boosts are more impactful.
 				float dmg = (float) ((playerData.getStrengthStat().get() * 0.25f) + (float) (playerData.getMagicStat().get() * 0.25f) / 2F); //player
 
 				if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
 
-					if (playerData.isAbilityEquipped(StringsRM.spellblade)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.SPELLBLADE)) {
 						Map<String, Integer> boosts = Map.of(
 								"thunder", thundBoosts,
 								"fire", fireBoosts,
@@ -2117,20 +2118,20 @@ public class EntityEventsRM {
 
 					//player.sendSystemMessage(Component.literal("Damage Type: "+ event.getSource().type().msgId())); // Debugging Message
 
-					if (playerData.isAbilityEquipped(StringsRM.lightInfusion)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_INFUSION)){
 						if (!event.getSource().type().msgId().equals("light")){
 							//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
 							event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) lightBoosts / 2) * dmg));
 							}
 						}
 					}
-				if (playerData.isAbilityEquipped(StringsRM.darkInfusion)){
+				if (playerData.isAbilityEquipped(ModAbilitiesRM.DARK_INFUSION)){
 					if (!event.getSource().type().msgId().equals("darkness") && !event.getSource().type().msgId().equals("explosion.player")){
 						//player.sendSystemMessage(Component.literal("Light Infusion Applied!"));
 						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg));
 					}
 				}
-				if (playerData.isAbilityEquipped(StringsRM.twilightInfusion)) {
+				if (playerData.isAbilityEquipped(ModAbilitiesRM.TWILIGHT_INFUSION)) {
 						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
 						event.getEntity().invulnerableTime = 0;
 						event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, event.getEntity(), null), (((float) darkBoosts / 2) * dmg)/2);
@@ -2146,9 +2147,9 @@ public class EntityEventsRM {
 				return;
 
 			// Light/Dark Boost downsides
-			if (playerData.isAbilityEquipped(StringsRM.darknessBoost) || playerData.isAbilityEquipped(StringsRM.lightBoost)){
-				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.025F;
-				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.025F;
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.DARKNESS_BOOST) || playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_BOOST)){
+				float darkBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.025F;
+				float lightBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.025F;
 				float damage = event.getNewDamage();
 
 					/*
@@ -2161,7 +2162,7 @@ public class EntityEventsRM {
 				if (event.getSource().getMsgId().equals(KKResistanceType.darkness.toString())) {
 					//System.out.println("Darkness");
 					damage -= (damage * darkBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.lightBoost)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_BOOST)){
 						damage += (damage * lightBoosts);
 					}
 				}
@@ -2178,7 +2179,7 @@ public class EntityEventsRM {
 				if (event.getSource().getMsgId().equals(KKResistanceType.light.toString())) {
 					//System.out.println("Light");
 					damage -= (damage * lightBoosts);
-					if (playerData.isAbilityEquipped(StringsRM.darknessBoost)){
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.DARKNESS_BOOST)){
 						damage += (damage * darkBoosts);
 					}
 				}

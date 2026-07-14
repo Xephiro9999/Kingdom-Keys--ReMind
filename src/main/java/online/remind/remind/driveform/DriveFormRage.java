@@ -12,6 +12,7 @@ import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
@@ -34,8 +35,8 @@ public class DriveFormRage extends DriveForm {
 				PlayerData playerData = PlayerData.get(player);
 				GlobalDataRM formData = ModDataRM.getGlobal(player);
 
-				if (playerData != null && playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())) {
-					if (playerData.isAbilityEquipped(StringsRM.rageAwakened)) {
+				if (playerData != null && playerData.isFormActive(ModDriveFormsRM.RAGE)) {
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.RAGE_AWAKENED)) {
 						//double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(2).split(",")[1]);
 						double mult = 2;
 						playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
@@ -58,7 +59,7 @@ public class DriveFormRage extends DriveForm {
 
 	@Override
 	public boolean displayInCommandMenu(Player player){
-		return PlayerData.get(player).isAbilityEquipped(StringsRM.rageAwakened);
+		return PlayerData.get(player).isAbilityEquipped(ModAbilitiesRM.RAGE_AWAKENED);
 	}
 
 }

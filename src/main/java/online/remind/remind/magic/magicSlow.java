@@ -22,7 +22,7 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import java.util.List;
 
 public class magicSlow extends Magic {
-	public magicSlow(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicSlow(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, null);
 		setTier(tier);
 	}

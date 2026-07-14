@@ -22,7 +22,7 @@ import java.util.List;
 
 public class magicHaste extends Magic {
 
-	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicHaste(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 		setTier(tier);
 	}

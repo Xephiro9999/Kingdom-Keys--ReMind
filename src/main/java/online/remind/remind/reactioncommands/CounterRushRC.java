@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.reactioncommand.CounterRushCore;
@@ -27,7 +28,7 @@ public class CounterRushRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) (playerData.getStrengthStat().get() * 0.015f);
-        int hits = (int) (4 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.5));
+        int hits = (int) (4 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.ATTACK_HASTE) * 0.5));
         float radius = 3;
         globalData.setRCCooldownTicks(60);
         int hitsDealt = 0;
@@ -63,14 +64,14 @@ public class CounterRushRC extends ReactionCommand {
         CounterRushCore core = new CounterRushCore(player, player.level(), targetList, dmg, false);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);
-        playerData.removeReactionCommand(getRegistryName().toString());
+        playerData.removeReactionCommand(getRegistryName());
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
         if (playerData != null ){
-	        return playerData.isAbilityEquipped(StringsRM.counterRush);
+	        return playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH);
         }
         return false;
     }

@@ -10,7 +10,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 
 public class magicBalloon extends Magic {
 
-	public magicBalloon(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicBalloon(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

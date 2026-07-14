@@ -26,7 +26,7 @@ public class EpicRMWeapons {
     public static final Function<Item, WeaponCapability.Builder> XEPHIRO = item ->
         WeaponCapability.builder()
                 .category(CapabilityItem.WeaponCategories.SWORD).styleProvider(playerpatch ->
-                        switch (PlayerData.get((Player) playerpatch.getOriginal()).getActiveDriveForm()) {
+                        switch (PlayerData.get((Player) playerpatch.getOriginal()).getActiveDriveForm().toString()) {
                             case Strings.Form_Valor -> KKStyles.VALOR;
                             case Strings.Form_Master -> KKStyles.MASTER;
                             case Strings.Form_Wisdom -> KKStyles.WISDOM;

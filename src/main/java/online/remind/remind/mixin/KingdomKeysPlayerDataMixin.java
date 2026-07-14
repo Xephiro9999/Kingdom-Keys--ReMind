@@ -1,6 +1,7 @@
 package online.remind.remind.mixin;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.dreameater.DreamEaterAbilityLinkHelper;
@@ -75,8 +76,7 @@ public abstract class KingdomKeysPlayerDataMixin {
             require = 0
     )
     private void kkremind$fakeDreamEaterLinkAsEquippedAbilityLevel(
-            String abilityId,
-            CallbackInfoReturnable<int[]> cir
+            ResourceLocation abilityId, CallbackInfoReturnable<int[]> cir
     ) {
         int[] original = cir.getReturnValue();
 
@@ -87,7 +87,7 @@ public abstract class KingdomKeysPlayerDataMixin {
         PlayerData self = (PlayerData) (Object) this;
         Player player = DreamEaterVirtualAbilityBridge.getOwner(self);
 
-        if (KKREMIND_DEBUG && LOGGED_LEVEL_CHECKS.add(String.valueOf(abilityId))) {
+        if (KKREMIND_DEBUG && LOGGED_LEVEL_CHECKS.add(abilityId.toString())) {
             System.out.println(
                     "[KKReMind/DELinks] KK getEquippedAbilityLevel check: "
                             + abilityId
@@ -104,7 +104,7 @@ public abstract class KingdomKeysPlayerDataMixin {
             return;
         }
 
-        if (!DreamEaterVirtualAbilityBridge.hasDreamEaterLinkAbility(player, abilityId)) {
+        if (!DreamEaterVirtualAbilityBridge.hasDreamEaterLinkAbility(player, abilityId.toString())) {
             return;
         }
 
@@ -116,14 +116,13 @@ public abstract class KingdomKeysPlayerDataMixin {
     }
 
     @Inject(
-            method = "getNumberOfAbilitiesEquipped",
+            method = "getNumberOfAbilitiesEquipped(Lnet/minecraft/resources/ResourceLocation;)I",
             at = @At("RETURN"),
             cancellable = true,
             require = 0
     )
     private void kkremind$fakeDreamEaterLinkAsNumberEquipped(
-            String abilityId,
-            CallbackInfoReturnable<Integer> cir
+            ResourceLocation abilityId, CallbackInfoReturnable<Integer> cir
     ) {
         Integer original = cir.getReturnValue();
 
@@ -134,7 +133,7 @@ public abstract class KingdomKeysPlayerDataMixin {
         PlayerData self = (PlayerData) (Object) this;
         Player player = DreamEaterVirtualAbilityBridge.getOwner(self);
 
-        if (KKREMIND_DEBUG && LOGGED_NUMBER_CHECKS.add(String.valueOf(abilityId))) {
+        if (KKREMIND_DEBUG && LOGGED_NUMBER_CHECKS.add(abilityId.toString())) {
             System.out.println(
                     "[KKReMind/DELinks] KK getNumberOfAbilitiesEquipped check: "
                             + abilityId
@@ -151,7 +150,7 @@ public abstract class KingdomKeysPlayerDataMixin {
             return;
         }
 
-        if (!DreamEaterVirtualAbilityBridge.hasDreamEaterLinkAbility(player, abilityId)) {
+        if (!DreamEaterVirtualAbilityBridge.hasDreamEaterLinkAbility(player, abilityId.toString())) {
             return;
         }
 

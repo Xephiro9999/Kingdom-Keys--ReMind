@@ -81,7 +81,7 @@ public class RagingBurstRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(playerData != null){
-            if(playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())){
+            if(playerData.isFormActive(ModDriveFormsRM.RAGE)){
                 if(globalData.getRiskchargeCount() == 3 && globalData.getRCCooldownTicks() == 0){
                     return true;
                 }

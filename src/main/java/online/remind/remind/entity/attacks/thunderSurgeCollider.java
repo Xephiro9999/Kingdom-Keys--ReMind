@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
@@ -86,7 +87,7 @@ public class thunderSurgeCollider extends ThrowableProjectile {
         PlayerData playerData = PlayerData.get(caster);
         if (playerData != null) {
             damage = playerData.getStrength(true) * 0.2f;
-            double dmgMult = (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost)) * 0.5f;
+            double dmgMult = (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST)) * 0.5f;
             damage += (damage * dmgMult);
         }
 

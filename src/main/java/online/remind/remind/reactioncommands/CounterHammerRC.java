@@ -7,10 +7,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
@@ -30,8 +32,8 @@ public class CounterHammerRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) playerData.getStrengthStat().get();
-        float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.10F);
-        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.25F);
+        float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.10F);
+        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.25F);
         globalData.setRCCooldownTicks(60);
 
 
@@ -56,7 +58,7 @@ public class CounterHammerRC extends ReactionCommand {
                 }
             }
         }
-        playerData.removeReactionCommand(getRegistryName().toString());
+        playerData.removeReactionCommand(getRegistryName());
 
     }
 
@@ -64,7 +66,7 @@ public class CounterHammerRC extends ReactionCommand {
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
         if (playerData != null ){
-            return playerData.isAbilityEquipped(StringsRM.counterHammer);
+            return playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER);
         }
         return false;
     }

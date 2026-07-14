@@ -13,7 +13,7 @@ import online.remind.remind.integration.epicfight.RMIntegrationHooks;
 
 public class attackSlotEdge extends Magic {
 
-    public attackSlotEdge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackSlotEdge(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

@@ -6,7 +6,7 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackBlizzardStrike extends attackElementStrike {
 
-	public attackBlizzardStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public attackBlizzardStrike(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, tier, gmAbility, StrikeElement.BLIZZARD, SoundEvents.PLAYER_HURT_FREEZE);
 	}
 }

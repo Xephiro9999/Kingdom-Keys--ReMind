@@ -19,7 +19,7 @@ import online.remind.remind.effect.ModMobEffectsRM;
 import java.util.List;
 
 public class magicConfuse extends Magic {
-	public magicConfuse(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicConfuse(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, null);
 		setTier(tier);
 	}

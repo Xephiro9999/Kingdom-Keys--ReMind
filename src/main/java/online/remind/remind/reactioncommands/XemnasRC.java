@@ -8,6 +8,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.item.organization.IOrgWeapon;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.entity.reactioncommand.ThornsEntity;
@@ -28,7 +29,7 @@ public class XemnasRC extends ReactionCommand {
             PlayerData playerData = PlayerData.get(player);
 
             GlobalDataRM globalData = ModDataRM.getGlobal(player);
-            float dmgmult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.2F);
+            float dmgmult = (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.2F);
             globalData.setRCCooldownTicks(60);
             playerData.setFP(playerData.getFP() - 40);
 

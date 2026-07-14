@@ -37,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
@@ -539,13 +540,13 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
     private void updateMpHasteMult(PlayerData ownerData) {
         this.mpHasteMult = 0F;
 
-        if (ownerData.isAbilityEquipped(Strings.mpHaste)
-                || ownerData.isAbilityEquipped(Strings.mpHastera)
-                || ownerData.isAbilityEquipped(Strings.mpHastega)) {
+        if (ownerData.isAbilityEquipped(ModAbilities.MP_HASTE)
+                || ownerData.isAbilityEquipped(ModAbilities.MP_HASTERA)
+                || ownerData.isAbilityEquipped(ModAbilities.MP_HASTEGA)) {
 
-            int mpHastes = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHaste);
-            int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastera);
-            int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastega);
+            int mpHastes = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTE);
+            int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTERA);
+            int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTEGA);
 
             this.mpHasteMult = (mpHastes * 0.15F)
                     + (mpHasteras * 0.3F)
@@ -806,7 +807,7 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
         this.castCooldown = 20 * 8;
     }
     private void castBalloonOnTarget(Player owner, PlayerData ownerData, LivingEntity target, int balloonTier) {
-        float dmgMult = 1.0F + ownerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) * 0.2F;
+        float dmgMult = 1.0F + ownerData.getNumberOfAbilitiesEquipped(ModAbilities.WATER_BOOST) * 0.2F;
         String spellName;
 
         this.getLookControl().setLookAt(target, 30.0F, 30.0F);

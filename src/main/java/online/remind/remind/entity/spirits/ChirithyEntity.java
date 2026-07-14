@@ -34,6 +34,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
@@ -41,6 +42,7 @@ import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCAeroSoundPacket;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -328,9 +330,9 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return;
         }
 
-        int mpHastes = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHaste);
-        int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastera);
-        int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(Strings.mpHastega);
+        int mpHastes = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTE);
+        int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTERA);
+        int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTEGA);
 
         mpHasteMult = (mpHastes * 0.15F) + (mpHasteras * 0.3F) + (mpHastegas * 0.45F);
     }

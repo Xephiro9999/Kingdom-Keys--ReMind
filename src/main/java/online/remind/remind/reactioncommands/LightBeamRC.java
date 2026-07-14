@@ -11,9 +11,11 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.entity.reactioncommand.LightBeamEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -31,7 +33,7 @@ public class LightBeamRC extends ReactionCommand {
         if (conditionsToAppear(player, player)) {
             PlayerData playerData = PlayerData.get(player);
             GlobalDataRM globalData = ModDataRM.getGlobal(player);
-            float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.25F;
+            float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.25F;
 
 
             playerData.setFP(playerData.getFP() - 40);
@@ -57,7 +59,7 @@ public class LightBeamRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(playerData != null){
-            if(playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) && globalData.getRCCooldownTicks() == 0){
+            if(playerData.isFormActive(ModDriveFormsRM.LIGHT) && globalData.getRCCooldownTicks() == 0){
                 return true;
             }
         }

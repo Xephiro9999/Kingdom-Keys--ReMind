@@ -17,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Party;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
@@ -99,7 +100,7 @@ public class LightBeamEntity extends ThrowableProjectile {
                         target.hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT,this, this.getOwner()), dmg);
                     }
                     PlayerData playerData = PlayerData.get(player);
-                    if(playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm)) {
+                    if(playerData.isFormActive(ModDriveFormsRM.LIGHT)) {
                         playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), playerData.getDriveFormExp(playerData.getActiveDriveForm()) + 2);
                     }
 

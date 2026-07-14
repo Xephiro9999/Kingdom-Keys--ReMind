@@ -10,6 +10,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +25,7 @@ public class KKDriveFormMixin {
     public void initDriveInject(Player player, CallbackInfo ci) {
         PlayerData playerData = PlayerData.get(player);
         if (playerData != null && playerData.getEquippedKeychain(DriveForm.NONE) != null) {
-            if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
+            if (playerData.isFormActive(ModDriveFormsRM.DARK)) {
                 if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.soulEaterChain.get() || playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.keybladeOfPeoplesHeartsChain.get()) {
 
                     player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MODE.get(), SoundSource.MASTER, 1.0f, 1.0f);

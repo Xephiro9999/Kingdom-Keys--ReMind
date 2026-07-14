@@ -8,6 +8,7 @@ import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.CommandMenuItem;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.lib.StringsRM;
 
 @EventBusSubscriber(value= Dist.CLIENT)
@@ -17,7 +18,7 @@ public class CommandMenuEvents {
     public static void cmEnter(CommandMenuEvent.ItemUpdate event) {
         PlayerData playerData = PlayerData.get(Minecraft.getInstance().player);
         CommandMenuItem item = event.getItem();
-        if (playerData.isAbilityEquipped(StringsRM.darkPassage)) {
+        if (playerData.isAbilityEquipped(ModAbilitiesRM.DARK_PASSAGE)) {
             if (item.getId().equals(CommandMenuGui.INSTANCE.portals)) {
                 //Show portals
                 event.setCanceled(true);
@@ -31,7 +32,7 @@ public class CommandMenuEvents {
             }
         }
 
-        if (playerData.isAbilityEquipped(StringsRM.munny_magic)){
+        if (playerData.isAbilityEquipped(ModAbilitiesRM.MUNNY_MAGIC)){
             if (playerData.getRecharge()) {
                 if (item.getId().equals(CommandMenuGui.INSTANCE.magic)) {
                     CommandMenuGui.INSTANCE.updateRootItem(item, CommandMenuGui.INSTANCE.magic, event.getGuiGraphics());
