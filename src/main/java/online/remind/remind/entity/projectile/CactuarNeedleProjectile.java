@@ -79,9 +79,4 @@ public class CactuarNeedleProjectile extends Arrow {
     public void playerTouch(Player player) {
         // No pickup.
     }
-
-    @Override
-    protected ItemStack getDefaultPickupItem() {
-        return ItemStack.EMPTY;
-    }
 }
