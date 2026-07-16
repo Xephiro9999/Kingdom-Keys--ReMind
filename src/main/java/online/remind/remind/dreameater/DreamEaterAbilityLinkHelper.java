@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -420,9 +421,9 @@ public class DreamEaterAbilityLinkHelper {
         }
 
         boolean changed = false;
-        java.util.Map<String, int[]> abilityMap = playerData.getAbilityMap();
+        Map<ResourceLocation, int[]> abilityMap = playerData.getAbilityMap();
 
-        java.util.Set<String> idsToRemove = new java.util.HashSet<>();
+        Set<String> idsToRemove = new HashSet<>();
 
         for (String rawAbilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
             collectAbilityIdVariants(idsToRemove, rawAbilityId);
@@ -437,8 +438,8 @@ public class DreamEaterAbilityLinkHelper {
                 continue;
             }
 
-            if (abilityMap.containsKey(abilityId)) {
-                abilityMap.remove(abilityId);
+            if (abilityMap.containsKey(ResourceLocation.parse(abilityId))) {
+                abilityMap.remove(ResourceLocation.parse(abilityId));
                 changed = true;
                 System.out.println("[KKReMind/DELinks] Removed AP-eating Dream Eater abilityMap entry: " + abilityId + " from " + player.getGameProfile().getName());
             }

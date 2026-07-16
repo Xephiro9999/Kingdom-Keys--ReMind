@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -33,7 +34,7 @@ public class RegenRC extends ReactionCommand {
 
             float dmg = playerData.getStrength(true) * 0.25f + playerData.getMagic(true) * 0.35f;
             float dmgmult = 1;
-            if (playerData.isAbilityEquipped(StringsRM.spellblade)){
+            if (playerData.isAbilityEquipped(ModAbilitiesRM.SPELLBLADE)){
                 dmgmult = 1.5f;
             }
 
@@ -64,7 +65,7 @@ public class RegenRC extends ReactionCommand {
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if (playerData != null) {
             if (playerData.getAlignment() == Utils.OrgMember.NONE) {
-                if (playerData.isAbilityEquipped(StringsRM.Regen) && globalData.getRCCooldownTicks() == 0) {
+                if (playerData.isAbilityEquipped(ModAbilitiesRM.REGEN) && globalData.getRCCooldownTicks() == 0) {
 
                     return true;
                 }

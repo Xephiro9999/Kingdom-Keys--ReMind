@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.lib.StringsRM;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class CommandMenuMixin {
 
     @ModifyExpressionValue(
-            method = "createMagicFromRegistry",
+            method = "lambda$createMagics$36",
             at = @At(
                     value = "INVOKE",
                     target = "Lonline/kingdomkeys/kingdomkeys/data/PlayerData;getRecharge()Z",
@@ -31,7 +32,7 @@ public class CommandMenuMixin {
         Player player = Minecraft.getInstance().player;
         if (player == null) return true;
 
-        if(playerData.isAbilityEquipped(StringsRM.munny_magic)){
+        if(playerData.isAbilityEquipped(ModAbilitiesRM.MUNNY_MAGIC)){
             System.out.println("Munny Magic Activated!");
             return true;
         }

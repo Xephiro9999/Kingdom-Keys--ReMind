@@ -12,7 +12,7 @@ import online.remind.remind.entity.magic.OsmoseEntity;
 
 public class magicOsmose extends Magic {
 
-	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

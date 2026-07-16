@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
@@ -150,7 +151,7 @@ public class ExceedRC extends ReactionCommand {
             return false;
         }
 
-        if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+        if (!playerData.isFormActive(ModDriveForms.NONE)) {
             return false;
         }
 

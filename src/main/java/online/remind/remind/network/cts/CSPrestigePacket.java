@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
 import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
@@ -18,6 +19,7 @@ import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
@@ -71,21 +73,20 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.setMaxArmors(0);
 
             playerData.clearAbilities();
-            playerData.setEquippedShotlock("");
+            playerData.setEquippedShotlock(null);
 
             playerData.setSoAState(SoAState.NONE);
             globalData.addPrestigeLvl(1);
 
-            LinkedHashMap<String, int[]> driveForms = playerData.getDriveFormMap();
-	        for (Entry<String, int[]> entry : driveForms.entrySet()) {
+            LinkedHashMap<ResourceLocation, int[]> driveForms = playerData.getDriveFormMap();
+	        for (Entry<ResourceLocation, int[]> entry : driveForms.entrySet()) {
 		        int dfLevel = entry.getValue()[0];
-		        DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(entry.getKey()));
+		        DriveForm form = ModDriveForms.registry.get(entry.getKey());
 		        if (!form.getRegistryName().equals(DriveForm.NONE) && !form.getRegistryName().equals(DriveForm.SYNCH_BLADE)) {
 			        for (int i = 1; i <= dfLevel; i++) {
-				        String baseAbility = form.getBaseAbilityForLevel(i);
-				        if (baseAbility != null && !baseAbility.equals("")) {
-					        playerData.addAbility(baseAbility, false);
-				        }
+				        form.getBaseAbilityForLevel(i).ifPresent(baseAbility -> {
+                            playerData.addAbility(baseAbility, false);
+                        });
 			        }
 		        }
 	        }
@@ -157,35 +158,35 @@ public class CSPrestigePacket implements CustomPacketPayload {
             });
 
             // NG+ Bonus Abilities
-            playerData.addPAbility(Strings.experienceBoost);
-            playerData.addPAbility(Strings.luckyLucky);
-            playerData.addPAbility(StringsRM.dedication);
+            playerData.addPAbility(ModAbilities.EXPERIENCE_BOOST.location());
+            playerData.addPAbility(ModAbilities.LUCKY_STRIKE.location());
+            playerData.addPAbility(ModAbilitiesRM.DEDICATION.location());
 
             switch (globalData.getNGPWarriorCount()) {
-                case 1 -> playerData.addPAbility(Strings.synchBlade);
-                case 2 -> playerData.addPAbility(Strings.formBoost);
-                case 3 -> playerData.addPAbility(Strings.criticalBoost);
-                case 4 -> playerData.addPAbility(Strings.driveBoost);
-                case 5 -> playerData.addPAbility(StringsRM.attackHaste);
-                case 6 -> playerData.addPAbility(Strings.criticalBoost);
+                case 1 -> playerData.addPAbility(ModAbilities.SYNCH_BLADE.location());
+                case 2 -> playerData.addPAbility(ModAbilities.FORM_BOOST.location());
+                case 3 -> playerData.addPAbility(ModAbilities.CRITICAL_BOOST.location());
+                case 4 -> playerData.addPAbility(ModAbilities.DRIVE_BOOST.location());
+                case 5 -> playerData.addPAbility(ModAbilitiesRM.ATTACK_HASTE.location());
+                case 6 -> playerData.addPAbility(ModAbilities.CRITICAL_BOOST.location());
             }
 
             switch (globalData.getNGPMysticCount()) {
-                case 1 -> playerData.addPAbility(StringsRM.critical_surge);
-                case 2 -> playerData.addPAbility(Strings.mpHastega);
-                case 3 -> playerData.addPAbility(Strings.mpThrift);
-                case 4 -> playerData.addPAbility(Strings.grandMagicHaste);
-                case 5 -> playerData.addPAbility(StringsRM.mpBoost);
-                case 6 -> playerData.addPAbility(StringsRM.mpShield);
+                case 1 -> playerData.addPAbility(ModAbilitiesRM.CRITICAL_SURGE.location());
+                case 2 -> playerData.addPAbility(ModAbilities.MP_HASTEGA.location());
+                case 3 -> playerData.addPAbility(ModAbilities.MP_THRIFT.location());
+                case 4 -> playerData.addPAbility(ModAbilities.GRAND_MAGIC_HASTE.location());
+                case 5 -> playerData.addPAbility(ModAbilitiesRM.MP_BOOST.location());
+                case 6 -> playerData.addPAbility(ModAbilitiesRM.MP_SHIELD.location());
             }
 
             switch (globalData.getNGPGuardianCount()) {
-                case 1 -> playerData.addPAbility(Strings.damageControl);
-                case 2 -> playerData.addPAbility(Strings.damageDrive);
-                case 3 -> playerData.addPAbility(StringsRM.mpWalker);
-                case 4 -> playerData.addPAbility(StringsRM.hpWalker);
-                case 5 -> playerData.addPAbility(StringsRM.hpBoost);
-                case 6 -> playerData.addPAbility(Strings.protect);
+                case 1 -> playerData.addPAbility(ModAbilities.DAMAGE_CONTROL.location());
+                case 2 -> playerData.addPAbility(ModAbilities.DAMAGE_DRIVE.location());
+                case 3 -> playerData.addPAbility(ModAbilitiesRM.MP_WALKER.location());
+                case 4 -> playerData.addPAbility(ModAbilitiesRM.HP_WALKER.location());
+                case 5 -> playerData.addPAbility(ModAbilitiesRM.HP_BOOST.location());
+                case 6 -> playerData.addPAbility(ModAbilities.PROTECT.location());
             }
 
 

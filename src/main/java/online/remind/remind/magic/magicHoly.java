@@ -6,13 +6,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.HolyEntity;
 import online.remind.remind.lib.StringsRM;
 
 public class magicHoly extends Magic {
 
-	public magicHoly(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicHoly(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}
@@ -21,7 +22,7 @@ setTier(tier);
 	public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 
 		// IGlobalCapabilitiesMA globalData = ModCapabilitiesMA.getGlobal(player);
-		float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.2F;
+		float dmgMult = getDamageMult() + PlayerData.get(caster).getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.2F;
 		dmgMult *= fullMPBlastMult;
 
 		switch (getTier()) {

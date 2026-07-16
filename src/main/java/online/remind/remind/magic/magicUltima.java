@@ -10,7 +10,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.magic.UltimaEntity;
 
 public class magicUltima extends Magic {
-	public magicUltima(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicUltima(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

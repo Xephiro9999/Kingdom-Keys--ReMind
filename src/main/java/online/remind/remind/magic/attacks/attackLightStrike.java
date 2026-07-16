@@ -6,7 +6,7 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackLightStrike extends attackElementStrike {
 
-    public attackLightStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackLightStrike(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(
                 registryName,
                 hasToSelect,

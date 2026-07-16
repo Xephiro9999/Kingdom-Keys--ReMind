@@ -12,7 +12,7 @@ import online.remind.remind.entity.magic.DrainEntity;
 
 public class magicDrain extends Magic {
 
-	public magicDrain(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicDrain(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

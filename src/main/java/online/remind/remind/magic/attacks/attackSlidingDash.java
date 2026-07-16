@@ -12,7 +12,7 @@ import online.remind.remind.entity.attacks.slidingDashCollider;
 
 public class attackSlidingDash extends Magic {
 
-    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackSlidingDash(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

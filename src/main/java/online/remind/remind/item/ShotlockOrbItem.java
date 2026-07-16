@@ -14,9 +14,9 @@ import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 
 public class ShotlockOrbItem extends Item implements ICreativeTabRM {
-    String shotlocks;
+    ResourceLocation shotlocks;
 
-    public ShotlockOrbItem(Properties properties, String name){
+    public ShotlockOrbItem(Properties properties, ResourceLocation name){
         super(properties);
         this.shotlocks = name;
     }
@@ -24,7 +24,7 @@ public class ShotlockOrbItem extends Item implements ICreativeTabRM {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
         PlayerData playerData = PlayerData.get(player);
-        Shotlock shotlockInstance = ModShotlocks.registry.get(ResourceLocation.parse(shotlocks));
+        Shotlock shotlockInstance = ModShotlocks.registry.get(shotlocks);
 
         if(!world.isClientSide){
             if (!playerData.getShotlockList().contains(shotlocks)){

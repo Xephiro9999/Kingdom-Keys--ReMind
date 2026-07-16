@@ -8,9 +8,11 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.entity.reactioncommand.DarkMineEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -28,7 +30,7 @@ public class DarkMineRC extends ReactionCommand {
         if (conditionsToAppear(player, player)) {
             PlayerData playerData = PlayerData.get(player);
             GlobalDataRM globalData = ModDataRM.getGlobal(player);
-            float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.25F;
+            float dmgmult = PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.25F;
             globalData.setRCCooldownTicks(40);
             playerData.setFP(playerData.getFP() - 40);
             player.level().playSound(null, player.blockPosition(), ModSoundsRM.DARK_MINE.get(), SoundSource.PLAYERS, 1F, 1F);
@@ -52,7 +54,7 @@ public class DarkMineRC extends ReactionCommand {
         PlayerData playerData = PlayerData.get(player);
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         if(playerData != null){
-            if(playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) && globalData.getRCCooldownTicks() == 0){
+            if(playerData.isFormActive(ModDriveFormsRM.DARK) && globalData.getRCCooldownTicks() == 0){
                 return true;
             }
         }

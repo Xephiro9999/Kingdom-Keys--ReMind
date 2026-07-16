@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
@@ -24,9 +25,9 @@ import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
-import online.remind.remind.driveform.ModDriveFormsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.StyleDefinition;
@@ -58,7 +59,7 @@ public class StyleRC extends ReactionCommand {
 		// ------------------------------------------------------------
 		// 1. ACTIVATE STYLE (not in this Style yet)
 		// ------------------------------------------------------------
-		if (!playerData.getActiveDriveForm().equals(type)) {
+		if (!playerData.getActiveDriveForm().equals(ResourceLocation.parse(type))) {
 
 			DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(type));
 			if (form != null) {
@@ -71,13 +72,13 @@ public class StyleRC extends ReactionCommand {
 			remindData.setStyle("NONE");
 
 			StyleDefinition def = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(type));
-			remindData.setStyleTicks(100 + (10 * playerData.getNumberOfAbilitiesEquipped(Strings.formBoost)));
+			remindData.setStyleTicks(100 + (10 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.FORM_BOOST)));
 			System.out.println(remindData.getStyleTicks());
 
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 
 			// Remove RC after activation
-			playerData.removeReactionCommand(getRegistryName().toString());
+			playerData.removeReactionCommand(getRegistryName());
 			return;
 		}
 
@@ -105,7 +106,7 @@ public class StyleRC extends ReactionCommand {
 		switch (type) {
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.fireStorm -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.FIRE);
 				playSoundAndParticles(player, SoundEvents.BLAZE_SHOOT,
@@ -113,7 +114,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.diamondDust -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilities.BLIZZARD_BOOST) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.ICE);
 				playSoundAndParticles(player, SoundEvents.GLASS_BREAK,
@@ -121,7 +122,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.thunderBolt -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.LIGHTNING);
 				playSoundAndParticles(player, SoundEvents.LIGHTNING_BOLT_THUNDER,
@@ -129,7 +130,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.feverPitch -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(StringsRM.attackHaste) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.ATTACK_HASTE) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.OFFHAND);
 				playSoundAndParticles(player, SoundEvents.PLAYER_ATTACK_SWEEP,
@@ -137,7 +138,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.criticalImpact -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.criticalBoost) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.OFFHAND);
 				playSoundAndParticles(player, SoundEvents.PLAYER_ATTACK_SWEEP,
@@ -145,7 +146,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.spellweaver -> {
-				float mult = playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) * 0.25f;
+				float mult = playerData.getNumberOfAbilitiesEquipped(ModAbilities.BLIZZARD_BOOST) * 0.25f;
 				damage += damage * mult;
 				explosionHurt(player, damage, KKDamageTypes.STOP);
 				playSoundAndParticles(player, SoundEvents.EVOKER_CAST_SPELL,
@@ -153,7 +154,7 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.bloodlust -> {
-				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost);
+				int darkBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST);
 
 				float mult = darkBoosts * 0.25F;
 				float finalDamage = damage + (damage * mult);
@@ -243,7 +244,7 @@ public class StyleRC extends ReactionCommand {
 		System.out.println("Style String: " + style);*/
 
 		// Finisher RC - CHECK THIS FIRST
-		boolean isFinisher = playerData.getActiveDriveForm().equals(driveId);
+		boolean isFinisher = playerData.getActiveDriveForm().equals(ResourceLocation.parse(driveId));
 		//System.out.println("Finisher Check: activeForm.equals(type) = " + playerData.getActiveDriveForm() + ".equals(" + driveId + ") = " + isFinisher);
 		if (isFinisher) {
 			boolean result = isFinisher;
@@ -252,7 +253,7 @@ public class StyleRC extends ReactionCommand {
 		}
 
 		// Activation RC
-		boolean isNone = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
+		boolean isNone = playerData.isFormActive(ModDriveForms.NONE);
 		//System.out.println("Activation Check: activeForm == NONE? " + isNone);
 		if (isNone) {
 			boolean styleContainsCheck = styleContains(style, driveId);
@@ -264,7 +265,7 @@ public class StyleRC extends ReactionCommand {
 
 		// Chain-up RC
 		//System.out.println("Checking Chain-up...");
-		if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+		if (!playerData.isFormActive(ModDriveForms.NONE)) {
 
 			StyleDefinition current = StyleRegistry.getCurrentStyleDefinition(player);
 			StyleDefinition target = StyleRegistry.getStyleForDriveForm(ResourceLocation.parse(driveId));

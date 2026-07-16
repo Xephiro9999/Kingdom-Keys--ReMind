@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.lightSurgeCollider;
 import online.remind.remind.lib.StringsRM;
@@ -14,21 +15,21 @@ import online.remind.remind.lib.StringsRM;
 public class attackLightSurge extends Magic {
 
 
-    public attackLightSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackLightSurge(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }
 
     public void magicUse(LivingEntity player, Player caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
         PlayerData playerData = PlayerData.get(caster);
-        float dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+        float dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1f);
 
         if (getTier() == 0){
-            dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+            dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1f);
         } else if (getTier() == 1){
-            dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+            dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1f);
         } else if (getTier() == 2){
-            dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.lightBoost) * 0.1f);
+            dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1f);
         }
 
 

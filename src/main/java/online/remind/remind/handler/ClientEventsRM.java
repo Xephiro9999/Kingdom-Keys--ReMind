@@ -14,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.api.event.client.CommandMenuEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.MenuButtonRegisterEvent;
 import online.kingdomkeys.kingdomkeys.api.event.client.TargetSelectorEvent;
@@ -27,6 +28,7 @@ import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.ClientUtilsRM;
@@ -52,7 +54,7 @@ public class ClientEventsRM {
 	public void commandMenuItemUpdate(CommandMenuEvent.ItemUpdate event){
 		Player player = Minecraft.getInstance().player;
 		PlayerData playerData = PlayerData.get(player);
-		if (ModDriveForms.registry.get(ResourceLocation.parse(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm())).getClass().getSimpleName().contains("Style")) {
+		if (ModDriveForms.registry.get(PlayerData.get(Minecraft.getInstance().player).getActiveDriveForm()).getClass().getSimpleName().contains("Style")) {
 			if (event.getId().equals(CommandMenuGui.INSTANCE.revert)){
 				if (playerData != null){
 					if (playerData.getAlignment() != Utils.OrgMember.NONE){
@@ -235,12 +237,12 @@ public class ClientEventsRM {
 							player.level().addParticle(new DustParticleOptions(new Vector3f(0.1F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
 							player.level().addParticle(new DustParticleOptions(new Vector3f(0.3F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
 							player.level().addParticle(new DustParticleOptions(new Vector3f(0F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
-						} else if (globalData.getStepType() == StringsRM.darkStepType && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight)) {
+						} else if (globalData.getStepType() == StringsRM.darkStepType && !playerData.isFormActive(ModDriveFormsRM.TWILIGHT)) {
 							player.level().addAlwaysVisibleParticle(ParticleTypes.SQUID_INK, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 							player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.5F,0F,0.5F),1F),player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 							player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.5F,0F,1F),1F),player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 							player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0.2F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
-						} else if (globalData.getStepType() == StringsRM.lightStepType && !playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight)) {
+						} else if (globalData.getStepType() == StringsRM.lightStepType && !playerData.isFormActive(ModDriveFormsRM.TWILIGHT)) {
 							player.level().addAlwaysVisibleParticle(ParticleTypes.END_ROD, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 							player.level().addAlwaysVisibleParticle(ParticleTypes.CLOUD, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
 							player.level().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0.9F,0.9F),1F),player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
@@ -249,7 +251,7 @@ public class ClientEventsRM {
 					}
 
 					// Rage Form Active and Walk particles
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.RAGE.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.RAGE)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.1F,0F,0F),1F),player.getX() + player.level().random.nextDouble() - 0.55D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.55D, 0, 0, 0);
 	
 						if (player.onGround()){
@@ -259,56 +261,56 @@ public class ClientEventsRM {
 					}
 
 					// Regen Form Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.REGEN.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.REGEN)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0f,0f,0f),1),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(1f,1f,1f),1),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 
 					// Twilight Form Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.TWILIGHT.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.TWILIGHT)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45F,0.45F,0.45F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.55F,0.55F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 
 					// Firestorm Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.FIRESTORM)){
 						player.level().addAlwaysVisibleParticle(ParticleTypes.SMALL_FLAME, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
 					}
 
 					// Diamond Dust Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.DIAMOND_DUST)){
 						player.level().addAlwaysVisibleParticle(ParticleTypes.SNOWFLAKE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
 					}
 
 					// Thunder Bolt Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.THUNDER_BOLT)){
 						player.level().addAlwaysVisibleParticle(ParticleTypes.ELECTRIC_SPARK, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
 					}
 
 					// Fever Pitch Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.FEVER_PITCH)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0f,1f,0.50F),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0f,1f,0.85F),0.25f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 
 					// Critical Impact Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.CRITICAL_IMPACT)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.75f,0.75f,0.15F),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45f,0.45f,0f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 					// Spellweaver Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.SPELLWEAVER)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.95f,0.75f,0.95F),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.45f,0.65f,65f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 
 					}
 
 					// Bloodlust Active
-					if (playerData.getActiveDriveForm().equals(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString())){
+					if (playerData.isFormActive(ModDriveFormsRM.BLOOSTLUST)){
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.95f,0f,0f),0.5f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.25f,0f,0f),0.65f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
 						player.level().addParticle(new DustParticleOptions(new Vector3f(0.5f,0f,0f),0.35f),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
@@ -323,17 +325,19 @@ public class ClientEventsRM {
 
 					// Spellblade Visual Effects
 
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.fireBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F,0.0f,0.0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.blizzardBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F,0.95f,1F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) >= 4){
-						player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F,1.00f,0F),0.25F),player.getX() + player.level().random.nextDouble() - 0.45D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
-					}
-					if (playerData.isAbilityEquipped(StringsRM.spellblade) && playerData.getNumberOfAbilitiesEquipped(Strings.waterBoost) >= 4){
-						player.level().addAlwaysVisibleParticle(ParticleTypes.BUBBLE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY()+ player.level().random.nextDouble() *2D, player.getZ()  + player.level().random.nextDouble() - 0.5D, 0,0,0);
+					if (playerData.isAbilityEquipped(ModAbilitiesRM.SPELLBLADE)) {
+						if (playerData.getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST) >= 4) {
+							player.level().addParticle(new DustParticleOptions(new Vector3f(0.55F, 0.0f, 0.0F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						}
+						if (playerData.getNumberOfAbilitiesEquipped(ModAbilities.BLIZZARD_BOOST) >= 4) {
+							player.level().addParticle(new DustParticleOptions(new Vector3f(0.0F, 0.95f, 1F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						}
+						if (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) >= 4) {
+							player.level().addParticle(new DustParticleOptions(new Vector3f(1.0F, 1.00f, 0F), 0.25F), player.getX() + player.level().random.nextDouble() - 0.45D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.45D, -1, -1, -1);
+						}
+						if (playerData.getNumberOfAbilitiesEquipped(ModAbilities.WATER_BOOST) >= 4) {
+							player.level().addAlwaysVisibleParticle(ParticleTypes.BUBBLE, player.getX() + player.level().random.nextDouble() - 0.5D, player.getY() + player.level().random.nextDouble() * 2D, player.getZ() + player.level().random.nextDouble() - 0.5D, 0, 0, 0);
+						}
 					}
 
 					// Haste and Slow Visual

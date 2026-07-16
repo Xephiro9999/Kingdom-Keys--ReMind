@@ -15,7 +15,7 @@ public class attackElementStrike extends Magic {
 	private final StrikeElement element;
 	private final SoundEvent castSound;
 
-	public attackElementStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility, StrikeElement element, SoundEvent castSound) {
+	public attackElementStrike(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility, StrikeElement element, SoundEvent castSound) {
 		super(registryName, hasToSelect, gmAbility);
 	setTier(tier);
 		this.element = element;

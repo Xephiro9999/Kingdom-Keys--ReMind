@@ -25,7 +25,7 @@ import java.util.List;
 
 public class magicDispel extends Magic {
 
-	public magicDispel(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicDispel(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

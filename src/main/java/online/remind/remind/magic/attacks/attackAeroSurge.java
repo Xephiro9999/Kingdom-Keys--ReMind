@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
@@ -13,7 +14,7 @@ import online.remind.remind.entity.attacks.aeroSurgeCollider;
 
 public class attackAeroSurge extends Magic {
 
-    public attackAeroSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackAeroSurge(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }
@@ -24,13 +25,13 @@ setTier(tier);
 
         switch(getTier()){
             case 0:
-                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.1f);
                 break;
             case 1:
-                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.1f);
                 break;
             case 2:
-                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.1f);
                 break;
         }
 

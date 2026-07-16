@@ -1,5 +1,6 @@
 package online.remind.remind.mixin;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -10,15 +11,18 @@ import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.GlobalData;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
+import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,18 +47,18 @@ public class GuardSkillMixin {
             return;
 
         if(globalData.getRCCooldownTicks() <= 0) {
-            if(playerData.isAbilityEquipped(StringsRM.counterHammer))
-                playerData.addReactionCommand(StringsRM.CounterHammerRC, player);
-            if(playerData.isAbilityEquipped(StringsRM.counterBlast))
-                playerData.addReactionCommand(StringsRM.CounterBlastRC, player);
-            if(playerData.isAbilityEquipped(StringsRM.counterRush))
-                playerData.addReactionCommand(StringsRM.CounterRushRC, player);
+            if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER))
+                playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_HAMMER.location(), player);
+            if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST))
+                playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_BLAST.location(), player);
+            if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH))
+                playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_RUSH.location(), player);
 
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
         }
 
         // Block Abilities Effects
-        if(playerData.isAbilityEquipped(StringsRM.renewalBlock)) {
+        if(playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)) {
             if (!event.isParried()){
                 player.heal(player.getMaxHealth() * 0.025F);
                 player.getFoodData().eat(3,3);
@@ -65,7 +69,7 @@ public class GuardSkillMixin {
             event.getEntityPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
         }
 
-        if(playerData.isAbilityEquipped(StringsRM.focusBlock)) {
+        if(playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)) {
             if (!event.isParried()){
                 playerData.addFocus(5);
             } else {
@@ -73,7 +77,7 @@ public class GuardSkillMixin {
             }
         }
 
-        if(playerData.isAbilityEquipped(StringsRM.blockReplenisher)) {
+        if(playerData.isAbilityEquipped(ModAbilitiesRM.BLOCK_REPLENISHER)) {
             if (!event.isParried()){
                 playerData.addMP(5);
             } else {
@@ -84,7 +88,7 @@ public class GuardSkillMixin {
 
         if(attacker instanceof LivingEntity livingEntity) {
             // Stop Block Code? :)
-            if (playerData.isAbilityEquipped(StringsRM.stopBlock)) {
+            if (playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)) {
                 if (event.isParried()) {
                     if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
                         livingEntity.addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
@@ -94,7 +98,7 @@ public class GuardSkillMixin {
                 }
             }
 
-            if (playerData.isAbilityEquipped(StringsRM.poisonBlock)) {
+            if (playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)) {
                 if (!event.isParried()) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
                 } else {
@@ -102,7 +106,7 @@ public class GuardSkillMixin {
                 }
             }
 
-            if (playerData.isAbilityEquipped(StringsRM.confusionBlock)) {
+            if (playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
                 if (!event.isParried()) {
                     livingEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, 20 * 5, 1, true, true, true));
                 } else {
@@ -112,18 +116,18 @@ public class GuardSkillMixin {
         }
 
         // Royal Guard
-        if (playerData.isAbilityEquipped(StringsRM.royalGuard)) {
+        if (playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)) {
             if (event.isParried()) {
-                if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                if (!playerData.isFormActive(ModDriveForms.NONE)) {
                     playerData.addFP(25);
-                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                } else if (playerData.isFormActive(ModDriveForms.NONE)) {
                     playerData.addDP(25);
                 }
                 event.getEntityPatch().playSound(ModSoundsRM.ROYAL_PARRY.get(), 1f, 1f);
             } else {
-                if (!playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                if (!playerData.isFormActive(ModDriveForms.NONE)) {
                     playerData.addFP(10);
-                } else if (playerData.getActiveDriveForm().equals(DriveForm.NONE.toString())) {
+                } else if (playerData.isFormActive(ModDriveForms.NONE)) {
                     playerData.addDP(10);
                 }
                 event.getEntityPatch().playSound(ModSoundsRM.ROYAL_GUARD.get(), 1f, 1f);

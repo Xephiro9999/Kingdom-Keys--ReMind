@@ -1,5 +1,6 @@
 package online.remind.remind.item;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,7 +18,7 @@ public class RMMagicSpellItem extends MagicSpellItem implements ICreativeTabRM {
             Map.entry(ModItemsRM.esunaSpell, ModItems.esunaSpell)
     );
 
-    public RMMagicSpellItem(Properties properties, String name) {
+    public RMMagicSpellItem(Properties properties, ResourceLocation name) {
         super(properties, name);
     }
 

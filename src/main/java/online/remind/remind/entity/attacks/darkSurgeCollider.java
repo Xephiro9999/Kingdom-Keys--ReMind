@@ -14,6 +14,7 @@ import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.lib.Party;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.lib.StringsRM;
 
@@ -70,7 +71,7 @@ public class darkSurgeCollider extends ThrowableProjectile {
         PlayerData playerData = PlayerData.get(caster);
         if (playerData != null) {
             damage = playerData.getStrength(true) * 0.2f;
-            double dmgMult = (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost)) * 0.5f;
+            double dmgMult = (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST)) * 0.5f;
             damage += (damage * dmgMult);
         }
 

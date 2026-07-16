@@ -14,16 +14,16 @@ import net.minecraft.server.level.ServerPlayer;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OrganizationPanelAbilityHelper {
 
-    private static final java.util.Map<UUID, Integer> PENDING_PANEL_ABILITY_REFRESHES =
+    private static final Map<UUID, Integer> PENDING_PANEL_ABILITY_REFRESHES =
             new ConcurrentHashMap<>();
 
-    private static final java.util.Map<java.util.UUID, java.util.Map<String, int[]>> ORIGINAL_STACKABLE_ABILITY_STATES =
-            new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<UUID, Map<String, int[]>> ORIGINAL_STACKABLE_ABILITY_STATES =
+            new ConcurrentHashMap<>();
     private static final int[] NO_ORIGINAL_STACKABLE_ABILITY = new int[] {-1, -1};
 
     private static final int PANEL_REFRESH_DELAY_TICKS = 2;
@@ -35,7 +35,7 @@ public class OrganizationPanelAbilityHelper {
 
         PlayerData playerData = PlayerData.get(player);
 
-        if (playerData != null && playerData.isAbilityEquipped(ability)) {
+        if (playerData != null && playerData.isAbilityEquipped(ResourceLocation.parse(ability))) {
             return true;
         }
 
@@ -169,9 +169,9 @@ public class OrganizationPanelAbilityHelper {
 
 
 
-    private static final java.util.Set<String> FAKE_PANEL_ABILITIES = new java.util.HashSet<>();
-    private static final java.util.Map<java.util.UUID, java.util.Map<String, int[]>> ORIGINAL_PANEL_ABILITY_STATES =
-            new java.util.HashMap<>();
+    private static final Set<String> FAKE_PANEL_ABILITIES = new HashSet<>();
+    private static final Map<UUID, Map<String, int[]>> ORIGINAL_PANEL_ABILITY_STATES =
+            new HashMap<>();
     private static final Object ORIGINAL_PANEL_ABILITY_LOCK = new Object();
 
     public static void refreshPanelGrantedAbility(Player player, String ability) {
@@ -188,16 +188,18 @@ public class OrganizationPanelAbilityHelper {
         boolean panelActive = hasAbilityPanelEquipped(player, ability);
 
         synchronized (ORIGINAL_PANEL_ABILITY_LOCK) {
-            java.util.Map<String, int[]> playerOriginals = ORIGINAL_PANEL_ABILITY_STATES.get(player.getUUID());
+            Map<String, int[]> playerOriginals = ORIGINAL_PANEL_ABILITY_STATES.get(player.getUUID());
+
+
 
             if (playerOriginals == null) {
-                playerOriginals = new java.util.HashMap<>();
+                playerOriginals = new HashMap<>();
                 ORIGINAL_PANEL_ABILITY_STATES.put(player.getUUID(), playerOriginals);
             }
 
             if (panelActive) {
                 if (!playerOriginals.containsKey(ability)) {
-                    int[] original = playerData.getAbilityMap().get(ability);
+                    int[] original = playerData.getAbilityMap().get(ResourceLocation.parse(ability));
 
                     if (original == null) {
                         playerOriginals.put(ability, null);
@@ -206,7 +208,7 @@ public class OrganizationPanelAbilityHelper {
                     }
                 }
 
-                int[] current = playerData.getAbilityMap().get(ability);
+                int[] current = playerData.getAbilityMap().get(ResourceLocation.parse(ability));
 
                 int level = 0;
 
@@ -219,8 +221,8 @@ public class OrganizationPanelAbilityHelper {
                  * [0] = unlocked level/index
                  * [1] = equipped bit/state
                  */
-                playerData.getAbilityMap().put(ability, new int[] { level, 0 });
-                playerData.equipAbility(ability, 0);
+                playerData.getAbilityMap().put(ResourceLocation.parse(ability), new int[] { level, 0 });
+                playerData.equipAbility(ResourceLocation.parse(ability), 0);
 
                 return;
             }
@@ -232,9 +234,9 @@ public class OrganizationPanelAbilityHelper {
                 int[] original = playerOriginals.get(ability);
 
                 if (original == null) {
-                    playerData.getAbilityMap().remove(ability);
+                    playerData.getAbilityMap().remove(ResourceLocation.parse(ability));
                 } else {
-                    playerData.getAbilityMap().put(ability, new int[] { original[0], original[1] });
+                    playerData.getAbilityMap().put(ResourceLocation.parse(ability), new int[] { original[0], original[1] });
                 }
 
                 playerOriginals.remove(ability);
@@ -246,7 +248,7 @@ public class OrganizationPanelAbilityHelper {
         }
     }
 
-    private static final java.util.Set<String> PANEL_FAKE_EQUIPPED = new java.util.HashSet<>();
+    private static final Set<String> PANEL_FAKE_EQUIPPED = new HashSet<>();
 
     public static void markPanelAbilityRefreshDirty(Player player) {
         if (player == null || player.level().isClientSide) {
@@ -306,7 +308,7 @@ public class OrganizationPanelAbilityHelper {
         refreshStackableAbility(player, playerData, globalData, StringsRM.attackHaste, PanelRegistry.HASTE_PANEL);
         refreshStackableAbility(player, playerData, globalData, Strings.treasureMagnet, PanelRegistry.DRAW_PANEL);
         refreshStackableAbility(player, playerData, globalData, Strings.jackpot, PanelRegistry.JACKPOT_PANEL);
-        refreshStackableAbility(player, playerData, globalData, Strings.luckyLucky, PanelRegistry.LUCKY_LUCKY_PANEL);
+        refreshStackableAbility(player, playerData, globalData, Strings.luckyStrike, PanelRegistry.LUCKY_LUCKY_PANEL);
         refreshStackableAbility(player, playerData, globalData, Strings.comboPlus, PanelRegistry.COMBO_PLUS_PANEL);
     }
 
@@ -327,10 +329,10 @@ public class OrganizationPanelAbilityHelper {
 
         int currentPanelBonus = getEquippedPanelCount(player, panelId);
 
-        java.util.Map<String, int[]> playerOriginals =
+        Map<String, int[]> playerOriginals =
                 ORIGINAL_STACKABLE_ABILITY_STATES.computeIfAbsent(
                         player.getUUID(),
-                        uuid -> new java.util.concurrent.ConcurrentHashMap<>()
+                        uuid -> new ConcurrentHashMap<>()
                 );
 
 
@@ -340,7 +342,7 @@ public class OrganizationPanelAbilityHelper {
          */
         if (!playerOriginals.containsKey(ability)) {
             int previousPanelBonus = globalData.getOrganizationPanelAbilityBonus(ability);
-            int[] current = playerData.getAbilityMap().get(ability);
+            int[] current = playerData.getAbilityMap().get(ResourceLocation.parse(ability));
 
             if (current == null) {
                 playerOriginals.put(ability, NO_ORIGINAL_STACKABLE_ABILITY);
@@ -366,9 +368,9 @@ public class OrganizationPanelAbilityHelper {
 
         if (currentPanelBonus <= 0) {
             if (hadNoOriginal) {
-                playerData.getAbilityMap().remove(ability);
+                playerData.getAbilityMap().remove(ResourceLocation.parse(ability));
             } else {
-                playerData.getAbilityMap().put(ability, new int[] {original[0], original[1]});
+                playerData.getAbilityMap().put(ResourceLocation.parse(ability), new int[] {original[0], original[1]});
             }
 
             globalData.setOrganizationPanelAbilityBonus(ability, 0);
@@ -389,7 +391,7 @@ public class OrganizationPanelAbilityHelper {
         int baseEquipped = hadNoOriginal ? 0 : original[1];
 
         playerData.getAbilityMap().put(
-                ability,
+                ResourceLocation.parse(ability),
                 new int[] {
                         baseOwned + currentPanelBonus,
                         baseEquipped + currentPanelBonus

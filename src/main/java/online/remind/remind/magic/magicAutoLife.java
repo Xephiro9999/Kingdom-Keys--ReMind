@@ -15,7 +15,7 @@ import online.remind.remind.effect.ModMobEffectsRM;
 public class magicAutoLife extends Magic {
 
 
-    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public magicAutoLife(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

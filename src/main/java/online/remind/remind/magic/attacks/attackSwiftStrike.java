@@ -14,7 +14,7 @@ import online.remind.remind.entity.attacks.swiftStrikeCollider;
 
 public class attackSwiftStrike extends Magic {
 
-    public attackSwiftStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackSwiftStrike(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

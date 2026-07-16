@@ -15,18 +15,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCShowOverlayPacket;
+import online.remind.remind.ability.ModAbilitiesRM;
 
 import java.util.List;
 
 public class magicSteal extends Magic {
 
-    public magicSteal(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public magicSteal(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, null);
         setTier(tier);
     }
@@ -40,7 +42,7 @@ public class magicSteal extends Magic {
         // Chance roll based on caster's magic stat
         //double chance = (double) (casterData.getMagic(true) + casterData.getStrength(true)) /2;
 
-        double chance = 25 + (casterData.getNumberOfAbilitiesEquipped(Strings.luckyLucky) * 1.5) + (casterData.getNumberOfAbilitiesEquipped(Strings.treasureMagnet) * 1.5);
+        double chance = 25 + (casterData.getNumberOfAbilitiesEquipped(ModAbilities.LUCKY_STRIKE) * 1.5) + (casterData.getNumberOfAbilitiesEquipped(ModAbilities.TREASURE_MAGNET) * 1.5);
 
         //caster.sendSystemMessage(Component.literal("Chance: " + chance));
         if (chance < 0) chance = 0;
@@ -89,7 +91,7 @@ public class magicSteal extends Magic {
             }
             caster.sendSystemMessage(Component.literal("You stole an item!"));
 
-            int randMunny = (int) ((Math.random() * 50) * (1 + casterData.getNumberOfAbilitiesEquipped(Strings.luckyLucky)));
+            int randMunny = (int) ((Math.random() * 50) * (1 + casterData.getNumberOfAbilitiesEquipped(ModAbilities.LUCKY_STRIKE)));
 
             caster.sendSystemMessage(Component.literal("You stole " + randMunny + " munny!"));
             casterData.setMunny(casterData.getMunny() + randMunny);

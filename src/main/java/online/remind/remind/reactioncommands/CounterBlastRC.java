@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -18,6 +19,7 @@ import online.kingdomkeys.kingdomkeys.lib.DamageCalculation;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.kingdomkeys.kingdomkeys.util.Utils;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.lib.StringsRM;
@@ -50,7 +52,7 @@ public class CounterBlastRC extends ReactionCommand {
 
         List<LivingEntity> targetList = Utils.getLivingEntitiesInRadiusExcludingParty(player, player, radius, radius, radius);
 
-        boolean hasLyric2 = playerData.isAbilityEquipped(StringsRM.Lyric2);
+        boolean hasLyric2 = playerData.isAbilityEquipped(ModAbilitiesRM.LYRIC2);
 
         if (hasLyric2) {
             if (player.level() instanceof ServerLevel level) {
@@ -64,7 +66,7 @@ public class CounterBlastRC extends ReactionCommand {
                         1F
                 );
 
-                double lightningRadius = radius + (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.10f);
+                double lightningRadius = radius + (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.10f);
 
                 // Only spawn a few visual bolts total, not hundreds.
                 int boltCount = 3;
@@ -97,7 +99,7 @@ public class CounterBlastRC extends ReactionCommand {
                             dmg
                     );
 
-                    float boostDamage = (playerData.getNumberOfAbilitiesEquipped(Strings.thunderBoost) * 0.20f);
+                    float boostDamage = (playerData.getNumberOfAbilitiesEquipped(ModAbilities.THUNDER_BOOST) * 0.20f);
 
                     if (boostDamage > 0) {
                         double dmgBoost = dmg *= boostDamage;
@@ -140,14 +142,14 @@ public class CounterBlastRC extends ReactionCommand {
             }
         }
 
-        playerData.removeReactionCommand(getRegistryName().toString());
+        playerData.removeReactionCommand(getRegistryName());
     }
 
     @Override
     public boolean conditionsToAppear(Player player, LivingEntity livingEntity) {
         PlayerData playerData = PlayerData.get(player);
         if (playerData != null ){
-            return playerData.isAbilityEquipped(StringsRM.counterBlast);
+            return playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST);
         }
         return false;
     }

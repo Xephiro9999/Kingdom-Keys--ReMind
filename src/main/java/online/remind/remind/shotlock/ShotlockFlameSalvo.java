@@ -2,6 +2,7 @@ package online.remind.remind.shotlock;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
@@ -18,7 +19,7 @@ public class ShotlockFlameSalvo extends Shotlock {
     @Override
     public void onUse(Player player, List<Entity> targetList) {
 
-        float damage = getDamage(player) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(Strings.fireBoost) * 0.2F);
+        float damage = getDamage(player) + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.FIRE_BOOST) * 0.2F);
         FlameSalvoCoreEntity core = new FlameSalvoCoreEntity(player.level(), player, targetList, damage);
         core.setPos(player.getX(), player.getY(), player.getZ());
         player.level().addFreshEntity(core);

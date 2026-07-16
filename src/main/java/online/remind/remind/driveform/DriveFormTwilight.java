@@ -17,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.item.ModItems;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.remind.remind.KingdomKeysReMind;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.lib.StringsRM;
 
 @EventBusSubscriber(modid = KingdomKeysReMind.MODID)
@@ -40,8 +41,7 @@ public class DriveFormTwilight extends DriveForm {
 			if (killed.getType().is(BOSS_TAG)) {
 				if (event.getSource().getEntity() instanceof Player player) {
 					PlayerData playerData = PlayerData.get(player);
-					String twilightID = KingdomKeysReMind.MODID + ":" + StringsRM.twilight;
-					if (playerData != null && playerData.getActiveDriveForm().equals(twilightID)) {
+					if (playerData != null && playerData.isFormActive(ModDriveFormsRM.TWILIGHT)) {
 						double mult = Double.parseDouble(ModConfigs.SERVER.driveFormXPMultiplier.get().get(1).split(",")[1]);
 						playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + (1 * mult)));
 						PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
@@ -55,20 +55,20 @@ public class DriveFormTwilight extends DriveForm {
 	public boolean isSlotVisible(Player player) {
 		PlayerData playerData = PlayerData.get(player);
 		if (playerData != null) {
-			if (playerData.isAbilityEquipped(StringsRM.roadToDawn)) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.ROAD_TO_DAWN)) {
 				return true;
-			} else if (playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm) == 7 && playerData.getDriveFormLevel(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm) == 7) {
-				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm))
+			} else if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.location()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.location()) == 7) {
+				if (playerData.isFormActive(ModDriveFormsRM.DARK))
 					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oblivionChain.get()) {
 						return true;
 					}
 
-				if (playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.lightForm))
+				if (playerData.isFormActive(ModDriveFormsRM.LIGHT))
 					if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItems.oathkeeperChain.get()) {
 						return true;
 					}
 
-				return playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.twilight);
+				return playerData.isFormActive(ModDriveFormsRM.TWILIGHT);
 			}
 
 		}
@@ -79,7 +79,7 @@ public class DriveFormTwilight extends DriveForm {
 	public boolean displayInCommandMenu(Player player) {
 		PlayerData playerData = PlayerData.get(player);
 		if (playerData != null) {
-			if (playerData.isAbilityEquipped(StringsRM.roadToDawn)){
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.ROAD_TO_DAWN)){
 				return true;
 			}
 		}

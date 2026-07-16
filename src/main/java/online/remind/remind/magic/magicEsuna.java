@@ -10,7 +10,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 
 public class magicEsuna extends Magic {
 
-	public magicEsuna(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicEsuna(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

@@ -90,7 +90,7 @@ public class FinishRC extends ReactionCommand {
 			remindData.setStyle("NONE");
 			remindData.setSituationValue(0);
 			remindData.clearSituationSpells();
-			playerData.removeReactionCommand(getRegistryName().toString());
+			playerData.removeReactionCommand(getRegistryName());
 			PacketHandlerRM.syncGlobalToAllAround(player, remindData);
 		}
 	}
@@ -107,7 +107,7 @@ public class FinishRC extends ReactionCommand {
 		if (playerData == null || remindData == null)
 			return false;
 
-		String activeDriveForm = playerData.getActiveDriveForm();
+		ResourceLocation activeDriveForm = playerData.getActiveDriveForm();
 		double gauge = remindData.getSituationValue();
 
 		/*System.out.println("Active Drive Form: " + activeDriveForm);
@@ -116,7 +116,7 @@ public class FinishRC extends ReactionCommand {
 		System.out.println("Gauge >= 100? " + (gauge >= 100));*/
 
 		// FinishRC only appears when NOT in a Style
-		if (activeDriveForm.equals(DriveForm.NONE.toString())) {
+		if (activeDriveForm.equals(DriveForm.NONE)) {
 			return true;
 		}
 

@@ -43,8 +43,8 @@ public class StylesHUD {
 
         PoseStack poseStack = guiGraphics.pose();
 
-        String form = playerData.getActiveDriveForm();
-        DriveForm driveForm = ModDriveFormsRM.DRIVE_FORMS.getRegistry().get().get(ResourceLocation.parse(form));
+        ResourceLocation form = playerData.getActiveDriveForm();
+        DriveForm driveForm = ModDriveFormsRM.DRIVE_FORMS.getRegistry().get().get(form);
 
         poseStack.pushPose();
         {
@@ -55,14 +55,14 @@ public class StylesHUD {
 
         guiGraphics.setColor(event.getSubMenu().getColour().getRed() / 255F, event.getSubMenu().getColour().getGreen() / 255F, event.getSubMenu().getColour().getBlue() / 255F, 1);
         Component title = event.getSubMenu().getTitle();
-        Set<String> styles = new HashSet<>();
-        styles.add(ModDriveFormsRM.FIRESTORM.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName().toString());
-        styles.add(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName().toString());
+        Set<ResourceLocation> styles = new HashSet<>();
+        styles.add(ModDriveFormsRM.FIRESTORM.get().getRegistryName());
+        styles.add(ModDriveFormsRM.DIAMOND_DUST.get().getRegistryName());
+        styles.add(ModDriveFormsRM.THUNDER_BOLT.get().getRegistryName());
+        styles.add(ModDriveFormsRM.FEVER_PITCH.get().getRegistryName());
+        styles.add(ModDriveFormsRM.CRITICAL_IMPACT.get().getRegistryName());
+        styles.add(ModDriveFormsRM.SPELLWEAVER.get().getRegistryName());
+        styles.add(ModDriveFormsRM.BLOOSTLUST.get().getRegistryName());
 
         if(styles.contains(form)){
             title = Component.translatable(driveForm.getTranslationKey()).withStyle(ClientUtils.KK_Font_EXP);
@@ -71,7 +71,7 @@ public class StylesHUD {
 
         if (online.kingdomkeys.kingdomkeys.config.ModConfigs.cmHeaderTextVisible) {
             //System.out.println(form);
-            switch (form){
+            switch (form.toString()){
                 default:
                     guiGraphics.setColor(event.getSubMenu().getColour().getRed() / 255F,event.getSubMenu().getColour().getGreen() / 255F,event.getSubMenu().getColour().getBlue() / 255F,1);
                     break;

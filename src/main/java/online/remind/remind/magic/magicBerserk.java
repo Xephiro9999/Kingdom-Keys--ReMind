@@ -15,7 +15,7 @@ import online.remind.remind.effect.ModMobEffectsRM;
 
 public class magicBerserk extends Magic {
 
-	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+	public magicBerserk(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
 setTier(tier);
 	}

@@ -119,20 +119,20 @@ public class StyleRegistry {
 
     public static boolean isInStyle(Player player) {
         var playerData = PlayerData.get(player);
-        String active = playerData.getActiveDriveForm();
+        ResourceLocation active = playerData.getActiveDriveForm();
 
-        if (active.equals(DriveForm.NONE.toString()))
+        if (active.equals(DriveForm.NONE))
             return false;
 
-        DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(active));
+        DriveForm form = ModDriveForms.registry.get(active);
         return form instanceof StyleForm;
     }
 
     public static StyleForm getCurrentStyleForm(Player player) {
         var playerData = PlayerData.get(player);
-        String active = playerData.getActiveDriveForm();
+        ResourceLocation active = playerData.getActiveDriveForm();
 
-        DriveForm form = ModDriveForms.registry.get(ResourceLocation.parse(active));
+        DriveForm form = ModDriveForms.registry.get(active);
         return (form instanceof StyleForm style) ? style : null;
     }
 

@@ -6,7 +6,7 @@ import online.remind.remind.entity.attacks.StrikeElement;
 
 public class attackWaterStrike extends attackElementStrike {
 
-    public attackWaterStrike(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackWaterStrike(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(
                 registryName,
                 hasToSelect,

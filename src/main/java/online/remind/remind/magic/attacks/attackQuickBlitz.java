@@ -12,7 +12,7 @@ import online.remind.remind.entity.attacks.quickBlitzCollider;
 
 public class attackQuickBlitz extends Magic {
 
-    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackQuickBlitz(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }

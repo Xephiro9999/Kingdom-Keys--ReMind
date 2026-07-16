@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.entity.attacks.darkSurgeCollider;
 import online.remind.remind.lib.StringsRM;
@@ -14,7 +15,7 @@ import online.remind.remind.lib.StringsRM;
 public class attackDarkSurge extends Magic {
 
 
-    public attackDarkSurge(ResourceLocation registryName, boolean hasToSelect, int tier, String gmAbility) {
+    public attackDarkSurge(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
         super(registryName, hasToSelect, gmAbility);
 setTier(tier);
     }
@@ -25,13 +26,13 @@ setTier(tier);
 
         switch(getTier()){
             case 0:
-                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
+                dmg = playerData.getStrength(true) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1f);
                 break;
             case 1:
-                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.1f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1f);
                 break;
             case 2:
-                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(StringsRM.darknessBoost) * 0.1f);
+                dmg = (playerData.getStrength(true) * 1.25f) * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1f);
                 break;
         }
 

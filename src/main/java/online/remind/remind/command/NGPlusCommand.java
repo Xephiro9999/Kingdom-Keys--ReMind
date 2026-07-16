@@ -12,10 +12,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
+import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.config.ModConfigs;
@@ -160,54 +162,54 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
 
             if (globalData.getPrestigeLvl() > 0) {
 
-                playerData.addAbility(Strings.experienceBoost, true);
-                playerData.addAbility(Strings.luckyLucky, true);
-                playerData.addAbility(StringsRM.dedication, true);
+                playerData.addAbility(ModAbilities.EXPERIENCE_BOOST.location(), true);
+                playerData.addAbility(ModAbilities.LUCKY_STRIKE.location(), true);
+                playerData.addAbility(ModAbilitiesRM.DEDICATION.location(), true);
             }
 
             switch (globalData.getNGPWarriorCount()) {
                 case 0:
                     break;
                 case 1:
-                    playerData.addAbility(Strings.synchBlade, true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
                     break;
                 case 2:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
                     break;
                 case 3:
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
                     break;
                 case 4:
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.DRIVE_BOOST.location(), true);
                     break;
                 case 5:
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
+                    playerData.addAbility(ModAbilitiesRM.ATTACK_HASTE.location(), true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.DRIVE_BOOST.location(), true);
                     break;
                 case 6:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.ATTACK_HASTE.location(), true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.DRIVE_BOOST.location(), true);
                     break;
                 default:
-                    playerData.addAbility(Strings.synchBlade, true);
-                    playerData.addAbility(StringsRM.attackHaste, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.criticalBoost, true);
-                    playerData.addAbility(Strings.formBoost, true);
-                    playerData.addAbility(Strings.driveBoost, true);
+                    playerData.addAbility(ModAbilities.SYNCH_BLADE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.ATTACK_HASTE.location(), true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.CRITICAL_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.FORM_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.DRIVE_BOOST.location(), true);
                     break;
             }
 
@@ -215,45 +217,45 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
                 case 0:
                     break;
                 case 1:
-                    playerData.addAbility(StringsRM.critical_surge, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
                     break;
                 case 2:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
                     break;
                 case 3:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
+                    playerData.addAbility(ModAbilities.MP_THRIFT.location(), true);
                     break;
                 case 4:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
+                    playerData.addAbility(ModAbilities.MP_THRIFT.location(), true);
+                    playerData.addAbility(ModAbilities.GRAND_MAGIC_HASTE.location(), true);
                     break;
                 case 5:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
+                    playerData.addAbility(ModAbilities.MP_THRIFT.location(), true);
+                    playerData.addAbility(ModAbilities.GRAND_MAGIC_HASTE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_BOOST.location(), true);
                     break;
                 case 6:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
-                    playerData.addAbility(StringsRM.mpShield, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
+                    playerData.addAbility(ModAbilities.MP_THRIFT.location(), true);
+                    playerData.addAbility(ModAbilities.GRAND_MAGIC_HASTE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_BOOST.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_SHIELD.location(), true);
                     break;
                 default:
-                    playerData.addAbility(StringsRM.critical_surge, true);
-                    playerData.addAbility(Strings.mpHastega, true);
-                    playerData.addAbility(Strings.mpThrift, true);
-                    playerData.addAbility(Strings.grandMagicHaste, true);
-                    playerData.addAbility(StringsRM.mpBoost, true);
-                    playerData.addAbility(StringsRM.mpShield, true);
+                    playerData.addAbility(ModAbilitiesRM.CRITICAL_SURGE.location(), true);
+                    playerData.addAbility(ModAbilities.MP_HASTEGA.location(), true);
+                    playerData.addAbility(ModAbilities.MP_THRIFT.location(), true);
+                    playerData.addAbility(ModAbilities.GRAND_MAGIC_HASTE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_BOOST.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_SHIELD.location(), true);
                     break;
             }
 
@@ -261,45 +263,45 @@ public class NGPlusCommand extends AddonCommand{ // remind ng+ <path> <amount> <
                 case 0:
                     break;
                 case 1:
-                    playerData.addAbility(Strings.damageControl, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
                     break;
                 case 2:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
                     break;
                 case 3:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_WALKER.location(), true);
                     break;
                 case 4:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_WALKER.location(), true);
                     break;
                 case 5:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_BOOST.location(), true);
                     break;
                 case 6:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
-                    playerData.addAbility(Strings.protect, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.PROTECT.location(), true);
                     break;
                 default:
-                    playerData.addAbility(Strings.damageControl, true);
-                    playerData.addAbility(Strings.damageDrive, true);
-                    playerData.addAbility(StringsRM.mpWalker, true);
-                    playerData.addAbility(StringsRM.hpWalker, true);
-                    playerData.addAbility(StringsRM.hpBoost, true);
-                    playerData.addAbility(Strings.protect, true);
+                    playerData.addAbility(ModAbilities.DAMAGE_CONTROL.location(), true);
+                    playerData.addAbility(ModAbilities.DAMAGE_DRIVE.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.MP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_WALKER.location(), true);
+                    playerData.addAbility(ModAbilitiesRM.HP_BOOST.location(), true);
+                    playerData.addAbility(ModAbilities.PROTECT.location(), true);
                     break;
             }
 

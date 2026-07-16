@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.lib.StringsRM;
 
 public class DriveFormRegen extends DriveForm {
@@ -16,7 +17,7 @@ public class DriveFormRegen extends DriveForm {
 
     @Override
     public boolean displayInCommandMenu(Player player){
-        return PlayerData.get(player).isAbilityEquipped(StringsRM.Regen);
+        return PlayerData.get(player).isAbilityEquipped(ModAbilitiesRM.REGEN);
 
     }
 

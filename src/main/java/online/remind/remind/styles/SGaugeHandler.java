@@ -5,6 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.driveform.DriveForm;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
+import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -56,7 +58,7 @@ public class SGaugeHandler {
         // ------------------------------------------------------------
         if (actionId.equals(ResourceLocation.parse(Strings.Magic_Cure))) {
 
-            int stacks = playerData.getNumberOfAbilitiesEquipped(StringsRM.cure_converter);
+            int stacks = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.CURE_CONVERTER);
 
             if (stacks > 0) {
 
@@ -82,7 +84,7 @@ public class SGaugeHandler {
         // ------------------------------------------------------------
         // Situation Boost (10% per instance, applied AFTER Cure Converter)
         // ------------------------------------------------------------
-        int boostStacks = playerData.getNumberOfAbilitiesEquipped(StringsRM.situationBoost);
+        int boostStacks = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.SITUATION_BOOST);
         if (boostStacks > 0) {
             double multiplier = 1.0 + (0.10 * boostStacks);
             totalValue = (int)(totalValue * multiplier);
@@ -151,7 +153,7 @@ public class SGaugeHandler {
             if (def == null) continue;
 
             PlayerData playerData = PlayerData.get(player);
-            boolean notInStyle = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
+            boolean notInStyle = playerData.isFormActive(ModDriveForms.NONE);
             int nextTier = currentTier + 1;
 
             if (notInStyle) {
@@ -191,7 +193,7 @@ public class SGaugeHandler {
         System.out.println("Eligible Styles: " + eligible);
 
         PlayerData playerData = PlayerData.get(player);
-        boolean notInStyle = playerData.getActiveDriveForm().equals(DriveForm.NONE.toString());
+        boolean notInStyle = playerData.isFormActive(ModDriveForms.NONE);
 
         if (!eligible.isEmpty()) {
             // 1) Store ALL eligible styles in the style flag
@@ -205,7 +207,7 @@ public class SGaugeHandler {
             if (current != null && current.finisher() != null) {
                 String finisherRcId = current.finisher().toString();
                 //System.out.println("Adding Finisher RC: " + finisherRcId + " for current Style: " + current.target());
-                playerData.addReactionCommand(finisherRcId, player);
+                playerData.addReactionCommand(current.finisher(), player);
             }
 
             // 2) Add chain-up RCs (or FinishRC if not in a Style)
@@ -214,7 +216,7 @@ public class SGaugeHandler {
                 if (def != null && def.finisher() != null) {
                     String finisherRcId = def.finisher().toString();
                     //System.out.println("Adding Activation RC: " + finisherRcId + " for Style: " + styleId);
-                    playerData.addReactionCommand(finisherRcId, player);
+                    playerData.addReactionCommand(def.finisher(), player);
                 }
             }
 
@@ -222,21 +224,21 @@ public class SGaugeHandler {
             if (notInStyle) {
                 //System.out.println("DEBUG: Not in a Style - also adding FinishRC");
                 ResourceLocation finishRcId = ResourceLocation.parse("kkremind:rc_finish");
-                playerData.addReactionCommand(finishRcId.toString(), player);
+                playerData.addReactionCommand(finishRcId, player);
             }
         } else if (notInStyle) {
             // Player not in a Style and no eligible chain-ups
             // Add the FinishRC (generic finisher for non-Style attacks)
             //System.out.println("DEBUG: Not in a Style and no eligible styles - adding FinishRC");
             ResourceLocation finishRcId = ResourceLocation.parse("kkremind:rc_finish");
-            playerData.addReactionCommand(finishRcId.toString(), player);
+            playerData.addReactionCommand(finishRcId, player);
         } else {
             // No chain-ups available, but player is in a Style
             // Add the Finisher RC for the current Style
             if (current != null && current.finisher() != null) {
                 String finisherRcId = current.finisher().toString();
                 //System.out.println("Adding Finisher RC (no chain-up): " + finisherRcId + " for current Style: " + current.target());
-                playerData.addReactionCommand(finisherRcId, player);
+                playerData.addReactionCommand(current.finisher(), player);
             }
         }
 
