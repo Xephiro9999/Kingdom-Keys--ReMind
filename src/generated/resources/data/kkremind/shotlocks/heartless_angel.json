@@ -1,0 +1,11 @@
+{
+  "cooldown": 110,
+  "cooldown_max": 80,
+  "dmg_mult": 1.0,
+  "dmg_mult_max": 1.0,
+  "element": "darkness",
+  "max": 1,
+  "max_exp": 12000,
+  "max_level": 6,
+  "minigame": "none"
+}

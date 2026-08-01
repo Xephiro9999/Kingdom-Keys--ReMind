@@ -14,5 +14,6 @@ public class DataGeneration {
     	DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         generator.addProvider(event.includeServer(), new MagicDataProviderRM(output));
+        generator.addProvider(event.includeServer(), new ShotlockDataProviderRM(output));
     }
 }
