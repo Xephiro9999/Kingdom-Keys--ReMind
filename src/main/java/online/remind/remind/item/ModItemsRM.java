@@ -123,12 +123,12 @@ public class ModItemsRM{
         deathSpell = ITEMS.register("death_lv_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DEATH.location())),
 
         // Shotlock Orbs
-        flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.FLAME_SALVO.location())),
-        bubbleBlaster = ITEMS.register("bubble_blaster_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.BUBBLE_BLASTER.location())),
-        thunderStorm = ITEMS.register("thunderstorm_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.THUNDERSTORM.location())),
-        bioBarrage = ITEMS.register("bio_barrage_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.BIO_BARRAGE.location())),
-        meteorShower = ITEMS.register("meteor_shower_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.METEOR_SHOWER.location())),
-        darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockOrbItem(new Item.Properties(), ModShotlocksRM.DARK_DIVIDE.location())),
+        /*flameSalvo = ITEMS.register("flame_salvo_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.FLAME_SALVO.location())),
+        bubbleBlaster = ITEMS.register("bubble_blaster_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.BUBBLE_BLASTER.location())),
+        thunderStorm = ITEMS.register("thunderstorm_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.THUNDERSTORM.location())),
+        bioBarrage = ITEMS.register("bio_barrage_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.BIO_BARRAGE.location())),
+        meteorShower = ITEMS.register("meteor_shower_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.METEOR_SHOWER.location())),*/
+        darkDivide = ITEMS.register("dark_divide_shotlock",() -> new ShotlockItem(new Item.Properties(), ModShotlocksRM.DARK_DIVIDE.location())),
 
     // Dream Eater Charms
         meowWowCharm = ITEMS.register("meow_wow_charm",() -> new DreamEaterCharmItem(new Item.Properties().stacksTo(1), GlobalDataRM.DREAM_EATER_MEOW_WOW, "Meow Wow")),

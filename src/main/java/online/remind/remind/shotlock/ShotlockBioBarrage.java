@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ShotlockBioBarrage extends Shotlock {
 
-    public ShotlockBioBarrage(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockBioBarrage(String registeryName, int order){
+        super(registeryName,order);
     }
 
     /*

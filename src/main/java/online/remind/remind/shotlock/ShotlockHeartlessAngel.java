@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ShotlockHeartlessAngel extends Shotlock {
 
-    public ShotlockHeartlessAngel(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockHeartlessAngel(String registeryName, int order){
+        super(registeryName,order);
     }
 
     int maxTicks;

@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ShotlockMeteorShower extends Shotlock {
 
-    public ShotlockMeteorShower(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockMeteorShower(String registeryName, int order){
+        super(registeryName,order);
     }
 
     @Override

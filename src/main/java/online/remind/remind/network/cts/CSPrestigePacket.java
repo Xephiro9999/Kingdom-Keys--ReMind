@@ -73,7 +73,7 @@ public class CSPrestigePacket implements CustomPacketPayload {
             playerData.setMaxArmors(0);
 
             playerData.clearAbilities();
-            playerData.setEquippedShotlock(null);
+            //playerData.setEquippedShotlock(null);
 
             playerData.setSoAState(SoAState.NONE);
             globalData.addPrestigeLvl(1);

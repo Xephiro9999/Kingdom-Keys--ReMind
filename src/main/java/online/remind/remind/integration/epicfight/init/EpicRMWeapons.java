@@ -27,10 +27,10 @@ public class EpicRMWeapons {
         WeaponCapability.builder()
                 .category(CapabilityItem.WeaponCategories.SWORD).styleProvider(playerpatch ->
                         switch (PlayerData.get((Player) playerpatch.getOriginal()).getActiveDriveForm().toString()) {
-                            case Strings.Form_Valor -> KKStyles.VALOR;
-                            case Strings.Form_Master -> KKStyles.MASTER;
-                            case Strings.Form_Wisdom -> KKStyles.WISDOM;
-                            case Strings.Form_Final -> KKStyles.FINAL;
+                            case Strings.Form_Valor -> KKStyles.VALOR_FORM;
+                            case Strings.Form_Master -> KKStyles.MASTER_FORM;
+                            case Strings.Form_Wisdom -> KKStyles.WISDOM_FORM;
+                            case Strings.Form_Final -> KKStyles.FINAL_FORM;
                             default ->
                                 playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND;
                         })
@@ -47,22 +47,22 @@ public class EpicRMWeapons {
                 .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
 
-                .livingMotionModifier(KKStyles.VALOR, LivingMotions.IDLE, KKAnimations.VALOR_FORM_IDLE)
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.IDLE, KKAnimations.WISDOM_FORM_IDLE)
-                .livingMotionModifier(KKStyles.MASTER, LivingMotions.IDLE, KKAnimations.MASTER_FORM_IDLE)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.IDLE, KKAnimations.FINAL_FORM_IDLE)
+                .livingMotionModifier(KKStyles.VALOR_FORM, LivingMotions.IDLE, KKAnimations.VALOR_FORM_IDLE)
+                .livingMotionModifier(KKStyles.WISDOM_FORM, LivingMotions.IDLE, KKAnimations.WISDOM_FORM_IDLE)
+                .livingMotionModifier(KKStyles.MASTER_FORM, LivingMotions.IDLE, KKAnimations.MASTER_FORM_IDLE)
+                .livingMotionModifier(KKStyles.FINAL_FORM, LivingMotions.IDLE, KKAnimations.FINAL_FORM_IDLE)
 
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.WALK, KKAnimations.WISDOM_FORM_RUN)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.WALK, KKAnimations.FINAL_FORM_IDLE)
+                .livingMotionModifier(KKStyles.WISDOM_FORM, LivingMotions.WALK, KKAnimations.WISDOM_FORM_RUN)
+                .livingMotionModifier(KKStyles.FINAL_FORM, LivingMotions.WALK, KKAnimations.FINAL_FORM_IDLE)
 
-                .livingMotionModifier(KKStyles.VALOR, LivingMotions.RUN, KKAnimations.ROXAS_RUN)
-                .livingMotionModifier(KKStyles.WISDOM, LivingMotions.RUN, KKAnimations.WISDOM_FORM_RUN)
-                .livingMotionModifier(KKStyles.FINAL, LivingMotions.RUN, KKAnimations.FINAL_FORM_IDLE)
+                .livingMotionModifier(KKStyles.VALOR_FORM, LivingMotions.RUN, KKAnimations.ROXAS_RUN)
+                .livingMotionModifier(KKStyles.WISDOM_FORM, LivingMotions.RUN, KKAnimations.WISDOM_FORM_RUN)
+                .livingMotionModifier(KKStyles.FINAL_FORM, LivingMotions.RUN, KKAnimations.FINAL_FORM_IDLE)
 
-                .newStyleCombo(KKStyles.VALOR, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO2, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO3, KKAnimations.VALOR_AUTO3, Animations.SWORD_DASH, Animations.SWORD_DUAL_AIR_SLASH)
-                .newStyleCombo(KKStyles.WISDOM, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_COMBO1, Animations.SWORD_AIR_SLASH)
-                .newStyleCombo(KKStyles.MASTER, Animations.SWORD_DUAL_AUTO1, Animations.SWORD_DUAL_AUTO2, Animations.SWORD_DUAL_AUTO3, Animations.SWORD_DUAL_AUTO3, Animations.SWORD_DASH, Animations.SWORD_DUAL_AIR_SLASH)
-                .newStyleCombo(KKStyles.FINAL, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, Animations.SWORD_DUAL_DASH, Animations.SWORD_DUAL_AIR_SLASH)
+                .newStyleCombo(KKStyles.VALOR_FORM, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO2, KKAnimations.VALOR_AUTO1, KKAnimations.VALOR_AUTO3, KKAnimations.VALOR_AUTO3, Animations.SWORD_DASH, Animations.SWORD_DUAL_AIR_SLASH)
+                .newStyleCombo(KKStyles.WISDOM_FORM, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_COMBO1, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_FINISHER, KKAnimations.WISDOM_COMBO1, Animations.SWORD_AIR_SLASH)
+                .newStyleCombo(KKStyles.MASTER_FORM, Animations.SWORD_DUAL_AUTO1, Animations.SWORD_DUAL_AUTO2, Animations.SWORD_DUAL_AUTO3, Animations.SWORD_DUAL_AUTO3, Animations.SWORD_DASH, Animations.SWORD_DUAL_AIR_SLASH)
+                .newStyleCombo(KKStyles.FINAL_FORM, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, KKAnimations.FINAL_AUTO1, Animations.SWORD_DUAL_DASH, Animations.SWORD_DUAL_AIR_SLASH)
 
                 .passiveSkill(KKSkills.comboExtender.get());
 

@@ -158,7 +158,7 @@ public class KingdomKeysReMind {
     public static final Supplier<CreativeModeTab>
             rmShotlocksTab = TABS.register("addonshotlocktab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.addonshotlocktab"))
-            .icon(() -> new ItemStack(ModItemsRM.meteorShower.get()))
+            .icon(() -> new ItemStack(ModItemsRM.darkDivide.get()))
             .displayItems(((params, output) -> {
                 rmShotlocks.get().forEach(output::accept);
             }))

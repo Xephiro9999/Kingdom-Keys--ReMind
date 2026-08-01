@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ShotlockDarkDivide extends Shotlock {
 
-    public ShotlockDarkDivide(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockDarkDivide(String registeryName, int order){
+        super(registeryName,order);
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ShotlockBubbleBlaster extends Shotlock {
 
-    public ShotlockBubbleBlaster(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockBubbleBlaster(String registeryName, int order){
+        super(registeryName,order);
     }
 
     @Override

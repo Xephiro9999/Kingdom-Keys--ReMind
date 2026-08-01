@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ShotlockThunderstorm extends Shotlock {
 
-    public ShotlockThunderstorm(String registeryName, int order, int cooldown, int max){
-        super(registeryName,order,cooldown,max);
+    public ShotlockThunderstorm(String registeryName, int order){
+        super(registeryName,order);
     }
 
     @Override

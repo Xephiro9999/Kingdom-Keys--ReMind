@@ -19,17 +19,17 @@ public class ModShotlocksRM {
 
     public static final KKSupplier<Shotlock>
             // BBS Shotlocks
-    	FLAME_SALVO = register(StringsRM.flameSalvo, () -> new ShotlockFlameSalvo(KingdomKeysReMind.MODID + ":" + StringsRM.flameSalvo, order++, 2, 15)),
-        BUBBLE_BLASTER = register(StringsRM.bubbleBlaster, () -> new ShotlockBubbleBlaster(KingdomKeysReMind.MODID + ":" + StringsRM.bubbleBlaster, order++, 2, 15)),
-        THUNDERSTORM = register(StringsRM.thunderStorm, () -> new ShotlockThunderstorm(KingdomKeysReMind.MODID + ":" + StringsRM.thunderStorm, order++, 2, 5)),
-        BIO_BARRAGE = register(StringsRM.bioBarrage, () -> new ShotlockBioBarrage(KingdomKeysReMind.MODID + ":" + StringsRM.bioBarrage, order++, 2,8)),
-        METEOR_SHOWER = register(StringsRM.meteorShower, () -> new ShotlockMeteorShower(KingdomKeysReMind.MODID + ":" + StringsRM.meteorShower, order++, 2,30)),
+    	/*FLAME_SALVO = register(StringsRM.flameSalvo, () -> new ShotlockFlameSalvo(KingdomKeysReMind.MODID + ":" + StringsRM.flameSalvo, order++)),
+        BUBBLE_BLASTER = register(StringsRM.bubbleBlaster, () -> new ShotlockBubbleBlaster(KingdomKeysReMind.MODID + ":" + StringsRM.bubbleBlaster, order++)),
+        THUNDERSTORM = register(StringsRM.thunderStorm, () -> new ShotlockThunderstorm(KingdomKeysReMind.MODID + ":" + StringsRM.thunderStorm, order++)),
+        BIO_BARRAGE = register(StringsRM.bioBarrage, () -> new ShotlockBioBarrage(KingdomKeysReMind.MODID + ":" + StringsRM.bioBarrage, order++)),
+        METEOR_SHOWER = register(StringsRM.meteorShower, () -> new ShotlockMeteorShower(KingdomKeysReMind.MODID + ":" + StringsRM.meteorShower, order++)),*/
 
             // Series Shotlocks
-        DARK_DIVIDE = register(StringsRM.darkDivide, () -> new ShotlockDarkDivide(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide, order++, 2,28)),
+        DARK_DIVIDE = register(StringsRM.darkDivide, () -> new ShotlockDarkDivide(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide, order++)),
 
             // Original Shotlocks
-        HEARTLESS_ANGEL = register(StringsRM.heartlessAngel, () -> new ShotlockHeartlessAngel(KingdomKeysReMind.MODID + ":" + StringsRM.heartlessAngel, order++, 110,1));
+        HEARTLESS_ANGEL = register(StringsRM.heartlessAngel, () -> new ShotlockHeartlessAngel(KingdomKeysReMind.MODID + ":" + StringsRM.heartlessAngel, order++));
 
     private static KKSupplier<Shotlock> register(String name, Supplier<Shotlock> shotlockSupplier) {
         return new KKSupplier<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, name), SHOTLOCKS.register(name, shotlockSupplier));
