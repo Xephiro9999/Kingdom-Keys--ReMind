@@ -143,7 +143,7 @@ public class EpicFightEvents {
 
                         if (spellName.equals("kkremind:attack_zantetsuken") || spellName.equals("kkremind:attack_swift_strike")) {
                             if (!animationsPlayed) {
-                                if (playerData.getMagicCasttimeTicks() <= 40) {
+                                if (playerData.getMagicCasttimeTicks() <= 50) {
                                     playerpatch.playAnimationSynchronized(Animations.BIPED_HOLD_UCHIGATANA.get().getRealAnimation(), 0.0f);
                                 }
                                 if (playerData.getMagicCasttimeTicks() <= 30) {

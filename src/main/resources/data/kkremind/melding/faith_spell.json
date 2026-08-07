@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:holy2_spell",
+  "ingredient2": "kkremind:holy2_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:faith_spell",
+    "quantity": 1
+  },
+  "tier": 7
+}

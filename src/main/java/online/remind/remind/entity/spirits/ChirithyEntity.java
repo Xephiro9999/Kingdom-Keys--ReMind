@@ -1,5 +1,6 @@
 package online.remind.remind.entity.spirits;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -7,9 +8,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,20 +34,19 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
-import online.kingdomkeys.kingdomkeys.lib.Strings;
 import online.kingdomkeys.kingdomkeys.network.PacketHandler;
 import online.kingdomkeys.kingdomkeys.network.stc.SCAeroSoundPacket;
-import online.remind.remind.KingdomKeysReMind;
-import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.dreameater.DreamEaterPetHelper;
 import online.remind.remind.dreameater.ModDreamEaters;
 import online.remind.remind.effect.ModMobEffectsRM;
@@ -74,13 +74,31 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     private double chirithyMagic;
     private double chirithyDefense;
 
-    private int cureCooldown = 60;
+    private int ownerCureCooldown = 0;
+    private int selfCureCooldown = 100;
     private int aeroCooldown = 60;
-    private int esunaCooldown = 60;
+    private int esunaCooldown = 0;
     private int autoLifeCooldown = 60;
-    private int castCooldown = 60;
+    private int castCooldown = 0;
+
+    private int chirithyGiftCooldown = 0;
+    private int recentOwnerDamageTicks = 0;
 
     private float mpHasteMult;
+
+    // Support magic progression is based entirely on Chirithy's own level.
+    private static final int LEVEL_CURE = 1;
+    private static final int LEVEL_AERO = 5;
+    private static final int LEVEL_ESUNA = 10;
+    private static final int LEVEL_CURA = 15;
+    private static final int LEVEL_AERORA = 25;
+    private static final int LEVEL_AUTO_LIFE = 30;
+    private static final int LEVEL_CURAGA = 40;
+    private static final int LEVEL_AEROGA = 50;
+
+    private static final int CHIRITHY_GIFT_COOLDOWN_TICKS = 10;
+    private static final int AMETHYST_GIFT_EXP = 12;
+    private static final int GHAST_TEAR_GIFT_EXP = 25;
 
     public static final int
             IDLE = 0,
@@ -278,6 +296,16 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return;
         }
 
+        if (this.chirithyGiftCooldown > 0) {
+            this.chirithyGiftCooldown--;
+        }
+
+        if (owner.hurtTime > 0) {
+            this.recentOwnerDamageTicks = 20 * 5;
+        } else if (this.recentOwnerDamageTicks > 0) {
+            this.recentOwnerDamageTicks--;
+        }
+
         castSupportMagic();
     }
 
@@ -296,27 +324,38 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         updateMpHasteMult(ownerData);
         tickSupportCooldowns();
 
+        int chirithyLevel = Math.max(
+                LEVEL_CURE,
+                globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_CHIRITHY)
+        );
+
+        float healthPercent = owner.getHealth() / owner.getMaxHealth();
+        boolean ownerKO = owner.hasEffect(ModMobEffects.KO);
+        boolean emergency = ownerKO || healthPercent <= 0.25F;
+
+        // Emergency healing can interrupt another support spell's cast delay.
+        if (emergency && tryCastCure(chirithyLevel, true)) {
+            return;
+        }
+
         if (castCooldown > 0) {
             return;
         }
 
-        if (tryCastCure(globalData, true)) {
+        // Ailment removal has priority over ordinary healing and buffs.
+        if (tryCastEsuna(chirithyLevel)) {
             return;
         }
 
-        if (tryCastEsuna(globalData)) {
+        if (tryCastCure(chirithyLevel, false)) {
             return;
         }
 
-        if (tryCastAutoLife(globalData)) {
+        if (tryCastAutoLife(chirithyLevel)) {
             return;
         }
 
-        if (tryCastAero(globalData)) {
-            return;
-        }
-
-        if (tryCastCure(globalData, false)) {
+        if (tryCastAero(chirithyLevel)) {
             return;
         }
 
@@ -334,25 +373,18 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         int mpHasteras = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTERA);
         int mpHastegas = ownerData.getNumberOfAbilitiesEquipped(ModAbilities.MP_HASTEGA);
 
-        mpHasteMult = (mpHastes * 0.15F) + (mpHasteras * 0.3F) + (mpHastegas * 0.45F);
+        mpHasteMult = (mpHastes * 0.15F) + (mpHasteras * 0.25F) + (mpHastegas * 0.35F);
     }
 
     private void tickSupportCooldowns() {
-        int chirithyLevel = 1;
+        int reduction = 1 + Math.max(0, (int) (mpHasteMult * 2F));
 
-        if (owner != null) {
-            GlobalDataRM globalData = ModDataRM.getGlobal(owner);
-
-            if (globalData != null) {
-                chirithyLevel = globalData.getDreamEaterLevel(GlobalDataRM.DREAM_EATER_CHIRITHY);
-            }
+        if (ownerCureCooldown > 0) {
+            ownerCureCooldown = Math.max(0, ownerCureCooldown - reduction);
         }
 
-        int levelBonus = chirithyLevel / 25;
-        int reduction = 1 + levelBonus + Math.max(0, (int) (mpHasteMult * 5F));
-
-        if (cureCooldown > 0) {
-            cureCooldown = Math.max(0, cureCooldown - reduction);
+        if (selfCureCooldown > 0) {
+            selfCureCooldown = Math.max(0, selfCureCooldown - reduction);
         }
 
         if (aeroCooldown > 0) {
@@ -372,49 +404,112 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
     }
 
-    private boolean tryCastCure(GlobalDataRM globalData, boolean emergencyOnly) {
-        if (cureCooldown > 0 || castCooldown > 0) {
+    private int getCureTier(int chirithyLevel) {
+        if (chirithyLevel >= LEVEL_CURAGA) {
+            return 2;
+        }
+
+        if (chirithyLevel >= LEVEL_CURA) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private int getAeroTier(int chirithyLevel) {
+        if (chirithyLevel >= LEVEL_AEROGA) {
+            return 2;
+        }
+
+        if (chirithyLevel >= LEVEL_AERORA) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private boolean tryCastCure(
+            int chirithyLevel,
+            boolean emergencyOnly
+    ) {
+        if (owner == null || !owner.isAlive()) {
             return false;
         }
 
-        if (!globalData.getLearndedMagics().containsKey(Strings.Magic_Cure)) {
+        if (chirithyLevel < LEVEL_CURE || ownerCureCooldown > 0) {
             return false;
         }
 
+        // Normal Cure respects the global cast delay; emergency Cure may interrupt it.
+        if (!emergencyOnly && castCooldown > 0) {
+            return false;
+        }
+
+        float healthPercent = owner.getHealth() / owner.getMaxHealth();
         boolean ownerKO = owner.hasEffect(ModMobEffects.KO);
-        boolean ownerCritical = owner.getHealth() <= owner.getMaxHealth() * 0.4F;
+        boolean ownerCritical = healthPercent <= 0.25F;
+        boolean ownerNeedsNormalHeal = healthPercent <= 0.75F;
 
-        if (emergencyOnly && !ownerKO && !ownerCritical) {
+        if (emergencyOnly) {
+            if (!ownerKO && !ownerCritical) {
+                return false;
+            }
+        } else if (ownerKO || ownerCritical || !ownerNeedsNormalHeal) {
             return false;
         }
 
-        if (!emergencyOnly && (!owner.isHurt() || ownerCritical || ownerKO)) {
-            return false;
-        }
-
-        int cureLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Cure));
-
+        int cureTier = getCureTier(chirithyLevel);
         float healAmount;
         String spellName;
 
-        switch (cureLevel) {
-            case 1:
-                healAmount = (float) (chirithyMagic * 1.1F);
-                spellName = "Cura";
-                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cura.get(), SoundSource.PLAYERS, 1F, 1F);
-                break;
-
+        switch (cureTier) {
             case 2:
                 healAmount = (float) (chirithyMagic * 1.25F);
                 spellName = "Curaga";
-                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.curaga.get(), SoundSource.PLAYERS, 1F, 1F);
+
+                owner.level().playSound(
+                        null,
+                        owner.getX(),
+                        owner.getY(),
+                        owner.getZ(),
+                        ModSounds.curaga.get(),
+                        SoundSource.PLAYERS,
+                        1F,
+                        1F
+                );
+                break;
+
+            case 1:
+                healAmount = (float) (chirithyMagic * 1.1F);
+                spellName = "Cura";
+
+                owner.level().playSound(
+                        null,
+                        owner.getX(),
+                        owner.getY(),
+                        owner.getZ(),
+                        ModSounds.cura.get(),
+                        SoundSource.PLAYERS,
+                        1F,
+                        1F
+                );
                 break;
 
             case 0:
             default:
                 healAmount = (float) chirithyMagic;
                 spellName = "Cure";
-                owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), ModSounds.cure.get(), SoundSource.PLAYERS, 1F, 1F);
+
+                owner.level().playSound(
+                        null,
+                        owner.getX(),
+                        owner.getY(),
+                        owner.getZ(),
+                        ModSounds.cure.get(),
+                        SoundSource.PLAYERS,
+                        1F,
+                        1F
+                );
                 break;
         }
 
@@ -439,43 +534,46 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
 
         owner.sendSystemMessage(Component.literal("<Chirithy> " + spellName + "!"));
-
         this.startCasting();
 
-        cureCooldown = emergencyOnly ? 120 : 180;
+        ownerCureCooldown = emergencyOnly ? 20 * 20 : 30 * 20;
         castCooldown = 30;
 
         return true;
     }
 
-    private boolean tryCastAero(GlobalDataRM globalData) {
+    private boolean tryCastAero(int chirithyLevel) {
+        if (chirithyLevel < LEVEL_AERO) {
+            return false;
+        }
+
         if (aeroCooldown > 0 || castCooldown > 0) {
             return false;
         }
 
-        if (!globalData.getLearndedMagics().containsKey(Strings.Magic_Aero)) {
+        // Remember recent damage so Aero is not limited to the short hurtTime window.
+        if (recentOwnerDamageTicks <= 0) {
             return false;
         }
 
-        if (owner.hurtTime <= 0) {
+        // Do not spend a cast refreshing an Aero that is already active.
+        if (owner.hasEffect(ModMobEffects.AERO)) {
             return false;
         }
 
-        int aeroLevel = globalData.getLearnedMagicLevel(ResourceLocation.parse(Strings.Magic_Aero));
-
-        int amplifier = Math.max(0, aeroLevel);
+        int aeroTier = getAeroTier(chirithyLevel);
         int durationTicks;
         String spellName;
 
-        switch (aeroLevel) {
-            case 1:
-                durationTicks = 20 * 35;
-                spellName = "Aerora";
-                break;
-
+        switch (aeroTier) {
             case 2:
                 durationTicks = 20 * 45;
                 spellName = "Aeroga";
+                break;
+
+            case 1:
+                durationTicks = 20 * 35;
+                spellName = "Aerora";
                 break;
 
             case 0:
@@ -485,7 +583,14 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 break;
         }
 
-        owner.addEffect(new MobEffectInstance(ModMobEffects.AERO, durationTicks, amplifier, false, false, true));
+        owner.addEffect(new MobEffectInstance(
+                ModMobEffects.AERO,
+                durationTicks,
+                aeroTier,
+                false,
+                false,
+                true
+        ));
 
         PacketHandler.sendToAll(new SCAeroSoundPacket(owner.getId()));
 
@@ -500,33 +605,32 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 1F
         );
 
-        owner.sendSystemMessage(Component.literal("<Chirithy> " + spellName + "! Winds guard you!"));
+        owner.sendSystemMessage(
+                Component.literal("<Chirithy> " + spellName + "! Winds guard you!")
+        );
 
         this.startCasting();
 
         aeroCooldown = 260;
         castCooldown = 25;
+        recentOwnerDamageTicks = 0;
 
         return true;
     }
 
-    private boolean tryCastEsuna(GlobalDataRM globalData) {
-        if (esunaCooldown > 0 || castCooldown > 0) {
+    private boolean tryCastEsuna(int chirithyLevel) {
+        if (chirithyLevel < LEVEL_ESUNA) {
             return false;
         }
 
-        boolean hasEsuna =
-                globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_esuna")
-                        || globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_group_esuna");
-
-        if (!hasEsuna) {
+        if (esunaCooldown > 0 || castCooldown > 0) {
             return false;
         }
 
         List<Holder<MobEffect>> toRemove = new ArrayList<>();
 
         for (MobEffectInstance effect : owner.getActiveEffects()) {
-            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+            if (isEsunaRemovable(effect)) {
                 toRemove.add(effect.getEffect());
             }
         }
@@ -568,18 +672,33 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         this.startCasting();
 
-        esunaCooldown = 420;
+        esunaCooldown = 10 * 20;
         castCooldown = 25;
 
         return true;
     }
 
-    private boolean tryCastAutoLife(GlobalDataRM globalData) {
-        if (autoLifeCooldown > 0 || castCooldown > 0) {
+    private boolean isEsunaRemovable(MobEffectInstance effect) {
+        if (effect == null) {
             return false;
         }
 
-        if (!globalData.getLearndedMagics().containsKey(KingdomKeysReMind.MODID + ":magic_auto-life")) {
+        Holder<MobEffect> effectHolder = effect.getEffect();
+
+        if (effectHolder.value().getCategory() == MobEffectCategory.HARMFUL) {
+            return true;
+        }
+
+        // Base Kingdom Keys Freeze is not consistently classified as harmful.
+        return ModMobEffects.FREEZE.getKey().equals(effectHolder.getKey());
+    }
+
+    private boolean tryCastAutoLife(int chirithyLevel) {
+        if (chirithyLevel < LEVEL_AUTO_LIFE) {
+            return false;
+        }
+
+        if (autoLifeCooldown > 0 || castCooldown > 0) {
             return false;
         }
 
@@ -587,11 +706,19 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
             return false;
         }
 
-        if (owner.getHealth() <= owner.getMaxHealth() * 0.5F || owner.hasEffect(ModMobEffects.KO)) {
+        // Healing and Esuna should take priority when the owner is already in danger.
+        if (owner.getHealth() <= owner.getMaxHealth() * 0.5F
+                || owner.hasEffect(ModMobEffects.KO)) {
             return false;
         }
 
-        owner.addEffect(new MobEffectInstance(ModMobEffectsRM.AUTO_LIFE, Integer.MAX_VALUE, 0, false, false));
+        owner.addEffect(new MobEffectInstance(
+                ModMobEffectsRM.AUTO_LIFE,
+                Integer.MAX_VALUE,
+                0,
+                false,
+                false
+        ));
 
         owner.level().playSound(
                 null,
@@ -604,7 +731,9 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
                 1F
         );
 
-        owner.sendSystemMessage(Component.literal("<Chirithy> Not gonna let you die! Auto-Life!"));
+        owner.sendSystemMessage(
+                Component.literal("<Chirithy> Not gonna let you die! Auto-Life!")
+        );
 
         this.startCasting();
 
@@ -615,7 +744,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
     }
 
     private boolean trySelfHeal() {
-        if (cureCooldown > 0 || castCooldown > 0) {
+        if (selfCureCooldown > 0 || castCooldown > 0) {
             return false;
         }
 
@@ -658,7 +787,7 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
         this.startCasting();
 
-        cureCooldown = 300;
+        selfCureCooldown = 300;
         castCooldown = 25;
 
         return true;
@@ -666,6 +795,13 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack heldStack = player.getItemInHand(hand);
+        int giftExp = getChirithyGiftExp(heldStack);
+
+        if (giftExp > 0) {
+            return giveChirithyGift(player, heldStack, giftExp);
+        }
+
         InteractionResult result = DreamEaterPetHelper.tryPetDreamEater(
                 this,
                 player,
@@ -679,6 +815,92 @@ public class ChirithyEntity extends BaseDreamEaterEntity implements GeoEntity {
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    private InteractionResult giveChirithyGift(
+            Player player,
+            ItemStack heldStack,
+            int giftExp
+    ) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!isChirithyOwner(serverPlayer)) {
+            serverPlayer.displayClientMessage(
+                    Component.literal("This Chirithy does not belong to you.")
+                            .withStyle(ChatFormatting.RED),
+                    true
+            );
+
+            return InteractionResult.CONSUME;
+        }
+
+        if (this.chirithyGiftCooldown > 0) {
+            return InteractionResult.CONSUME;
+        }
+
+        if (!serverPlayer.getAbilities().instabuild) {
+            heldStack.shrink(1);
+        }
+
+        this.chirithyGiftCooldown = CHIRITHY_GIFT_COOLDOWN_TICKS;
+
+        DreamEaterExpHandler.giveDreamEaterExp(
+                serverPlayer,
+                GlobalDataRM.DREAM_EATER_CHIRITHY,
+                giftExp,
+                this
+        );
+
+        // Refresh stats immediately if the gift caused a level-up.
+        this.updateStatsFromOwner();
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    ParticleTypes.HAPPY_VILLAGER,
+                    this.getX(),
+                    this.getY() + this.getBbHeight() + 0.4D,
+                    this.getZ(),
+                    8,
+                    0.25D,
+                    0.25D,
+                    0.25D,
+                    0.02D
+            );
+        }
+
+        serverPlayer.displayClientMessage(
+                Component.literal("Chirithy gained " + giftExp + " EXP!")
+                        .withStyle(ChatFormatting.AQUA),
+                true
+        );
+
+        return InteractionResult.CONSUME;
+    }
+
+    private int getChirithyGiftExp(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0;
+        }
+
+        if (stack.is(Items.AMETHYST_SHARD)) {
+            return AMETHYST_GIFT_EXP;
+        }
+
+        if (stack.is(Items.GHAST_TEAR)) {
+            return GHAST_TEAR_GIFT_EXP;
+        }
+
+        return 0;
+    }
+
+    private boolean isChirithyOwner(Player player) {
+        if (player == null || this.getOwnerUUID() == null) {
+            return false;
+        }
+
+        return this.getOwnerUUID().equals(player.getUUID());
     }
 
     @Override

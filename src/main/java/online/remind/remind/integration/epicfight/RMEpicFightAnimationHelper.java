@@ -37,7 +37,7 @@ public class RMEpicFightAnimationHelper {
             case "slot_edge" -> playSlotEdge(playerpatch, chainStep);
             case "sonic_blade" -> playSonicBlade(playerpatch, chainStep);
             case "chaos_blade" -> playChaosBlade(playerpatch, chainStep);
-            case "dark_haze" -> playDarkHaze(playerpatch);
+            case "dark_haze" -> playDarkHaze(playerpatch, chainStep);
         }
     }
 
@@ -86,12 +86,12 @@ public class RMEpicFightAnimationHelper {
         };
 
         playerpatch.playAnimationSynchronized(
-                KKAnimations.SORA_FINISHER1.get().getRealAnimation(),
+                Animations.SWORD_DASH.get().getRealAnimation(),
                 transition
         );
     }
 
-    private static void playDarkHaze(PlayerPatch playerpatch) {
+    private static void playDarkHaze(PlayerPatch playerpatch, int chainStep) {
         playerpatch.playAnimationSynchronized(
                 Animations.SWORD_DASH.get().getRealAnimation(),
                 0.08F

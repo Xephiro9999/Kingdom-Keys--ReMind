@@ -579,8 +579,9 @@ public class CactuarEntity extends Monster implements GeoEntity {
         }
 
         if (this.escapeCooldown <= 0) {
-            boolean lowHealth = this.getHealth() <= this.getMaxHealth() * 0.35F;
-            boolean randomEscape = this.random.nextFloat() < 0.015F;
+            boolean lowHealth = this.getHealth() <= this.getMaxHealth() * 0.01F;
+            boolean randomEscape = this.random.nextFloat() < 0.01F;
+            //System.out.println(randomEscape +", " + lowHealth); // DEBUG LINE
 
             if (lowHealth || randomEscape) {
                 startEscape(target);
@@ -623,6 +624,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
     private void doThousandNeedles(LivingEntity target) {
         playActionAnimation(ACTION_NEEDLES, NORMAL_NEEDLES_TICKS);
         startNeedleVolley(target, false, NORMAL_NEEDLES_TICKS);
+        this.setDeltaMovement(0,0,0);
 
         this.level().playSound(
                 null,
@@ -641,6 +643,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
     private void doTenThousandNeedles(LivingEntity target) {
         playActionAnimation(ACTION_NEEDLES, JUMBO_NEEDLES_TICKS);
         startNeedleVolley(target, true, JUMBO_NEEDLES_TICKS);
+        this.setDeltaMovement(0,0,0);
 
         this.level().playSound(
                 null,

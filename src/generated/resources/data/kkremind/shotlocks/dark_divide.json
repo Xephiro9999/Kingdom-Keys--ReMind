@@ -1,11 +1,11 @@
 {
-  "cooldown": 2,
-  "cooldown_max": 1,
-  "dmg_mult": 0.55,
-  "dmg_mult_max": 0.66,
+  "cooldown": 4,
+  "cooldown_max": 2,
+  "dmg_mult": 1.0,
+  "dmg_mult_max": 1.2,
   "element": "darkness",
-  "max": 28,
+  "max": 16,
   "max_exp": 8600,
   "max_level": 5,
-  "minigame": "mash"
+  "minigame": "timing"
 }

@@ -6,7 +6,6 @@
   {"item": "kkremind:sliding_dash_attack", "amount": 1, "tier": 1, "cost": 100},
   {"item": "kkremind:confuse_spell", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:silence_spell", "amount": 1, "tier": 2, "cost": 500},
-  {"item": "kkremind:slow_spell", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:berserk_spell", "amount": 1, "tier": 5, "cost": 5000},
   {"item": "kkremind:fire_strike_attack", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:blizzard_strike_attack", "amount": 1, "tier": 2, "cost": 500},
