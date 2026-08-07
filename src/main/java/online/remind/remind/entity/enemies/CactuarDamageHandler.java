@@ -93,7 +93,7 @@ public class CactuarDamageHandler {
             /*
              * Jumbo heavily resists non-Water damage.
              */
-            damage *= 0.25F;
+            damage *= 0.35F;
             damage = Math.min(damage, 35.0F);
         }
 
@@ -107,7 +107,7 @@ public class CactuarDamageHandler {
          * This makes huge Kingdom Keys / Keyblade burst hits not delete it instantly.
          * Normal Tonberry still takes more damage than Tonberry King.
          */
-        damage *= 0.35F;
+        damage *= 0.45F;
         damage = Math.min(damage, 65.0F);
 
         return damage;
@@ -123,7 +123,7 @@ public class CactuarDamageHandler {
          * - Everyone's Grudge counter
          * - boss reward pacing
          */
-        damage *= 0.18F;
+        damage *= 0.35F;
         damage = Math.min(damage, 55.0F);
 
         return damage;
