@@ -123,7 +123,7 @@ public class FFDamageHandler {
          * - Everyone's Grudge counter
          * - boss reward pacing
          */
-        damage *= 0.35F;
+        damage *= 0.3F;
         damage = Math.min(damage, 55.0F);
 
         return damage;

@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -41,6 +42,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.entity.ModEntitiesRM;
+import online.remind.remind.item.ModItemsRM;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -73,6 +75,7 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     private static final int GOLD_FEED_EXP = 15;
     private static final int EMERALD_FEED_EXP = 30;
+    private static final int CHEFS_KNIFE_FEED_EXP = 50;
     private static final int FEED_COOLDOWN_TICKS = 10;
 
     private static final int STAT_UPDATE_INTERVAL_TICKS = 20;
@@ -718,6 +721,10 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
         if (stack.is(Items.EMERALD)) {
             return EMERALD_FEED_EXP;
+        }
+
+        if (stack.is( ModItemsRM.chefsKnife.get())){
+            return CHEFS_KNIFE_FEED_EXP * (getDreamEaterLevel() / 2);
         }
 
         return 0;

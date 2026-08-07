@@ -226,8 +226,10 @@ public class ModItemsRM{
         diamondCoin = ITEMS.register("diamond_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.diamondCoinValue, "munny")),
         netheriteCoin = ITEMS.register("netherite_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.netheriteCoinValue, "munny")),
         amethystCoin = ITEMS.register("amethyst_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.amethystCoinValue, "munny")),
-        heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.heartCoinValue, "hearts"));
+        heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.heartCoinValue, "hearts")),
 
+        // Dream Eater Gifts
+        chefsKnife = ITEMS.register("chefs_knife", () -> new ChefsKnifeItem(new Item.Properties().stacksTo(64)));
         // Music Discs
 
         // Armor Trims

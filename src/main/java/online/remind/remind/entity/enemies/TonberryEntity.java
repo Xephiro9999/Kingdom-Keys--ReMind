@@ -26,10 +26,12 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import online.remind.remind.client.sound.ModSoundsRM;
+import online.remind.remind.item.ModItemsRM;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -785,5 +787,29 @@ public class TonberryEntity extends Monster implements GeoEntity {
          * Lower these if Tonberries feel too rare.
          */
         return airBlocks >= 230 && tallColumns >= 18;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(
+            ServerLevel level,
+            DamageSource damageSource,
+            boolean recentlyHit
+    ) {
+        super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+
+        // Tonberry King: guaranteed Chef's Knife
+        if (this instanceof TonberryKingEntity) {
+            this.spawnAtLocation(
+                    new ItemStack(ModItemsRM.chefsKnife.get(), 1)
+            );
+            return;
+        }
+
+        // Normal Tonberry
+        if (this.getRandom().nextFloat() < 0.75F) {
+            this.spawnAtLocation(
+                    new ItemStack(ModItemsRM.chefsKnife.get(), 1)
+            );
+        }
     }
 }
