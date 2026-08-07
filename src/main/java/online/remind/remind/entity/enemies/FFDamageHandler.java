@@ -15,7 +15,7 @@ import online.remind.remind.KingdomKeysReMind;
         modid = KingdomKeysReMind.MODID,
         bus = EventBusSubscriber.Bus.GAME
 )
-public class CactuarDamageHandler {
+public class FFDamageHandler {
 
     /*
      * This runs late so it sees the final damage after other systems,
