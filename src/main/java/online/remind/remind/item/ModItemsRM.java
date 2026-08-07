@@ -229,7 +229,8 @@ public class ModItemsRM{
         heartCoin = ITEMS.register("heart_coin", () -> new RMCoinItem(new Item.Properties().stacksTo(64), () -> ModConfigs.heartCoinValue, "hearts")),
 
         // Dream Eater Gifts
-        chefsKnife = ITEMS.register("chefs_knife", () -> new ChefsKnifeItem(new Item.Properties().stacksTo(64)));
+        chefsKnife = ITEMS.register("chefs_knife", () -> new ChefsKnifeItem(new Item.Properties().stacksTo(64))),
+        cactuarNeedle = ITEMS.register("cactuar_needle", () -> new CactuarNeedleItem(new Item.Properties().stacksTo(64)));
         // Music Discs
 
         // Armor Trims

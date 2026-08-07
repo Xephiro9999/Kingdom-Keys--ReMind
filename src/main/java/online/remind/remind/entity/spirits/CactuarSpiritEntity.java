@@ -38,6 +38,7 @@ import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEaterExpHandler;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.entity.projectile.CactuarNeedleProjectile;
+import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -100,6 +101,7 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
 
 
     private static final int CACTUS_FEED_EXP = 15;
+    private static final int CACTUAR_NEEDLE_FEED_EXP = 50;
     private static final int CACTUS_FEED_COOLDOWN_TICKS = 10;
 
     private int cactusFeedCooldown = 20;
@@ -810,7 +812,9 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
 
-        if (!heldStack.is(Items.CACTUS)) {
+        int feedExp = getCactuarFeedExp(heldStack);
+
+        if (feedExp <= 0) {
             return super.mobInteract(player, hand);
         }
 
@@ -841,11 +845,27 @@ public class CactuarSpiritEntity extends PathfinderMob implements GeoEntity {
         DreamEaterExpHandler.giveDreamEaterExp(
                 serverPlayer,
                 GlobalDataRM.DREAM_EATER_CACTUAR,
-                CACTUS_FEED_EXP,
+                feedExp,
                 this
         );
 
         return InteractionResult.CONSUME;
+    }
+
+    private int getCactuarFeedExp(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0;
+        }
+
+        if (stack.is(Items.CACTUS)) {
+            return CACTUS_FEED_EXP;
+        }
+
+        if (stack.is(ModItemsRM.cactuarNeedle.get())) {
+            return CACTUAR_NEEDLE_FEED_EXP;
+        }
+
+        return 0;
     }
 
     @Override

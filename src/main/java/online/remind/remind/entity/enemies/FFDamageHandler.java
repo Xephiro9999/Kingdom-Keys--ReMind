@@ -75,7 +75,9 @@ public class FFDamageHandler {
 
     private static float handleNormalCactuarDamage(float damage, boolean waterDamage) {
         if (waterDamage) {
-            damage *= 1.75F;
+            damage *= 2.25F;
+        } else {
+            damage *= 1.25F;
         }
 
         return damage;

@@ -724,7 +724,7 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
         }
 
         if (stack.is( ModItemsRM.chefsKnife.get())){
-            return CHEFS_KNIFE_FEED_EXP * (getDreamEaterLevel() / 2);
+            return CHEFS_KNIFE_FEED_EXP;
         }
 
         return 0;
