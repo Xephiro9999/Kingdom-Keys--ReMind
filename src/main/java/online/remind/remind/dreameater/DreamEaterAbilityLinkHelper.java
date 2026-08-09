@@ -52,16 +52,6 @@ public class DreamEaterAbilityLinkHelper {
     private static final String DREAM_EATER_RL_KEY = "DreamEaterRL";
     private static final String DREAM_EATER_LEVEL_KEY = "DreamEaterLevel";
 
-    /*
-     * One-time migration flag.
-     *
-     * The old helper wrote Dream Eater link abilities directly into PlayerData abilityMap.
-     * That is what caused AP to be consumed.
-     *
-     * This purge removes those old AP-eating entries once.
-     */
-    private static final String LEGACY_PURGE_DONE_KEY = "kkremind_dream_eater_legacy_abilitymap_purge_done";
-
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
@@ -72,7 +62,6 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
-        purgeLegacyAbilityMapGrants(player);
         refresh(player);
     }
 
@@ -94,7 +83,6 @@ public class DreamEaterAbilityLinkHelper {
             return;
         }
 
-        purgeLegacyAbilityMapGrants(player);
         refresh(player);
     }
 
@@ -426,11 +414,11 @@ public class DreamEaterAbilityLinkHelper {
         Set<String> idsToRemove = new HashSet<>();
 
         for (String rawAbilityId : DreamEaterInfo.getAllGrantedAbilityIds()) {
-            collectAbilityIdVariants(idsToRemove, rawAbilityId);
+            
         }
 
         for (String currentVirtualAbilityId : getAccessoryAbilityIds(player)) {
-            collectAbilityIdVariants(idsToRemove, currentVirtualAbilityId);
+
         }
 
         for (String abilityId : idsToRemove) {
@@ -447,63 +435,6 @@ public class DreamEaterAbilityLinkHelper {
 
         if (changed) {
             sync(player);
-        }
-    }
-
-    private static void collectAbilityIdVariants(java.util.Set<String> out, String rawAbilityId) {
-        if (out == null || rawAbilityId == null || rawAbilityId.isEmpty()) {
-            return;
-        }
-
-        String id = rawAbilityId.trim().toLowerCase(java.util.Locale.ROOT);
-
-        if (id.isEmpty()) {
-            return;
-        }
-
-        out.add(id);
-
-        String normalized = normalizeAbilityId(id);
-        out.add(normalized);
-
-        if (id.contains(":")) {
-            String[] split = id.split(":", 2);
-
-            if (split.length == 2) {
-                String namespace = split[0];
-                String path = split[1];
-
-                out.add(namespace + ":" + path);
-                out.add(path);
-
-                String normalizedPath = normalizeAbilityId(path);
-
-                out.add(normalizedPath);
-                out.add(namespace + ":" + normalizedPath);
-
-                if (path.startsWith("ability_")) {
-                    String noPrefix = path.substring("ability_".length());
-
-                    out.add(noPrefix);
-                    out.add(namespace + ":" + noPrefix);
-                } else {
-                    out.add("ability_" + path);
-                    out.add(namespace + ":ability_" + path);
-                }
-            }
-        } else {
-            out.add("kingdomkeys:" + id);
-            out.add("kingdomkeys:" + normalized);
-            out.add("kkremind:" + id);
-            out.add("kkremind:" + normalized);
-
-            if (id.startsWith("ability_")) {
-                String noPrefix = id.substring("ability_".length());
-
-                out.add(noPrefix);
-                out.add("kingdomkeys:" + noPrefix);
-                out.add("kkremind:" + noPrefix);
-            }
         }
     }
 
