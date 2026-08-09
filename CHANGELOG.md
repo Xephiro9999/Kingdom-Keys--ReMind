@@ -496,25 +496,25 @@ Removed Faith (Re:CoM)'s synthesis recipe, and gave it a melding recipe. (Holyga
 
 # 8.26.2a
 
-## New Items
+### New Items
 ***Chef's Knife***
 A Drop from Tonberries (75% Chance) and the Tonberry King (100% Chance).
 
 ***Cactuar Needle***
 A Drop from Cactuars and Jumbo Cactuars.
 
-## Enemy Changes
+### Enemy Changes
 Tonberry King and Tonberry takes slightly more damage.
 
-## Dream Eater Adjustments
+### Dream Eater Adjustments
 Chirithy's Aero and Esuna fixed.
 Chirithy can now be gifted Amethyst Shards for 12 EXP and Ghast Tears for 25 EXP.
 Tonberry can now be given Chef's Knives to grant it a LOT of EXP!
 Cactuar can now be given Cactuar Needle to grant it a LOT of EXP!
 
-## Ability Links Reworked
+### Ability Links Reworked
 Abilities are now granted PERMAMENTLY as the Dream Eater levels up.
 This also fixes a bug the previous system had where it would remove certain abilites on gained via level ups.
 
-## Epic Fight Fix
+### Epic Fight Fix
 All keyblades now work with KK's Styles/Movesets
