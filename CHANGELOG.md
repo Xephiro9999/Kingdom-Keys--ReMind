@@ -459,3 +459,62 @@ Dream Eater granted abilities will no longer appear in the ability list.
 Dream Eater granted abilites no longer consume AP.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 7.26.2b
+
+Updated support for latest KK Release.
+Fixed Confusion Strike's meld recipe.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 7.26.2c
+
+Fixed certain meld recipes
+Added the Elemental Strike Attacks to the Special Moogle
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 8.26.2
+
+
+## Enemy Changes
+Reduced chance of Cactuar fleeing
+Reduced knockback of Cactuar's Needles
+
+## Dream Eater Changes
+Adjusted Chirithy's Cure to be more consistent
+Made it so Chirithy's self healing and owner healing are separate and more consistent
+Chirithy's Cooldowns adjusted.
+Having a Dream Eater summoned while killed will put you into KO State, if the Dream Eater is able to heal you, it can revive you.
+
+## General Changes
+Removed recipes that are no longer needed.
+Re-localized Faith (ReMind's version) to "Faith (Re:CoM)" to avoid confusion.
+Removed Faith (Re:CoM)'s synthesis recipe, and gave it a melding recipe. (Holyga + Holyga)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 8.26.2a
+
+## New Items
+***Chef's Knife***
+A Drop from Tonberries (75% Chance) and the Tonberry King (100% Chance).
+
+***Cactuar Needle***
+A Drop from Cactuars and Jumbo Cactuars.
+
+## Enemy Changes
+Tonberry King and Tonberry takes slightly more damage.
+
+## Dream Eater Adjustments
+Chirithy's Aero and Esuna fixed.
+Chirithy can now be gifted Amethyst Shards for 12 EXP and Ghast Tears for 25 EXP.
+Tonberry can now be given Chef's Knives to grant it a LOT of EXP!
+Cactuar can now be given Cactuar Needle to grant it a LOT of EXP!
+
+## Ability Links Reworked
+Abilities are now granted PERMAMENTLY as the Dream Eater levels up.
+This also fixes a bug the previous system had where it would remove certain abilites on gained via level ups.
+
+## Epic Fight Fix
+All keyblades now work with KK's Styles/Movesets

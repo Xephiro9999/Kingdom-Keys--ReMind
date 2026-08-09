@@ -6,8 +6,7 @@
   "plugin": "online.remind.remind.mixin.KKRMMixinPlugin",
   "mixins": [
     "GuardSkillMixin",
-    "KKDriveFormMixin",
-    "KingdomKeysPlayerDataMixin"
+    "KKDriveFormMixin"
   ],
   "client": [],
   "minVersion": "0.8"
