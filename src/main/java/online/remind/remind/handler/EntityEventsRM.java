@@ -2000,16 +2000,9 @@ public class EntityEventsRM {
 					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
 					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
 					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
-						player.heal((playerData.getStrength(true) * 0.1f) * darkScaling);
-						player.getFoodData().eat(3, 10);
+						player.heal((playerData.getStrength(true) * 0.05f) * darkScaling);
+						player.getFoodData().eat(3, 5);
 					}
-
-
-
-
-					//System.out.println("%: " + darkScaling);
-					//System.out.println("Healing: " + event.getOriginalDamage() * darkScaling);
-					//System.out.println("Bonus Damage: " + bonusDamage);
 				}
 
 
@@ -2070,13 +2063,13 @@ public class EntityEventsRM {
 											event.getEntity().level().addFreshEntity(lightningBolt);
 											break;
 										case "water":
-											// Water Blade TODO: Change KKDamageTypes.ICE to KKDamageTypes.WATER when I port to 1.21.1 NeoForge
+											// Water Blade
 											event.getEntity().invulnerableTime = 0;
-											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+											event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
 											event.getEntity().setAirSupply(0);
 											if (event.getEntity().getAirSupply() == 0) {
 												event.getEntity().invulnerableTime = 0;
-												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.ICE, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
+												event.getEntity().hurt(KKDamageTypes.getElementalDamage(KKDamageTypes.WATER, event.getEntity(), null), (float) ((waterBoosts / 2) * dmg));
 											}
 											break;
 										case "light":
@@ -2095,7 +2088,6 @@ public class EntityEventsRM {
 									}
 								}
 							}
-
 						}
 					}
 
@@ -2105,7 +2097,7 @@ public class EntityEventsRM {
 						if (playerData.getEquippedKeychain(DriveForm.NONE).getItem() == ModItemsRM.xephiroKeybladeChain.get()) {
 							if (event.getSource().getEntity().getUUID().toString().equals("70b48fbd-b67f-4f3e-9369-09cef36d51a3") || event.getSource().getEntity().getUUID().toString().equals("380df991-f603-344c-a090-369bad2a924a")) {
 
-								float vamp = (float) playerData.getStrengthStat().getStat() * 0.10f;
+								float vamp = (float) playerData.getStrengthStat().getStat() * 0.025f;
 								//System.out.println("Life Steal for " + vamp + "HP.");
 
 								player.heal(vamp);

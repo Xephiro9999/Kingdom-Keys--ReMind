@@ -518,3 +518,11 @@ This also fixes a bug the previous system had where it would remove certain abil
 
 ### Epic Fight Fix
 All keyblades now work with KK's Styles/Movesets
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 8.26.3
+
+## Epic Fight Adjustments
+
+Renewal Block now restores SLIGHTLY less Health and Hunger/Saturation.

@@ -61,12 +61,13 @@ public class GuardSkillMixin {
         if(playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)) {
             if (!event.isParried()){
                 player.heal(player.getMaxHealth() * 0.025F);
-                player.getFoodData().eat(3,3);
+                player.getFoodData().eat(1,1);
             } else {
-                player.heal(player.getMaxHealth() * 0.075F);
-                player.getFoodData().eat(3,3);
+                player.heal(player.getMaxHealth() * 0.05F);
+                player.getFoodData().eat(2,2);
             }
             event.getEntityPatch().playSound(ModSounds.savepoint.get(), 1f, 1f);
+
         }
 
         if(playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)) {
@@ -135,6 +136,8 @@ public class GuardSkillMixin {
 
             PacketHandler.syncToAllAround(player, playerData);
         }
+
+
 
     }
 }
