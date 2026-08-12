@@ -530,7 +530,6 @@ HP Boost now gives +12.5% HP per Stack.
 MP Boost now gives +5 MP Minimum per Stack, +12.5% MP per Stack instead if the value exceeds 5.
 
 ## Epic Fight Adjustments
-
 Renewal Block now restores SLIGHTLY less Health and Hunger/Saturation.
 
 ## Fixes
