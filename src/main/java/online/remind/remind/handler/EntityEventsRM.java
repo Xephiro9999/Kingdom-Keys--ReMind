@@ -207,6 +207,8 @@ public class EntityEventsRM {
 		if (playerData != null) {
 			if (KingdomKeysReMind.efmLoaded) {
 
+
+
 				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.FOCUS_BLOCK.location())) {
 					playerData.addAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), true);
 				}
@@ -1225,48 +1227,156 @@ public class EntityEventsRM {
 					}
 
 					// HP Boost
-					if (playerData.isAbilityEquipped(ModAbilitiesRM.HP_BOOST)) {
-						int countHP = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.HP_BOOST);
-						int newHpBonus = countHP * 10;
+					if (playerData.isAbilityEquipped(ResourceLocation.parse(StringsRM.hpBoost))) {
+						int countHP = playerData.getNumberOfAbilitiesEquipped(ResourceLocation.parse(StringsRM.hpBoost));
 
-						int lastHp = globalData.getLastHpBoostBonus();
-						int diffHp = newHpBonus - lastHp;
+						// +5% Max HP per equipped HP Boost.
+						double hpBoostPercentPerStack = 0.125D;
 
-						if (diffHp != 0) {
+						int baseHp = playerData.getMaxHP();
+
+						double expectedMaxHp =
+								baseHp * (1.0D + (countHP * hpBoostPercentPerStack));
+
+						/*
+						 * Store the percentage-derived bonus as an integer bookkeeping
+						 * value. The actual MAX_HEALTH attribute can remain a double.
+						 */
+						int newHpBonus =
+								(int) Math.round(expectedMaxHp - baseHp);
+
+						if (globalData.getLastHpBoostBonus() != newHpBonus) {
 							globalData.setLastHpBoostBonus(newHpBonus);
-
-							int baseHp = playerData.getMaxHP();
-							int boostedHp = baseHp + newHpBonus;
-
-							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(boostedHp);
 						}
-					} else {
-						int lastHp = globalData.getLastHpBoostBonus();
-						if (lastHp != 0) {
-							globalData.setLastHpBoostBonus(0);
 
-							int baseHp = playerData.getMaxHP();
-							player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(baseHp);
+						/*
+						 * Also verify the actual player attribute.
+						 *
+						 * This keeps the respawn fix we just added.
+						 */
+						if (player.getAttribute(Attributes.MAX_HEALTH) != null) {
+							double currentMaxHp =
+									player.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+
+							if (Math.abs(currentMaxHp - expectedMaxHp) > 0.001D) {
+								player.getAttribute(Attributes.MAX_HEALTH)
+										.setBaseValue(expectedMaxHp);
+							}
+						}
+
+					} else {
+
+						if (globalData.getLastHpBoostBonus() != 0) {
+							globalData.setLastHpBoostBonus(0);
+						}
+
+						int baseHp = playerData.getMaxHP();
+
+						if (player.getAttribute(Attributes.MAX_HEALTH) != null) {
+							double currentMaxHp =
+									player.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+
+							if (Math.abs(currentMaxHp - baseHp) > 0.001D) {
+								player.getAttribute(Attributes.MAX_HEALTH)
+										.setBaseValue(baseHp);
+							}
 						}
 					}
 
 
 					// MP Boost
-					if (playerData.isAbilityEquipped(ModAbilitiesRM.MP_BOOST)) {
-						int countMP = playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.MP_BOOST);
-						int newMpBonus = countMP * 10;
+					if (playerData.isAbilityEquipped(ResourceLocation.parse(StringsRM.mpBoost))) {
 
-						int lastMp = globalData.getLastMpBoostBonus();
-						int diffMp = newMpBonus - lastMp;
+						int countMP =
+								playerData.getNumberOfAbilitiesEquipped(ResourceLocation.parse(StringsRM.mpBoost));
+
+						/*
+						 * The current Max MP may already include the previous MP Boost.
+						 *
+						 * Remove the previous bonus first so percentage scaling is
+						 * always calculated from the player's REAL base MP.
+						 */
+						int lastMpBonus =
+								globalData.getLastMpBoostBonus();
+
+						int currentMaxMp = (int) playerData.getMaxMP();
+
+						int baseMp =
+								Math.max(
+										0,
+										currentMaxMp - lastMpBonus
+								);
+
+
+						/*
+						 * HYBRID SCALING:
+						 *
+						 * Each equipped MP Boost gives whichever is greater:
+						 *
+						 * +bonusPerStack MP
+						 *
+						 * OR
+						 *
+						 * +percentBonusPerStack% of base Max MP
+						 */
+						int percentBonusPerStack =
+								(int) Math.round(
+										baseMp * 0.125D
+								);
+
+						int bonusPerStack =
+								Math.max(
+										5,
+										percentBonusPerStack
+								);
+
+
+						/*
+						 * Stack normally.
+						 */
+						int newMpBonus =
+								bonusPerStack * countMP;
+
+
+						/*
+						 * Only modify Max MP by the difference.
+						 *
+						 * This preserves the behavior of your existing MP Boost code.
+						 */
+						int diffMp =
+								newMpBonus - lastMpBonus;
+
 
 						if (diffMp != 0) {
-							playerData.addMaxMP(diffMp);
-							globalData.setLastMpBoostBonus(newMpBonus);
+
+							playerData.addMaxMP(
+									diffMp
+							);
+
+							globalData.setLastMpBoostBonus(
+									newMpBonus
+							);
 						}
+
 					} else {
-						int lastMp = globalData.getLastMpBoostBonus();
-						if (lastMp != 0) { playerData.addMaxMP(-lastMp);
-							globalData.setLastMpBoostBonus(0);
+
+						/*
+						 * MP Boost is no longer equipped.
+						 *
+						 * Remove only the MP that MP Boost itself added.
+						 */
+						int lastMpBonus =
+								globalData.getLastMpBoostBonus();
+
+						if (lastMpBonus != 0) {
+
+							playerData.addMaxMP(
+									-lastMpBonus
+							);
+
+							globalData.setLastMpBoostBonus(
+									0
+							);
 						}
 					}
 
@@ -1980,7 +2090,7 @@ public class EntityEventsRM {
 
 
 				int crtBoosts = playerData.getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST);
-				float addDmg = (float) (crtBoosts * 3);
+				float addDmg = (float) (crtBoosts * 1.5F);
 				if (playerData.isAbilityEquipped(ModAbilitiesRM.JECHT)){
 					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
 						//System.out.println(addDmg);
@@ -1994,14 +2104,11 @@ public class EntityEventsRM {
 
 					float currentHP = player.getHealth();
 					float maxHP =  player.getMaxHealth();
-					float missingHPRatio = 1.f - (currentHP / maxHP);
-
 					float darkScaling = 1f + (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1f);
-					//float bonusDamage = (playerData.getStrength(true) * 0.25f) * (darkScaling);
-					//event.getEntity().hurt(event.getEntity().damageSources().playerAttack(player), bonusDamage);
+
 					if (event.getSource().type().msgId().equals("player")) { // Applies to ONLY melee
 						player.heal((playerData.getStrength(true) * 0.05f) * darkScaling);
-						player.getFoodData().eat(3, 5);
+						player.getFoodData().eat(2, 5);
 					}
 				}
 

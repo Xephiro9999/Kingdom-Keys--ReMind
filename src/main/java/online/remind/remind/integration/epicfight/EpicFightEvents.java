@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
 import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
@@ -16,6 +17,7 @@ import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
 import online.kingdomkeys.kingdomkeys.effects.ModMobEffects;
 import online.kingdomkeys.kingdomkeys.integration.epicfight.init.KKAnimations;
+import online.kingdomkeys.kingdomkeys.lib.SoAState;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
@@ -23,6 +25,7 @@ import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.lib.StringsRM;
 import yesman.epicfight.api.animation.Animator;
+import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.network.EpicFightNetworkManager;
 import yesman.epicfight.registry.entries.EpicFightSkills;
@@ -41,6 +44,24 @@ public class EpicFightEvents {
     boolean animationsPlayed;
     public int ticks;
     int maxTicks;
+
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent e) {
+        Player player = e.getEntity();
+        PlayerData playerData = PlayerData.get(player);
+        GlobalDataRM globalData = ModDataRM.getGlobal(player);
+        PlayerPatch playerpatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+
+        if (playerData.getChosen() == SoAState.GUARDIAN) {
+            // TODO: Give Guardian Passive
+
+        }
+
+        if (playerData.getChosen() == SoAState.WARRIOR){
+            // TODO: Give Warrior Passive
+
+        }
+    }
 
 
     @SubscribeEvent

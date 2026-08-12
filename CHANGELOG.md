@@ -523,6 +523,12 @@ All keyblades now work with KK's Styles/Movesets
 
 # 8.26.3
 
+## Ability Adjustments
+Spellblade (Water) now deals Water Damage instead of Ice Damage.
+Lowered damage from Brutal Blitzer.
+HP Boost now gives +12.5% HP per Stack
+MP Boost now gives +5 MP Minimum, +12.5% instead if the value exceeds 5.
+
 ## Epic Fight Adjustments
 
 Renewal Block now restores SLIGHTLY less Health and Hunger/Saturation.
