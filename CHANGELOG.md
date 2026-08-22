@@ -539,3 +539,4 @@ HP Boost stays after death
 
 # 8.26.3a
 
+Compatibility with latest Kingdom Keys Update (2.9.2a/b)
