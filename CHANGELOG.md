@@ -483,7 +483,7 @@ Reduced knockback of Cactuar's Needles
 
 ## Dream Eater Changes
 Adjusted Chirithy's Cure to be more consistent
-Made it so Chirithy's self healing and owner healing are separate and more consistent
+Made it so Chirithy's self-healing and owner healing are separate and more consistent
 Chirithy's Cooldowns adjusted.
 Having a Dream Eater summoned while killed will put you into KO State, if the Dream Eater is able to heal you, it can revive you.
 
@@ -534,3 +534,8 @@ Renewal Block now restores SLIGHTLY less Health and Hunger/Saturation.
 
 ## Fixes
 HP Boost stays after death
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 8.26.3a
+
