@@ -1,5 +1,6 @@
 package online.remind.remind.mixin;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,10 +27,13 @@ import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yesman.epicfight.api.event.types.entity.TakeDamageEvent;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+
 
 
 
@@ -56,6 +60,9 @@ public class GuardSkillMixin {
 
             PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
         }
+
+        event.getEntityPatch().playSound(ModSounds.guard.get(), 1f, 1f);
+
 
         // Block Abilities Effects
         if(playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)) {
@@ -139,5 +146,23 @@ public class GuardSkillMixin {
 
 
 
+    }
+
+    @Redirect(
+            method = "guard",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lyesman/epicfight/world/capabilities/entitypatch/player/ServerPlayerPatch;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"
+            ),
+            remap = false
+    )
+    private void kkremind$cancelEpicFightGuardSound(
+            ServerPlayerPatch playerPatch,
+            SoundEvent sound,
+            float pitchModifierMin,
+            float pitchModifierMax
+    ) {
+        // Intentionally do nothing.
+        // Re:Mind supplies its own guard sound in dealEventInject().
     }
 }
