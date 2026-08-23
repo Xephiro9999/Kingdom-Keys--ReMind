@@ -67,6 +67,7 @@ import online.remind.remind.entity.attacks.BlitzCollider;
 import online.remind.remind.entity.attacks.ElementStrikeCollider;
 import online.remind.remind.entity.attacks.SlotEdgeCollider;
 import online.remind.remind.entity.attacks.quickBlitzCollider;
+import online.remind.remind.entity.spirits.MeowWowEntity;
 import online.remind.remind.item.ModItemsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
@@ -183,10 +184,27 @@ public class EntityEventsRM {
 		Player player = e.getEntity();
 		GlobalDataRM globalData = ModDataRM.getGlobal(player);
 
+		/*
+		 * Dream Eaters are temporary summons.
+		 * Remove the actual entity before clearing summon state.
+		 */
+		if (!player.level().isClientSide
+				&& player.level() instanceof ServerLevel serverLevel) {
+
+			MeowWowEntity.removeExistingMeowWow(
+					serverLevel,
+					player.getUUID()
+			);
+		}
+
 		if (globalData != null) {
 			globalData.setHasDreamEaterSummoned(false);
 			globalData.setDreamEaterUUID(null);
-			PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
+
+			PacketHandlerRM.syncGlobalToAllAround(
+					player,
+					globalData
+			);
 		}
 	}
 

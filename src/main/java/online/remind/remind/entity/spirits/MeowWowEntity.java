@@ -342,6 +342,16 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
             return;
         }
 
+        UUID registeredDreamEaterUUID = data.getDreamEaterUUID();
+
+        if (!data.hasDreamEaterSummoned()
+                || registeredDreamEaterUUID == null
+                || !this.getUUID().equals(registeredDreamEaterUUID)) {
+
+            this.discard();
+            return;
+        }
+
         // Owner died = clear summon data and despawn
         if (owner.isDeadOrDying()) {
             data.setHasDreamEaterSummoned(false);
@@ -1371,14 +1381,27 @@ public class MeowWowEntity extends PathfinderMob implements GeoEntity {
         }
 
         public static void removeExistingMeowWow(ServerLevel level, UUID ownerUUID) {
+            if (level == null || ownerUUID == null) {
+                return;
+            }
+
             MinecraftServer server = level.getServer();
+
+            if (server == null) {
+                return;
+            }
 
             for (ServerLevel serverLevel : server.getAllLevels()) {
                 for (Entity entity : serverLevel.getAllEntities()) {
-                    if (entity instanceof MeowWowEntity meowWow) {
-                        if (ownerUUID.equals(meowWow.getOwnerUUID())) {
-                            meowWow.discard();
-                        }
+
+                    if (!(entity instanceof MeowWowEntity meowWow)) {
+                        continue;
+                    }
+
+                    UUID meowWowOwner = meowWow.getOwnerUUID();
+
+                    if (ownerUUID.equals(meowWowOwner)) {
+                        meowWow.discard();
                     }
                 }
             }

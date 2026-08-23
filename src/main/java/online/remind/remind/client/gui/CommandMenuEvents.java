@@ -24,11 +24,6 @@ public class CommandMenuEvents {
                 event.setCanceled(true);
                 CommandMenuGui.INSTANCE.updateRootItem(item, CommandMenuGui.INSTANCE.portals, event.getGuiGraphics()); //TODO replace with this when KK 2.5.3 is up event.getItem().getOnUpdate().onUpdate(event.getGuiGraphics());
                 event.getItem().setVisible(true);
-            } else if (item.getId().equals(CommandMenuGui.INSTANCE.attack)) {
-                //Hide attack
-                event.setCanceled(true);
-                CommandMenuGui.INSTANCE.updateRootItem(item, null, event.getGuiGraphics()); //TODO replace with this when KK 2.5.3 is up event.getItem().getOnUpdate().onUpdate(event.getGuiGraphics());
-                event.getItem().setVisible(false);
             }
         }
 
