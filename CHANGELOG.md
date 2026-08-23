@@ -553,3 +553,5 @@ Fixed Attack Haste conflicting with other attack speed effects. It now stacks co
 
 # 8.26.3c
 
+EFM - Blocking now plays the Guard sound from the games
+Dream Eater Level Up visual improved

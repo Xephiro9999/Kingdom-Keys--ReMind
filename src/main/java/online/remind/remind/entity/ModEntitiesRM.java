@@ -37,6 +37,7 @@ import online.remind.remind.entity.reactioncommand.*;
 import online.remind.remind.entity.shotlock.*;
 import online.remind.remind.entity.spirits.*;
 import online.remind.remind.item.ModItemsRM;
+import online.remind.remind.entity.effects.DreamEaterLevelUpEffectEntity;
 
 import java.util.function.Supplier;
 
@@ -110,6 +111,17 @@ public class ModEntitiesRM {
     public static final Supplier<EntityType<KomoryBatEntity>> TYPE_KOMORY_BAT = createEntityType(KomoryBatEntity::new, MobCategory.MONSTER, "komory_bat", 0.5F, 0.5F);
     public static final Supplier<EntityType<CactuarSpiritEntity>> TYPE_CACTUAR_SPIRIT = createEntityType(CactuarSpiritEntity::new, MobCategory.MONSTER, "cactuar_spirit", 0.75F, 0.75F);
     public static final Supplier<EntityType<TonberrySpiritEntity>> TYPE_TONBERRY_SPIRIT = createEntityType(TonberrySpiritEntity::new, MobCategory.CREATURE, "tonberry_spirit", 0.8F, 1.6F);
+
+
+    public static final Supplier<EntityType<DreamEaterLevelUpEffectEntity>>
+            TYPE_DREAM_EATER_LEVEL_UP_EFFECT =
+            createEntityType(
+                    DreamEaterLevelUpEffectEntity::new,
+                    MobCategory.MISC,
+                    "dream_eater_level_up_effect",
+                    0.1F,
+                    0.1F
+            );
 
 
     // Enemies
@@ -263,6 +275,8 @@ public class ModEntitiesRM {
 
         event.registerEntityRenderer(ModEntitiesRM.TYPE_TONBERRY.get(), TonberryRenderer::new);
         event.registerEntityRenderer(ModEntitiesRM.TYPE_TONBERRY_KING.get(), TonberryRenderer::new);
+
+        event.registerEntityRenderer(TYPE_DREAM_EATER_LEVEL_UP_EFFECT.get(), DreamEaterLevelUpEffectRenderer::new);
 
 
     }
