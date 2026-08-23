@@ -547,3 +547,4 @@ Compatibility with latest Kingdom Keys Update (2.9.2a/b)
 
 Dark Passage no longer removes Attack Command
 Meow Wow now desummons properly when logging out
+Fixed Attack Haste conflicting with other attack speed effects. It now stacks correctly with other bonuses.

@@ -86,6 +86,12 @@ public class EntityEventsRM {
 
 	public static Map<UUID, Item> ALLOWED_UUIDS = new HashMap<>();
 
+	private static final ResourceLocation ATTACK_HASTE_MODIFIER =
+			ResourceLocation.fromNamespaceAndPath(
+					KingdomKeysReMind.MODID,
+					"attack_haste"
+			);
+
 
 	@SubscribeEvent
 	public void onPlayerChangeMagic(EquipmentEvent.Magic e) {
@@ -1144,11 +1150,38 @@ public class EntityEventsRM {
 					}
 
 					// Attack Haste Ability
-					if (!player.level().isClientSide && playerData.isAbilityEquipped(ModAbilitiesRM.ATTACK_HASTE)) {
-						double attackSpeedBonus = 0.25 * playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.ATTACK_HASTE);
-						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4 + attackSpeedBonus);
-					} else if (!playerData.isAbilityEquipped(ModAbilitiesRM.ATTACK_HASTE)) {
-						player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(4);
+					if (!player.level().isClientSide) {
+
+						var attackSpeedAttribute =
+								player.getAttribute(Attributes.ATTACK_SPEED);
+
+						if (attackSpeedAttribute != null) {
+
+							if (playerData.isAbilityEquipped(ResourceLocation.parse(StringsRM.attackHaste))) {
+
+								int attackHasteCount =
+										playerData.getNumberOfAbilitiesEquipped(
+                                                ResourceLocation.parse(StringsRM.attackHaste)
+										);
+
+								double attackSpeedBonus =
+										0.25D * attackHasteCount;
+
+								attackSpeedAttribute.addOrUpdateTransientModifier(
+										new AttributeModifier(
+												ATTACK_HASTE_MODIFIER,
+												attackSpeedBonus,
+												AttributeModifier.Operation.ADD_VALUE
+										)
+								);
+
+							} else {
+
+								attackSpeedAttribute.removeModifier(
+										ATTACK_HASTE_MODIFIER
+								);
+							}
+						}
 					}
 
 					// Ultima Weapon Ability
