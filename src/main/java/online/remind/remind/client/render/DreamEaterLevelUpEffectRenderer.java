@@ -341,7 +341,7 @@ public class DreamEaterLevelUpEffectRenderer
                         !trails.containsKey(id)
         );
     }
-    
+
     @Override
     public ResourceLocation getTextureLocation(
             DreamEaterLevelUpEffectEntity entity
