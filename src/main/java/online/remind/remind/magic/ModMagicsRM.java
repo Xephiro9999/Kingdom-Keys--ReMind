@@ -44,6 +44,8 @@ public class ModMagicsRM {
 
 		ULTIMA = register("magic_ultima", () -> new magicUltima(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_ultima"), false, 0, null)),
 
+		ZETTAFLARE = register("magic_zettaflare", () -> new magicZettaflare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_zettaflare"), false, 0, null)),
+
 		COMET = register("magic_comet", () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_comet"), false, 0, null)),
 		METEOR = register("magic_meteor", () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_meteor"), false, 1, null)),
 
