@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.entity.ModEntitiesRM;
 
 import java.util.HashMap;
@@ -21,6 +22,54 @@ import java.util.UUID;
 
 public class ZettaflareBeamEntity extends Entity {
 
+
+    // ============================================================
+    // DAMAGE SETTINGS
+    // ============================================================
+
+    /**
+     * Flat damage added to each Zettaflare pulse.
+     */
+    private static final float BASE_HIT_DAMAGE = 20.0F;
+
+
+    /**
+     * Every point of the player's Magic stat contributes this much
+     * damage to EVERY pulse.
+     *
+     * Example:
+     *
+     * 50 MAG:
+     * 20 + (50 * 2)
+     * = 120 raw magic damage per pulse
+     *
+     * BEFORE spell multipliers and % HP damage.
+     */
+    private static final float MAGIC_SCALING = 2.0F;
+
+
+    /**
+     * Every sustained beam pulse also deals 8% of the target's
+     * maximum HP.
+     *
+     * This prevents giant bosses from simply laughing at Zettaflare.
+     */
+    private static final float MAX_HEALTH_DAMAGE_PERCENT = 0.08F;
+
+
+    /**
+     * Multiplier applied to the normal Magic-scaled portion of the
+     * final blast.
+     */
+    private static final float FINAL_BLAST_MULTIPLIER = 4.0F;
+
+
+    /**
+     * The final blast additionally deals 20% max HP.
+     */
+    private static final float FINAL_MAX_HEALTH_PERCENT = 0.20F;
+
+
     // ============================================================
     // BEAM SETTINGS
     // ============================================================
@@ -28,7 +77,8 @@ public class ZettaflareBeamEntity extends Entity {
     /**
      * Maximum distance of Zettaflare.
      */
-    private static final double BEAM_LENGTH = 48.0D;
+    private static final double BEAM_LENGTH = 52.0D;
+
 
     /**
      * Gameplay collision radius.
@@ -37,12 +87,14 @@ public class ZettaflareBeamEntity extends Entity {
      */
     private static final double BEAM_RADIUS = 1.75D;
 
+
     /**
      * How long the beam remains active.
      *
-     * 50 ticks = 2.5 seconds.
+     * 100 ticks = 5 seconds.
      */
-    private static final int MAX_LIFETIME = 50;
+    private static final int MAX_LIFETIME = 100;
+
 
     /**
      * How frequently the same enemy can be damaged.
@@ -78,15 +130,21 @@ public class ZettaflareBeamEntity extends Entity {
      */
     private UUID firingEntityUUID;
 
+
     /**
      * Player who owns the cast / should receive damage credit.
      */
     private UUID ownerUUID;
 
+
     /**
-     * Damage dealt on each beam damage interval.
+     * Spell damage multiplier passed in by magicZettaflare.
+     *
+     * This currently comes from:
+     *
+     * getDamageMult() * fullMPBlastMult
      */
-    private float damage = 10.0F;
+    private float damage = 1.0F;
 
 
     // ============================================================
@@ -100,6 +158,12 @@ public class ZettaflareBeamEntity extends Entity {
      */
     private final Map<Integer, Integer> hitCooldowns =
             new HashMap<>();
+
+
+    /**
+     * Makes sure the final blast only occurs once.
+     */
+    private boolean finalBlastDone = false;
 
 
     // ============================================================
@@ -133,9 +197,15 @@ public class ZettaflareBeamEntity extends Entity {
                 level
         );
 
-        this.firingEntityUUID = firingEntity.getUUID();
-        this.ownerUUID = owner.getUUID();
-        this.damage = damage;
+        this.firingEntityUUID =
+                firingEntity.getUUID();
+
+        this.ownerUUID =
+                owner.getUUID();
+
+        this.damage =
+                damage;
+
 
         /*
          * Runtime ID used by the client renderer.
@@ -144,6 +214,7 @@ public class ZettaflareBeamEntity extends Entity {
                 FIRING_ENTITY_ID,
                 firingEntity.getId()
         );
+
 
         /*
          * Spawn the controller at the caster's eyes.
@@ -154,6 +225,29 @@ public class ZettaflareBeamEntity extends Entity {
                 firingEntity.getZ()
         );
     }
+
+    public void setBeamVariant(int variant) {
+        this.entityData.set(
+                BEAM_VARIANT,
+                variant
+        );
+    }
+
+    public int getBeamVariant() {
+        return this.entityData.get(
+                BEAM_VARIANT
+        );
+    }
+
+    private static final EntityDataAccessor<Integer> BEAM_VARIANT =
+            SynchedEntityData.defineId(
+                    ZettaflareBeamEntity.class,
+                    EntityDataSerializers.INT
+            );
+
+    public static final int VARIANT_ZETTAFLARE = 0;
+    public static final int VARIANT_FINAL_FLASH = 1;
+    public static final int VARIANT_KAMEHAMEHA = 2;
 
 
     // ============================================================
@@ -168,6 +262,11 @@ public class ZettaflareBeamEntity extends Entity {
                 FIRING_ENTITY_ID,
                 -1
         );
+
+        builder.define(
+                BEAM_VARIANT,
+                VARIANT_ZETTAFLARE
+        );
     }
 
 
@@ -179,7 +278,10 @@ public class ZettaflareBeamEntity extends Entity {
     public void tick() {
         super.tick();
 
-        LivingEntity firingEntity = getFiringEntity();
+
+        LivingEntity firingEntity =
+                getFiringEntity();
+
 
         /*
          * Server can recover the runtime entity ID from the UUID
@@ -191,11 +293,16 @@ public class ZettaflareBeamEntity extends Entity {
                 && level() instanceof ServerLevel serverLevel) {
 
             Entity found =
-                    serverLevel.getEntity(firingEntityUUID);
+                    serverLevel.getEntity(
+                            firingEntityUUID
+                    );
+
 
             if (found instanceof LivingEntity living) {
 
-                firingEntity = living;
+                firingEntity =
+                        living;
+
 
                 this.entityData.set(
                         FIRING_ENTITY_ID,
@@ -203,6 +310,7 @@ public class ZettaflareBeamEntity extends Entity {
                 );
             }
         }
+
 
         /*
          * The server decides whether this beam continues existing.
@@ -212,11 +320,15 @@ public class ZettaflareBeamEntity extends Entity {
          */
         if (!level().isClientSide) {
 
-            if (firingEntity == null || !firingEntity.isAlive()) {
+            if (firingEntity == null
+                    || !firingEntity.isAlive()) {
+
                 discard();
+
                 return;
             }
         }
+
 
         /*
          * Follow the firing entity.
@@ -233,26 +345,49 @@ public class ZettaflareBeamEntity extends Entity {
             );
         }
 
+
         /*
          * DAMAGE IS SERVER-SIDE ONLY.
          */
         if (!level().isClientSide
                 && firingEntity != null) {
 
-            tickDamage(firingEntity);
+            tickDamage(
+                    firingEntity
+            );
         }
 
-        /*
-         * End the beam.
-         */
+
+        // ========================================================
+        // FINAL ZETTAFLARE BLAST
+        // ========================================================
+
         if (tickCount >= MAX_LIFETIME) {
+
+            if (!level().isClientSide
+                    && !finalBlastDone
+                    && firingEntity != null) {
+
+                finalBlastDone = true;
+
+                // Zettaflare's finishing detonation.
+                doFinalBlast(
+                        firingEntity
+                );
+
+                // Donald-style consequence.
+                applyZettaflareExhaustion(
+                        firingEntity
+                );
+            }
+
             discard();
         }
     }
 
 
     // ============================================================
-    // DAMAGE
+    // SUSTAINED BEAM DAMAGE
     // ============================================================
 
     private void tickDamage(
@@ -264,8 +399,44 @@ public class ZettaflareBeamEntity extends Entity {
          */
         hitCooldowns.replaceAll(
                 (id, ticks) ->
-                        Math.max(0, ticks - 1)
+                        Math.max(
+                                0,
+                                ticks - 1
+                        )
         );
+
+
+        // --------------------------------------------------------
+        // Owner / Magic stat
+        // --------------------------------------------------------
+
+        Player owner =
+                getOwnerPlayer();
+
+
+        if (owner == null) {
+            return;
+        }
+
+
+        PlayerData playerData =
+                PlayerData.get(owner);
+
+
+        if (playerData == null) {
+            return;
+        }
+
+
+        /*
+         * This is the player's FINAL Magic stat.
+         *
+         * So stat modifiers should naturally contribute.
+         */
+        float magicStat =
+                (float) playerData
+                        .getMagicStat()
+                        .getStat();
 
 
         // --------------------------------------------------------
@@ -275,12 +446,18 @@ public class ZettaflareBeamEntity extends Entity {
         Vec3 start =
                 firingEntity.getEyePosition();
 
+
         Vec3 direction =
-                firingEntity.getLookAngle().normalize();
+                firingEntity
+                        .getLookAngle()
+                        .normalize();
+
 
         Vec3 end =
                 start.add(
-                        direction.scale(BEAM_LENGTH)
+                        direction.scale(
+                                BEAM_LENGTH
+                        )
                 );
 
 
@@ -289,8 +466,12 @@ public class ZettaflareBeamEntity extends Entity {
         // --------------------------------------------------------
 
         AABB searchArea =
-                new AABB(start, end)
-                        .inflate(BEAM_RADIUS);
+                new AABB(
+                        start,
+                        end
+                ).inflate(
+                        BEAM_RADIUS
+                );
 
 
         List<LivingEntity> targets =
@@ -317,6 +498,7 @@ public class ZettaflareBeamEntity extends Entity {
                 continue;
             }
 
+
             int id =
                     target.getId();
 
@@ -328,32 +510,74 @@ public class ZettaflareBeamEntity extends Entity {
                     id,
                     0
             ) > 0) {
+
                 continue;
             }
 
 
-            Player owner =
-                    getOwnerPlayer();
+            // ====================================================
+            // ZETTAFLARE DAMAGE CALCULATION
+            // ====================================================
 
-            if (owner == null) {
-                continue;
-            }
+            /*
+             * Example at 50 Magic:
+             *
+             * 20
+             * +
+             * (50 * 2)
+             *
+             * = 120
+             */
+            float magicDamage =
+                    BASE_HIT_DAMAGE
+                            + (
+                            magicStat
+                                    * MAGIC_SCALING
+                    );
 
 
             /*
-             * Zettaflare has its own hit interval, so don't allow
-             * Minecraft's normal hurt cooldown to eat beam hits.
+             * Apply the Magic spell's damage multiplier.
+             *
+             * This includes the multiplier passed to the beam
+             * from magicZettaflare.
              */
-            target.invulnerableTime = 0;
+            float scaledDamage =
+                    magicDamage
+                            * damage;
+
+
+            /*
+             * Zettaflare also directly burns through a percentage
+             * of the victim's maximum HP.
+             */
+            float percentDamage =
+                    target.getMaxHealth()
+                            * MAX_HEALTH_DAMAGE_PERCENT;
+
+
+            float finalDamage =
+                    scaledDamage
+                            + percentDamage;
+
+
+            /*
+             * Zettaflare has its own hit cooldown.
+             *
+             * Do not let vanilla hurt-time prevent its pulses.
+             */
+            target.invulnerableTime =
+                    0;
 
 
             boolean damaged =
                     target.hurt(
-                            target.damageSources().indirectMagic(
-                                    this,
-                                    owner
-                            ),
-                            damage
+                            target.damageSources()
+                                    .indirectMagic(
+                                            this,
+                                            owner
+                                    ),
+                            finalDamage
                     );
 
 
@@ -366,6 +590,185 @@ public class ZettaflareBeamEntity extends Entity {
                 hitCooldowns.put(
                         id,
                         DAMAGE_INTERVAL
+                );
+            }
+        }
+    }
+
+
+    // ============================================================
+    // FINAL BLAST
+    // ============================================================
+
+    private void doFinalBlast(
+            LivingEntity firingEntity
+    ) {
+
+        Player owner =
+                getOwnerPlayer();
+
+
+        if (owner == null) {
+            return;
+        }
+
+
+        PlayerData playerData =
+                PlayerData.get(owner);
+
+
+        if (playerData == null) {
+            return;
+        }
+
+
+        float magicStat =
+                (float) playerData
+                        .getMagicStat()
+                        .getStat();
+
+
+        // --------------------------------------------------------
+        // Final beam line
+        // --------------------------------------------------------
+
+        Vec3 start =
+                firingEntity.getEyePosition();
+
+
+        Vec3 direction =
+                firingEntity
+                        .getLookAngle()
+                        .normalize();
+
+
+        Vec3 end =
+                start.add(
+                        direction.scale(
+                                BEAM_LENGTH
+                        )
+                );
+
+
+        /*
+         * Slightly larger search region for the final blast.
+         */
+        AABB searchArea =
+                new AABB(
+                        start,
+                        end
+                ).inflate(
+                        BEAM_RADIUS + 1.0D
+                );
+
+
+        List<LivingEntity> targets =
+                level().getEntitiesOfClass(
+                        LivingEntity.class,
+                        searchArea,
+                        entity ->
+                                entity != firingEntity
+                                        && entity.isAlive()
+                );
+
+
+        for (LivingEntity target : targets) {
+
+            if (!isInsideBeam(
+                    target,
+                    start,
+                    end
+            )) {
+                continue;
+            }
+
+
+            // ====================================================
+            // FINAL BLAST DAMAGE
+            // ====================================================
+
+            float magicDamage =
+                    BASE_HIT_DAMAGE
+                            + (
+                            magicStat
+                                    * MAGIC_SCALING
+                    );
+
+
+            /*
+             * The Magic-scaled portion gets multiplied by 4.
+             */
+            float scaledDamage =
+                    magicDamage
+                            * damage
+                            * FINAL_BLAST_MULTIPLIER;
+
+
+            /*
+             * Then pile another 20% of max HP on top.
+             */
+            float percentDamage =
+                    target.getMaxHealth()
+                            * FINAL_MAX_HEALTH_PERCENT;
+
+
+            float finalDamage =
+                    scaledDamage
+                            + percentDamage;
+
+
+            target.invulnerableTime =
+                    0;
+
+
+            target.hurt(
+                    target.damageSources()
+                            .indirectMagic(
+                                    this,
+                                    owner
+                            ),
+                    finalDamage
+            );
+        }
+    }
+
+    // ============================================================
+// ZETTAFLARE EXHAUSTION
+// ============================================================
+
+    private void applyZettaflareExhaustion(
+            LivingEntity firingEntity
+    ) {
+
+        /*
+         * Don't kill the caster outright.
+         *
+         * Zettaflare leaves them barely standing/alive.
+         */
+        firingEntity.setHealth(1.0F);
+
+
+        /*
+         * If the caster is a player, completely empty their MP.
+         */
+        Player owner =
+                getOwnerPlayer();
+
+        if (owner != null) {
+
+            PlayerData playerData =
+                    PlayerData.get(owner);
+
+            if (playerData != null) {
+
+                /*
+                 * PlayerData exposes getMP() and addMP().
+                 *
+                 * Subtracting the entire current MP value leaves
+                 * the player at 0 MP.
+                 */
+                playerData.addMP(
+                        -playerData.getMP()
                 );
             }
         }
@@ -390,11 +793,15 @@ public class ZettaflareBeamEntity extends Entity {
     ) {
 
         Vec3 targetCenter =
-                target.getBoundingBox().getCenter();
+                target.getBoundingBox()
+                        .getCenter();
 
 
         Vec3 beam =
-                end.subtract(start);
+                end.subtract(
+                        start
+                );
+
 
         double beamLengthSqr =
                 beam.lengthSqr();
@@ -409,11 +816,15 @@ public class ZettaflareBeamEntity extends Entity {
          * Find where the target projects onto the beam.
          */
         Vec3 toTarget =
-                targetCenter.subtract(start);
+                targetCenter.subtract(
+                        start
+                );
 
 
         double t =
-                toTarget.dot(beam)
+                toTarget.dot(
+                        beam
+                )
                         / beamLengthSqr;
 
 
@@ -434,7 +845,9 @@ public class ZettaflareBeamEntity extends Entity {
          */
         Vec3 closestPoint =
                 start.add(
-                        beam.scale(t)
+                        beam.scale(
+                                t
+                        )
                 );
 
 
@@ -443,8 +856,11 @@ public class ZettaflareBeamEntity extends Entity {
          */
         double targetRadius =
                 Math.max(
-                        target.getBbWidth() * 0.5D,
-                        target.getBbHeight() * 0.25D
+                        target.getBbWidth()
+                                * 0.5D,
+
+                        target.getBbHeight()
+                                * 0.25D
                 );
 
 
@@ -482,7 +898,9 @@ public class ZettaflareBeamEntity extends Entity {
 
 
         Entity entity =
-                level().getEntity(entityId);
+                level().getEntity(
+                        entityId
+                );
 
 
         if (entity instanceof LivingEntity living) {
@@ -569,28 +987,41 @@ public class ZettaflareBeamEntity extends Entity {
 
         float yawRad =
                 yaw
-                        * ((float) Math.PI / 180F);
+                        * (
+                        (float) Math.PI
+                                / 180F
+                );
 
 
         float pitchRad =
                 pitch
-                        * ((float) Math.PI / 180F);
+                        * (
+                        (float) Math.PI
+                                / 180F
+                );
 
 
         float cosPitch =
-                (float) Math.cos(pitchRad);
+                (float) Math.cos(
+                        pitchRad
+                );
 
 
         return new Vec3(
-                -Math.sin(yawRad) * cosPitch,
+                -Math.sin(yawRad)
+                        * cosPitch,
+
                 -Math.sin(pitchRad),
-                Math.cos(yawRad) * cosPitch
+
+                Math.cos(yawRad)
+                        * cosPitch
+
         ).normalize();
     }
 
 
     /**
-     * Can also be useful later when rendering muzzle/impact effects.
+     * Useful for muzzle/impact effects.
      */
     public Vec3 getBeamStart() {
 
@@ -603,12 +1034,13 @@ public class ZettaflareBeamEntity extends Entity {
         }
 
 
-        return firingEntity.getEyePosition();
+        return firingEntity
+                .getEyePosition();
     }
 
 
     /**
-     * Useful later for Zettaflare's endpoint explosion/effect.
+     * Useful for Zettaflare's endpoint effects.
      */
     public Vec3 getBeamEnd() {
 
@@ -617,11 +1049,15 @@ public class ZettaflareBeamEntity extends Entity {
 
 
         Vec3 direction =
-                getBeamDirection(1.0F);
+                getBeamDirection(
+                        1.0F
+                );
 
 
         return start.add(
-                direction.scale(BEAM_LENGTH)
+                direction.scale(
+                        BEAM_LENGTH
+                )
         );
     }
 
@@ -635,7 +1071,9 @@ public class ZettaflareBeamEntity extends Entity {
             CompoundTag tag
     ) {
 
-        if (tag.hasUUID("FiringEntity")) {
+        if (tag.hasUUID(
+                "FiringEntity"
+        )) {
 
             firingEntityUUID =
                     tag.getUUID(
@@ -644,7 +1082,9 @@ public class ZettaflareBeamEntity extends Entity {
         }
 
 
-        if (tag.hasUUID("Owner")) {
+        if (tag.hasUUID(
+                "Owner"
+        )) {
 
             ownerUUID =
                     tag.getUUID(
@@ -653,7 +1093,9 @@ public class ZettaflareBeamEntity extends Entity {
         }
 
 
-        if (tag.contains("Damage")) {
+        if (tag.contains(
+                "Damage"
+        )) {
 
             damage =
                     tag.getFloat(

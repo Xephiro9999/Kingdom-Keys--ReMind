@@ -234,6 +234,16 @@
       "kkremind:swift_strike_en"
     ]
   },
+  "final_flash": {
+    "sounds": [
+      "kkremind:final_flash"
+    ]
+  },
+  "kamehameha": {
+    "sounds": [
+      "kkremind:kamehameha"
+    ]
+  },
   "cactuar_alive": {
     "sounds": [
       "kkremind:cactuar_alive"

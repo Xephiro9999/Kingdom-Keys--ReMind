@@ -42,6 +42,10 @@ public class ModSoundsRM {
             SWIFT_STRIKE = registerSound("swift_strike"),
             SWIFT_STRIKE_EN = registerSound("swift_strike_en"),
 
+            // Easter Eggs - Spells
+            FINAL_FLASH = registerSound("final_flash"),
+            KAMEHAMEHA = registerSound("kamehameha"),
+
             SPIRIT_SUMMON = registerSound("spirit_summon"),
             SPIRIT_DESUMMON = registerSound("spirit_desummon"),
 
