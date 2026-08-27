@@ -255,12 +255,12 @@ public class magicZettaflare extends Magic {
                         null,
                         player.blockPosition(),
 
-                        ModSoundsRM.PLAYER_CAST.get(),
+                        ModSoundsRM.ZETTAFLARE.get(),
 
                         SoundSource.PLAYERS,
 
-                        1.5F,
-                        0.75F
+                        1.0F,
+                        1.0F
                 );
             }
         }

@@ -172,20 +172,20 @@ public class ZettaflareBeamRenderer
 
                 // Red outer glow
                 outerR = 255;
-                outerG = 45;
-                outerB = 20;
+                outerG = 0;
+                outerB = 0;
 
 
                 // Orange middle
                 middleR = 255;
                 middleG = 135;
-                middleB = 65;
+                middleB = 0;
 
 
                 // White-hot core
                 coreR = 255;
-                coreG = 245;
-                coreB = 230;
+                coreG = 255;
+                coreB = 255;
             }
         }
 

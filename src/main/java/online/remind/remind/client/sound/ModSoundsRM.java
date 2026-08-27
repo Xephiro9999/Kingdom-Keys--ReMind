@@ -41,6 +41,7 @@ public class ModSoundsRM {
             ZANTETSUKEN = registerSound("zantetsuken"),
             SWIFT_STRIKE = registerSound("swift_strike"),
             SWIFT_STRIKE_EN = registerSound("swift_strike_en"),
+            ZETTAFLARE = registerSound("zettaflare"),
 
             // Easter Eggs - Spells
             FINAL_FLASH = registerSound("final_flash"),

@@ -234,6 +234,11 @@
       "kkremind:swift_strike_en"
     ]
   },
+  "zettaflare": {
+    "sounds": [
+      "kkremind:zettaflare"
+    ]
+  },
   "final_flash": {
     "sounds": [
       "kkremind:final_flash"
