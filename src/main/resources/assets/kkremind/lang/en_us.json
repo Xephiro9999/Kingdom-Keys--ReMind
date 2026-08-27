@@ -79,6 +79,7 @@
   "magic.kkremind.magic_confusega.name": "Confusega",
   "magic.kkremind.attack_zantetsuken.name": "Zantetsuken",
   "magic.kkremind.attack_swift_strike.name": "Swift Strike",
+  "magic.kkremind.magic_zettaflare.name": "Zettaflare",
 
   "item.kkremind.fire_strike_attack": "Fire Strike Command",
   "magic.kkremind.attack_fire_strike.name": "Fire Strike",
@@ -150,6 +151,7 @@
   "item.kkremind.zantetsuken_attack": "Zantetsuken Command",
   "item.kkremind.swift_strike_attack": "Swift Strike Command",
   "item.kkremind.death_lv_spell": "LV? Death Spell",
+  "item.kkremind.zettaflare_spell": "Zettaflare Spell",
 
 
 
