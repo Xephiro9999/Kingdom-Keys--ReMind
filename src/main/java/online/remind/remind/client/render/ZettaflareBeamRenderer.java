@@ -178,7 +178,7 @@ public class ZettaflareBeamRenderer
 
                 // Orange middle
                 middleR = 255;
-                middleG = 135;
+                middleG = 105;
                 middleB = 0;
 
 
