@@ -793,3 +793,6 @@ The king of the Tonberries. Appears to seek revenge for defeated Tonberries.
 ### Magic
 - Reworked **Ultima**.
 - Added **Zettaflare**.
+- Adjusted Jumbo Cactuar spawn chance.
+- Adjusted Tonberry King spawn chance.
+- 
