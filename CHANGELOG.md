@@ -796,3 +796,6 @@ The king of the Tonberries. Appears to seek revenge for defeated Tonberries.
 - Adjusted Jumbo Cactuar spawn chance.
 - Adjusted Tonberry King spawn chance.
 - Changed how Tonberry and Cactuar Charms are given.
+- Moved Attack Commands from Special Moogle Shop to the Default Moogle Shop. 
+- Certain Commands will show in the shop buy menu after leveling up your Synthesis Level.
+- Slot Releaser moved to Default Moogle, unlocked at SS Tier.
