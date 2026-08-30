@@ -1,0 +1,11 @@
+{
+  "cost": 50000,
+  "ingredient1": "kkremind:ultima_spell",
+  "ingredient2": "kkremind:ultima_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:zettaflare_spell",
+    "quantity": 1
+  },
+  "tier": 7
+}

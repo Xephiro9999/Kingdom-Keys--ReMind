@@ -41,6 +41,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
@@ -1229,6 +1230,30 @@ public class CactuarEntity extends Monster implements GeoEntity {
     ) {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
 
+        ServerPlayer killer = getJumboCactuarKiller(damageSource);
+
+        if (killer == null){
+            return;
+        }
+
+        GlobalDataRM globalData = ModDataRM.getGlobal(killer);
+
+        if (globalData == null) {
+            return;
+        }
+
+        if (globalData.hasDefeatedJumboCactuar()) {
+            return;
+        }
+
+        ItemStack charm = new ItemStack(ModItemsRM.cactuarCharm.get());
+
+        Utils.giveItems(killer, true, charm);
+
+        globalData.setDefeatedJumboCactuar(true);
+
+        PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
+
         if (this.isJumbo()) {
             /*
              * Jumbo Cactuar
@@ -1268,39 +1293,6 @@ public class CactuarEntity extends Monster implements GeoEntity {
                     new ItemStack(ModItemsRM.cactuarNeedle.get(), 1)
             );
         }
-    }
-
-    private void dropCactusLoot(ServerLevel level) {
-        int amount;
-        int needleAmount;
-
-        if (this.isJumbo()) {
-            amount = 16 + this.random.nextInt(32); // 16–32 cactus
-        } else {
-            amount = 1 + this.random.nextInt(3); // 1–3 cactus
-        }
-
-        ItemStack cactus = new ItemStack(Items.CACTUS, amount);
-        ItemStack cactuarNeedle = new ItemStack(ModItemsRM.cactuarNeedle.get(), amount);
-
-        ItemEntity itemEntity = new ItemEntity(
-                level,
-                this.getX(),
-                this.getY() + 0.5D,
-                this.getZ(),
-                cactus
-        );
-
-        ItemEntity itemEntity2 = new ItemEntity(
-                level,
-                this.getX(),
-                this.getY() + 0.5D,
-                this.getZ(),
-                cactuarNeedle
-        );
-
-        itemEntity.setDefaultPickUpDelay();
-        level.addFreshEntity(itemEntity);
     }
 
     @Override

@@ -792,7 +792,7 @@ The king of the Tonberries. Appears to seek revenge for defeated Tonberries.
 
 ### Magic
 - Reworked **Ultima**.
-- Added **Zettaflare**.
+- Added **Zettaflare**. Meld Recipe: Ultima + Ultima (TEMPORARY RECIPE)
 - Adjusted Jumbo Cactuar spawn chance.
 - Adjusted Tonberry King spawn chance.
-- 
+- Changed how Tonberry and Cactuar Charms are given.

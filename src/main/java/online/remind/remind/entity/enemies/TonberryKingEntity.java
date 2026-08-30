@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
@@ -516,25 +517,9 @@ public class TonberryKingEntity extends TonberryEntity {
 
         ItemStack charm = new ItemStack(ModItemsRM.tonberryCharm.get());
 
-        boolean added = killer.getInventory().add(charm);
-
-        if (!added) {
-            killer.displayClientMessage(
-                    Component.literal("Your inventory is full! Clear a slot before defeating Tonberry King again.")
-                            .withStyle(ChatFormatting.RED),
-                    false
-            );
-
-            return;
-        }
+        Utils.giveItems(killer, true, charm);
 
         globalData.setDefeatedTonberryKing(true);
-
-        killer.displayClientMessage(
-                Component.literal("You received a Tonberry Charm!")
-                        .withStyle(ChatFormatting.DARK_PURPLE),
-                false
-        );
 
         PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
     }
