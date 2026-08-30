@@ -33,10 +33,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import online.kingdomkeys.kingdomkeys.ability.ModAbilities;
-import online.kingdomkeys.kingdomkeys.api.event.AbilityEvent;
-import online.kingdomkeys.kingdomkeys.api.event.EquipmentEvent;
-import online.kingdomkeys.kingdomkeys.api.event.MagicSpellCastEvent;
-import online.kingdomkeys.kingdomkeys.api.event.ReactionCommandCastEvent;
+import online.kingdomkeys.kingdomkeys.api.event.*;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.damagesource.KKDamageTypes;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.data.WorldData;
@@ -77,6 +75,7 @@ import online.remind.remind.panels.OrganizationPanelAbilityHelper;
 import online.remind.remind.panels.OrganizationPanelStatHelper;
 import online.remind.remind.panels.PanelRegistry;
 import online.remind.remind.panels.PanelStats;
+import online.remind.remind.reactioncommands.ModReactionCommandsRM;
 
 import java.util.*;
 
@@ -229,9 +228,6 @@ public class EntityEventsRM {
 		}
 
 		if (playerData != null) {
-			if (KingdomKeysReMind.efmLoaded) {
-
-
 
 				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.FOCUS_BLOCK.location())) {
 					playerData.addAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), true);
@@ -262,7 +258,6 @@ public class EntityEventsRM {
 				if (!playerData.getAbilityMap().containsKey(ModAbilitiesRM.COUNTER_RUSH.location())) {
 					playerData.addAbility(ModAbilitiesRM.COUNTER_RUSH.location(), true);
 				}
-			}
 
 			// To initialize the toggle feature
 			if (playerData != null && playerData.getAlignment() == Utils.OrgMember.NONE) {
@@ -405,6 +400,117 @@ public class EntityEventsRM {
 		}
 		if (event.getAbility().equals(ModAbilities.MP_HASTEGA.get())) {
 			playerData.unequipAbility(ModAbilitiesRM.MP_SLOWGA.location(), 0);
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.RENEWAL_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.FOCUS_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.STOP_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.ROYAL_GUARD.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.POISON_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.CONFUSION_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.CONFUSION_BLOCK.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)
+					|| playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)) {
+
+				playerData.unequipAbility(ModAbilitiesRM.RENEWAL_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.STOP_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.FOCUS_BLOCK.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.ROYAL_GUARD.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.POISON_BLOCK.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_HAMMER.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH)) {
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_BLAST.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_RUSH.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_BLAST.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH)) {
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_HAMMER.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_RUSH.location(), 0);
+			}
+		}
+
+		if (event.getAbility().equals(ModAbilitiesRM.COUNTER_RUSH.get())) {
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER) || playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST)) {
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_HAMMER.location(), 0);
+				playerData.unequipAbility(ModAbilitiesRM.COUNTER_BLAST.location(), 0);
+			}
 		}
 
 	}
@@ -2342,10 +2448,78 @@ public class EntityEventsRM {
 		}
 	}
 
-	// EFM Stuff Below
+	@SubscribeEvent
+	public void guardEvent(GuardEvent.Blocked playerGuarding){
+		Player player = playerGuarding.getPlayer();
+		Entity source = playerGuarding.getSource().getEntity();
 
+		PlayerData playerData = PlayerData.get(playerGuarding.getPlayer());
+		if(playerData == null) {
+			return;
+		}
 
+		//player.sendSystemMessage(Component.literal("Source:" + source)); /// Debug Line
 
+		if (playerData.isAbilityEquipped(ModAbilitiesRM.RENEWAL_BLOCK)){
+			player.heal(player.getMaxHealth() * 0.05F);
+			player.getFoodData().eat(2,2);
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.savepoint.get(), SoundSource.PLAYERS, 1F, 1F);
 
+		}
 
+		if(playerData.isAbilityEquipped(ModAbilitiesRM.FOCUS_BLOCK)) {
+			playerData.addFocus(15);
+		}
+
+		if(playerData.isAbilityEquipped(ModAbilitiesRM.BLOCK_REPLENISHER)) {
+			playerData.addMP(5);
+		}
+
+		if (playerData.isAbilityEquipped(ModAbilitiesRM.ROYAL_GUARD)){
+			if (!playerData.isFormActive(ModDriveForms.NONE)) {
+				playerData.addFP(10);
+			} else if (playerData.isFormActive(ModDriveForms.NONE)) {
+				playerData.addDP(10);
+			}
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.ROYAL_GUARD.get(), SoundSource.PLAYERS, 1F, 1F);
+
+		}
+
+		if(source instanceof LivingEntity livingEntity) {
+			// Stop Block Code? :)
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.STOP_BLOCK)) {
+					if (playerData.getMP() >= 10 && !playerData.getRecharge()) {
+						livingEntity.addEffect(new MobEffectInstance(ModMobEffects.STOP, 60, 2, false, false, false));
+						player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.stop.get(), SoundSource.PLAYERS, 1F, 1F);
+
+						playerData.remMP(10);
+					}
+			}
+
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.POISON_BLOCK)) {
+				livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1, true, true, true));
+			}
+
+			if (playerData.isAbilityEquipped(ModAbilitiesRM.CONFUSION_BLOCK)) {
+					livingEntity.addEffect(new MobEffectInstance(ModMobEffectsRM.CONFUSE, 20 * 5, 1, true, true, true));
+			}
+		}
+
+		PacketHandler.syncToAllAround(player, playerData);
+
+		/// Counters
+
+		GlobalDataRM globalData = ModDataRM.getGlobal(player);
+
+		if(globalData.getRCCooldownTicks() <= 0) {
+			if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_HAMMER))
+				playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_HAMMER.location(), player);
+			if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_BLAST))
+				playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_BLAST.location(), player);
+			if(playerData.isAbilityEquipped(ModAbilitiesRM.COUNTER_RUSH))
+				playerData.addReactionCommand(ModReactionCommandsRM.COUNTER_RUSH.location(), player);
+
+			PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+		}
+    }
 }

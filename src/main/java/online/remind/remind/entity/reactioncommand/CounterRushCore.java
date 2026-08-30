@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.util.Utils;
 import online.remind.remind.ability.ModAbilitiesRM;
@@ -93,9 +94,10 @@ public class CounterRushCore extends ThrowableProjectile {
                         }
                         target.invulnerableTime = 1;
                         target.hurt(target.damageSources().indirectMagic(this, this.getOwner()), dmg);
-                        //TODO No EFM 1.21
-                        EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
-                        target.level().playSound(null, target.blockPosition(), EpicFightSounds.BLADE_HIT.get(), SoundSource.PLAYERS, 1F, 1F);
+
+                        //EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(((ServerLevel) target.level()), HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO, target, target);
+                        target.level().playSound(null, target.blockPosition(), ModSounds.generic_hit.get(), SoundSource.PLAYERS, 1F, 1F);
+
 
                         hits--; //Marks as that single hit being performed
                     }

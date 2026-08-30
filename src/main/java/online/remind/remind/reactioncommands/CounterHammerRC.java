@@ -33,7 +33,7 @@ public class CounterHammerRC extends ReactionCommand {
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         float dmg = (float) playerData.getStrengthStat().get();
         float dmgMult = 1 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.10F);
-        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.25F);
+        float radius = 3 + (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilities.CRITICAL_BOOST) * 0.15F);
         globalData.setRCCooldownTicks(60);
 
 
@@ -53,7 +53,7 @@ public class CounterHammerRC extends ReactionCommand {
                     double x = X + (radius * Math.cos(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
                     double z = Z + (radius * Math.sin(Math.toRadians(s)) * Math.sin(Math.toRadians(t)));
                     ((ServerLevel) player.level()).sendParticles(new DustParticleOptions(new Vector3f(1F,1F,1F),1F),x,player.getY() ,z,1,0,0,0,0);
-                    e.knockback(2, -e.getX(),-e.getZ());
+                    e.knockback(1, -e.getX(),-e.getZ());
                     e.hurt(e.damageSources().indirectMagic(e, player), dmg * dmgMult);
                 }
             }
