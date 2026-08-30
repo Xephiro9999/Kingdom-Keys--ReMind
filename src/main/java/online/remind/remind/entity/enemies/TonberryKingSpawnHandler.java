@@ -46,7 +46,7 @@ public class TonberryKingSpawnHandler {
      * No minimum kills.
      * No guaranteed spawn.
      */
-    private static final double TONBERRY_KING_SPAWN_CHANCE = 0.04D;
+    private static final double TONBERRY_KING_SPAWN_CHANCE = 0.05D;
 
     private static final double EXISTING_KING_CHECK_RANGE = 160.0D;
 

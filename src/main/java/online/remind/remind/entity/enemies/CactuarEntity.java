@@ -73,7 +73,7 @@ public class CactuarEntity extends Monster implements GeoEntity {
                     ResourceLocation.fromNamespaceAndPath("minecraft", "desert")
             );
 
-    private static final double JUMBO_SPAWN_CHANCE = 0.02D;
+    private static final double JUMBO_SPAWN_CHANCE = 0.05D;
     private static final double JUMBO_NEARBY_CHECK_RANGE = 128.0D;
 
     private static final String JUMBO_BOSS_MUSIC_SOUND = KingdomKeysReMind.MODID + ":records/dont_be_afraid_ff8";
