@@ -319,9 +319,8 @@ public class EntityEventsRM {
 						UUID uuid = player.getUUID();
 						player.sendSystemMessage(Component.literal("[Re:Mind] Hello " + player.getDisplayName().getString() + " here's your Keyblade!"));
 						ItemStack item = new ItemStack(ALLOWED_UUIDS.get(uuid));
-						player.addItem(item);
+						Utils.giveItems((ServerPlayer) player, true, item);
 						globalData.setDonorGiven(true);
-
 						PacketHandlerRM.syncGlobalToAllAround(e.getEntity(), globalData);
 					}
 				}
