@@ -1246,15 +1246,18 @@ public class CactuarEntity extends Monster implements GeoEntity {
             return;
         }
 
-        ItemStack charm = new ItemStack(ModItemsRM.cactuarCharm.get());
 
-        Utils.giveItems(killer, true, charm);
-
-        globalData.setDefeatedJumboCactuar(true);
 
         PacketHandlerRM.syncGlobalToAllAround(killer, globalData);
 
         if (this.isJumbo()) {
+
+            ItemStack charm = new ItemStack(ModItemsRM.cactuarCharm.get());
+
+            Utils.giveItems(killer, true, charm);
+
+            globalData.setDefeatedJumboCactuar(true);
+
             /*
              * Jumbo Cactuar
              *
