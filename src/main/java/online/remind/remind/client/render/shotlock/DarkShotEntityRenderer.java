@@ -45,6 +45,6 @@ public class DarkShotEntityRenderer extends EntityRenderer<BaseShotlockShotEntit
     @Nullable
     @Override
     public ResourceLocation getTextureLocation(BaseShotlockShotEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(KingdomKeys.MODID, "textures/entity/models/fire.png");
+        return KingdomKeys.rl("textures/entity/models/cube.png");
     }
 }
