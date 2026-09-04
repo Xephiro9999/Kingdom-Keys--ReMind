@@ -31,11 +31,6 @@ public class TonberrySpiritRenderer extends GeoEntityRenderer<TonberrySpiritEnti
     }
 
     @Override
-    protected int getBlockLightLevel(TonberrySpiritEntity entity, BlockPos pos) {
-        return 15;
-    }
-
-    @Override
     protected float getDeathMaxRotation(TonberrySpiritEntity entity) {
         return 0.0F;
     }

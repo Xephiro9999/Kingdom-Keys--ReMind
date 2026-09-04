@@ -35,6 +35,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LightBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.remind.remind.capabilities.GlobalDataRM;
@@ -58,6 +61,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
+    private static final int LIGHT_UPDATE_INTERVAL_TICKS = 4;
+    private BlockPos activeLightBlockPos = null;
+    private int lightUpdateTicks = 0;
 
     private static final int ACTION_NONE = 0;
     private static final int ACTION_STAB = 1;
@@ -149,6 +155,7 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     private int statUpdateTicks = 0;
     private int feedCooldownTicks = 0;
+    private int customDeathTicks = -1;
 
     private int pendingStabTargetId = -1;
     private int pendingStabDamageDelay = 0;
@@ -213,8 +220,20 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
     public void tick() {
         super.tick();
 
-        if (this.isPlayingDeathAnimation()
-                || this.isPlayingStabAnimation()
+        if (!this.level().isClientSide) {
+            tickTonberryLight();
+        }
+
+        if (!this.level().isClientSide
+                && (this.customDeathTicks >= 0
+                || this.getHealth() <= 0.0F
+                || this.getTonberryAction() == ACTION_DEATH)) {
+
+            tickCustomDeath();
+            return;
+        }
+
+        if (this.isPlayingStabAnimation()
                 || this.isPlayingGrudgeAnimation()) {
             lockMovement();
         }
@@ -228,6 +247,162 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
             discardIfOwnerMissing();
         }
     }
+
+    // Tonberry Spirit light
+    private void tickTonberryLight() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.lightUpdateTicks > 0) {
+            this.lightUpdateTicks--;
+            return;
+        }
+
+        this.lightUpdateTicks = LIGHT_UPDATE_INTERVAL_TICKS;
+
+        BlockPos lightPos = getTonberryLightPosition();
+
+        if (this.activeLightBlockPos != null
+                && !this.activeLightBlockPos.equals(lightPos)) {
+
+            removeTonberryLightBlock(
+                    serverLevel,
+                    this.activeLightBlockPos
+            );
+
+            this.activeLightBlockPos = null;
+        }
+
+        if (!canPlaceTonberryLight(
+                serverLevel,
+                lightPos
+        )) {
+            return;
+        }
+
+        serverLevel.setBlock(
+                lightPos,
+                Blocks.LIGHT
+                        .defaultBlockState()
+                        .setValue(
+                                LightBlock.LEVEL,
+                                getTonberryLightLevel()
+                        ),
+                3
+        );
+
+        this.activeLightBlockPos =
+                lightPos.immutable();
+    }
+
+    private BlockPos getTonberryLightPosition() {
+        return this.blockPosition().above();
+    }
+
+    private int getTonberryLightLevel() {
+        return 12;
+    }
+
+    private boolean canPlaceTonberryLight(
+            ServerLevel serverLevel,
+            BlockPos pos
+    ) {
+        BlockState state =
+                serverLevel.getBlockState(pos);
+
+        return state.isAir()
+                || state.is(Blocks.LIGHT);
+    }
+
+    private void removeTonberryLightBlock(
+            ServerLevel serverLevel,
+            BlockPos pos
+    ) {
+        BlockState state =
+                serverLevel.getBlockState(pos);
+
+        if (state.is(Blocks.LIGHT)) {
+            serverLevel.removeBlock(
+                    pos,
+                    false
+            );
+        }
+    }
+
+    private void removeTonberryLightBlock() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.activeLightBlockPos == null) {
+            return;
+        }
+
+        removeTonberryLightBlock(
+                serverLevel,
+                this.activeLightBlockPos
+        );
+
+        this.activeLightBlockPos = null;
+    }
+
+    // Handles Tonberry's custom death sequence
+    private void tickCustomDeath() {
+
+        if (this.customDeathTicks < 0) {
+            this.customDeathTicks = 0;
+
+            setTonberryAction(
+                    ACTION_DEATH,
+                    DEATH_ACTION_TICKS
+            );
+
+            this.setTarget(null);
+
+            this.pendingStabTargetId = -1;
+            this.pendingStabDamageDelay = 0;
+
+            this.pendingGrudgeTargetId = -1;
+            this.pendingGrudgeDamageDelay = 0;
+            this.pendingGrudgeDamage = 0.0F;
+        }
+
+        lockMovement();
+
+        this.customDeathTicks++;
+
+        this.entityData.set(
+                ACTION_TICKS,
+                Math.max(
+                        0,
+                        DEATH_ACTION_TICKS - this.customDeathTicks
+                )
+        );
+
+        if (this.customDeathTicks >= DEATH_ACTION_TICKS) {
+
+            if (!this.isRemoved()) {
+                this.level().broadcastEntityEvent(
+                        this,
+                        (byte) 60
+                );
+
+                this.remove(
+                        Entity.RemovalReason.KILLED
+                );
+            }
+        }
+    }
+
+    // Removes Tonberry Spirit's light when the entity disappears
+    @Override
+    public void remove(RemovalReason reason) {
+        removeTonberryLightBlock();
+        super.remove(reason);
+    }
+
+
 
     private void tickFeedingCooldown() {
         if (this.feedCooldownTicks > 0) {
@@ -777,24 +952,26 @@ public class TonberrySpiritEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void die(DamageSource damageSource) {
-        if (!this.level().isClientSide) {
-            setTonberryAction(ACTION_DEATH, DEATH_ACTION_TICKS);
+
+        if (!this.level().isClientSide
+                && this.customDeathTicks < 0) {
+
+            this.customDeathTicks = 0;
+
+            setTonberryAction(
+                    ACTION_DEATH,
+                    DEATH_ACTION_TICKS
+            );
+
+            lockMovement();
         }
 
-        lockMovement();
         super.die(damageSource);
     }
 
     @Override
     protected void tickDeath() {
-        this.deathTime++;
-
         lockMovement();
-
-        if (!this.level().isClientSide && this.deathTime >= DEATH_ACTION_TICKS) {
-            this.level().broadcastEntityEvent(this, (byte) 60);
-            this.remove(Entity.RemovalReason.KILLED);
-        }
     }
 
     private void lockMovement() {
