@@ -6,3 +6,4 @@
 - Fixed Tonberry (Spirit) immortality bug.
 - Tonberry (Spirit) no longer has a full bright model.
 - Tonberry (Spirit) now emits light like it's hostile counterpart.
+- Tonberry should (hopefully) remove light sources it places upon death.

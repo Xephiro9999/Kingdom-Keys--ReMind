@@ -2,6 +2,7 @@ package online.remind.remind.entity.enemies;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -175,24 +176,37 @@ public class TonberryEntity extends Monster implements GeoEntity {
 
         BlockPos lightPos = getTonberryLightPosition();
 
-        if (this.activeLightBlockPos != null && !this.activeLightBlockPos.equals(lightPos)) {
-            removeTonberryLightBlock(serverLevel, this.activeLightBlockPos);
+        if (this.activeLightBlockPos != null
+                && !this.activeLightBlockPos.equals(lightPos)) {
+
+            removeTonberryLightBlock(
+                    serverLevel,
+                    this.activeLightBlockPos
+            );
+
             this.activeLightBlockPos = null;
         }
 
-        if (!canPlaceTonberryLight(serverLevel, lightPos)) {
+        if (!canPlaceTonberryLight(
+                serverLevel,
+                lightPos
+        )) {
             return;
         }
 
-        int lightLevel = getTonberryLightLevel();
-
         serverLevel.setBlock(
                 lightPos,
-                Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, lightLevel),
+                Blocks.LIGHT
+                        .defaultBlockState()
+                        .setValue(
+                                LightBlock.LEVEL,
+                                getTonberryLightLevel()
+                        ),
                 3
         );
 
-        this.activeLightBlockPos = lightPos.immutable();
+        this.activeLightBlockPos =
+                lightPos.immutable();
     }
 
     private BlockPos getTonberryLightPosition() {
@@ -230,12 +244,14 @@ public class TonberryEntity extends Monster implements GeoEntity {
             return;
         }
 
-        if (this.activeLightBlockPos == null) {
-            return;
-        }
+        if (this.activeLightBlockPos != null) {
+            removeTonberryLightBlock(
+                    serverLevel,
+                    this.activeLightBlockPos
+            );
 
-        removeTonberryLightBlock(serverLevel, this.activeLightBlockPos);
-        this.activeLightBlockPos = null;
+            this.activeLightBlockPos = null;
+        }
     }
 
     @Override
@@ -810,6 +826,39 @@ public class TonberryEntity extends Monster implements GeoEntity {
             this.spawnAtLocation(
                     new ItemStack(ModItemsRM.chefsKnife.get(), 1)
             );
+        }
+    }
+
+    // Saves the Tonberry's active light position
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+
+        if (this.activeLightBlockPos != null) {
+            tag.putBoolean("HasTonberryLight", true);
+            tag.putInt("TonberryLightX", this.activeLightBlockPos.getX());
+            tag.putInt("TonberryLightY", this.activeLightBlockPos.getY());
+            tag.putInt("TonberryLightZ", this.activeLightBlockPos.getZ());
+        } else {
+            tag.putBoolean("HasTonberryLight", false);
+        }
+    }
+
+
+    // Restores the Tonberry's active light position
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+
+        if (tag.getBoolean("HasTonberryLight")) {
+            this.activeLightBlockPos =
+                    new BlockPos(
+                            tag.getInt("TonberryLightX"),
+                            tag.getInt("TonberryLightY"),
+                            tag.getInt("TonberryLightZ")
+                    );
+        } else {
+            this.activeLightBlockPos = null;
         }
     }
 }
