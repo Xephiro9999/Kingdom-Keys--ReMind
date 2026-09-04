@@ -19,8 +19,13 @@ import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.dreameater.DreamEater;
+import online.remind.remind.dreameater.DreamEaterSummonCooldown;
 import online.remind.remind.dreameater.ModDreamEaters;
-import online.remind.remind.entity.spirits.*;
+import online.remind.remind.entity.spirits.CactuarSpiritEntity;
+import online.remind.remind.entity.spirits.ChirithyEntity;
+import online.remind.remind.entity.spirits.KomoryBatEntity;
+import online.remind.remind.entity.spirits.MeowWowEntity;
+import online.remind.remind.entity.spirits.TonberrySpiritEntity;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 
@@ -29,27 +34,46 @@ import java.util.UUID;
 public class CSSummonSpiritPacket implements CustomPacketPayload {
 
     public static final Type<CSSummonSpiritPacket> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "cs_summon_spirit"));
+            new Type<>(ResourceLocation.fromNamespaceAndPath(
+                    KingdomKeysReMind.MODID,
+                    "cs_summon_spirit"
+            ));
 
     public static final StreamCodec<FriendlyByteBuf, CSSummonSpiritPacket> STREAM_CODEC =
-            StreamCodec.of(CSSummonSpiritPacket::encode, CSSummonSpiritPacket::decode);
+            StreamCodec.of(
+                    CSSummonSpiritPacket::encode,
+                    CSSummonSpiritPacket::decode
+            );
 
     public CSSummonSpiritPacket() {
     }
 
-    public static void encode(FriendlyByteBuf buffer, CSSummonSpiritPacket message) {
+    public static void encode(
+            FriendlyByteBuf buffer,
+            CSSummonSpiritPacket message
+    ) {
     }
 
-    public static CSSummonSpiritPacket decode(FriendlyByteBuf buffer) {
+    public static CSSummonSpiritPacket decode(
+            FriendlyByteBuf buffer
+    ) {
         return new CSSummonSpiritPacket();
     }
 
+
+    // Summon visual effects
     private static void spawnArmorParticles(Entity spirit) {
+
         if (!(spirit.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        Vec3 spiritPos = new Vec3(spirit.getX(), spirit.getY() + 3.5D, spirit.getZ());
+        Vec3 spiritPos =
+                new Vec3(
+                        spirit.getX(),
+                        spirit.getY() + 3.5D,
+                        spirit.getZ()
+                );
 
         serverLevel.sendParticles(
                 ParticleTypes.END_ROD,
@@ -76,132 +100,358 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
         );
     }
 
-    public static void handle(final CSSummonSpiritPacket message, IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Player owner = ctx.player();
 
-            GlobalDataRM globalData = ModDataRM.getGlobal(owner);
-            PlayerData kkData = PlayerData.get(owner);
+    // Packet handling
+    public static void handle(
+            final CSSummonSpiritPacket message,
+            IPayloadContext ctx
+    ) {
+
+        ctx.enqueueWork(() -> {
+
+            Player owner =
+                    ctx.player();
+
+            GlobalDataRM globalData =
+                    ModDataRM.getGlobal(owner);
+
+            PlayerData kkData =
+                    PlayerData.get(owner);
 
             if (kkData == null || globalData == null) {
                 return;
             }
 
-            if (!globalData.hasDreamEaterSummoned() && globalData.getDreamEaterUUID() == null) {
-                handleSummon(owner, kkData, globalData);
+            if (!globalData.hasDreamEaterSummoned()
+                    && globalData.getDreamEaterUUID() == null) {
+
+                if (DreamEaterSummonCooldown.isOnCooldown(owner)) {
+
+                    long seconds =
+                            DreamEaterSummonCooldown.getRemainingSeconds(owner);
+
+                    owner.displayClientMessage(
+                            Component.literal(
+                                    "You can summon your Dream Eater again in "
+                                            + seconds
+                                            + "s."
+                            ),
+                            true
+                    );
+
+                    return;
+                }
+
+                handleSummon(
+                        owner,
+                        kkData,
+                        globalData
+                );
+
             } else {
-                handleDesummon(owner, globalData);
+
+                handleDesummon(
+                        owner,
+                        globalData
+                );
             }
 
-            PacketHandlerRM.syncGlobalToAllAround(owner, globalData);
+            PacketHandlerRM.syncGlobalToAllAround(
+                    owner,
+                    globalData
+            );
         });
     }
 
-    private static void handleSummon(Player owner, PlayerData kkData, GlobalDataRM globalData) {
+
+    // Dream Eater summoning
+    private static void handleSummon(
+            Player owner,
+            PlayerData kkData,
+            GlobalDataRM globalData
+    ) {
+
         if (!(owner.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        String dreamEaterRL = globalData.getDreamEaterRL();
+        String dreamEaterRL =
+                globalData.getDreamEaterRL();
 
-        DreamEater dreamEater = ModDreamEaters.registry.get(ResourceLocation.parse(dreamEaterRL));
+        DreamEater dreamEater;
+
+        try {
+
+            dreamEater =
+                    ModDreamEaters.registry.get(
+                            ResourceLocation.parse(
+                                    dreamEaterRL
+                            )
+                    );
+
+        } catch (Exception e) {
+
+            owner.displayClientMessage(
+                    Component.literal(
+                            "Dream Eater data could not be found!"
+                    ),
+                    true
+            );
+
+            return;
+        }
 
         if (dreamEater == null) {
-            owner.displayClientMessage(Component.literal("Dream Eater data could not be found!"), true);
+
+            owner.displayClientMessage(
+                    Component.literal(
+                            "Dream Eater data could not be found!"
+                    ),
+                    true
+            );
+
             return;
         }
 
-        if (StringsRM.none.equals(dreamEater.getName())) {
-            owner.displayClientMessage(Component.literal("You don't have a Dream Eater Equipped!"), true);
+        if (StringsRM.none.equals(
+                dreamEater.getName()
+        )) {
+
+            owner.displayClientMessage(
+                    Component.literal(
+                            "You don't have a Dream Eater Equipped!"
+                    ),
+                    true
+            );
+
             return;
         }
 
-        if (!globalData.hasDreamEaterUnlocked(dreamEaterRL)) {
-            owner.displayClientMessage(Component.literal("You have not unlocked this Dream Eater yet."), true);
+        if (!globalData.hasDreamEaterUnlocked(
+                dreamEaterRL
+        )) {
+
+            owner.displayClientMessage(
+                    Component.literal(
+                            "You have not unlocked this Dream Eater yet."
+                    ),
+                    true
+            );
+
             return;
         }
 
         Entity summonedDreamEater = null;
 
-        ChirithyEntity.removeExistingChirithy(serverLevel, owner.getUUID());
-        MeowWowEntity.removeExistingMeowWow(serverLevel, owner.getUUID());
-        KomoryBatEntity.removeExistingKomoryBat(serverLevel, owner.getUUID());
-        CactuarSpiritEntity.removeExistingCactuarSpirit(serverLevel, owner.getUUID());
+        ChirithyEntity.removeExistingChirithy(
+                serverLevel,
+                owner.getUUID()
+        );
+
+        MeowWowEntity.removeExistingMeowWow(
+                serverLevel,
+                owner.getUUID()
+        );
+
+        KomoryBatEntity.removeExistingKomoryBat(
+                serverLevel,
+                owner.getUUID()
+        );
+
+        CactuarSpiritEntity.removeExistingCactuarSpirit(
+                serverLevel,
+                owner.getUUID()
+        );
+
+        TonberrySpiritEntity.removeExistingTonberrySpirit(
+                serverLevel,
+                owner.getUUID()
+        );
 
         switch (dreamEater.getName()) {
 
             case StringsRM.chirithy: {
-                ChirithyEntity chirithy = new ChirithyEntity(owner.level(), owner);
-                chirithy.setOwnerUUID(owner.getUUID());
-                chirithy.setPos(owner.getX(), owner.getY() + 2.0D, owner.getZ());
 
-                int variant = kkData.getAlignment() != Utils.OrgMember.NONE ? 0 : 1;
-                chirithy.setVariant(variant);
+                ChirithyEntity chirithy =
+                        new ChirithyEntity(
+                                owner.level(),
+                                owner
+                        );
 
-                owner.level().addFreshEntity(chirithy);
-                summonedDreamEater = chirithy;
+                chirithy.setOwnerUUID(
+                        owner.getUUID()
+                );
+
+                chirithy.setPos(
+                        owner.getX(),
+                        owner.getY() + 2.0D,
+                        owner.getZ()
+                );
+
+                int variant =
+                        kkData.getAlignment()
+                                != Utils.OrgMember.NONE
+                                ? 0
+                                : 1;
+
+                chirithy.setVariant(
+                        variant
+                );
+
+                owner.level().addFreshEntity(
+                        chirithy
+                );
+
+                summonedDreamEater =
+                        chirithy;
+
                 break;
             }
 
             case StringsRM.meowWow: {
-                MeowWowEntity meowWow = new MeowWowEntity(owner.level(), owner);
-                meowWow.setOwnerUUID(owner.getUUID());
-                meowWow.setPos(owner.getX(), owner.getY() + 2.0D, owner.getZ());
 
-                int variant = kkData.getAlignment() != Utils.OrgMember.NONE
-                        ? MeowWowEntity.VARIANT_ORG
-                        : MeowWowEntity.VARIANT_NORMAL;
+                MeowWowEntity meowWow =
+                        new MeowWowEntity(
+                                owner.level(),
+                                owner
+                        );
 
-                meowWow.setVariant(variant);
+                meowWow.setOwnerUUID(
+                        owner.getUUID()
+                );
 
-                owner.level().addFreshEntity(meowWow);
-                summonedDreamEater = meowWow;
+                meowWow.setPos(
+                        owner.getX(),
+                        owner.getY() + 2.0D,
+                        owner.getZ()
+                );
+
+                int variant =
+                        kkData.getAlignment()
+                                != Utils.OrgMember.NONE
+                                ? MeowWowEntity.VARIANT_ORG
+                                : MeowWowEntity.VARIANT_NORMAL;
+
+                meowWow.setVariant(
+                        variant
+                );
+
+                owner.level().addFreshEntity(
+                        meowWow
+                );
+
+                summonedDreamEater =
+                        meowWow;
+
                 break;
             }
 
             case StringsRM.komoryBat: {
-                KomoryBatEntity komoryBat = new KomoryBatEntity(owner.level(), owner);
-                komoryBat.setOwnerUUID(owner.getUUID());
-                komoryBat.setPos(owner.getX(), owner.getY() + 2.4D, owner.getZ());
 
-                int variant = kkData.getAlignment() != Utils.OrgMember.NONE
-                        ? KomoryBatEntity.VARIANT_ORG
-                        : KomoryBatEntity.VARIANT_NORMAL;
+                KomoryBatEntity komoryBat =
+                        new KomoryBatEntity(
+                                owner.level(),
+                                owner
+                        );
 
-                komoryBat.setVariant(variant);
+                komoryBat.setOwnerUUID(
+                        owner.getUUID()
+                );
 
-                owner.level().addFreshEntity(komoryBat);
-                summonedDreamEater = komoryBat;
+                komoryBat.setPos(
+                        owner.getX(),
+                        owner.getY() + 2.4D,
+                        owner.getZ()
+                );
+
+                int variant =
+                        kkData.getAlignment()
+                                != Utils.OrgMember.NONE
+                                ? KomoryBatEntity.VARIANT_ORG
+                                : KomoryBatEntity.VARIANT_NORMAL;
+
+                komoryBat.setVariant(
+                        variant
+                );
+
+                owner.level().addFreshEntity(
+                        komoryBat
+                );
+
+                summonedDreamEater =
+                        komoryBat;
+
                 break;
             }
 
             case "dreameater_cactuar":
             case "cactuar": {
-                CactuarSpiritEntity cactuar = new CactuarSpiritEntity(owner.level(), owner);
-                cactuar.setOwnerUUID(owner.getUUID());
-                cactuar.setPos(owner.getX(), owner.getY() + 1.0D, owner.getZ());
 
-                owner.level().addFreshEntity(cactuar);
-                summonedDreamEater = cactuar;
+                CactuarSpiritEntity cactuar =
+                        new CactuarSpiritEntity(
+                                owner.level(),
+                                owner
+                        );
+
+                cactuar.setOwnerUUID(
+                        owner.getUUID()
+                );
+
+                cactuar.setPos(
+                        owner.getX(),
+                        owner.getY() + 1.0D,
+                        owner.getZ()
+                );
+
+                owner.level().addFreshEntity(
+                        cactuar
+                );
+
+                summonedDreamEater =
+                        cactuar;
+
                 break;
             }
 
             case "dreameater_tonberry":
             case "tonberry": {
-                TonberrySpiritEntity tonberry = new TonberrySpiritEntity(owner.level(), owner);
-                tonberry.setOwnerUUID(owner.getUUID());
-                tonberry.setPos(owner.getX(), owner.getY() + 0.1D, owner.getZ());
 
-                owner.level().addFreshEntity(tonberry);
-                summonedDreamEater = tonberry;
+                TonberrySpiritEntity tonberry =
+                        new TonberrySpiritEntity(
+                                owner.level(),
+                                owner
+                        );
+
+                tonberry.setOwnerUUID(
+                        owner.getUUID()
+                );
+
+                tonberry.setPos(
+                        owner.getX(),
+                        owner.getY() + 0.1D,
+                        owner.getZ()
+                );
+
+                owner.level().addFreshEntity(
+                        tonberry
+                );
+
+                summonedDreamEater =
+                        tonberry;
+
                 break;
             }
 
             default: {
+
                 owner.displayClientMessage(
-                        Component.literal("Unknown Dream Eater: " + dreamEater.getName()),
+                        Component.literal(
+                                "Unknown Dream Eater: "
+                                        + dreamEater.getName()
+                        ),
                         true
                 );
+
                 return;
             }
         }
@@ -210,8 +460,13 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
             return;
         }
 
-        globalData.setDreamEaterUUID(summonedDreamEater.getUUID());
-        globalData.setHasDreamEaterSummoned(true);
+        globalData.setDreamEaterUUID(
+                summonedDreamEater.getUUID()
+        );
+
+        globalData.setHasDreamEaterSummoned(
+                true
+        );
 
         owner.level().playSound(
                 null,
@@ -224,19 +479,37 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
                 1.0F
         );
 
-        spawnArmorParticles(summonedDreamEater);
+        spawnArmorParticles(
+                summonedDreamEater
+        );
     }
 
-    private static void handleDesummon(Player owner, GlobalDataRM globalData) {
-        UUID dreamEaterUUID = globalData.getDreamEaterUUID();
 
-        if (dreamEaterUUID != null && owner.level() instanceof ServerLevel serverLevel) {
-            Entity entity = serverLevel.getEntity(dreamEaterUUID);
+    // Manual Dream Eater desummoning
+    private static void handleDesummon(
+            Player owner,
+            GlobalDataRM globalData
+    ) {
+
+        UUID dreamEaterUUID =
+                globalData.getDreamEaterUUID();
+
+        if (dreamEaterUUID != null
+                && owner.level() instanceof ServerLevel serverLevel) {
+
+            Entity entity =
+                    serverLevel.getEntity(
+                            dreamEaterUUID
+                    );
 
             if (entity != null) {
                 entity.discard();
             }
         }
+
+        DreamEaterSummonCooldown.start(
+                owner
+        );
 
         owner.level().playSound(
                 null,
@@ -249,9 +522,15 @@ public class CSSummonSpiritPacket implements CustomPacketPayload {
                 1.0F
         );
 
-        globalData.setDreamEaterUUID(null);
-        globalData.setHasDreamEaterSummoned(false);
+        globalData.setDreamEaterUUID(
+                null
+        );
+
+        globalData.setHasDreamEaterSummoned(
+                false
+        );
     }
+
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
