@@ -1,4 +1,4 @@
-## __8.26.3e__
+## __8.26.3f__
 
-Dark Divide Shotlock visual fixed
-Fixed Drop issue for Cactuar/Jumbo Cactuar
+- [EFM] Attack Command Animations now play again
+- 
