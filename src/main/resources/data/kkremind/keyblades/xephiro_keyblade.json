@@ -311,5 +311,9 @@
       ]
     }
   ],
-  "reach": 6.0
+  "reach": 4.0,
+  "sound": "kingdomkeys:keyblade_hit/way_to_dawn_hit",
+  "hit_particles": [
+    "kingdomkeys:textures/particle/kiblade_hit.png"
+  ]
 }

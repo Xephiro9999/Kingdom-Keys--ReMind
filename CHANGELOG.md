@@ -28,16 +28,18 @@
   - Base Stats: 8/10
   - Base Ability: 
 - Dragon's Nebula, commissioned by ConstellationDragon
-  - Base Stats:
+  - Base Stats: 
   - Base Ability:
 - Maddening Corruption, commissioned by TheFeralKitsune
   - Base Stats: 13/6
   - Base Ability: Dark Infusion
 
-*Inspired by and based on Marduk-Kurios's Desgins*
+*Inspired by and based on Marduk-Kurios's Designs*
 - Union Ultima (Upright)
+  - Description: “A supreme Keyblade born from bonds united as one. Its radiant edge carries the strength of every heart that refuses to stand alone.”
   - Base Stats: 8/8
   - Base Ability: Way to Light
 - Union Ultima (Reversed)
+  - Description: “A supreme Keyblade born from bonds reflected through darkness. Its ominous edge draws strength from the other side of the heart, where even light casts a shadow.”
   - Base Stats: 8/8
   - Base Ability: Dark Power

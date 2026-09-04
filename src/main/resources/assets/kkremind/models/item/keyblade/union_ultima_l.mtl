@@ -1,0 +1,11 @@
+# Blender 5.2.1 LTS MTL File: 'union_ultima.blend'
+# www.blender.org
+
+newmtl Material
+Ns 224.999985
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+map_Kd kkremind:item/models/keyblades/union_ultima_upright
+

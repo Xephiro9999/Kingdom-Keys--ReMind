@@ -383,6 +383,8 @@
   "item.kkremind.voidlight": "Voidlight",
   "item.kkremind.fortuna": "Fortuna",
   "item.kkremind.kali_keyblade": "Guardian's Hope",
+  "item.kkremind.union_ultima_l": "Union Ultima Weapon (Upright)",
+  "item.kkremind.union_ultima_d": "Union Ultima Weapon (Reversed)",
 
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
@@ -396,6 +398,8 @@
   "item.kkremind.voidlight_chain": "Voidlight Chain",
   "item.kkremind.fortuna_chain": "Fortuna Chain",
   "item.kkremind.kali_keyblade_chain": "Guardian's Hope Chain",
+  "item.kkremind.union_ultima_l_chain": "Union Ultima Weapon (Upright) Chain",
+  "item.kkremind.union_ultima_d_chain": "Union Ultima Weapon (Reversed) Chain",
 
   "item.kkremind.aqua_chaplet": "Aqua Chaplet",
   "item.kkremind.heros_glove": "Hero's Glove",
