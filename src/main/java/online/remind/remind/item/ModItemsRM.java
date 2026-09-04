@@ -52,6 +52,7 @@ public class ModItemsRM{
         stealSpell = ITEMS.register("steal_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.STEAL.location())),
         confuseSpell = ITEMS.register("confuse_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.CONFUSE.location())),
         zettaflareSpell = ITEMS.register("zettaflare_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.ZETTAFLARE.location())),
+        recallSpell = ITEMS.register("recall_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.RECALL.location())),
 
         hasteraSpell = ITEMS.register("haste1_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.HASTERA.location())),
         slowraSpell = ITEMS.register("slow1_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SLOWRA.location())),
@@ -158,6 +159,11 @@ public class ModItemsRM{
         voidlight = ITEMS.register("voidlight", () -> new KeybladeItem(new Item.Properties())),
         fortuna = ITEMS.register("fortuna", () -> new KeybladeItem(new Item.Properties())),
 
+        kaliKeyblade = ITEMS.register("kali_keyblade", () -> new KeybladeItem(new Item.Properties())),
+
+        unionUltimaLight = ITEMS.register("union_ultima_l", () -> new KeybladeItem(new Item.Properties())),
+        unionUltimaDark = ITEMS.register("union_ultima_d", () -> new KeybladeItem(new Item.Properties())),
+
 
         // Keychains
         xephiroKeybladeChain = ITEMS.register("xephiro_keyblade_chain", () -> new KeychainItem()),
@@ -171,6 +177,11 @@ public class ModItemsRM{
         lyric2025TournamentChain = ITEMS.register("lyric_2025_tournament_chain", () -> new KeychainItem()),
         voidlightChain = ITEMS.register("voidlight_chain", () -> new KeychainItem()),
         fortunaChain = ITEMS.register("fortuna_chain", () -> new KeychainItem()),
+
+        kaliKeybladeChain = ITEMS.register("kali_keyblade_chain", () -> new KeychainItem()),
+
+        unionUltimaLightChain = ITEMS.register("union_ultima_l_chain", () -> new KeychainItem()),
+        unionUltimaDarkChain = ITEMS.register("union_ultima_d_chain", () -> new KeychainItem()),
 
 
         // And this is where I'd put my Org Weapons... IF I HAD ONE!

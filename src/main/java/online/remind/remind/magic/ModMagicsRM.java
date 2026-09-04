@@ -46,6 +46,8 @@ public class ModMagicsRM {
 
 		ZETTAFLARE = register("magic_zettaflare", () -> new magicZettaflare(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_zettaflare"), false, 0, null)),
 
+		RECALL = register("magic_recall", () -> new magicRecall(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_recall"), false, 0, null)),
+
 		COMET = register("magic_comet", () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_comet"), false, 0, null)),
 		METEOR = register("magic_meteor", () -> new magicComet(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_meteor"), false, 1, null)),
 

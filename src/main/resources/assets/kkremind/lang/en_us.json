@@ -80,6 +80,7 @@
   "magic.kkremind.attack_zantetsuken.name": "Zantetsuken",
   "magic.kkremind.attack_swift_strike.name": "Swift Strike",
   "magic.kkremind.magic_zettaflare.name": "Zettaflare",
+  "magic.kkremind.magic_recall.name": "Recall",
 
   "item.kkremind.fire_strike_attack": "Fire Strike Command",
   "magic.kkremind.attack_fire_strike.name": "Fire Strike",
@@ -152,6 +153,7 @@
   "item.kkremind.swift_strike_attack": "Swift Strike Command",
   "item.kkremind.death_lv_spell": "LV? Death Spell",
   "item.kkremind.zettaflare_spell": "Zettaflare Spell",
+  "item.kkremind.recall_spell": "Recall Spell",
 
 
 
@@ -217,7 +219,7 @@
   "ability.ability_dark_passage.desc": "Allows you to use Dark Corridors without being apart of the Organization.",
   "ability.ability_rage_awakened.name": "Rage Awakened",
   "ability.ability_rage_awakened.desc": "Allows you to give into your rage and let your heart blacken with anger -- let it empower you!",
-  "ability.ability_darkness_boost.name": "Darkness Boost",
+  "ability.ability_darkness_boost.name": "Dark Boost",
   "ability.ability_darkness_boost.desc": "Increases damage done with dark-based attacks.",
   "ability.ability_dark_power.name": "Dark Power",
   "ability.ability_dark_power.desc": "Allows you to embrace the power of Darkness and access Dark Form.",
@@ -380,6 +382,7 @@
   "item.kkremind.lyric_2025_tournament": "Wrongful Inheritor",
   "item.kkremind.voidlight": "Voidlight",
   "item.kkremind.fortuna": "Fortuna",
+  "item.kkremind.kali_keyblade": "Guardian's Hope",
 
   "item.kkremind.xephiro_keyblade_chain": "Sanguine Gaze Chain",
   "item.kkremind.pureblood_chain": "Pureblood Chain",
@@ -392,6 +395,7 @@
   "item.kkremind.lyric_2025_tournament_chain": "Wrongful Inheritor Chain",
   "item.kkremind.voidlight_chain": "Voidlight Chain",
   "item.kkremind.fortuna_chain": "Fortuna Chain",
+  "item.kkremind.kali_keyblade_chain": "Guardian's Hope Chain",
 
   "item.kkremind.aqua_chaplet": "Aqua Chaplet",
   "item.kkremind.heros_glove": "Hero's Glove",

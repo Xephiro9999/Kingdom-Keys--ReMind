@@ -187,6 +187,7 @@ public class KingdomKeysReMind {
         //event.enqueueWork(ModEntitiesRM::registerPlacements);
 
         EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("70b48fbd-b67f-4f3e-9369-09cef36d51a3"), ModItemsRM.xephiroKeybladeChain.get()); // Xephiro
+        EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("6d65b5b8-90a8-41bf-a6d7-6d59ae3a2ffb"), ModItemsRM.kaliKeybladeChain.get()); // Kali
         EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"), ModItems.kibladeChain.get());          // Test - Dev Account
         EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("349e3886-bdac-422b-92fb-48dbd33caac0"), ModItemsRM.gazingOmenChain.get());     // RealRegen
         EntityEventsRM.ALLOWED_UUIDS.put(UUID.fromString("0914dede-d686-4786-ad15-3249eb21e718"), ModItemsRM.elementalCrescendoChain.get()); // Goblex
