@@ -33,52 +33,39 @@ public class RMCoinItem extends Item implements IItemCategory,ICreativeTabRM{
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.get(player);
         if (!world.isClientSide) {
-            if (playerData != null ) {
-
+            if (playerData != null) {
                 int stack = player.getMainHandItem().getCount();
                 int coinValue = value.get();
+                boolean isCrouching = player.isCrouching();
 
-                if (player.isCrouching()){
-                    if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
-                        player.getMainHandItem().shrink(stack);
-                    } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
-                        player.getOffhandItem().shrink(stack);
-                    }
-                    switch (type) {
-                        case "munny": {
-                            playerData.setMunny(playerData.getMunny() + coinValue * stack);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue * stack + " Munny!"), true);
-                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+                // Shrink the item
+                int shrinkAmount = isCrouching ? stack : 1;
+                if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
+                    player.getMainHandItem().shrink(shrinkAmount);
+                } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
+                    player.getOffhandItem().shrink(shrinkAmount);
+                }
 
-                            break;
-                        }
-                        case "hearts": {
-                            playerData.addHearts(coinValue * stack);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue * stack + " Hearts!"), true);
-                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
-                            break;
-                        }
-                    }
-                } else {
-                    if (!ItemStack.matches(player.getMainHandItem(), ItemStack.EMPTY) && player.getMainHandItem().getItem() == this) {
-                        player.getMainHandItem().shrink(1);
-                    } else if (!ItemStack.matches(player.getOffhandItem(), ItemStack.EMPTY) && player.getOffhandItem().getItem() == this) {
-                        player.getOffhandItem().shrink(1);
-                    }
-                    switch (type) {
-                        case "munny": {
-                            playerData.setMunny(playerData.getMunny() + coinValue);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue + " Munny!"), true);
-                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
+                // Calculate the value gained
+                int valueGained = isCrouching ? coinValue * stack : coinValue;
 
-                            break;
-                        }
-                        case "hearts": {
-                            playerData.addHearts(coinValue);
-                            player.displayClientMessage(Component.translatable(ChatFormatting.YELLOW+"You've received " + coinValue + " Hearts!"), true);
-                            //player.level().playSound(player, player.blockPosition(), ModSounds.itemget.get(), SoundSource.MASTER, 1.0f, 1.0f);
-                            break;
-                        }
+                // Apply the effect based on type
+                switch (type) {
+                    case "munny" -> {
+                        playerData.setMunny(playerData.getMunny() + valueGained);
+                        player.displayClientMessage(
+                                Component.translatable("message.received.munny", valueGained)
+                                        .withStyle(ChatFormatting.YELLOW),
+                                true
+                        );
+                    }
+                    case "hearts" -> {
+                        playerData.addHearts(valueGained);
+                        player.displayClientMessage(
+                                Component.translatable("message.received.hearts", valueGained)
+                                        .withStyle(ChatFormatting.YELLOW),
+                                true
+                        );
                     }
                 }
 

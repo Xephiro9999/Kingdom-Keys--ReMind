@@ -497,6 +497,9 @@
   "menu_button.wallet": "Wallet",
   "menu_button.wallet.desc": "Allows you to retrieve Munny or Hearts as coins for trade use.",
 
+  "message.received.munny": "You've received %s Munny!",
+  "message.received.hearts": "You've received %s Hearts!",
+
   "reactioncommand.kkremind.rc_riskcharge.name": "Riskcharge",
   "reactioncommand.kkremind.rc_rage.name": "Rage Form",
   "reactioncommand.kkremind.rc_raging_burst.name": "Raging Burst",
