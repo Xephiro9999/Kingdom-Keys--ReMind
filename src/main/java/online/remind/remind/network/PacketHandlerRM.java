@@ -41,6 +41,13 @@ public class PacketHandlerRM {
         registrar.playToServer(CSBuyOrganizationPanelPacket.TYPE, CSBuyOrganizationPanelPacket.STREAM_CODEC, CSBuyOrganizationPanelPacket::handle);
         registrar.playToServer(CSGrowthPanelActionPacket.TYPE, CSGrowthPanelActionPacket.STREAM_CODEC, CSGrowthPanelActionPacket::handle);
         registrar.playToServer(InputHandlerRM.CSDarkStepPacket.TYPE, InputHandlerRM.CSDarkStepPacket.STREAM_CODEC, InputHandlerRM.CSDarkStepPacket::handle);
+
+
+        registrar.playToClient(
+                ShowAttackNamePayload.TYPE,
+                ShowAttackNamePayload.STREAM_CODEC,
+                ClientAttackNameHandler::handle
+        );
     }
 
         public static void sendToServer(CustomPacketPayload msg) {

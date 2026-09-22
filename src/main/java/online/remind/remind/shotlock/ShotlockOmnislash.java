@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.shotlock.Shotlock;
+import online.remind.remind.client.gui.FF7AttackHud;
 import online.remind.remind.client.sound.ModSoundsRM;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class ShotlockOmnislash extends Shotlock {
         float strength =
                 playerData.getStrength(true);
 
+        FF7AttackHud.show(serverPlayer, "Omnislash");
         OmnislashSequenceHandler.start(
                 serverPlayer,
                 target,

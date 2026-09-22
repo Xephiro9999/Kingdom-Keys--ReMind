@@ -2380,12 +2380,20 @@ public class EntityEventsRM {
 					}
 				}
 
+				// Ex-SOLDIER On-Hit Passive
 				if (playerData.isFormActive(ModDriveFormsRM.EXSOLDIER)){
 					if (event.getSource().type().msgId().equals("player")) {
 						float dmg = event.getNewDamage();
 						double focusGain = dmg * 0.005f; // Should be 0.5% of damage dealt.
 						double formGain = dmg * 0.01f; // Should be 1% of damage dealt.
 						double mpGain = dmg * 0.015f; // Should be 1.5% of damage dealt.
+
+						if (player.getHealth() <= 0.25f){
+							focusGain = dmg * 0.01f; // Should be 0.5% of damage dealt.
+							formGain = dmg * 0.02f; // Should be 1% of damage dealt.
+							mpGain = dmg * 0.02f; // Should be 1.5% of damage dealt.
+						}
+
 						playerData.addFocus(focusGain);
 						playerData.addFP(formGain);
 						playerData.addMP(mpGain);

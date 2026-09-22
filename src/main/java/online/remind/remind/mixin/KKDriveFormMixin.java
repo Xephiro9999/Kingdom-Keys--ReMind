@@ -39,6 +39,10 @@ public class KKDriveFormMixin {
 
                 }
             }
+
+            if (playerData.isFormActive(ModDriveFormsRM.EXSOLDIER)){
+                player.level().playSound(null, player.blockPosition(), ModSoundsRM.LIMIT_ACTIVE.get(), SoundSource.MASTER, 1.0f, 1.0f);
+            }
         }
     }
 

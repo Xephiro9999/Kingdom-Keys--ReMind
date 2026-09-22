@@ -30,6 +30,8 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
+import online.remind.remind.client.gui.FF7AttackHud;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.StyleDefinition;
@@ -221,6 +223,10 @@ public class StyleRC extends ReactionCommand {
 			}
 
 			case KingdomKeysReMind.MODID + ":" + StringsRM.exSoldier -> {
+
+				FF7AttackHud.show((ServerPlayer) player, "Cherry Blossom");
+				player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundsRM.LIMIT_BREAK.get(), SoundSource.PLAYERS, 1F, 1F);
+
 
 				/*
 				 * CHERRY BLOSSOM

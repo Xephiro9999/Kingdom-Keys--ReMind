@@ -46,6 +46,7 @@ public class ModSoundsRM {
             SLASH = registerSound("slash"),
             CRITSLASH = registerSound("crit_slash"),
             DASH = registerSound("dash"),
+            LIMIT_ACTIVE = registerSound("limit_active"),
 
             // Easter Eggs - Spells
             FINAL_FLASH = registerSound("final_flash"),

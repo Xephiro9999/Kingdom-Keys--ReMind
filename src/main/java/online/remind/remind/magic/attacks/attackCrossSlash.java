@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.client.gui.FF7AttackHud;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.integration.CrossSlashAnimationBridge;
 
@@ -41,6 +42,7 @@ public class attackCrossSlash extends Magic {
 
         playerData.remFocus(30);
 
+
         float dmg;
 
         switch (getTier()) {
@@ -63,6 +65,7 @@ public class attackCrossSlash extends Magic {
             return;
         }
 
+        FF7AttackHud.show((ServerPlayer) player, "Cross-Slash");
         CrossSlashSequenceHandler.start(
                 serverPlayer,
                 lockOnEntity,

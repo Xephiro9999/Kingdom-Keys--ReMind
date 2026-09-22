@@ -269,6 +269,11 @@
       "kkremind:dash"
     ]
   },
+  "limit_active": {
+    "sounds": [
+      "kkremind:limit_active"
+    ]
+  },
   "cactuar_alive": {
     "sounds": [
       "kkremind:cactuar_alive"

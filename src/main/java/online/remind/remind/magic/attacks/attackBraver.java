@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
 import online.kingdomkeys.kingdomkeys.magic.Magic;
+import online.remind.remind.client.gui.FF7AttackHud;
 import online.remind.remind.client.sound.ModSoundsRM;
 
 public class attackBraver extends Magic {
@@ -41,6 +42,7 @@ public class attackBraver extends Magic {
 
         playerData.remFocus(20);
 
+
         float dmg;
 
         switch (getTier()) {
@@ -52,6 +54,7 @@ public class attackBraver extends Magic {
 
         dmg *= fullMPBlastMult;
 
+        FF7AttackHud.show((ServerPlayer) player, "Braver");
         BraverSequenceHandler.start(
                 serverPlayer,
                 lockOnEntity,
