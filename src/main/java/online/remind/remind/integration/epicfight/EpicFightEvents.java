@@ -164,6 +164,10 @@ public class EpicFightEvents {
 
             case "kkremind:attack_quick_blitz",
                  "kkremind:attack_blitz",
+                 "kkremind:attack_poison_strike",
+                 "kkremind:attack_blizzard_strike",
+                 "kkremind:attack_water_strike",
+                 "kkremind:attack_dark_strike",
                  "kkremind:attack_slot_edge":
 
                 player.addEffect(new MobEffectInstance(
@@ -199,11 +203,8 @@ public class EpicFightEvents {
 
             case "kkremind:attack_confusion_strike",
                  "kkremind:attack_binding_strike",
-                 "kkremind:attack_dark_strike",
                  "kkremind:attack_fire_strike",
-                 "kkremind:attack_blizzard_strike",
                  "kkremind:attack_thunder_strike",
-                 "kkremind:attack_water_strike",
                  "kkremind:attack_aero_strike",
                  "kkremind:attack_light_strike":
 

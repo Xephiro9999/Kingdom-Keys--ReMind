@@ -91,6 +91,7 @@ public class ModItemsRM{
         lightSurgeAttack = ITEMS.register("light_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.LIGHT_SURGE.location())),
         darkSurgeAttack = ITEMS.register("dark_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DARK_SURGE.location())),
         zantetsukenAttack = ITEMS.register("zantetsuken_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.ZANTETSUKEN.location())),
+        arsArcanumAttack = ITEMS.register("ars_arcanum_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.ARS_ARCANUM.location())),
 
         fireStrikeAttack = ITEMS.register("fire_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.FIRE_STRIKE.location())),
         blizzardStrikeAttack = ITEMS.register("blizzard_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.BLIZZARD_STRIKE.location())),
@@ -101,6 +102,7 @@ public class ModItemsRM{
         darkStrikeAttack = ITEMS.register("dark_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DARK_STRIKE.location())),
         bindingStrikeAttack = ITEMS.register("binding_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.BINDING_STRIKE.location())),
         confusionStrikeAttack = ITEMS.register("confusion_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.CONFUSION_STRIKE.location())),
+        poisonStrikeAttack = ITEMS.register("poison_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.POISON_STRIKE.location())),
         blitzAttack = ITEMS.register("blitz_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.BLITZ.location())),
         darkHazeAttack = ITEMS.register("dark_haze_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DARK_HAZE.location())),
         sonicBladeAttack = ITEMS.register("sonic_blade_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SONIC_BLADE.location())),
@@ -123,7 +125,7 @@ public class ModItemsRM{
         lightSurge2Attack = ITEMS.register("light_surge2_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.LIGHTGA_SURGE.location())),
         darkSurge2Attack = ITEMS.register("dark_surge2_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DARKGA_SURGE.location())),
 
-    // Creative Exclusive
+    // Style/Form Exclusive
         braverAttack = ITEMS.register("braver_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.BRAVER.location())),
         crossSlashAttack = ITEMS.register("cross_slash_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.CROSS_SLASH.location())),
         swiftStrikeAttack = ITEMS.register("swift_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SWIFT_STRIKE.location())),

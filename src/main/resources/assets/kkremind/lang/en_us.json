@@ -85,14 +85,14 @@
   "item.kkremind.fire_strike_attack": "Fire Strike Command",
   "magic.kkremind.attack_fire_strike.name": "Fire Strike",
 
-  "item.kkremind.blizzard_strike_attack": "Blizzard Strike Command",
-  "magic.kkremind.attack_blizzard_strike.name": "Blizzard Strike",
+  "item.kkremind.blizzard_strike_attack": "Blizzard Edge Command",
+  "magic.kkremind.attack_blizzard_strike.name": "Blizzard Edge",
 
   "item.kkremind.thunder_strike_attack": "Thunder Strike Command",
   "magic.kkremind.attack_thunder_strike.name": "Thunder Strike",
 
-  "item.kkremind.water_strike_attack": "Water Strike Command",
-  "magic.kkremind.attack_water_strike.name": "Water Strike",
+  "item.kkremind.water_strike_attack": "Water Edge Command",
+  "magic.kkremind.attack_water_strike.name": "Water Edge",
 
   "item.kkremind.aero_strike_attack": "Aero Strike Command",
   "magic.kkremind.attack_aero_strike.name": "Aero Strike",
@@ -100,14 +100,17 @@
   "item.kkremind.light_strike_attack": "Light Strike Command",
   "magic.kkremind.attack_light_strike.name": "Light Strike",
 
-  "item.kkremind.dark_strike_attack": "Dark Strike Command",
-  "magic.kkremind.attack_dark_strike.name": "Dark Strike",
+  "item.kkremind.dark_strike_attack": "Dark Edge Command",
+  "magic.kkremind.attack_dark_strike.name": "Dark Edge",
 
   "item.kkremind.binding_strike_attack": "Binding Strike Command",
   "magic.kkremind.attack_binding_strike.name": "Binding Strike",
 
   "item.kkremind.confusion_strike_attack": "Confusion Strike Command",
   "magic.kkremind.attack_confusion_strike.name": "Confusion Strike",
+
+  "item.kkremind.poison_strike_attack": "Poison Edge Command",
+  "magic.kkremind.attack_poison_strike.name": "Poison Edge",
 
   "item.kkremind.blitz_attack": "Blitz Command",
   "magic.kkremind.attack_blitz.name": "Blitz",
@@ -123,6 +126,9 @@
 
   "item.kkremind.slot_edge_attack": "Slot Edge Command",
   "magic.kkremind.attack_slot_edge.name": "Slot Edge",
+
+  "item.kkremind.ars_arcanum_attack": "Ars Arcanum Command",
+  "magic.kkremind.attack_ars_arcanum.name": "Ars Arcanum",
 
 
 
@@ -549,6 +555,8 @@
   "reactioncommand.kkremind.rc_sonic_blade.name": "Rave",
   "reactioncommand.kkremind.rc_chaos_blade.name": "Chaos Rave",
   "reactioncommand.kkremind.rc_slot_edge.name": "Slot Edge",
+  "reactioncommand.kkremind.rc_ars_bash.name": "Bash",
+  "reactioncommand.kkremind.rc_ars_finish.name": "The End",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 

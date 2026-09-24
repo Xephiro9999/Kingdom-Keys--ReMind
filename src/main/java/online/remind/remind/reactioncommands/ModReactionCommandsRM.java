@@ -30,6 +30,8 @@ public class ModReactionCommandsRM {
         SLOT_EDGE_RC = register(StringsRM.RCMA_Prefix+"slot_edge", () -> new SlotEdgeRC( ResourceLocation.parse(StringsRM.SlotEdgeRC),true)),
         SONIC_BLADE_RC = register(StringsRM.RCMA_Prefix+"sonic_blade", () -> new SonicBladeRC( ResourceLocation.parse(StringsRM.SonicBladeRC),true)),
         CHAOS_BLADE_RC = register(StringsRM.RCMA_Prefix+"chaos_blade", () -> new ChaosBladeRC( ResourceLocation.parse(StringsRM.ChaosBladeRC),true)),
+        ARS_BASH_RC = register(StringsRM.RCMA_Prefix+"ars_bash", () -> new ArsBashRC( ResourceLocation.parse(StringsRM.ArsBashRC),true)),
+        ARS_FINISH_RC = register(StringsRM.RCMA_Prefix+"ars_finish", () -> new ArsFinishRC( ResourceLocation.parse(StringsRM.ArsFinishRC),true)),
 
 
         FINISH_RC = register(StringsRM.RCMA_Prefix+"finish", () -> new FinishRC(ResourceLocation.parse(StringsRM.FinishRC),false)),

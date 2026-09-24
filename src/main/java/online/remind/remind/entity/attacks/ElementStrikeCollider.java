@@ -58,7 +58,7 @@ public class ElementStrikeCollider extends ThrowableProjectile {
             case LIGHT -> KKDamageTypes.getElementalDamage(KKDamageTypes.LIGHT, this, this.getOwner());
             case DARK -> KKDamageTypes.getElementalDamage(KKDamageTypes.DARKNESS, this, this.getOwner());
 
-            case BINDING, CONFUSION -> caster.damageSources().mobAttack(caster);
+            case BINDING, CONFUSION, POISON -> caster.damageSources().mobAttack(caster);
         };
     }
 
@@ -201,6 +201,14 @@ public class ElementStrikeCollider extends ThrowableProjectile {
             case CONFUSION -> {
                 target.addEffect(new MobEffectInstance(
                         ModMobEffectsRM.CONFUSE,
+                        120,
+                        0
+                ));
+            }
+
+            case POISON -> {
+                target.addEffect(new MobEffectInstance(
+                        MobEffects.POISON,
                         120,
                         0
                 ));

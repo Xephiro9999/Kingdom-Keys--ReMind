@@ -25,6 +25,8 @@
 - **[CHANGE]** Dream Eaters now register as Party Members.
 - **[CHANGE]** Zantetsuken's melding recipe is now Sonic Blade + Stopga or Dark Haze + Stopga to reflect its recipe in BBS.
 - **[CHANGE]** Normal attacks now contribute to the Situation Gauge.
+- **[CHANGE]** Changed a few attack commands names from "Strike" to "Edge"
+- **[EFM]**, **[CHANGE]** Blizzard Edge, Water Edge, and Dark Edge now use a jumping attack animation.
 - **[REWORK]** Light Step Rework - It now makes you move in an arcing motion
 - **[REWORK]** Dark Step Rework - It now makes you -blink- a few blocks in the direction you're facing, leaving an afterimage.
 
@@ -34,7 +36,7 @@
 - Leaving the Form restores your original spell loadout exactly as it was.
 - Form loadouts are protected while active, preventing equipped spells from being removed or replaced.
 - The system is fully data-driven, allowing Form-specific spell loadouts to be added or changed through data files without additional hard-coded logic.
-- Only Light and Dark Forms have this system! (for now)
+- Only Light, Dark, and **LIMIT** Forms have this system! (for now)
 
 ### Light Form Loadout:
 - Light Strike
@@ -52,9 +54,16 @@
 - Dark Firaga
 - Curaga
 
+### Limit Form Loadout:
+- Sonic Blade
+- Ars Arcanum
+- **Shotlock**: Ragnarok
+
 ## New Status Effect
 ### Doom
 After the countdown reaches Zero on the afflicted target... they die.
+
+## New Melding Recipes
 
 ## New Spell
 ### **Recall** - *Re:Mind Original*
@@ -63,6 +72,10 @@ After the countdown reaches Zero on the afflicted target... they die.
 - Meld Recipe: Warp + Curaga
 
 ## New Attacks
+### Poison Edge
+- Cost: 20 MP
+- Perform a jumping attack that poisons some foes.
+- Meld Recipe: Quick Blitz + Poison, Sliding Dash + Poison
 ### Dark Haze
 - Cost: 40 MP
 - Cloak yourself in darkness, then charge at faraway enemies. The attack has a chance of dooming them, leaving them five seconds to live.
@@ -75,6 +88,12 @@ After the countdown reaches Zero on the afflicted target... they die.
 - Cost: 40 MP
 - Press the **R** button at the right times to perform a series of charging attacks that blind or bind some foes.
 - Meld Recipe: Sonic Blade + Dark Haze
+### Ars Arcanum
+- Cost: 75 MP
+- Assail enemies with a ferocious string of blows. Press the **R** button at the end to tack on a few extra hits for good measure.
+- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard
+
+**NOTE:** Ars Arcanum and Sonic Blade's finishing RCs grant Limit Form EXP.
 
 ## New Abilities
 ### **Silence Heart**

@@ -1025,12 +1025,10 @@ public class EntityEventsRM {
 							|| OmnislashSequenceHandler
 							.isApplyingDamage(player);
 
-			if (!allowedDamage) {
+			boolean allowedArsArcanum = ArsArcanumSequenceHandler.isApplyingScriptedDamage();
 
-				event.setNewDamage(
-						0.0F
-				);
-
+			if (!allowedDamage && !allowedArsArcanum) {
+				event.setNewDamage(0.0F); // Blocks EFM Animation Damage
 				return;
 			}
 		}

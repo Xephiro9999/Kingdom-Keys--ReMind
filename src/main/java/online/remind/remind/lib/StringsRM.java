@@ -257,6 +257,8 @@ public class StringsRM {
         SlotEdgeRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"slot_edge",
         SonicBladeRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"sonic_blade",
         ChaosBladeRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"chaos_blade",
+        ArsBashRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"ars_bash",
+        ArsFinishRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"ars_finish",
 
         CounterHammerRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_hammer",
         CounterBlastRC = KingdomKeysReMind.MODID+":"+StringsRM.RCMA_Prefix+"counter_blast",

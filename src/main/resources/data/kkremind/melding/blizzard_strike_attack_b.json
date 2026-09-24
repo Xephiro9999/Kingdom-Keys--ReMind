@@ -1,10 +1,10 @@
 {
   "cost": 0,
-  "ingredient1": "kingdomkeys:spellcura",
-  "ingredient2": "kkremind:quick_blitz_attack",
+  "ingredient1": "kkremind:quick_blitz_attack",
+  "ingredient2": "kingdomkeys:spellblizzard",
   "output": {
     "type": "item",
-    "item": "kkremind:slot_edge_attack",
+    "item": "kkremind:blizzard_strike_attack",
     "quantity": 1
   },
   "output2": {
@@ -12,5 +12,5 @@
     "item": "kkremind:ars_arcanum_attack",
     "quantity": 1
   },
-  "tier": 2
+  "tier": 1
 }

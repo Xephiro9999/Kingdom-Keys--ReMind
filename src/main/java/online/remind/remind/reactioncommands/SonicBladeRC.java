@@ -9,6 +9,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
+import online.kingdomkeys.kingdomkeys.driveform.ModDriveForms;
+import online.kingdomkeys.kingdomkeys.lib.Strings;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCSyncPlayerData;
 import online.kingdomkeys.kingdomkeys.reactioncommands.ReactionCommand;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
@@ -71,6 +75,17 @@ public class SonicBladeRC extends ReactionCommand {
         );
 
         player.level().addFreshEntity(collider);
+
+        if (chainStep == 6){
+            PlayerData playerData = PlayerData.get(player);
+            if (playerData != null) {
+                if (playerData.isFormActive(ModDriveForms.LIMIT)) {
+                    float formXP = playerData.getDriveFormLevel(ModDriveForms.LIMIT.location());
+                    playerData.setDriveFormExp(player, playerData.getActiveDriveForm(), (int) (playerData.getDriveFormExp(playerData.getActiveDriveForm()) + formXP + 1));
+                    PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer)player);
+                }
+            }
+        }
 
 
         /*

@@ -1,0 +1,8 @@
+{
+  "target": "kkremind:attack_poison_strike",
+
+  "elements": ["JUMPING", "EDGE", "PHYSICAL"],
+  "specific_styles": [],
+
+  "base_value": 25
+}
