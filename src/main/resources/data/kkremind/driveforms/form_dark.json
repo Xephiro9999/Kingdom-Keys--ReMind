@@ -6,6 +6,7 @@
   "str_mult": 1,
   "mag_mult": 1,
   "speed_mult": 1,
+  "xp_mult": 1,
   "level_up":[ 0, 150, 300, 450, 600, 750, 900 ],
   "abilities": [
     "kkremind:ability_darkness_boost","kkremind:ability_darkness_boost","kkremind:ability_darkness_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kingdomkeys:ability_form_boost","kkremind:ability_darkness_within", "kkremind:ability_dark_infusion"

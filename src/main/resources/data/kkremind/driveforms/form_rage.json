@@ -6,6 +6,7 @@
   "str_mult": 1,
   "mag_mult": 1,
   "speed_mult": 1.25,
+  "xp_mult": 1,
   "level_up":[ 0, 120, 240, 360, 480, 600, 720 ],
   "abilities": [
     "kingdomkeys:ability_form_boost","kkremind:ability_darkness_boost","kkremind:ability_dark_step","kingdomkeys:ability_high_jump", "kkremind:ability_riskcharge"
