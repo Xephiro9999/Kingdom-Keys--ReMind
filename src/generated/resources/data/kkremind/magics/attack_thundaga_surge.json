@@ -5,7 +5,7 @@
   "dmg_mult": 1.9,
   "dmg_mult_max": 2.05,
   "magic_lock_on": false,
-  "max_exp": 700,
+  "max_exp": 1000,
   "max_lvl": 4,
   "spell_type": "PHYSICAL"
 }
