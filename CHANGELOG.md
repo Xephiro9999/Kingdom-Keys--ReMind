@@ -25,7 +25,8 @@
 - **[CHANGE]** Dream Eaters now register as Party Members.
 - **[CHANGE]** Zantetsuken's melding recipe is now Sonic Blade + Stopga or Dark Haze + Stopga to reflect its recipe in BBS.
 - **[CHANGE]** Normal attacks now contribute to the Situation Gauge.
-- **[CHANGE]** Changed a few attack commands names from "Strike" to "Edge"
+- **[CHANGE]** Changed a few attack commands names from "Strike" to "Edge".
+- **[CHANGE]** Removed all Strike/Edge Attacks from Moogle Shop.
 - **[EFM]**, **[CHANGE]** Blizzard Edge, Water Edge, and Dark Edge now use a jumping attack animation.
 - **[REWORK]** Light Step Rework - It now makes you move in an arcing motion
 - **[REWORK]** Dark Step Rework - It now makes you -blink- a few blocks in the direction you're facing, leaving an afterimage.
@@ -57,6 +58,7 @@
 ### Limit Form Loadout:
 - Sonic Blade
 - Ars Arcanum
+- Zantetsuken
 - **Shotlock**: Ragnarok
 
 ## New Status Effect
