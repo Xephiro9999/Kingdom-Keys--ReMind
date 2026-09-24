@@ -65,7 +65,6 @@ public class ModConfigs {
         spiritsEnabled = COMMON.spiritsEnabled.get();
         autoLifeCD = COMMON.autoLifeCD.get();
         xpMulti = COMMON.xpMulti.get();
-        chirithySpellFeedback = ClientConfigRM.chirithySpellFeedback.get();
 
         // Ultima Weapon Ability Configs
         ultimaPositiveSTR = COMMON.ultimaPositiveSTR.get();
@@ -84,6 +83,10 @@ public class ModConfigs {
         heartCoinValue = COMMON.heartCoinValue.get();
         luxCoinValue = COMMON.luxCoinValue.get();
 
+    }
+
+    public static void bakeClient(){
+        chirithySpellFeedback = CLIENT.chirithySpellFeedback.get();
     }
 
     public static boolean donorKeybladeGrant;
@@ -134,6 +137,11 @@ public class ModConfigs {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             KingdomKeysReMind.LOGGER.info("LOAD COMMON CONFIG");
             bakeCommon();
+        }
+
+        if (event.getConfig().getSpec() == CLIENT_SPEC) {
+            KingdomKeysReMind.LOGGER.info("LOAD CLIENT CONFIG");
+            bakeClient();
         }
     }
 
