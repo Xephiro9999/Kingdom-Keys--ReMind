@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:quick_blitz_attack",
+  "ingredient2": "kingdomkeys:spellbind",
+  "output": {
+    "type": "item",
+    "item": "kkremind:binding_strike_attack",
+    "quantity": 1
+  },
+  "tier": 1
+}

@@ -64,6 +64,14 @@
 After the countdown reaches Zero on the afflicted target... they die.
 
 ## New Melding Recipes
+- Fire Strike: Poison Edge + Fira
+- Blizzard Edge: Quick Blitz + Blizzard, Sliding Dash + Blizzard, Quick Blitz + Blizzara, Sliding Dash + Blizzara
+- Thunder Strike: Poison Edge + Thundara
+- Water Edge: Quick Blitz + Water, Sliding Dash + Water, Quick Blitz + Watera, Sliding Dash + Watera
+- Aero Strike: Poison Edge + Aerora
+- Light Strike: Quick Blitz + Cure, Sliding Dash + Cure
+- Dark Edge: Quick Blitz + Blackout, Sliding Dash + Blackout
+- Binding Strike: Quick Blitz + Bind
 
 ## New Spell
 ### **Recall** - *Re:Mind Original*
@@ -91,7 +99,7 @@ After the countdown reaches Zero on the afflicted target... they die.
 ### Ars Arcanum
 - Cost: 75 MP
 - Assail enemies with a ferocious string of blows. Press the **R** button at the end to tack on a few extra hits for good measure.
-- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard
+- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard, (5% Chance) Sliding Dash + Blizzara, (5% Chance) Quick Blitz + Blizzara
 
 **NOTE:** Ars Arcanum and Sonic Blade's finishing RCs grant Limit Form EXP.
 

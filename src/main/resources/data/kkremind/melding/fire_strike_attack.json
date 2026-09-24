@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:poison_strike_attack",
+  "ingredient2": "kingdomkeys:spellfira",
+  "output": {
+    "type": "item",
+    "item": "kkremind:fire_strike_attack",
+    "quantity": 1
+  },
+  "tier": 1
+}

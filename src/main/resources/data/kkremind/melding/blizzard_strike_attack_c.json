@@ -1,0 +1,16 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:sliding_dash_attack",
+  "ingredient2": "kingdomkeys:spellblizzara",
+  "output": {
+    "type": "item",
+    "item": "kkremind:blizzard_strike_attack",
+    "quantity": 1
+  },
+  "output2": {
+    "chance": 5,
+    "item": "kkremind:ars_arcanum_attack",
+    "quantity": 1
+  },
+  "tier": 1
+}
