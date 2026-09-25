@@ -97,6 +97,17 @@ public class ModMagicsRM {
 
 		SLIDING_DASH = register("attack_sliding_dash", () -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sliding_dash"), false, 0, null)),
 
+	FIRE_STRIKE = register("attack_fire_strike", () -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_strike"), false, 0, null)),
+			BLIZZARD_STRIKE = register("attack_blizzard_strike", () -> new attackBlizzardStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_strike"), false, 0, null)),
+			THUNDER_STRIKE = register("attack_thunder_strike", () -> new attackThunderStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_strike"), false, 0, null)),
+			WATER_STRIKE = register("attack_water_strike", () -> new attackWaterStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_strike"), false, 0, null)),
+			AERO_STRIKE = register("attack_aero_strike", () -> new attackAeroStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_strike"), false, 0, null)),
+			LIGHT_STRIKE = register("attack_light_strike", () -> new attackLightStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_strike"), false, 0, null)),
+			DARK_STRIKE = register("attack_dark_strike", () -> new attackDarkStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_strike"), false, 0, null)),
+			BINDING_STRIKE = register("attack_binding_strike", () -> new attackBindingStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_binding_strike"), false, 0, null)),
+			CONFUSION_STRIKE = register("attack_confusion_strike", () -> new attackConfusionStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_confusion_strike"), false, 0, null)),
+			POISON_STRIKE = register("attack_poison_strike", () -> new attackPoisonStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_poison_strike"), false, 0, null)),
+
 		FIRE_SURGE = register("attack_fire_surge", () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_surge"), false, 0, null)),
 		FIRA_SURGE = register("attack_fira_surge", () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fira_surge"), false, 1, null)),
 		FIRAGA_SURGE = register("attack_firaga_surge", () -> new attackFireSurge(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_firaga_surge"), false, 2, null)),
@@ -127,26 +138,9 @@ public class ModMagicsRM {
 
 		ZANTETSUKEN = register("attack_zantetsuken", () -> new attackZantetsuken(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_zantetsuken"), false, 0, null)),
 
-		FIRE_STRIKE = register("attack_fire_strike", () -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_strike"), false, 0, null)),
 
-		BLIZZARD_STRIKE = register("attack_blizzard_strike", () -> new attackBlizzardStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_strike"), false, 0, null)),
 
-		THUNDER_STRIKE = register("attack_thunder_strike", () -> new attackThunderStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_strike"), false, 0, null)),
-
-		WATER_STRIKE = register("attack_water_strike", () -> new attackWaterStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_strike"), false, 0, null)),
-
-		AERO_STRIKE = register("attack_aero_strike", () -> new attackAeroStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aero_strike"), false, 0, null)),
-
-		LIGHT_STRIKE = register("attack_light_strike", () -> new attackLightStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_light_strike"), false, 0, null)),
-
-		DARK_STRIKE = register("attack_dark_strike", () -> new attackDarkStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_strike"), false, 0, null)),
-
-		BINDING_STRIKE = register("attack_binding_strike", () -> new attackBindingStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_binding_strike"), false, 0, null)),
-
-		CONFUSION_STRIKE = register("attack_confusion_strike", () -> new attackConfusionStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_confusion_strike"), false, 0, null)),
-
-		POISON_STRIKE = register("attack_poison_strike", () -> new attackPoisonStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_poison_strike"), false, 0, null)),
-
+		AERIAL_SLAM = register("attack_aerial_slam", () -> new attackAerialSlam(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_aerial_slam"), false, 0, null)),
 		BLITZ = register("attack_blitz", () -> new attackBlitz(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blitz"), false, 0, null)),
 		DARK_HAZE = register("attack_dark_haze", () -> new attackDarkHaze(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_dark_haze"), false, 0, null)),
 		SONIC_BLADE = register("attack_sonic_blade", () -> new attackSonicBlade(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sonic_blade"), false, 0, null)),

@@ -32,6 +32,7 @@ public class ModReactionCommandsRM {
         CHAOS_BLADE_RC = register(StringsRM.RCMA_Prefix+"chaos_blade", () -> new ChaosBladeRC( ResourceLocation.parse(StringsRM.ChaosBladeRC),true)),
         ARS_BASH_RC = register(StringsRM.RCMA_Prefix+"ars_bash", () -> new ArsBashRC( ResourceLocation.parse(StringsRM.ArsBashRC),true)),
         ARS_FINISH_RC = register(StringsRM.RCMA_Prefix+"ars_finish", () -> new ArsFinishRC( ResourceLocation.parse(StringsRM.ArsFinishRC),true)),
+        AERIAL_SLAM_RC = register(StringsRM.RCMA_Prefix+"aerial_slam", () -> new AerialSlamRC( ResourceLocation.parse(StringsRM.AerialSlamRC),true)),
 
 
         FINISH_RC = register(StringsRM.RCMA_Prefix+"finish", () -> new FinishRC(ResourceLocation.parse(StringsRM.FinishRC),false)),

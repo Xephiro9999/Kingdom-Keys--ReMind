@@ -92,6 +92,7 @@ public class ModItemsRM{
         darkSurgeAttack = ITEMS.register("dark_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.DARK_SURGE.location())),
         zantetsukenAttack = ITEMS.register("zantetsuken_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.ZANTETSUKEN.location())),
         arsArcanumAttack = ITEMS.register("ars_arcanum_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.ARS_ARCANUM.location())),
+        aerialSlamAttack = ITEMS.register("aerial_slam_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.AERIAL_SLAM.location())),
 
         fireStrikeAttack = ITEMS.register("fire_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.FIRE_STRIKE.location())),
         blizzardStrikeAttack = ITEMS.register("blizzard_strike_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.BLIZZARD_STRIKE.location())),

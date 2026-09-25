@@ -98,10 +98,14 @@ After the countdown reaches Zero on the afflicted target... they die.
 - Cost: 40 MP
 - Press the **R** button at the right times to perform a series of charging attacks that blind or bind some foes.
 - Meld Recipe: Sonic Blade + Dark Haze
+### Aerial Slam
+- Cost: 40 MP
+- Desc.
+- Melf Recipe: Aerora + Fire Strike, Firaga Surge + Aeroga
 ### Ars Arcanum
 - Cost: 75 MP
 - Assail enemies with a ferocious string of blows. Press the **R** button at the end to tack on a few extra hits for good measure.
-- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard, (5% Chance) Sliding Dash + Blizzara, (5% Chance) Quick Blitz + Blizzara
+- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard, (5% Chance) Sliding Dash + Blizzara, (5% Chance) Quick Blitz + Blizzara, (10%) Firaga Surge + Aeroga, Aerial Slam + Blitz
 
 **NOTE:** Ars Arcanum and Sonic Blade's finishing RCs grant Limit Form EXP.
 

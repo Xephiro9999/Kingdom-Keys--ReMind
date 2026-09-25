@@ -41,12 +41,12 @@ public class ArsArcanumSequenceHandler {
 
     private static void showBashRC(ServerPlayer player) {
         PlayerData data = PlayerData.get(player);
-        data.addReactionCommand(ResourceLocation.parse(StringsRM.ArsBashRC), player, 40);
+        data.addReactionCommand(ResourceLocation.parse(StringsRM.ArsBashRC), player, 20);
     }
 
     private static void showFinishRC(ServerPlayer player) {
         PlayerData data = PlayerData.get(player);
-        data.addReactionCommand(ResourceLocation.parse(StringsRM.ArsFinishRC), player, 40);
+        data.addReactionCommand(ResourceLocation.parse(StringsRM.ArsFinishRC), player, 20);
     }
 
     private static class ArsArcanumState {

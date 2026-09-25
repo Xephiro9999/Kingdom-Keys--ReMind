@@ -112,6 +112,9 @@
   "item.kkremind.poison_strike_attack": "Poison Edge Command",
   "magic.kkremind.attack_poison_strike.name": "Poison Edge",
 
+  "item.kkremind.aerial_slam_attack": "Aerial Slam Command",
+  "magic.kkremind.attack_aerial_slam.name": "Aerial Slam",
+
   "item.kkremind.blitz_attack": "Blitz Command",
   "magic.kkremind.attack_blitz.name": "Blitz",
 
@@ -557,6 +560,7 @@
   "reactioncommand.kkremind.rc_slot_edge.name": "Slot Edge",
   "reactioncommand.kkremind.rc_ars_bash.name": "Bash",
   "reactioncommand.kkremind.rc_ars_finish.name": "The End",
+  "reactioncommand.kkremind.rc_aerial_slam.name": "Slam",
 
   "reactioncommand.kkremind.rc_xemnas.name": "Thorns of Nothingness",
 

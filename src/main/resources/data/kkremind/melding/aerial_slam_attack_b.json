@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kingdomkeys:spellaerora",
+  "ingredient2": "kkremind:fire_strike_attack",
+  "output": {
+    "type": "item",
+    "item": "kkremind:aerial_slam_attack",
+    "quantity": 1
+  },
+  "tier": 5
+}

@@ -1026,8 +1026,9 @@ public class EntityEventsRM {
 							.isApplyingDamage(player);
 
 			boolean allowedArsArcanum = ArsArcanumSequenceHandler.isApplyingScriptedDamage();
+			boolean allowedAerialSlam = AerialSlamSequenceHandler.isApplyingScriptedDamage();
 
-			if (!allowedDamage && !allowedArsArcanum) {
+			if (!allowedDamage && !allowedArsArcanum && !allowedAerialSlam) {
 				event.setNewDamage(0.0F); // Blocks EFM Animation Damage
 				return;
 			}
