@@ -1014,22 +1014,16 @@ public class EntityEventsRM {
 		}
 
 		// FIRST: cancel Epic Fight animation damage
-		// FIRST: cancel Epic Fight animation damage
 		if (player.hasEffect(ModMobEffectsRM.RM_ANIMATION_LOCK)) {
+			boolean allowedCollider = directEntity instanceof quickBlitzCollider ||
+					directEntity instanceof BlitzCollider ||
+					directEntity instanceof SlotEdgeCollider ||
+					directEntity instanceof ElementStrikeCollider;
 
-			boolean allowedDamage =
-					directEntity instanceof quickBlitzCollider
-							|| directEntity instanceof BlitzCollider
-							|| directEntity instanceof SlotEdgeCollider
-							|| directEntity instanceof ElementStrikeCollider
-							|| OmnislashSequenceHandler
-							.isApplyingDamage(player);
+			boolean allowedScriptedDamage = ScriptedAttackDamageHandler.isApplyingDamage();
 
-			boolean allowedArsArcanum = ArsArcanumSequenceHandler.isApplyingScriptedDamage();
-			boolean allowedAerialSlam = AerialSlamSequenceHandler.isApplyingScriptedDamage();
-
-			if (!allowedDamage && !allowedArsArcanum && !allowedAerialSlam) {
-				event.setNewDamage(0.0F); // Blocks EFM Animation Damage
+			if (!allowedCollider && !allowedScriptedDamage) {
+				event.setNewDamage(0.0F);
 				return;
 			}
 		}

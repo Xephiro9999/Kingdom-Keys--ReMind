@@ -126,11 +126,57 @@ public class ModEntitiesRM {
     // Dream Eaters
     public static final Item.Properties PROPERTIES = new Item.Properties();
 
-    public static final Supplier<EntityType<ChirithyEntity>> TYPE_CHIRITHY = createEntityType(ChirithyEntity::new, MobCategory.MONSTER, "chirithy", 1F, 1F);
-    public static final Supplier<EntityType<MeowWowEntity>> TYPE_MEOW_WOW = createEntityType(MeowWowEntity::new, MobCategory.MONSTER, "meow_wow", 1F, 1F);
-    public static final Supplier<EntityType<KomoryBatEntity>> TYPE_KOMORY_BAT = createEntityType(KomoryBatEntity::new, MobCategory.MONSTER, "komory_bat", 0.5F, 0.5F);
-    public static final Supplier<EntityType<CactuarSpiritEntity>> TYPE_CACTUAR_SPIRIT = createEntityType(CactuarSpiritEntity::new, MobCategory.MONSTER, "cactuar_spirit", 0.75F, 0.75F);
-    public static final Supplier<EntityType<TonberrySpiritEntity>> TYPE_TONBERRY_SPIRIT = createEntityType(TonberrySpiritEntity::new, MobCategory.CREATURE, "tonberry_spirit", 0.8F, 1.6F);
+
+
+    public static final Supplier<EntityType<ChirithyEntity>> TYPE_CHIRITHY =
+            ENTITIES.register("chirithy", () ->
+                    EntityType.Builder.<ChirithyEntity>of(ChirithyEntity::new, MobCategory.MONSTER)
+                            .sized(1F, 1F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(64)
+                            .build("chirithy")
+            );
+
+    public static final Supplier<EntityType<MeowWowEntity>> TYPE_MEOW_WOW =
+            ENTITIES.register("meow_wow", () ->
+                    EntityType.Builder.<MeowWowEntity>of(MeowWowEntity::new, MobCategory.MONSTER)
+                            .sized(1F, 1F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(64)
+                            .build("meow_wow")
+            );
+
+    public static final Supplier<EntityType<KomoryBatEntity>> TYPE_KOMORY_BAT =
+            ENTITIES.register("komory_bat", () ->
+                    EntityType.Builder.<KomoryBatEntity>of(KomoryBatEntity::new, MobCategory.MONSTER)
+                            .sized(0.5F, 0.5F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(64)
+                            .build("komory_bat")
+            );
+
+    public static final Supplier<EntityType<CactuarSpiritEntity>> TYPE_CACTUAR_SPIRIT =
+            ENTITIES.register("cactuar_spirit", () ->
+                    EntityType.Builder.<CactuarSpiritEntity>of(CactuarSpiritEntity::new, MobCategory.MONSTER)
+                            .sized(0.75F, 0.75F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(64)
+                            .build("cactuar_spirit")
+            );
+
+    public static final Supplier<EntityType<TonberrySpiritEntity>> TYPE_TONBERRY_SPIRIT =
+            ENTITIES.register("tonberry_spirit", () ->
+                    EntityType.Builder.<TonberrySpiritEntity>of(TonberrySpiritEntity::new, MobCategory.CREATURE)
+                            .sized(0.8F, 1.6F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(64)
+                            .build("tonberry_spirit")
+            );
 
 
     public static final Supplier<EntityType<DreamEaterLevelUpEffectEntity>>

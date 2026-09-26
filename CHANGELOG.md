@@ -10,7 +10,7 @@
 - **[EFM]**, **[FIX]** Sliding Dash not doing damage while in Fight Mode.
 - **[FIX]** Tonberry (Spirit) immortality bug.
 - **[FIX]** Tonberry (Spirit) no longer has a full bright model.
-- **[FIX]** Tonberry (Spirit) now emits light like it's hostile counterpart.
+- **[FIX]** Tonberry (Spirit) now emits light like its hostile counterpart.
 - **[FIX]** Tonberry should (hopefully) remove light sources it places upon death.
 - **[FIX]** Celestriad fixed from Form Boost back to Fire Boost. (When did that even happen..?)
 - **[CHANGE/FIX]** Light and Dark Forms no longer require Quick Run to use their growth abilities. (The abilities themselves outside of form still do however.)
@@ -19,7 +19,7 @@
 - **[CHANGE]** Changed 'Darkness Boost' to 'Dark Boost'
 - **[CHANGE]** The 'Walker' abilities no longer require you to sprint to activate.
 - **[CHANGE]** Zettaflare now requires and consumes Max Drive and Max Focus to cast. Otherwise, cast fails.
-- **[CHANGE]** Added config option to turn of Chirithy's chat messages when casting spells. This will be found in the file `kkremind-client.toml`
+- **[CHANGE]** Added config option to turn off Chirithy's chat messages when casting spells. This will be found in the file `kkremind-client.toml`
 - **[CHANGE]** EXP Ring now has the **NEW** EXP Converter Ability.
 - **[CHANGE]** Light Form should be easier/faster to level now.
 - **[CHANGE]** Dream Eaters now register as Party Members.
@@ -100,12 +100,12 @@ After the countdown reaches Zero on the afflicted target... they die.
 - Meld Recipe: Sonic Blade + Dark Haze
 ### Aerial Slam
 - Cost: 40 MP
-- Desc.
-- Melf Recipe: Aerora + Fire Strike, Firaga Surge + Aeroga
+- Press the **R** button at the right time to knock enemies into the air and then smack them back down.
+- Meld Recipe: Aerora + Fire Strike, Fire Surge + Aero
 ### Ars Arcanum
 - Cost: 75 MP
 - Assail enemies with a ferocious string of blows. Press the **R** button at the end to tack on a few extra hits for good measure.
-- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard, (5% Chance) Sliding Dash + Blizzara, (5% Chance) Quick Blitz + Blizzara, (10%) Firaga Surge + Aeroga, Aerial Slam + Blitz
+- Meld Recipe: (10% Chance) Quick Blitz + Slot Edge, (5% Chance) Quick Blitz + Cura, (5% Chance) Blizzard Edge + Cura, (5% Chance) Sliding Dash + Blizzard, (5% Chance) Quick Blitz + Blizzard, (5% Chance) Sliding Dash + Blizzara, (5% Chance) Quick Blitz + Blizzara, (10% Chance) Fire Surge + Aerora, Aerial Slam + Blitz
 
 **NOTE:** Ars Arcanum and Sonic Blade's finishing RCs grant Limit Form EXP.
 
@@ -128,7 +128,7 @@ After the countdown reaches Zero on the afflicted target... they die.
 ## New Enemies!
 ### **The Bomb Family** *from the FINAL FANTASY series.*
 
-There's 3 Enemies in this family!
+There are 3 Enemies in this family!
 - Bomb, The weakest of the Bomb Family.
 - Grenade, the middle ground of the Bomb Family.
 - Volcano, the strongest of the Bomb Family.
