@@ -2096,7 +2096,9 @@ public class EntityEventsRM {
 
 	@SubscribeEvent
 	public void onPlayerAttack(AttackEntityEvent event) {
-		if (event.getEntity() instanceof Player player) {
+		if (!(event.getEntity() instanceof ServerPlayer player)) {
+			return;
+		}
 			if (player.hasEffect(ModMobEffectsRM.STONE)) {
 				event.setCanceled(true);
 			}
@@ -2123,7 +2125,6 @@ public class EntityEventsRM {
 			globalData.setSCooldownTicks(120);
 			PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 
-		}
 	}
 
 	@SubscribeEvent

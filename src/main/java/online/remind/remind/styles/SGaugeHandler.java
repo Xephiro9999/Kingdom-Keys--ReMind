@@ -1,5 +1,6 @@
 package online.remind.remind.styles;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 
@@ -79,6 +80,10 @@ public class SGaugeHandler {
 
         GlobalDataRM globalData = ModDataRM.getGlobal(player);
         PlayerData playerData = PlayerData.get(player);
+
+        if (!(player instanceof ServerPlayer)) {
+            return;
+        }
 
         // ------------------------------------------------------------
         // 1. Determine which ContributionDefinition to use
