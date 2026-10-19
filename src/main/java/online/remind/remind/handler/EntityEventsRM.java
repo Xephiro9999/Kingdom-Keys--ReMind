@@ -460,35 +460,49 @@ public class EntityEventsRM {
 	 * @param AbilityName StringsRM.darkPower
 	 * @param formName    ModID + StringsRM.darkForm
 	 */
+
 	private void updateDriveAbilities(Player player, ResourceLocation AbilityName, ResourceLocation formName) {
 		PlayerData playerData = PlayerData.get(player);
 
-		if (playerData.isAbilityEquipped(AbilityName)) { //if ability to use x form is equipped
-			if (!playerData.getDriveFormMap().containsKey(formName)) {
-				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
-			}
+		if (playerData == null || player.level().isClientSide) {
+			return;
 		}
 
-		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.location()) == 7 && playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.location()) == 7) {
-			if (playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.location()) == 0) {
-				playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.location(), 1);
-			}
+		// Unlock the form if the corresponding ability is equipped.
+		if (playerData.isAbilityEquipped(AbilityName)
+				&& !playerData.getDriveFormMap().containsKey(formName)) {
+			playerData.setDriveFormLevel(formName, 1);
 		}
 
-		// Formchanges
-		playerData.setDriveFormLevel(ModDriveFormsRM.FIRESTORM.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.DIAMOND_DUST.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.THUNDER_BOLT.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.FEVER_PITCH.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.CRITICAL_IMPACT.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.DARK_IMPULSE.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.SPELLWEAVER.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.BLOOSTLUST.location(), 1);
-		playerData.setDriveFormLevel(ModDriveFormsRM.EXSOLDIER.location(), 1);
+		// Unlock Twilight when both Dark and Light reach level 7.
+		if (playerData.getDriveFormLevel(ModDriveFormsRM.DARK.location()) == 7
+				&& playerData.getDriveFormLevel(ModDriveFormsRM.LIGHT.location()) == 7
+				&& playerData.getDriveFormLevel(ModDriveFormsRM.TWILIGHT.location()) == 0) {
 
-		playerData.setDriveFormLevel(ModDriveFormsRM.DRACONIC_LIBERATION.location(), 1);
+			playerData.setDriveFormLevel(ModDriveFormsRM.TWILIGHT.location(), 1);
+		}
 
+		// Formchanges - unlock only if not already unlocked.
+		ResourceLocation[] formchanges = {
+				ModDriveFormsRM.FIRESTORM.location(),
+				ModDriveFormsRM.DIAMOND_DUST.location(),
+				ModDriveFormsRM.THUNDER_BOLT.location(),
+				ModDriveFormsRM.FEVER_PITCH.location(),
+				ModDriveFormsRM.CRITICAL_IMPACT.location(),
+				ModDriveFormsRM.DARK_IMPULSE.location(),
+				ModDriveFormsRM.SPELLWEAVER.location(),
+				ModDriveFormsRM.BLOOSTLUST.location(),
+				ModDriveFormsRM.EXSOLDIER.location(),
+				ModDriveFormsRM.DRACONIC_LIBERATION.location()
+		};
+
+		for (ResourceLocation form : formchanges) {
+			if (!playerData.getDriveFormMap().containsKey(form)) {
+				playerData.setDriveFormLevel(form, 1);
+			}
+		}
 	}
+
 
 	@SubscribeEvent
 	public void equipAbility(AbilityEvent.Equip event) {
@@ -1101,45 +1115,6 @@ public class EntityEventsRM {
 	public void onLivingUpdate(EntityTickEvent.Pre event) {
 		if (event.getEntity() instanceof LivingEntity livingEntity) {
 			GlobalDataRM globalData = ModDataRM.getGlobal(livingEntity);
-			/*if (event.getEntity() instanceof Player player) {
-				PlayerData playerData = PlayerData.get(player);
-				if (playerData != null) {
-                    if (globalData.getCanCounter() == 1) {
-						maxTicks = 200;
-						if (ticks <= maxTicks) {
-							ticks += 5;
-							//System.out.println(ticks);
-						} else {
-							globalData.setCanCounter(0);
-							ticks = 0;
-						}
-					} else if (globalData.getCanCounter() > 1 || globalData.getCanCounter() < 0){
-						globalData.setCanCounter(0);
-						ticks = 0;
-					}
-				}
-			}*/
-
-			// MP Boost Test
-			/*if (event.getEntity() instanceof Player player) {
-				PlayerData playerData = PlayerData.get(player);
-				if (playerData != null){
-
-				}
-			}*/
-
-
-			// Form Shotlock Change Test
-			/*if (event.getEntity() instanceof Player player) {
-				PlayerData playerData = PlayerData.get(player);
-				if (playerData != null && playerData.getActiveDriveForm().equals(KingdomKeysReMind.MODID + ":" + StringsRM.darkForm)) {
-					//playerData.setEquippedShotlock(KingdomKeysReMind.MODID + ":" + StringsRM.darkDivide);
-					//System.out.println(playerData.getEquippedShotlock());
-				} else {
-					//System.out.println(playerData.getEquippedShotlock());
-				}
-			}*/
-
 
 			// Org Passives
 			if (event.getEntity() instanceof Player player) {
@@ -1168,7 +1143,7 @@ public class EntityEventsRM {
 
 			if (event.getEntity() instanceof Player player) {
 				PlayerData playerData = PlayerData.get(player);
-				WorldData worldData = WorldData.get(player.getServer());
+				WorldData worldData = player.getServer() != null ? WorldData.get(player.getServer()) : null;
 				if (playerData != null && globalData != null) {
 					RageFormChance state = playerStates.computeIfAbsent(player, p -> new RageFormChance());
 					// Reset Rage form roll
@@ -1200,8 +1175,8 @@ public class EntityEventsRM {
 
 					//System.out.println("Potential Boost: "+boostWithin);
 
-					int darknessWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1F));
-					int lightWithinBoost = (int) (boostWithin * (PlayerData.get(player).getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1F));
+					int darknessWithinBoost = (int) (boostWithin * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.DARKNESS_BOOST) * 0.1F));
+					int lightWithinBoost = (int) (boostWithin * (playerData.getNumberOfAbilitiesEquipped(ModAbilitiesRM.LIGHT_BOOST) * 0.1F));
 
 					if (playerData.isAbilityEquipped(ModAbilitiesRM.LIGHT_WITHIN)) {
 						//System.out.println("Light Boost: "+ lightWithinBoost);
@@ -1250,7 +1225,7 @@ public class EntityEventsRM {
 						if (playerData.getChosen() == SoAState.GUARDIAN) {
 							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
 							playerData.getDefenseStat().addModifier("Vehemence", vehemenceDEF, false, false);
-							playerData.getStrengthStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
+							playerData.getMagicStat().addModifier("Vehemence", -(vehemenceDEF / 2), false, false);
 						}
 					} else if (!playerData.isAbilityEquipped(ModAbilitiesRM.VEHEMENCE)) {
 						playerData.getStrengthStat().removeModifier("Vehemence");
@@ -1304,7 +1279,7 @@ public class EntityEventsRM {
 
 					// My Friends Are My Power
 					if (playerData.isAbilityEquipped(ModAbilitiesRM.FRIEND_POWER)) {
-						Party party = worldData.getPartyFromMember(player.getUUID());
+						Party party = worldData != null ? worldData.getPartyFromMember(player.getUUID()) : null;
 						int friendBoost = 0;
 						if (party != null || globalData.hasDreamEaterSummoned()) {
 							if (party != null) {
@@ -1316,6 +1291,10 @@ public class EntityEventsRM {
 							playerData.getStrengthStat().addModifier("Friendship", friendBoost, false, false);
 							playerData.getMagicStat().addModifier("Friendship", friendBoost, false, false);
 							playerData.getDefenseStat().addModifier("Friendship", friendBoost, false, false);
+						} else {
+							playerData.getStrengthStat().removeModifier("Friendship");
+							playerData.getMagicStat().removeModifier("Friendship");
+							playerData.getDefenseStat().removeModifier("Friendship");
 						}
 					} else {
 						playerData.getStrengthStat().removeModifier("Friendship");
@@ -1331,23 +1310,27 @@ public class EntityEventsRM {
 
 						if (attackSpeedAttribute != null) {
 
-							if (playerData.isAbilityEquipped(ResourceLocation.parse(StringsRM.attackHaste))) {
+							ResourceLocation attackHasteId = ResourceLocation.parse(StringsRM.attackHaste);
+							if (playerData.isAbilityEquipped(attackHasteId)) {
 
 								int attackHasteCount =
 										playerData.getNumberOfAbilitiesEquipped(
-                                                ResourceLocation.parse(StringsRM.attackHaste)
+												attackHasteId
 										);
 
 								double attackSpeedBonus =
 										0.25D * attackHasteCount;
 
-								attackSpeedAttribute.addOrUpdateTransientModifier(
-										new AttributeModifier(
-												ATTACK_HASTE_MODIFIER,
-												attackSpeedBonus,
-												AttributeModifier.Operation.ADD_VALUE
-										)
-								);
+								AttributeModifier existingHaste = attackSpeedAttribute.getModifier(ATTACK_HASTE_MODIFIER);
+								if (existingHaste == null || Double.compare(existingHaste.amount(), attackSpeedBonus) != 0) {
+									attackSpeedAttribute.addOrUpdateTransientModifier(
+											new AttributeModifier(
+													ATTACK_HASTE_MODIFIER,
+													attackSpeedBonus,
+													AttributeModifier.Operation.ADD_VALUE
+											)
+									);
+								}
 
 							} else {
 
@@ -1426,7 +1409,7 @@ public class EntityEventsRM {
 								addMAG = Math.clamp(rawMAG, 0, posMAG);
 							}
 
-							// Remove old modifiers to prevent stacking
+							// Remove old modifiers to prevent stacking (preserved until Stat API behavior is confirmed).
 							playerData.getStrengthStat().removeModifier("Ultima Weapon");
 							playerData.getMagicStat().removeModifier("Ultima Weapon");
 
@@ -1643,18 +1626,25 @@ public class EntityEventsRM {
 							globalData.remSCooldownTicks(1);
 							//System.out.println("Situation Gauge Ticks: " + globalData.getSCooldownTicks());
 						}
-						if (!player.hasEffect(ModMobEffects.STOP)){
-							if (globalData.getSCooldownTicks() == 0 && globalData.getSituationValue() > 0){
-								// Possible Haste and Slow Interactions?
-
-								globalData.setSituationValue(globalData.getSituationValue() - 0.2);
+						double previousSituation = globalData.getSituationValue();
+						if (!player.hasEffect(ModMobEffects.STOP)) {
+							if (globalData.getSCooldownTicks() == 0 && previousSituation > 0) {
+								globalData.setSituationValue(Math.max(0, previousSituation - 0.2));
 							}
 						}
 
-						if (globalData.getSituationValue() <= 0) {
+						// Sync when reaching zero and periodically while decaying;
+						// avoid sending a full GlobalData packet every tick while empty.
+						double currentSituation = globalData.getSituationValue();
+						if (!player.level().isClientSide && previousSituation > 0 && currentSituation <= 0) {
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+						} else if (!player.level().isClientSide && previousSituation != currentSituation && player.tickCount % 20 == 0) {
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
+						}
+
+						if (currentSituation <= 0) {
 							//globalData.clearSituationSpells();
 							//globalData.setStyle("");
-							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 							if (globalData.getStyleTicks() > 0) {
 								globalData.remStyleTicks(1);
 								//System.out.println(globalData.getStyleTicks());
@@ -1666,6 +1656,7 @@ public class EntityEventsRM {
 
 						} else if (globalData.getSituationValue() > 100) {
 							globalData.setSituationValue(100);
+							if (!player.level().isClientSide) PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 						}
 					}
 				}
@@ -1674,9 +1665,10 @@ public class EntityEventsRM {
 				if (globalData.getStepTicks() > 0) {
 					globalData.remStepTicks(1);
 					if (globalData.getStepTicks() <= 0) { // Step has finished, notify all the clients about it
-						PacketHandlerRM.syncGlobalToAllAround((Player) event.getEntity(), (GlobalDataRM) globalData);
-						if (event.getEntity() instanceof Player player) {
+						if (event.getEntity() instanceof Player player && !player.level().isClientSide) {
+							PacketHandlerRM.syncGlobalToAllAround(player, globalData);
 							PlayerData playerData = PlayerData.get(player);
+							if (playerData == null) return;
 
 							player.invulnerableTime = globalData.getStepTicks();
 
@@ -1892,7 +1884,7 @@ public class EntityEventsRM {
 
 						if (playerData.getRecharge() && playerData.getMP() < playerData.getMaxMP()){
 							//playerData.addMP(playerData.getMaxMP() / 500 * ((Utils.getMPHasteValue(playerData) / 10) + 2));
-							playerData.addMP(playerData.getMaxMP() / 500 * (((Utils.getMPHasteValue(playerData) - val) / 10)));
+							playerData.addMP(playerData.getMaxMP() / 500.0D * (((Utils.getMPHasteValue(playerData) - val) / 10.0D)));
 						}
 					}
 
@@ -1914,20 +1906,22 @@ public class EntityEventsRM {
 						float boost = (float) (maxMP * 0.1F); // 10% of Max MP = Boost
 						playerData.getMagicStat().addModifier("Spellweaver", boost, false, false);
 					} else {
-						playerData.getDefenseStat().removeModifier("Spellweaver");
+						playerData.getMagicStat().removeModifier("Spellweaver");
 					}
 
 					// EX-SOLDIER Passives
 
 					if (playerData.isFormActive(ModDriveFormsRM.EXSOLDIER)){
 						// Passive Focus Regen, amplified at low HP
-						if(player.getHealth() <= 0.25F){
+						if(player.getHealth() <= player.getMaxHealth() * 0.25F){
 							// Low HP Passive
 							//playerData.getStrengthStat().addModifier("Limit Break", 1, false, false);
 							//playerData.getMagicStat().addModifier("Limit Break", 1, false, false);
 							playerData.getDefenseStat().addModifier("limit-break", 10, false, false);
 							playerData.addFocus(0.5);
-							PacketHandler.sendTo(new SCSyncPlayerData(player), (ServerPlayer) player);
+							if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer && player.tickCount % 20 == 0) {
+								PacketHandler.sendTo(new SCSyncPlayerData(player), serverPlayer);
+							}
 						} else {
 							//playerData.getStrengthStat().removeModifier("Limit Break");
 							//playerData.getMagicStat().removeModifier("Limit Break");
@@ -1935,7 +1929,7 @@ public class EntityEventsRM {
 							playerData.addFocus(0.1);
 						}
 					} else {
-						playerData.getDefenseStat().removeModifier("Limit Break");
+						playerData.getDefenseStat().removeModifier("limit-break");
 					}
 
 				}
@@ -1977,7 +1971,7 @@ public class EntityEventsRM {
 							}
 						}
 
-						if (playerData.isAbilityEquipped(ModAbilitiesRM.RIBBON)){
+						if (playerData.isAbilityEquipped(ModAbilitiesRM.RIBBON) && !player.getActiveEffects().isEmpty()) {
 							List<MobEffectInstance> effectsList = new ArrayList<>();
 							for (MobEffectInstance e : player.getActiveEffects()) {
 								if (e.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {

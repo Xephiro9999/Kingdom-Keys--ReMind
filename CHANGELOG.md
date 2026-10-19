@@ -2,4 +2,5 @@
 *(Month.Year.Iteration)*
 
 - **[FIXED]** Added protection for certain events that like to butt heads with other mods.
-
+- **[FIXED?]** HOPEFULLY optimized code a bit
+- **[FIXED]** Compressed image files to help reduce file size.
