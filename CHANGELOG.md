@@ -1,6 +1,5 @@
-## __10.26.2b__
+## __10.26.2c__
 *(Month.Year.Iteration)*
 
-- **[FIXED]** Added protection for certain events that like to butt heads with other mods.
-- **[FIXED?]** HOPEFULLY optimized code a bit
-- **[FIXED]** Compressed image files to help reduce file size.
+- **[FIXED]** Strike Raid now contributes to the Situation Gauge.
+- **[ADDED]** Strike Raid is now in the shop.

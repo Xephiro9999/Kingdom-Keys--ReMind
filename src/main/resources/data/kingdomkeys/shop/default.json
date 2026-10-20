@@ -1322,6 +1322,7 @@
   },
   {"item": "kkremind:quick_blitz_attack", "amount": 1, "tier": 1, "cost": 100},
   {"item": "kkremind:sliding_dash_attack", "amount": 1, "tier": 1, "cost": 100},
+  {"item": "kingdomkeys:spellstrikeraid", "amount": 1, "tier": 1, "cost": 100},
   {"item": "kkremind:confuse_spell", "condition": "all", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:silence_spell", "condition": "all", "amount": 1, "tier": 2, "cost": 500},
   {"item": "kkremind:berserk_spell", "condition": "all", "amount": 1, "tier": 5, "cost": 5000},
