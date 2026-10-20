@@ -1,7 +1,7 @@
 {
   "target": "kkremind:attack_blitz",
 
-  "elements": ["JUMPING", "PHYSICAL"],
+  "elements": ["PHYSICAL","JUMPING"],
   "specific_styles": [],
 
   "base_value": 15
