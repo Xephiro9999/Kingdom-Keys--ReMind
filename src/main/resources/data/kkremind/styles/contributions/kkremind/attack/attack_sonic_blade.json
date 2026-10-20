@@ -1,7 +1,7 @@
 {
   "target": "kkremind:attack_sonic_blade",
 
-  "elements": ["LUNGE", "PHYSICAL"],
+  "elements": ["PHYSICAL","LUNGE"],
   "specific_styles": [],
 
   "base_value": 15
