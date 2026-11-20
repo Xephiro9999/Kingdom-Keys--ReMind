@@ -1,5 +1,5 @@
-## __10.26.2c__
+## __11.26.1__
 *(Month.Year.Iteration)*
 
-- **[FIXED]** Strike Raid now contributes to the Situation Gauge.
-- **[ADDED]** Strike Raid is now in the shop.
+- **[FIX]** ??????????? would crash saying it requires EFM
+- 

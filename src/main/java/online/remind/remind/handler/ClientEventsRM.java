@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -42,6 +43,7 @@ import online.kingdomkeys.kingdomkeys.client.gui.StopGui;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.CommandMenuItem;
 import online.kingdomkeys.kingdomkeys.client.gui.elements.buttons.MenuButton;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.MenuScreen;
+import online.kingdomkeys.kingdomkeys.client.gui.menu.items.MenuItemsScreen;
 import online.kingdomkeys.kingdomkeys.client.gui.menu.styles.StylesMenu;
 import online.kingdomkeys.kingdomkeys.client.gui.overlay.CommandMenuGui;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -64,14 +66,10 @@ import online.remind.remind.lib.StringsRM;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.awt.List;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ClientEventsRM {
 
@@ -472,6 +470,9 @@ public class ClientEventsRM {
 			action(RMButtons.CREDITS);
 		}));
 
+
+
+
 	}
 
 	protected void action(RMButtons buttonID){
@@ -484,6 +485,55 @@ public class ClientEventsRM {
 			case WALLET -> Minecraft.getInstance().setScreen(new WalletMenu());
 		}
 	}
+
+
+	@SubscribeEvent
+	public void onItemsScreenInit(ScreenEvent.Init.Post event) {
+
+		if (!(event.getScreen() instanceof MenuItemsScreen)) {
+			return;
+		}
+
+		java.util.List<MenuButton> buttons = event.getListenersList()
+				.stream()
+				.filter(MenuButton.class::isInstance)
+				.map(MenuButton.class::cast)
+				.sorted(Comparator.comparingInt(MenuButton::getY))
+				.toList();
+
+		if (buttons.size() < 4) {
+			return;
+		}
+
+		// Fourth button in the base Items menu is Back
+		MenuButton backButton = buttons.get(3);
+
+		int x = backButton.getX();
+		int y = backButton.getY();
+		int width = backButton.getWidth();
+
+		// Move Back down one slot
+		backButton.setY(y + 18);
+
+		// Insert Finish Commands above Back
+		MenuButton finishButton = new MenuButton(
+				x,
+				y,
+				width -20,
+				"Finish Commands",
+				MenuButton.ButtonType.BUTTON,
+				false,
+				b -> Minecraft.getInstance()
+						.setScreen(new FinishCommandsScreen())
+		);
+
+		//finishButton.setWidth(backButton.getWidth());
+
+		event.addListener(finishButton);
+	}
+
+
+
 
 	// VFX for Steps
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

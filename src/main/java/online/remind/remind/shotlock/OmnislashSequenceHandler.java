@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.effect.ModMobEffectsRM;
-import online.remind.remind.integration.epicfight.OmnislashAnimationBridge;
+import online.remind.remind.integration.epicfight.EpicFightOmnislash;
 
 import java.util.*;
 
@@ -322,7 +322,7 @@ public final class OmnislashSequenceHandler {
                 destination
         );
 
-        OmnislashAnimationBridge.playSlash(
+        EpicFightOmnislash.playSlash(
                 player,
                 hit
         );
@@ -453,7 +453,7 @@ public final class OmnislashSequenceHandler {
                 target.getEyePosition()
         );
 
-        OmnislashAnimationBridge.playFinisher(
+        EpicFightOmnislash.playFinisher(
                 player
         );
 

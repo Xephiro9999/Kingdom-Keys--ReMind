@@ -345,6 +345,28 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
 
         storage.put("DreamEaterProgress", dreamEaterProgressTag);
 
+
+        // Save Finish Commands
+        net.minecraft.nbt.ListTag unlockedTag =
+                new net.minecraft.nbt.ListTag();
+
+        for (String id : unlockedFinishCommands) {
+            unlockedTag.add(net.minecraft.nbt.StringTag.valueOf(id));
+        }
+
+        storage.put("UnlockedFinishCommands", unlockedTag);
+
+        CompoundTag progressTag = new CompoundTag();
+
+        finishCommandProgress.forEach(progressTag::putInt);
+
+        storage.put("FinishCommandProgress", progressTag);
+        storage.putString(
+                "EquippedFinishCommand",
+                equippedFinishCommand
+        );
+
+
         return storage;
     }
 
@@ -527,6 +549,50 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
                 }
             }
         }
+
+
+        // Load Finish Commands
+        unlockedFinishCommands.clear();
+        finishCommandProgress.clear();
+
+        if (nbt.contains("UnlockedFinishCommands", Tag.TAG_LIST)) {
+            net.minecraft.nbt.ListTag unlockedTag =
+                    nbt.getList(
+                            "UnlockedFinishCommands",
+                            Tag.TAG_STRING
+                    );
+
+            for (int i = 0; i < unlockedTag.size(); i++) {
+                String id = unlockedTag.getString(i);
+
+                if (!id.isBlank() && id.length() <= 128) {
+                    unlockedFinishCommands.add(id);
+                }
+            }
+        }
+
+        if (nbt.contains("FinishCommandProgress", Tag.TAG_COMPOUND)) {
+            CompoundTag progressTag =
+                    nbt.getCompound("FinishCommandProgress");
+
+            for (String id : progressTag.getAllKeys()) {
+                if (id.length() <= 128) {
+                    finishCommandProgress.put(
+                            id,
+                            Math.max(0, progressTag.getInt(id))
+                    );
+                }
+            }
+        }
+
+        String savedEquipped =
+                nbt.getString("EquippedFinishCommand");
+
+        equippedFinishCommand =
+                hasFinishCommand(savedEquipped)
+                        ? savedEquipped
+                        : "finish";
+
     }
 
     public int getHasteLevel() {
@@ -1374,5 +1440,84 @@ public class GlobalDataRM implements INBTSerializable<CompoundTag> {
     public void remDreamEaterSummonCooldownTicks(int amount) {
         this.dreamEaterSummonCooldownTicks = Math.max(0, dreamEaterSummonCooldownTicks - amount);
     }
+
+
+    // Finish Commands
+    private final java.util.Set<String> unlockedFinishCommands =
+            new java.util.HashSet<>();
+
+    private final java.util.Map<String, Integer> finishCommandProgress =
+            new java.util.HashMap<>();
+
+    private String equippedFinishCommand = "finish";
+
+    public boolean hasFinishCommand(String id) {
+        return "finish".equals(id)
+                || unlockedFinishCommands.contains(id);
+    }
+
+    public boolean unlockFinishCommand(String id) {
+        if (id == null || id.isBlank()) return false;
+        if ("finish".equals(id)) return false;
+
+        return unlockedFinishCommands.add(id);
+    }
+
+    public int getFinishCommandProgress(String id) {
+        return finishCommandProgress.getOrDefault(id, 0);
+    }
+
+    public void addFinishCommandProgress(String id, int amount) {
+        if (id == null || id.isBlank() || amount <= 0) return;
+
+        finishCommandProgress.merge(
+                id,
+                amount,
+                (current, added) ->
+                        (int) Math.min(
+                                Integer.MAX_VALUE,
+                                (long) current + added
+                        )
+        );
+    }
+
+    public String getEquippedFinishCommand() {
+        return equippedFinishCommand;
+    }
+
+    public boolean equipFinishCommand(String id) {
+        if (!hasFinishCommand(id)) return false;
+
+        equippedFinishCommand = id;
+        return true;
+    }
+
+    public java.util.Set<String> getUnlockedFinishCommands() {
+        return java.util.Set.copyOf(unlockedFinishCommands);
+    }
+
+    public java.util.Map<String, Integer> getFinishCommandProgressMap() {
+        return java.util.Map.copyOf(finishCommandProgress);
+    }
+
+    // This is used only by the incoming client sync packet.
+    public void applyFinishCommandSnapshot(
+            String equipped, java.util.Set<String> unlocked,
+            java.util.Map<String, Integer> progress) {
+        unlockedFinishCommands.clear();
+        for (String id : unlocked) {
+            if (online.remind.remind.finishcommands.FinishCommandRegistry.isRegistered(id)) {
+                unlockedFinishCommands.add(id);
+            }
+        }
+        finishCommandProgress.clear();
+        progress.forEach((id, value) -> {
+            if (online.remind.remind.finishcommands.FinishCommandRegistry.isRegistered(id)) {
+                finishCommandProgress.put(id, Math.max(0, value));
+            }
+        });
+        equippedFinishCommand = hasFinishCommand(equipped) ? equipped : "finish";
+    }
+
 
 }

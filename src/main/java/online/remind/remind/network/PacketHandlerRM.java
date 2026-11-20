@@ -13,6 +13,7 @@ import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.handler.InputHandlerRM;
 import online.remind.remind.network.cts.*;
+import online.remind.remind.network.stc.SCFinishCommandDataPacket;
 import online.remind.remind.network.stc.SCOrganizationPanelSyncPacket;
 import online.remind.remind.network.stc.SCSyncGlobalCapabilityToAllPacketRM;
 
@@ -47,6 +48,18 @@ public class PacketHandlerRM {
                 ShowAttackNamePayload.TYPE,
                 ShowAttackNamePayload.STREAM_CODEC,
                 ClientAttackNameHandler::handle
+        );
+
+        registrar.playToClient(
+                SCFinishCommandDataPacket.TYPE,
+                SCFinishCommandDataPacket.STREAM_CODEC,
+                SCFinishCommandDataPacket::handle
+        );
+
+        registrar.playToServer(
+                CSFinishCommandEquipPacket.TYPE,
+                CSFinishCommandEquipPacket.STREAM_CODEC,
+                CSFinishCommandEquipPacket::handle
         );
     }
 

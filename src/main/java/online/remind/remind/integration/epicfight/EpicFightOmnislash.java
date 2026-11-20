@@ -7,9 +7,9 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-public final class OmnislashAnimationBridge {
+public final class EpicFightOmnislash {
 
-    private OmnislashAnimationBridge() {
+    private EpicFightOmnislash() {
     }
 
 
