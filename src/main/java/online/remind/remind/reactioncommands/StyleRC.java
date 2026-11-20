@@ -38,6 +38,8 @@ import online.remind.remind.lib.StringsRM;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.styles.data.StyleDefinition;
 import online.remind.remind.styles.data.StyleRegistry;
+import online.remind.remind.finishcommands.FinishCommandDefinition;
+import online.remind.remind.finishcommands.FinishCommandProgression;
 
 import java.util.Comparator;
 import java.util.List;
@@ -72,6 +74,31 @@ public class StyleRC extends ReactionCommand {
 			if (form != null) {
 				form.initDrive(player);
 				//System.out.println("Entered Style. Active Form is now: " + playerData.getActiveDriveForm());
+				// Only count successful server-side activations.
+				if (player instanceof ServerPlayer serverPlayer) {
+
+					String styleId = ResourceLocation.parse(type).getPath();
+
+					String context = switch (styleId) {
+						case "form_firestorm" -> "firestorm";
+
+						case "form_thunder_bolt", "form_thunderbolt" ->
+								"thunderbolt";
+
+						case "form_diamond_dust" -> "diamond_dust";
+
+						default -> "";
+					};
+
+					if (!context.isEmpty()) {
+						FinishCommandProgression.awardProgress(
+								serverPlayer,
+								FinishCommandDefinition.ProgressType.STYLE_USES,
+								1,
+								context
+						);
+					}
+				}
 			}
 
 			// Reset SGauge + Style state
