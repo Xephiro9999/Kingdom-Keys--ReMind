@@ -3,4 +3,4 @@
 
 - **[FIX]** ??????????? would crash saying it requires EFM.
 - **[FIX]** Silence is fixed and works. 
-- **[ADDED]** Silence now has an audio cue to let afflicted players know they are Silenced.
+- **[QoL]** Silence now has an audio cue to let afflicted players know they are Silenced.
