@@ -32,8 +32,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
 import online.kingdomkeys.kingdomkeys.data.PlayerData;
@@ -90,6 +92,11 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
     private static final int PHANTOM_MEMBRANE_FEED_EXP = 45;
 
     private int komoryBatFeedCooldown = 0;
+
+    // Komory Bat roaming
+    private Vec3 roamingDestination;
+    private int roamingTimeLeft = 0;
+    private int roamingPauseTicks = 0;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(KomoryBatEntity.class, EntityDataSerializers.INT);
@@ -284,8 +291,8 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
             }
         }
 
-        followOwner(owner);
         updateCombatTarget(owner);
+        followOwner(owner);
         tryStartSonicBoom(owner);
         castKomorySupportMoves(owner);
 
@@ -734,27 +741,164 @@ public class KomoryBatEntity extends PathfinderMob implements GeoEntity {
         return this.getOwnerUUID().equals(player.getUUID());
     }
 
-    private void followOwner(Player owner) {
-        double distSqr = this.distanceToSqr(owner);
 
+    private void followOwner(Player owner) {
         if (this.getAttackAnimTicks() > 0) {
             return;
         }
 
-        Vec3 hoverPos = owner.position().add(0.0D, 2.35D, 0.0D);
+        double ownerDistanceSqr = this.distanceToSqr(owner);
 
-        if (distSqr > 4.0D) {
-            flyToward(hoverPos, 0.22D);
-        } else {
-            Vec3 bob = new Vec3(
-                    Math.sin(this.tickCount * 0.08D) * 0.015D,
-                    Math.sin(this.tickCount * 0.12D) * 0.025D,
-                    Math.cos(this.tickCount * 0.08D) * 0.015D
+        // Return to the owner if too far away.
+        if (ownerDistanceSqr > 81.0D) {
+            roamingDestination = null;
+            roamingTimeLeft = 0;
+            roamingPauseTicks = 0;
+
+            Vec3 look = owner.getLookAngle();
+
+            // Follow slightly behind the owner, not directly overhead.
+            Vec3 followPos = owner.position().add(
+                    -look.x * 1.8D,
+                    2.0D,
+                    -look.z * 1.8D
             );
 
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.75D).add(bob));
+            flyToward(followPos, 0.26D);
+            return;
+        }
+
+        // Combat takes priority over roaming.
+        if (this.target != null
+                && canKomoryBatAttack(owner, this.target)) {
+
+            roamingDestination = null;
+            roamingTimeLeft = 0;
+            roamingPauseTicks = 0;
+
+            if (this.distanceToSqr(this.target) > 100.0D) {
+                Vec3 attackPos = this.target.position().add(
+                        0.0D,
+                        this.target.getBbHeight() + 1.0D,
+                        0.0D
+                );
+
+                flyToward(attackPos, 0.23D);
+            } else {
+                this.setDeltaMovement(
+                        this.getDeltaMovement().scale(0.85D)
+                );
+            }
+
+            return;
+        }
+
+        // Pause briefly between flights.
+        if (roamingPauseTicks > 0) {
+            roamingPauseTicks--;
+
+            this.setDeltaMovement(
+                    this.getDeltaMovement().scale(0.72D)
+            );
+            return;
+        }
+
+        // Reached the selected roaming location.
+        if (roamingDestination != null
+                && this.position().distanceToSqr(roamingDestination) < 1.0D) {
+
+            roamingDestination = null;
+            roamingPauseTicks = 12 + this.random.nextInt(19);
+
+            this.setDeltaMovement(
+                    this.getDeltaMovement().scale(0.65D)
+            );
+            return;
+        }
+
+        // Choose a new destination when the old one expires,
+        // becomes obstructed, or is too far from the owner.
+        if (roamingDestination == null
+                || --roamingTimeLeft <= 0
+                || owner.position().distanceToSqr(roamingDestination) > 64.0D
+                || this.horizontalCollision
+                || this.verticalCollision) {
+
+            roamingDestination = chooseRoamingDestination(owner);
+            roamingTimeLeft = 65 + this.random.nextInt(55);
+        }
+
+        if (roamingDestination != null) {
+            flyToward(roamingDestination, 0.16D);
+        } else {
+            // No safe destination found.
+            roamingPauseTicks = 20;
+
+            this.setDeltaMovement(
+                    this.getDeltaMovement().scale(0.75D)
+            );
         }
     }
+
+
+    private Vec3 chooseRoamingDestination(Player owner) {
+        Vec3 ownerPos = owner.position();
+
+        // Try several random positions near the owner.
+        for (int attempt = 0; attempt < 12; attempt++) {
+
+            double angle = this.random.nextDouble() * Math.PI * 2.0D;
+            double radius = 3.0D + this.random.nextDouble() * 3.5D;
+            double height = 1.4D + this.random.nextDouble() * 1.6D;
+
+            Vec3 destination = ownerPos.add(
+                    Math.cos(angle) * radius,
+                    height,
+                    Math.sin(angle) * radius
+            );
+
+            // Ensure the destination has space for Komory Bat.
+            Vec3 displacement = destination.subtract(this.position());
+
+            if (!this.level().noCollision(
+                    this,
+                    this.getBoundingBox().move(displacement)
+            )) {
+                continue;
+            }
+
+            // Ensure the direct flight path isn't blocked by terrain.
+            Vec3 start = this.position().add(
+                    0.0D,
+                    this.getBbHeight() * 0.5D,
+                    0.0D
+            );
+
+            Vec3 end = destination.add(
+                    0.0D,
+                    this.getBbHeight() * 0.5D,
+                    0.0D
+            );
+
+            HitResult hit = this.level().clip(
+                    new ClipContext(
+                            start,
+                            end,
+                            ClipContext.Block.COLLIDER,
+                            ClipContext.Fluid.NONE,
+                            this
+                    )
+            );
+
+            if (hit.getType() == HitResult.Type.MISS) {
+                return destination;
+            }
+        }
+
+        return null;
+    }
+
+
 
     private void updateCombatTarget(Player owner) {
         if (this.target != null) {

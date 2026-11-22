@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.armortrim.TrimPattern;
@@ -16,7 +17,9 @@ import online.kingdomkeys.kingdomkeys.item.*;
 import online.remind.remind.KingdomKeysReMind;
 import online.remind.remind.ability.ModAbilitiesRM;
 import online.remind.remind.capabilities.GlobalDataRM;
+import online.remind.remind.client.sound.ModSoundsRM;
 import online.remind.remind.config.ModConfigs;
+import online.remind.remind.effect.ModMobEffectsRM;
 import online.remind.remind.entity.ModEntitiesRM;
 import online.remind.remind.magic.ModMagicsRM;
 import online.remind.remind.shotlock.ModShotlocksRM;
@@ -254,7 +257,19 @@ public class ModItemsRM{
 
         // Dream Eater Gifts
         chefsKnife = ITEMS.register("chefs_knife", () -> new ChefsKnifeItem(new Item.Properties().stacksTo(64))),
-        cactuarNeedle = ITEMS.register("cactuar_needle", () -> new CactuarNeedleItem(new Item.Properties().stacksTo(64)));
+        cactuarNeedle = ITEMS.register("cactuar_needle", () -> new CactuarNeedleItem(new Item.Properties().stacksTo(64))),
+
+
+        // Items/Consumables
+        chocoboFeather = ITEMS.register("chocobo_feather", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, 20 * 30, 2, false, false, true)), false, ModSoundsRM.HASTE)),
+        chocoboWing = ITEMS.register("chocobo_wing", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.HASTE_RM, 20 * 30, 2, false, false, true)), true, ModSoundsRM.HASTE)),
+        lightCurtain = ITEMS.register("light_curtain", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.PROTECT, 20 * 30, 0, false, false, true)), false, ModSoundsRM.PROTECT_CAST)),
+        lunarCurtain = ITEMS.register("lunar_curtain", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.SHELL, 20 * 30, 0, false, false, true)), false, ModSoundsRM.SHELL_CAST));
+
 
 
         // Mob Eggs

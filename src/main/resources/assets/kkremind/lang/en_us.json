@@ -505,6 +505,15 @@
   "item.kkremind.grenade_spawn_egg": "Grenade Spawn Egg",
   "item.kkremind.volcano_spawn_egg": "Volcano Spawn Egg",
 
+  "item.kkremind.chocobo_feather": "Chocobo Feather",
+  "item.kkremind.chocobo_feather.effect": "Grants Haste for 30 seconds.",
+  "item.kkremind.chocobo_wing": "Chocobo Wing",
+  "item.kkremind.chocobo_wing.effect": "Grants Haste for 30 seconds to nearby party members.",
+  "item.kkremind.light_curtain": "Light Curtain",
+  "item.kkremind.light_curtain.effect": "Grants Protect for 30 seconds.",
+  "item.kkremind.lunar_curtain": "Lunar Curtain",
+  "item.kkremind.lunar_curtain.effect": "Grants Shell for 30 seconds.",
+
 
   "key.categories.kkremind": "Re:Mind",
   "key.kkremind.openmenu": "Open Menu",
@@ -629,6 +638,8 @@
   "effect.kkremind.confuse": "Confuse",
   "effect.kkremind.exceed": "Exceed",
   "effect.kkremind.doom": "Doom",
+  "effect.kkremind.protect": "Protect",
+  "effect.kkremind.shell": "Shell",
 
   "dreameater.none.name": "None",
   "dreameater.dreameater_chirithy.name": "Chirithy",

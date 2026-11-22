@@ -1,0 +1,11 @@
+{
+  "cost": 0,
+  "ingredient1": "kkremind:regen_spell",
+  "ingredient2": "kkremind:regen_spell",
+  "output": {
+    "type": "item",
+    "item": "kkremind:regen1_spell",
+    "quantity": 1
+  },
+  "tier": 6
+}

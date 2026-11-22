@@ -274,6 +274,21 @@
       "kkremind:limit_active"
     ]
   },
+  "protect_cast": {
+    "sounds": [
+      "kkremind:protect_cast"
+    ]
+  },
+  "protect_hit": {
+    "sounds": [
+      "kkremind:protect_hit"
+    ]
+  },
+  "shell_cast": {
+    "sounds": [
+      "kkremind:shell_cast"
+    ]
+  },
   "cactuar_alive": {
     "sounds": [
       "kkremind:cactuar_alive"

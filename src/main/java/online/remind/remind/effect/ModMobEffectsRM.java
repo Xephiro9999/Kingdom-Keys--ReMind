@@ -6,6 +6,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import online.remind.remind.KingdomKeysReMind;
+import org.codehaus.plexus.util.cli.shell.Shell;
 
 public class ModMobEffectsRM {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, KingdomKeysReMind.MODID);
@@ -20,6 +21,13 @@ public class ModMobEffectsRM {
             STONE = MOB_EFFECTS.register("stone", () -> new StoneEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
             CONFUSE = MOB_EFFECTS.register("confuse", () -> new ConfuseEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
             DOOM = MOB_EFFECTS.register("doom", () -> new DoomEffect(MobEffectCategory.HARMFUL, 0xFFFFFF)),
+            PROTECT = MOB_EFFECTS.register("protect", () -> new ProtectEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
+            SHELL = MOB_EFFECTS.register("shell", () -> new ShellEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF)),
+
+
+
+            // Technical Effects, not to be used as potions or given.
+
             BLITZ_CHAIN = MOB_EFFECTS.register("blitz_chain", () -> new BlitzChainEffect(MobEffectCategory.NEUTRAL, 0xFFFFFF)),
             SONIC_BLADE_CHAIN = MOB_EFFECTS.register("sonic_blade_chain", () -> new BlitzChainEffect(MobEffectCategory.NEUTRAL, 0xFFFFFF)),
             CHAOS_BLADE_CHAIN = MOB_EFFECTS.register("chaos_blade_chain", () -> new BlitzChainEffect(MobEffectCategory.NEUTRAL, 0xFFFFFF)),

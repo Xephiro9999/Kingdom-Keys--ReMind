@@ -47,23 +47,32 @@ public class ModSoundsRM {
             CRITSLASH = registerSound("crit_slash"),
             DASH = registerSound("dash"),
             LIMIT_ACTIVE = registerSound("limit_active"),
+            DISPEL = registerSound("dispel"),
+            PROTECT_CAST = registerSound("protect_cast"),
+            SHELL_CAST = registerSound("shell_cast"),
+            PROTECT_HIT = registerSound("protect_hit"),
 
-            // Easter Eggs - Spells
+            // Easter Eggs
             FINAL_FLASH = registerSound("final_flash"),
             KAMEHAMEHA = registerSound("kamehameha"),
+            DARK_MODE = registerSound("darkness"),
 
+            // Dream Eaters
             SPIRIT_SUMMON = registerSound("spirit_summon"),
             SPIRIT_DESUMMON = registerSound("spirit_desummon"),
 
-            DISPEL = registerSound("dispel"),
+            // RCs
             LIGHT_BEAM = registerSound("light_beam"),
             DARK_MINE = registerSound("dark_mine"),
             DARK_MINE_ALIVE = registerSound("dark_mine_alive"),
             TWILIGHT_STEP = registerSound("twilight_step"),
             DUAL_SHOT = registerSound("dual_shot"),
+
+            // Shotlocks
+
             HEARTLESS_ANGEL = registerSound("heartless_angel"),
             HEARTLESS_ANGEL_EN = registerSound("heartless_angel_en"),
-            DARK_MODE = registerSound("darkness"),
+
 
             // Music
             DREAM_EATERS = registerSound("dream_eaters"),
