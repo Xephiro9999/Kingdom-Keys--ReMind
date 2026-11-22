@@ -28,6 +28,11 @@ public class magicZettaflare extends Magic {
 		setTier(tier);
 	}
 
+	@Override
+	public boolean isProjectile() {
+		return true;
+	}
+
 
 	// ============================================================
 	// MAGIC USE

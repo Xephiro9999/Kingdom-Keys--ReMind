@@ -16,6 +16,11 @@ public class magicSilence extends Magic {
 	}
 
 	@Override
+	public boolean isProjectile() {
+		return true;
+	}
+
+	@Override
 	public void magicUse(LivingEntity player, LivingEntity caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		float silenceTime = getDamageMult();
 		silenceTime *= fullMPBlastMult;
