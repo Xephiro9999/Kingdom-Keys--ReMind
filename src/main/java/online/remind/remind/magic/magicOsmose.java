@@ -13,7 +13,12 @@ public class magicOsmose extends Magic {
 
 	public magicOsmose(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
-setTier(tier);
+		setTier(tier);
+	}
+
+	@Override
+	public boolean isProjectile() {
+		return true;
 	}
 
 	@Override

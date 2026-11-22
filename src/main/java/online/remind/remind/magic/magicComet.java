@@ -19,6 +19,11 @@ setTier(tier);
 	}
 
 	@Override
+	public boolean isProjectile() {
+		return true;
+	}
+
+	@Override
 	public void magicUse(LivingEntity player, LivingEntity caster, float fullMPBlastMult, LivingEntity lockOnTarget) {
 		float dmgMult = getDamageMult() + abilityStacks(caster, ModAbilitiesRM.DARKNESS_BOOST) * 0.2F;
 		dmgMult *= fullMPBlastMult;

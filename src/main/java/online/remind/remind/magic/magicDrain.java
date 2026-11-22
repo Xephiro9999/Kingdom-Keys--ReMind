@@ -17,6 +17,11 @@ setTier(tier);
 	}
 
 	@Override
+	public boolean isProjectile() {
+		return true;
+	}
+
+	@Override
 	public void magicUse(LivingEntity player, LivingEntity caster, float fullMPBlastMult, LivingEntity lockOnEntity) {
 		float hpTaken = getDamageMult();
 		hpTaken *= fullMPBlastMult;

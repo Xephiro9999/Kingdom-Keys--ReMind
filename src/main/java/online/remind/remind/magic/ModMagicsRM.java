@@ -81,6 +81,15 @@ public class ModMagicsRM {
 		REGENRA = register("magic_regenra", () -> new magicRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_regenra"), true, 1, null)),
 		REGENGA = register("magic_regenga", () -> new magicRegen(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_regenga"), true, 2, null)),
 
+		PROTECT = register("magic_protect", () -> new magicProtect(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_protect"), true, 0, null)),
+		PROTECTRA = register("magic_protectra", () -> new magicProtect(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_protectra"), true, 1, null)),
+		PROTECTGA = register("magic_protectga", () -> new magicProtect(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_protectga"), true, 2, null)),
+
+		SHELL = register("magic_shell", () -> new magicShell(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_shell"), true, 0, null)),
+		SHELLRA = register("magic_shellra", () -> new magicShell(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_shellra"), true, 1, null)),
+		SHELLGA = register("magic_shellga", () -> new magicShell(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_shellga"), true, 2, null)),
+
+
 		FAITH = register("magic_faith", () -> new magicFaith(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_faith"), 0, null)),
 
 		DEATH = register("magic_death", () -> new magicDeath(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "magic_death"), false, 0, null)),
@@ -98,7 +107,7 @@ public class ModMagicsRM {
 
 		SLIDING_DASH = register("attack_sliding_dash", () -> new attackSlidingDash(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_sliding_dash"), false, 0, null)),
 
-	FIRE_STRIKE = register("attack_fire_strike", () -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_strike"), false, 0, null)),
+		FIRE_STRIKE = register("attack_fire_strike", () -> new attackFireStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_fire_strike"), false, 0, null)),
 			BLIZZARD_STRIKE = register("attack_blizzard_strike", () -> new attackBlizzardStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_blizzard_strike"), false, 0, null)),
 			THUNDER_STRIKE = register("attack_thunder_strike", () -> new attackThunderStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_thunder_strike"), false, 0, null)),
 			WATER_STRIKE = register("attack_water_strike", () -> new attackWaterStrike(ResourceLocation.fromNamespaceAndPath(KingdomKeysReMind.MODID, "attack_water_strike"), false, 0, null)),

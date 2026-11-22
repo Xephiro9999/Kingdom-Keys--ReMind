@@ -14,7 +14,12 @@ public class magicRuin extends Magic {
 
 	public magicRuin(ResourceLocation registryName, boolean hasToSelect, int tier, ResourceLocation gmAbility) {
 		super(registryName, hasToSelect, gmAbility);
-setTier(tier);
+		setTier(tier);
+	}
+
+	@Override
+	public boolean isProjectile() {
+		return true;
 	}
 
 	@Override

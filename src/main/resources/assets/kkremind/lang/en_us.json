@@ -237,6 +237,14 @@
   "item.kkremind.mine_square3_spell": "Mine Square (Seeker) Spell",
   "item.kkremind.mine_shield3_spell": "Mine Shield (Seeker) Spell",
 
+  "item.kkremind.protect_spell": "Protect Spell",
+  "item.kkremind.protectra_spell": "Protectra Spell",
+  "item.kkremind.protectga_spell": "Protectga Spell",
+
+  "item.kkremind.shell_spell": "Shell Spell",
+  "item.kkremind.shellra_spell": "Shellra Spell",
+  "item.kkremind.shellga_spell": "Shellga Spell",
+
   "item.kkremind.chefs_knife": "Chef's Knife",
   "item.kkremind.cactuar_needle": "Cactuar Needle",
 
@@ -513,6 +521,8 @@
   "item.kkremind.light_curtain.effect": "Grants Protect for 30 seconds.",
   "item.kkremind.lunar_curtain": "Lunar Curtain",
   "item.kkremind.lunar_curtain.effect": "Grants Shell for 30 seconds.",
+  "item.kkremind.healing_spring": "Healing Spring",
+  "item.kkremind.healing_spring.effect": "Grants Regen for 30 seconds.",
 
 
   "key.categories.kkremind": "Re:Mind",

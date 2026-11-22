@@ -83,8 +83,16 @@ public class ModItemsRM{
         regengaSpell = ITEMS.register("regen2_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.REGENGA.location())),
         confuse2Spell = ITEMS.register("confuse2_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.CONFUSEGA.location())),
 
+        protectSpell = ITEMS.register("protect_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.PROTECT.location())),
+        protectraSpell = ITEMS.register("protectra_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.PROTECTRA.location())),
+        protectgaSpell = ITEMS.register("protectga_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.PROTECTGA.location())),
+        shellSpell = ITEMS.register("shell_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SHELL.location())),
+        shellraSpell = ITEMS.register("shellra_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SHELLRA.location())),
+        shellgaSpell = ITEMS.register("shellga_spell", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SHELLGA.location())),
 
-        // Attack Orbs
+
+
+    // Attack Orbs
         quickBlitzAttack = ITEMS.register("quick_blitz_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.QUICK_BLITZ.location())),
         slidingDashAttack = ITEMS.register("sliding_dash_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.SLIDING_DASH.location())),
         fireSurgeAttack = ITEMS.register("fire_surge_attack", () -> new RMMagicSpellItem(new Item.Properties(), ModMagicsRM.FIRE_SURGE.location())),
@@ -268,7 +276,9 @@ public class ModItemsRM{
         lightCurtain = ITEMS.register("light_curtain", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
         player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.PROTECT, 20 * 30, 0, false, false, true)), false, ModSoundsRM.PROTECT_CAST)),
         lunarCurtain = ITEMS.register("lunar_curtain", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
-        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.SHELL, 20 * 30, 0, false, false, true)), false, ModSoundsRM.SHELL_CAST));
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.SHELL, 20 * 30, 0, false, false, true)), false, ModSoundsRM.SHELL_CAST)),
+        healing_spring = ITEMS.register("healing_spring", () -> new RMPotionItem(new Item.Properties().stacksTo(1),
+        player -> player.addEffect(new MobEffectInstance(ModMobEffectsRM.REGEN, 20 * 30, 0, false, false, true)), false, ModSoundsRM.REGEN));
 
 
 
