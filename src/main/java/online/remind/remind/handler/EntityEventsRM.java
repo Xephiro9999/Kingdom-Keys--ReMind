@@ -734,6 +734,14 @@ public class EntityEventsRM {
 			PlayerData playerData = PlayerData.get(player);
 			GlobalDataRM remindData = ModDataRM.getGlobal(player);
 			if (playerData != null) {
+
+				if (caster.hasEffect(ModMobEffectsRM.SILENCE)){
+					e.setCanceled(true);
+					caster.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.error.get(),SoundSource.PLAYERS, 1F, 1F);
+				}
+
+
+
 				//System.out.println(e.getSpellID());
 				/*String spellID = e.getSpellID().toString();
 				int spellLvl = e.getLevel() + 1;

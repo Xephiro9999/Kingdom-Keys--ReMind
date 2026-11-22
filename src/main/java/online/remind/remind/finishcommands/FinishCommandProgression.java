@@ -2,16 +2,18 @@ package online.remind.remind.finishcommands;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import online.kingdomkeys.kingdomkeys.client.sound.ModSounds;
+import online.kingdomkeys.kingdomkeys.network.PacketHandler;
+import online.kingdomkeys.kingdomkeys.network.stc.SCShowOverlayPacket;
 import online.remind.remind.capabilities.GlobalDataRM;
 import online.remind.remind.capabilities.ModDataRM;
 import online.remind.remind.finishcommands.FinishCommandDefinition.ProgressType;
 import online.remind.remind.network.PacketHandlerRM;
 import online.remind.remind.network.stc.SCFinishCommandDataPacket;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /** All changes must be made on the logical server. */
 public final class FinishCommandProgression {
@@ -30,6 +32,48 @@ public final class FinishCommandProgression {
      * STYLE_USES / "diamond_dust"; STYLE_USES / "frozen_fortune";
      * SPECIAL / "survive_lethal".
      */
+
+
+
+    private static void sendCommandRewardOverlay(
+            ServerPlayer player,
+            FinishCommandDefinition command
+    ) {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("Finish Command Unlocked!");
+        lines.add(command.name());
+
+        if (!FinishCommandExecutor.isImplemented(command.id())) {
+            lines.add("Attack Coming Soon!");
+        }
+
+        player.level().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                ModSounds.levelup.get(),
+                SoundSource.MASTER,
+                0.5F,
+                1.0F
+        );
+
+        PacketHandler.sendTo(
+                new SCShowOverlayPacket(
+                        "levelup",
+                        player.getUUID(),
+                        player.getName().getString(),
+                        1,
+                        0xff00f6,
+                        lines
+                ),
+                player
+        );
+    }
+
+
+
     public static void awardProgress(ServerPlayer player, ProgressType type, int amount, String context) {
         if (player == null || type == null || type == ProgressType.NONE || amount <= 0) return;
         GlobalDataRM data = ModDataRM.getGlobal(player);
@@ -53,8 +97,7 @@ public final class FinishCommandProgression {
             changed = true;
 
             if (data.getFinishCommandProgress(definition.id()) >= needed && data.unlockFinishCommand(definition.id())) {
-                player.displayClientMessage(Component.literal("Finish Command unlocked: " + definition.name()), false);
-                // Send unlock immediately so the menu updates without waiting for the periodic flush.
+                sendCommandRewardOverlay(player, definition);
                 sync(player);
             }
         }
