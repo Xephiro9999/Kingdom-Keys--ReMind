@@ -82,6 +82,12 @@
   "magic.kkremind.magic_flare.name": "Flare",
   "magic.kkremind.magic_zettaflare.name": "Zettaflare",
   "magic.kkremind.magic_recall.name": "Recall",
+  "magic.kkremind.magic_protect.name": "Protect",
+  "magic.kkremind.magic_protectra.name": "Protectra",
+  "magic.kkremind.magic_protectga.name": "Protectga",
+  "magic.kkremind.magic_shell.name": "Shell",
+  "magic.kkremind.magic_shellra.name": "Shellra",
+  "magic.kkremind.magic_shellga.name": "Shellga",
 
   "item.kkremind.fire_strike_attack": "Fire Strike Command",
   "magic.kkremind.attack_fire_strike.name": "Fire Strike",
