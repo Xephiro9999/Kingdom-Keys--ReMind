@@ -3,7 +3,8 @@
   "spells": [
     "kkremind:ars_arcanum_attack",
     "kkremind:sonic_blade_attack",
-    "kkremind:zantetsuken_attack"
+    "kkremind:zantetsuken_attack",
+    "kingdomkeys:spellstrikeraid"
   ],
   "shotlock": "kingdomkeys:shotlock_ragnarok",
   "lock_equipment": true

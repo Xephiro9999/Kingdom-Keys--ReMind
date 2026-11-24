@@ -6,7 +6,7 @@
 - **[FIX]** ??????????? would crash saying it requires EFM.
 - **[FIX]** Silence is fixed and works. 
 - **[QoL]** Silence now has an audio cue when trying to cast Magic to let afflicted players know they are Silenced.
-- 
+- **[Form Loadout]** Limit Form now has Strike Raid included.
 
 ---
 ### New Consumables

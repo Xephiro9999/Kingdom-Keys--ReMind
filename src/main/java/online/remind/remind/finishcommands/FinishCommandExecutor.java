@@ -37,10 +37,8 @@ import java.util.List;
  * WARRIOR -> Ventus: flurry of fast attacks
  * GUARDIAN -> Terra: powerful jumping attack
  * MYSTIC -> Aqua: rising magical orbs and enemy launch
- *
- * These are first-pass gameplay effects. Character animations are NOT
- * implemented here; they can be added without changing the registry.
  */
+
 public final class FinishCommandExecutor {
     private FinishCommandExecutor() {}
 
